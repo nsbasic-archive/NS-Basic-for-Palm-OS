@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbRead </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>DbRead                                                                                                    Function</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBREAD(<i>dbName</i> as Database, <i>dbKey</i> as anyVarType, <i>varllist</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>To read values from the database record identified by the
+key value into the list of variables as specified by <i>varlist</i>. The database must have been previously opened with DBOPEN.
+Your <i>varlist</i> must match the datatypes
+of the fields exactly as they were written out. You cannot skip fields. All
+variables in the varlist must be variables: they cannot be expressions such as
+Field.text. Returns an integer result. If the exact key is not found, the next
+higher key will be returned and the result code will be 2. See DBOPEN for a
+table of result codes.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim res as integer</p>
+
+<p class=Code>Res=DbRead(CustomerDb, &quot;674&quot;, custName, custAddress)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

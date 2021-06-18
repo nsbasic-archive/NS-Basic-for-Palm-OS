@@ -1,0 +1,138 @@
+; GENERAL PROPERTIES
+;
+; All extensions must have a [General] section. Some keys are optional.
+;
+;	ExtensionName:	User visible name of extension (required)
+;	PrcName:	Name of .PRC file of extension (required)
+;	Version:	Version of extension (can contain chars) (required)
+;	Manufacturer:	Name of manufacturer of extension. (required)
+;       =HelpStart=      This key marks the beginning of the help text
+;			shown in the extension's properties. Enclose
+;			each line in double quotes and terminate the
+;			help section with the key =HelpEnd=. (optional,
+;			default = "No help available.")
+;
+
+[General]
+
+ExtensionName=NSBKyoceraLib
+PrcName=NSBKyoceraLib.prc
+Version=1.0
+Manufacturer=NSBasic
+InfVers=2.0
+
+;
+; EXTENSION HELP
+;
+
+=HelpStart=
+""
+"NSBasic Shared Library to support the Kyocera SmartPhone"
+""
+""
+=HelpEnd=
+
+;
+; METHOD PROPERTIES
+;
+; This section is organized as follows:
+;       section:        [GlobalMethods]
+;                       name=index, type, numparams, helpstring
+;
+; where:
+;
+;	name:		Name of method
+;	index:		Index of function. Index will be passed as the
+;			first parameter on the evaluation stack.
+;	type:		Either "func" or "sub".  Funcs are methods
+;			that push a return value onto the interpreter's
+;			evaluation stack. Subs are methods that do
+;			not push return values.
+;	numparams:	Number of parameters required by this method.
+;       helpstring:	Descriptive text about method. (Optional)
+;
+;
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as flt8"
+CompileInfo= 2, sub, 2, "CompileInfo(inout compileDateStr as string, inout compileTimeStr as string)"
+CoreLibPresent= 3, func, 0, "CoreLibPresent() as int32"
+RegistryLibPresent= 4, func, 0, "RegistryLibPresent() as int32"
+
+CoreLibGetVersion= 5, func, 0, "CoreLibGetVersion() as flt8"
+
+SigRegister= 6, func, 4, "SigRegister(in classInt as int32, in maskInt as int32, in priorityInt as int32, in creatorStr as string) as int32"
+SigUnregister= 7, func, 3, "SigUnregister(in classInt as int32, in maskInt as int32, in creatorStr as string) as int32"
+SigEnumerate= 8, func, 4, "SigEnumerate(in numberInt as int32, in classInt as int32, in maskInt as int32, in nameStr as string) as int32"
+SigMask= 9, func, 0, "SigMask() as int32"
+SigPriority= 10, func, 0, "SigPriority() as int32"
+SigCreator= 11, func, 0, "SigCreator() as string"
+SigType= 12, func, 0, "SigType() as int32"
+
+ModPower= 13, sub, 1, "ModPower(in booleanInt as int32)"
+ModSetEarVolume= 14, func, 1, "ModSetEarVolume(in adjustmentInt as int32) as int32"
+ModGetState= 15, func, 0, "ModGetState() as int32"
+ModStatePowered= 16, func, 0, "ModStatePowered() as int32"
+ModStateInCall= 17, func, 0, "ModStateInCall() as int32"
+ModStateAMPS= 18, func, 0, "ModStateAMPS() as int32"
+ModStateNoService= 19, func, 0, "ModStateNoService() as int32"
+ModStateHardPaused= 20, func, 0, "ModStateHardPaused() as int32"
+ModStateMuted= 21, func, 0, "ModStateMuted() as int32"
+ModStateLPM= 22, func, 0, "ModStateLPM() as int32"
+ModMute= 23, sub, 1, "ModMute(in booleanInt as int32)"
+ModGetPhoneNumber= 24, func, 0, "ModGetPhoneNumber() as string"
+
+TelMakeCall= 25, func, 1, "TelMakeCall(in phoneNumberStr as string) as int32"
+TelEndCall= 26, func, 0, "TelEndCall() as int32"
+TelAnswerCall= 27, func, 0, "TelAnswerCall() as int32"
+TelGenerateDTMF= 28, func, 2, "TelGenerateDTMF(in keyStr as string, in longBooleanInt as int32) as int32"
+TelGetCallInfo= 29, func, 0, "TelGetCallInfo() as int32"
+TelCISignalHist= 30, func, 0, "TelCISignalHist() as int32"
+TelCICallFlags= 31, func, 0, "TelCICallFlags() as int32"
+TelCICallerIDStatus= 32, func, 0, "TelCICallerIDStatus() as int32"
+TelCIDialingPaused= 33, func, 0, "TelCIDialingPaused() as int32"
+TelCINumber= 34, func, 0, "TelCINumber() as string"
+TelCITimeOfCall= 35, func, 0, "TelCITimeOfCall() as int32"
+TelCICallDuration= 36, func, 0, "TelCICallDuration() as int32"
+TelCIWaiting= 37, func, 0, "TelCIWaiting() as string"
+TelCIExt= 38, func, 0, "TelCIExt() as string"
+TelCIErr= 39, func, 0, "TelCIErr() as int32"
+TelCICallType= 40, func, 0, "TelCICallType() as int32"
+TelCIBaudRate= 41, func, 0, "TelCIBaudRate() as int32"
+TelResumeDialing= 42, sub, 0, "TelResumeDialing()"
+TelCancelPause= 43, sub, 0, "TelCancelPause()"
+TelFormatNumber= 44, func, 2, "TelFormatNumber(in unformattedStr as string, in flagsInt as int32) as string"
+TelGetDigit= 45, func, 1, "TelGetDigit(in inCharStr as string) as string"
+
+RegGetVersion= 46, func, 0, "RegGetVersion() as flt8"
+RegAddScheme= 47, func, 3, "RegAddScheme(in schemeStr as string, in creatorStr as string, in capFlagsInt as int32) as int32"
+RegRemoveScheme= 48, func, 2, "RegRemoveScheme(in schemeStr as string, in creatorStr as string) as int32"
+RegEnableScheme= 49, func, 3, "RegEnableScheme(in schemeStr as string, in creatorStr as string, in enableBoolInt as int32) as int32"
+RegEnumSchemes= 50, func, 1, "RegEnumSchemes(in numberInt as string) as string"
+RegSchemeName= 51, func, 0, "RegSchemeName() as string"
+RegSchemeShortName= 52, func, 0, "RegSchemeShortName() as string"
+RegSchemeCreator= 53, func, 0, "RegSchemeCreator() as string"
+RegSchemeFlags= 54, func, 0, "RegSchemeFlags() as int32"
+RegSchemeEnabled= 55, func, 0, "RegSchemeEnabled() as int32"
+RegGetHandler= 56, func, 1, "RegGetHandler(in schemeStr as string) as string"
+RegProcessURL= 57, func, 1, "RegProcessURL(in URLStr as string) as int32"
+RegProcessMailAddress= 58, func, 3, "RegProcessMailAddress(in firstNameStr as string, in lastNameStr as string, in addressStr as string) as int32"
+RegAddMacro= 59, sub, 3, "RegAddMacro(in URLStr as string, in shortNameStr as string, in descStr as string)"
+RegRemoveMacro= 60, sub, 1, "RegRemoveMacro(in URLStr as string)"
+RegEnumMacros= 61, func, 1, "RegEnumMacros(in numberInt as int32) as string"
+RegMacroDesc= 62, func, 0, "RegMacroDesc() as string"
+RegMacroShortName= 63, func, 0, "RegMacroShortName() as string"
+RegSetHandlerName= 64, func, 3, "RegSetHandlerName(in schemeStr as string, in nameStr as string, in shortNameStr as string) as int32"
+
+ProxyRegister= 65, func, 4, "ProxyRegister(in classInt as int32, in maskInt as int32, in priorityInt as int32, in reatorStr as string) as int32"
+ProxyUnregister= 66, func, 2, "ProxyUnregister(in classInt as int32, in maskInt as int32) as int32"
+ProxyUnregisterAll= 67, sub, 0, "ProxyUnregisterAll()"
+ProxyCurrentApp= 68, func, 1, "ProxyCurrentApp(in creatorStr as string) as int32"
+ProxyGetCallInfo= 69, func, 0, "ProxyGetCallInfo() as int32"
+ProxyEventTime= 70, func, 0, "ProxyEventTime() as int32"
+ProxyClass= 71, func, 0, "ProxyClass() as int32"
+ProxySignal= 72, func, 0, "ProxySignal() as int32"
+
+StringDateTime= 73, func, 4, "StringDateTime(in sysTimeInt as int32, in ToDateFormatBool as int32, in ToTimeFormatBool as int32, in AMPMBool as int32) as string"
+StringDate= 74, func, 2, "StringDate(in sysTimeInt as int32, in ToDateFormatBool as int32) as string"
+StringTime= 75, func, 3, "StringTime(in sysTimeInt as int32, in ToTimeFormatBool as int32, in AMPMBool as int32) as string"

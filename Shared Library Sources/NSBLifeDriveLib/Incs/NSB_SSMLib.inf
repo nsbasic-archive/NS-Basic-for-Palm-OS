@@ -1,0 +1,6 @@
+[General]
+ExtensionName=NSB-Symbol-Scan-Manager
+PrcName=NSB_SSMLib.prc
+Version=2.0 Beta
+Manufacturer=NSBasic.com
+[GlobalMethods]

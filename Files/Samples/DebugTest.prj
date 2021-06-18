@@ -1,0 +1,76 @@
+"mdl"
+8
+"DebugTest","appl","Test",1008,505,0
+"Sub main()
+	Global theGlobalVariable as Integer
+	theGlobalVariable = 999
+End Sub
+"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000D9"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Debug Test"
+"Debug Test"
+"Sub Debug_Test_before()
+	MsgBox ~Before~
+End Sub
+"
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1006",1006,56,56,12,40,#TRUE#,0,"Click",0,0,0
+"Sub object1006()
+	'filler comment
+	'filler comment
+	Dim x as Double
+	x=newFunction()
+End Sub
+Function newFunction() as Double
+	Dim i as Integer
+@   i=1
+	Call newSubroutine3(i)
+	newFunction = 1
+End Function
+Sub newSubroutine3(jjj as integer)
+	Dim x as Integer
+	Dim y as Integer
+	Dim z(4,3,2) as Integer
+	
+	'z(1,1,1)=1
+	z(2,2,2) = 2
+	MsgBox ~z(2,2,2)=~ + str(z(2,2,2))
+	'z(3,3,3) = 3
+	'z(2,2,3)=999
+@   y=1
+	y=0
+	y=3
+	y=4
+@   x=1
+	y=1
+@   x=2
+	y=2
+@   x=3
+	y=3
+End Sub
+"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1008",1008,32,28,12,104,#TRUE#,0,"See Tech Note 35 to use",0,0,0
+""
+"end"

@@ -1,0 +1,81 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbInsert </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>DbInsert                                                                                                   Function</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBINSERT(<i>dbName</i> as Database, <i>dbKey</i> as anyVarType, <i>varlist</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>To insert a new record into the database with the given
+key. All of the variables in <i>varlist</i>
+are written into the new record. Records cannot exist that duplicate a key, so
+insert of a record with a key that already exists returns an error. <i>dbKey</i> must be a variable: it cannot be
+an expression. The database must have been previously opened with DBOPEN.
+Returns an integer result. See DBOPEN for a table of result codes.</p>
+
+<p class=ManualBody><span style='font-family:"Courier New";'>&nbsp;</span></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim res as Integer</p>
+
+<p class=Code>Res=DbInsert(CustomerDb, &quot;998&quot;, custName, custAddress,
+custPhone)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

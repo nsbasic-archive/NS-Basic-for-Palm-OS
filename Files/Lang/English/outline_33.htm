@@ -1,0 +1,113 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Call </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Call                                                                                                          Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>CALL <i>subName</i>(<i>argList</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Transfer control to another subroutine. The <i>argList</i> contains a list of arguments
+separated by commas that are parameters passed to the called <i>subName</i>. Arguments may be used to pass
+data values to the called program or to specify the names of variables that are
+to be given new values by the called program. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Arguments in the list may be an expression if the argument
+is passing data to the called program. The expression will be calculated and
+the resulting value will be passed to the called routine.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>There must be a one-to-one correspondence between the
+number of arguments in <i>argList</i> and
+the number of arguments the called subroutine is expecting as defined in its
+SUB definition statement. Arguments should also be the same type(string,
+float,etc) as the called program is expecting. The names of arguments in <i>argList</i> does not have to be the same as
+the names of arguments defined in the called program because arguments are
+matched up by position in the calling <i>argList</i>.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Subroutines cannot be inside another subroutine or
+function. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>  ...</p>
+
+<p class=Code>  Call
+PayrollRoutine(Salary, Deductions, NoDependents, NetSalary)</p>
+
+<p class=Code>End Sub</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Sub PayrollRoutine(Sal as Float, Deduct as Float, NoDepends as
+Integer, Net as Float)  </p>
+
+<p class=Code>  Let Net=Sal-Deduct</p>
+
+<p class=Code>End Sub</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,262 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>06</title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h2
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h2><a name="_Toc518184860"></a><a name="_Toc74901742"><span lang=DE>06.A </span><span lang=DE>Arithmetische
+Funktionen</span></a></h2>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Einige der arithmetischen und trigonometrischen Funktionen
+sind in NS Basic/Palm über eine gemeinsam genutzte Bibliothek implementiert.
+Diese Bibliothek, MathLib, wird zusammen mit NS Basic/Palm ausgeliefert.
+MathLib ist eine freie, gemeinsam genutzte Bibliothek, von jeder Palm OS
+Anwendung aus genutzt werden kann, die IEEE 754 hochpräzisions- mathematische
+Funktionen benötigt. MathLib wird unter der GNU General Public License
+vertrieben, und ist frei erhältlich auf der <u><span style='color:blue'>http://www.radiks.net/~rhuebnet/mathlib.html
+</span></u>Webseite, inklusive Quelltexten. MathLib ist kein Bestandteil der NS
+Basic/Palm Anwendung, aber sie ist im lokalen Library-Verzeichnis Ihres
+Desktops abgelegt. MathLibs Informationen wurden in NS Basic/Palm vorkompilert.
+Daher sind keine .inf-Dateien oder LoadLibrary-Befehle zur Nutzung der
+MathLib-Funktionen notwendig.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Diejenigen arithmetischen Funktionen, die MathLib
+verwenden, sind durch einen doppelten Stern (**) gekennzeichnet. Wenn Sie eine
+dieser Funktionen verwenden, stellen Sie bitte sicher dass sich auf dem Palm OS
+Gerät, auf welchem Ihre Anwendung ausgeführt wird, MathLib (<span
+style='font-family:Monaco'>MathLib.prc</span>)
+befindet.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Abs</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert den absoluten Wert eines arithmetischen
+  Ausdruckes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Cbrt</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert die Qubikwurzel einer Zahl**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Ceiling</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert die nächst höhere Ganzzahl eines arithmetischen
+  Ausdruckes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Exp</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert den Exponenten einer Zahl**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Floor</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert die nächst tiefere Ganzzahl eines arithmetischen
+  Ausdruckes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Int</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Liefert den ganzzahligen Wert eines arithmetischen
+  Ausdruckes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Log</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert den natürlichen Logarithmus einer Zahl (Basis =
+  2)**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Log10</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert den Logarithmus zur Basis 10 einer Zahl**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Mod</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert den ganzzahligen Rest einer arithmetischen
+  Division</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Pow</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert des Ergebnis der ersten Zahl, potenziert mit der
+  zweiten Zahl**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Power10</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert das Ergebnis der ersten Zahl, potenziert mit 10 *
+  der zweiten Zahl**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Rem</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert den Rest einer Division</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Round</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>rundet das Ergebnis eines arithmetischen Ausdruckes zu
+  der nächsten Nachkommastelle</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Sign</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert das Vorzeichen eines arithmetischen Ausdruckes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Sqrt</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert die Quadratwurzel einer Zahl**</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=91 valign=top style='width:.95in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span style='font-family:Monaco'>Trunc</span></p>
+  </td>
+  <td width=451 valign=top style='width:4.7in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>liefert eine Fließkommazahl, ohne ihre Nachkommastellen</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+syslib { "TcpIpLib" NSBi }
+
+export {
+  nothing nothing nothing nothing
+  TcpIpLibVersion InetOpen InetClose InetRead InetWrite InetFlush
+}

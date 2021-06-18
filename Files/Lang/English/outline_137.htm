@@ -1,0 +1,79 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>PlaySound </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>PlaySound                                                                                            Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>PlaySound <i>Resource</i>#, <i>ampScale</i>, <i>Flags</i> </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>The PlaySound statement allows you to play short pre
+recorded sounds in your program. It can only be used on Palm OS 5.0 and later. <i>Resource</i># is the resource number in your
+project. The sound must be in wav format and be less that 64k. Test the sounds
+on the device you want to use carefully: 16 bit mono, 8khz PCM encoded sound
+seems to work well. Add sounds to your project by doing &quot;Add
+Resource&quot;, then setting the Type of the resource to 'wave'.  <i>AmpScale</i>
+is the volume. The setting is from 0 to 32767. <i>Flags</i> determine how the sound plays. 0 means do not continue until
+the sound stops playing; 1 means to keep processing while the sound plays. See
+the sample SoundTest.prj in the Samples folder.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b> </p>
+
+<p class=Code>PlaySound 1004, 32767, 1</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

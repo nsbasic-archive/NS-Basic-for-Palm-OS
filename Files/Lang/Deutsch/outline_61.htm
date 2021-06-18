@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbRead </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>DbRead                                                                                                    Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBREAD(<i>dbName</i> as Database, <i>dbKey</i> as anyVarType, <i>varllist</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Liest einen kompletten Datensatz, der durch den Schlüssel
+identifiziert wird in die Variablen der angegebenen Liste <i>varList</i>. Die Datenbank muss zuvor mittels <i>dbOpen</i> geöffnet worden sein. Die Liste der Variablen muss mit den
+Datentypen innerhalb des Datensatzes identisch sein, also exakt so, wie sie
+geschrieben wurden. Es ist nicht möglich, Felder zu überspringen. Alle
+Variabeln in der Liste müssen Variabeln sein, es sind keine Ausdrücke erlaubt.
+Gibt einen Integerwert zurück. Wenn ein Schlüssel nicht gefunden wurde, wird
+der nächst höhere Schlüssel zurückgeliefert, und der Fehlercode wird auf 2
+gesetzt. Der Fehlercode wird bei <i>dbOpen</i>
+detailliert beschrieben.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim res as integer</p>
+
+<p class=Code>Res=DbRead(CustomerDb, “674”, custName, custAddress)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+PalmRI test17bit1.bmp:1 test17bit2.bmp:2 test17bit4.bmp:4 test17bit8.bmp:8 test17bit16.bmp:16 bitmap.prc Tbmp 1000 

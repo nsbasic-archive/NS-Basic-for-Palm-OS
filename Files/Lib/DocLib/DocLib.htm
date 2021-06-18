@@ -1,0 +1,443 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note XX: Using the DocLib Shared Library</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <P>Tech Note XX: Using the DocLibShared Library</P>
+      <P>Jan 10, 2004</P>
+</FONT><FONT FACE="Helvetica" SIZE=4><P>&nbsp;</P>
+</FONT><FONT FACE="Helvetica" SIZE=2><P>Copyright 2004 Douglas Handy</font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Function Index and Quick Reference</a>
+    <a href="#fullRef">Function Reference</a>
+</pre>
+
+<a name="intro"><h2>Introduction:</h2>
+<P>In order to use the DocShared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "Doc" for this reference name.  Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "DocLib", "Doc"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the DocLib Shared Library, the 
+DocLib.INF file must be present in your "nsbasic\lib" directory 
+and the DocLib.prc file must be downloaded to your device.  When using
+NSB/Palm v4, you may alternatively include it in your compiled PRC by using 
+"Add Resource", selecting DocLib.prc, and changing the assigned property 
+type of "libr".
+
+<P>Except for the functions that return version numbers, all the parameter 
+and return data types are either "Integer" or "String".  Version numbers
+are returned as a "Double".  When using NSB/Palm v4, the compiler will take
+care of converting your variables or constants to match the size expected 
+by the library.<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+
+<a href="#Version Information">Version Information</a>
+    <a href="#Version">Version</a>             version = Version()
+    <a href="#CompileInfo">CompileInfo</a>         compileDateTime = CompileInfo()
+    <a href="#Register">Register</a>            Register part1, part2
+
+<a href="#DOC database properties">DOC database properties</a>
+    <a href="#DocVersion">DocVersion</a>          version = DocVersion(docName)
+    <a href="#HeaderSpare">HeaderSpare</a>         value = HeaderSpare(docName)
+    <a href="#TotalLength">TotalLength</a>         length = TotalLength(docName)
+    <a href="#TextRecordCount">TextRecordCount</a>     count = TextRecordCount(docName)
+    <a href="#MaxTextRecordSize">MaxTextRecordSize</a>   size = MaxTextRecordSize(docName)
+    <a href="#CurrentPosition">CurrentPosition</a>     pos = CurrentPosition(docName)
+
+<a href="#Text Block Functions">Text Block Functions</a>
+    <a href="#GetRecordText">GetRecordText</a>       text = GetRecordText(docName, RRN)
+    <a href="#Decode">Decode</a>              output = Decode(input)
+    <a href="#Encode">Encode</a>              output = Encode(input, method)
+    <a href="#ReadDoc">ReadDoc</a>             ReadDoc docName, Position, Font, Options
+</pre>
+<a name="fullRef"><h2>DocLib Function Reference:</h2>
+<a name="Version Information"><h3 align="center"><i>Version Information</i></h3>
+<blockquote>
+The version information functions provide information about
+the version of the DocLib Shared Library.
+</blockquote>
+<a name="Version"><h4>Version</h4>
+
+<pre>	version = DocLib.Version()</pre>
+
+<blockquote>
+	Returns the version number of the DocLib Shared Library.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as Double<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as Double
+
+	version = DL.Version()
+</pre>
+<a name="CompileInfo"><h4>CompileInfo</h4>
+
+<pre>	compileDateTime = DocLib.CompileInfo()</pre>
+
+<blockquote>
+	Returns the date and time that the DocLib was compiled.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	compileDateTime as String<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim compileDateTime as String
+
+	compileDateTime = DL.CompileInfo()
+</pre>
+<a name="Register"><h4>Register</h4>
+
+<pre>	DocLib.Register part1, part2</pre>
+
+<blockquote>
+	Validates the registration code.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	part1 as String<i>
+	       Registration Code part one (case sensitive).
+</i>
+	part2 as String<i>
+	       Registration Code part two (case sensitive).
+</i>
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim part1 as String
+	Dim part2 as String
+
+	DL.Register part1, part2
+</pre>
+<blockquote>
+This function should be called prior to attempting any
+other activity, or demo evaluation mode is assumed.
+</blockquote>
+<a name="DOC database properties"><h3 align="center"><i>DOC database properties</i></h3>
+<blockquote>
+This collection of routines provides information on the
+properties of a specific DOC database.  The database must
+conform to the the de facto standard format as described
+at www.pyrite.org/doc_format.html
+</blockquote>
+<a name="DocVersion"><h4>DocVersion</h4>
+
+<pre>	version = DocLib.DocVersion(docName)</pre>
+
+<blockquote>
+	Determines if a doc database is compressed or not.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database to be checked.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as Integer<i>
+	       One of the following values:
+	          0 = Database not found or is not DOC compatible
+	          1 = Uncompressed doc
+	          2 = Compressed using DOC text format</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as Integer
+	Dim docName as String
+
+	version = DL.DocVersion(docName)
+</pre>
+<a name="HeaderSpare"><h4>HeaderSpare</h4>
+
+<pre>	value = DocLib.HeaderSpare(docName)</pre>
+
+<blockquote>
+	Determines if a doc database is compressed or not.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database to be checked.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer<i>
+	       One of the following values:
+	          0 = Database not found or is not DOC compatible
+	          1 = Uncompressed doc
+	          2 = Compressed using DOC text format</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+	Dim docName as String
+
+	value = DL.HeaderSpare(docName)
+</pre>
+<blockquote>
+Compression format is documented at www.pyrite.org/doc_format.html
+</blockquote>
+<a name="TotalLength"><h4>TotalLength</h4>
+
+<pre>	length = DocLib.TotalLength(docName)</pre>
+
+<blockquote>
+	Determines the total uncompressed length of text in a document.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database to be checked.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	length as Integer<i>
+	       Uncompressed length of all text in the document.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim length as Integer
+	Dim docName as String
+
+	length = DL.TotalLength(docName)
+</pre>
+<a name="TextRecordCount"><h4>TextRecordCount</h4>
+
+<pre>	count = DocLib.TextRecordCount(docName)</pre>
+
+<blockquote>
+	Determines the total uncompressed length of text in a document.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database to be checked.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	count as Integer<i>
+	       Uncompressed length of all text in the document.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim count as Integer
+	Dim docName as String
+
+	count = DL.TextRecordCount(docName)
+</pre>
+<a name="MaxTextRecordSize"><h4>MaxTextRecordSize</h4>
+
+<pre>	size = DocLib.MaxTextRecordSize(docName)</pre>
+
+<blockquote>
+	Determines the max uncompressed size of a record in the document.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database to be checked.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	size as Integer<i>
+	       Maximum uncompressed size of a single doc record.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim size as Integer
+	Dim docName as String
+
+	size = DL.MaxTextRecordSize(docName)
+</pre>
+<blockquote>
+Typically, this value will be 4096 in standard DOC pdbs.
+</blockquote>
+<a name="CurrentPosition"><h4>CurrentPosition</h4>
+
+<pre>	pos = DocLib.CurrentPosition(docName)</pre>
+
+<blockquote>
+	Determines the max uncompressed size of a record in the document.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database to be checked.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	pos as Integer<i>
+	       Maximum uncompressed size of a single doc record.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim pos as Integer
+	Dim docName as String
+
+	pos = DL.CurrentPosition(docName)
+</pre>
+<blockquote>
+Typically, this value will be 4096 in standard DOC pdbs.
+</blockquote>
+<a name="Text Block Functions"><h3 align="center"><i>Text Block Functions</i></h3>
+<blockquote>
+The text block functions work on discrete blocks of text,
+such as a specific record in a DOC database.
+</blockquote>
+<a name="GetRecordText"><h4>GetRecordText</h4>
+
+<pre>	text = DocLib.GetRecordText(docName, RRN)</pre>
+
+<blockquote>
+	Retrieve the text of a given record in a DOC database, uncompressing
+	if necessary.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC style database.</i>
+	RRN as Integer<i>
+	       Relative record number of the text block to retrieve.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	text as String<i>
+	       Uncompressed contents of record block.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim text as String
+	Dim docName as String
+	Dim RRN as Integer
+
+	text = DL.GetRecordText(docName, RRN)
+</pre>
+<blockquote>
+With NSB v4.x, it is not necessary to prefill the return string
+with dummy data to the maximum expected size.  In NSB v3 though,
+the string variable used to return the text should be
+pre-allocated in NSB/Palm to the maximum length expected.
+This is 4096 in a standard DOC pdb, but the size may be
+verified first using MaxTextRecordSize() in this library.
+  size = doc.MaxTextRecordSize( "MyDocPdb" )
+  text = RightPad( "", size )
+</blockquote>
+<a name="Decode"><h4>Decode</h4>
+
+<pre>	output = DocLib.Decode(input)</pre>
+
+<blockquote>
+	Decode a DOC style compressed block into plain text.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	input as String<i>
+	       Input string conforming to DOC compression options.  Typically
+	       this will have been obtained from a previous call to Encode()
+	       below, and</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	output as String<i>
+	       Uncompressed contents of string.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim output as String
+	Dim input as String
+
+	output = DL.Decode(input)
+</pre>
+<blockquote>
+With NSB v4.x, it is not necessary to prefill the return string
+with dummy data to the maximum expected size.  In NSB v3 though,
+the string variable used to return the text should be
+pre-allocated in NSB/Palm to the maximum length expected.
+This is 4096 in a standard DOC pdb.
+</blockquote>
+<a name="Encode"><h4>Encode</h4>
+
+<pre>	output = DocLib.Encode(input, method)</pre>
+
+<blockquote>
+	Encodes plain text into DOC style compression.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	input as String<i>
+	       Input string containing data to get compressed.  This can be
+	       any size up to the 32K limit for strings in NSB/Palm.  When
+	       using encoding methods other than zero, the length will have
+	       a dramatic impact on performance (or lack of it) as it searches
+	       for repeating sequences of characters.  The DOC de facto standard
+	       is to limit blocks to 4K of text, but that is not a requirement
+	       of this library.</i>
+	method as Integer<i>
+	       Method of encoding to be performed:
+	          0 = Blank compression (fastest, average 15-20% reduction)
+	          1 = DOC style compression but with nulls eliminated
+	          2 = Full DOC compatibility (do not use from NSB/Palm)</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	output as String<i>
+	       Compressed version of input.  For encoding method 2, this is
+	       a buffer and not a null-terminated string.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim output as String
+	Dim input as String
+	Dim method as Integer
+
+	output = DL.Encode(input, method)
+</pre>
+<blockquote>
+With NSB v4.x, it is not necessary to prefill the return string
+with dummy data to the maximum expected size.  In NSB v3 though,
+the string variable used to return the text should be
+pre-allocated in NSB/Palm to the maximum length expected.
+</blockquote>
+<a name="ReadDoc"><h4>ReadDoc</h4>
+
+<pre>	DocLib.ReadDoc docName, Position, Font, Options</pre>
+
+<blockquote>
+	Display a DOC database using a mini DOC reader.  The library
+	provides complete control over the DOC reader while it is in
+	use.  When the user taps Done, the library call will return.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	docName as String<i>
+	       Name of DOC compatible database.
+</i>
+	Position as Integer<i>
+	       Starting byte position within document.  Special values:
+
+	          -1 = DOC header's last known position.
+	           0 = Top of the document
+	         xxx = Start at approximately the byte position requested
+</i>
+	Font as Integer<i>
+	       Font number requested.  Should be one of the following:
+
+	          -1 = Last known preference
+	           0 = Standard font
+	           1 = Bold font
+	           2 = Large font
+	           7 = Large bold font
+</i>
+	Options as Integer<i>
+	       Options desired.  Add together the appropriate values:
+
+		   1 = Strip carriage returns
+		   2 = Allow jump by percentage
+		   3 = Allow font change
+		   4 = Allow copy to clipboard
+		   8 = Show existing bookmarks
+		  16 = Scan for auto-bookmarks (not implemented yet)
+	          32 = Auto scan for bookmarks
+	          64 = Force scan for bookmarks
+	         128 = Show long bookmark names
+	         256 = No modal border
+	         512 = No title bar
+</i>
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim docName as String
+	Dim Position as Integer
+	Dim Font as Integer
+	Dim Options as Integer
+
+	DL.ReadDoc docName, Position, Font, Options
+</pre>
+</html>
+

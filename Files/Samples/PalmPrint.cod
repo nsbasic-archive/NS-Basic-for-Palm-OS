@@ -1,0 +1,9 @@
+"Sub PalmPrint(PrintString as String)
+Dim CardNo as integer
+Dim NumCmd as integer
+Dim res as Integer
+CardNo=0
+NumCmd=32768
+res=AppLaunch(CardNo,~PalmPrint~,NumCmd,PrintString)
+If res<>0 Then MsgBox ~Error printing to PalmPrint~                                                                     
+End Sub"

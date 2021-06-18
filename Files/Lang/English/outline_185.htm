@@ -1,0 +1,163 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SysInfoSet </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>SysInfoSet                                                                                              Function</h4>
+
+<p class=ManualBody>SYSINFOSET(<i>characteristic</i> as string, <i>value</i>
+as integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Sets a system <i>characteristic</i>
+to <i>value</i>. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+  <td width=384 valign=top style='width:4.0in;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+  <td width=49 valign=top style='width:36.9pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>default</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>CoordinateSystem</p>
+  </td>
+  <td width=384 valign=top style='width:4.0in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Set to 72 for LoRes, 144 for HiRes. See Section 10.J.</p>
+  </td>
+  <td width=49 valign=top style='width:36.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>HeapVariableCount</p>
+  </td>
+  <td width=384 valign=top style='width:4.0in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Sets the number of numeric variables to be allocated in
+  the Dynamic Store, where n is the count of variables (default is 200.) This
+  results in faster execution, since variables can be more quickly accessed.
+  Variables are added to this area in order of compilation. Each variable used
+  takes 22 bytes of space from the Dynamic Store. Consult manufactuer's
+  documentation to find out how much Dynamic Store is on your device. Only the
+  actual number of variables used is allocated. The full number in
+  HeapVariableCount will only be used if you actually have that number of
+  variables. This function should be called in your Program Startup code.</p>
+  </td>
+  <td width=49 valign=top style='width:36.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>200</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Timer</p>
+  </td>
+  <td width=384 valign=top style='width:4.0in;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Timer feature allows you to generate your own events that
+  fire after a set interval. This is useful for situations where you expect a
+  response after a certain interval and you want to take action if you do not
+  get that response. For example, if you are doing communications with another
+  computer and you want to check from time to time if any data has come in.</p>
+  <p class=ManualBody>To set a timer, do the following statement:</p>
+  <p class=ManualBody>&nbsp;</p>
+  <p class=ManualBody><span style='font-family:"Courier New";'>SysInfoSet(&quot;Timer&quot;, 3000)   'Set a timer in 3 seconds.</span></p>
+  <p class=ManualBody><span style='font-family:"Courier New";'> </span></p>
+  <p class=ManualBody>To respond to the Timer event in your program, use
+  something like this in your Events script:</p>
+  <p class=ManualBody>&nbsp;</p>
+  <p class=ManualBody><span style='font-family:"Courier New";'>If getEventType()=nsbTimer then</span></p>
+  <p class=ManualBody><span style='font-family:"Courier New";'>  MsgBox
+  &quot;Timer Event Received&quot; 'respond to event</span></p>
+  <p class=ManualBody><span style='font-family:"Courier New";'> 
+  SysInfoSet(&quot;Timer&quot;, 3000)     'set another timer</span></p>
+  <p class=ManualBody><span style='font-family:"Courier New";'>End If</span> </p>
+  <p class=ManualBody>&nbsp;</p>
+  <p class=ManualBody>To cancel a timer currently in effect, do <span
+  style='font-family:"Courier New";'>SysInfoSet(&quot;Timer&quot;,
+  0)</span>. If you exit your program, the timer is cancelled. There is no need
+  to do SETEVENTHANDLED for this event. See the Timer sample to try this out.</p>
+  </td>
+  <td width=49 valign=top style='width:36.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=MsoNormal>SysInfoSet(&quot;HeapVariableCount&quot;,200)</p>
+
+</div>
+
+</body>
+
+</html>

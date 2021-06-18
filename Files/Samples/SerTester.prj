@@ -1,0 +1,213 @@
+"mdl"
+8
+"SerTester","appl","Sert",1026,505,0
+"Sub main()
+    
+    Global gintErr as Integer
+    Global gstrReceived as String
+    Dim res as Integer
+
+    'open port
+    gintErr = SerialOpen(0,9600)
+    If gintErr > 0 Then MsgBox ~startup error ~ + str(ginterr) 
+  
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000109"
+"sub project_termination_9915()
+    'close comms
+    gintErr = SerialClose()
+    if gintErr > 0 then msgbox ~end error ~ + str(gintErr)
+
+end sub
+"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Serial Tester"
+"Screen1004"
+""
+0
+""
+"Sub Form1004_Event()
+    Dim err as Integer
+    Dim received as String
+    Dim numbytes as Integer
+    
+    If getEventType()=nsbSerialIn Then
+        numbytes=sysinfo(5)
+        MsgBox ~Bytes waiting ~ + str(numbytes)
+        
+        err=serialReceive(received, 10, 0)
+      If Err > 0 Then
+        Beep
+        error.text=str(err) 
+        data.text=data.text+~.~+Received
+      Else 
+        error.text=~~
+        data.text=data.text+received
+      End If 
+    End If 
+        
+End Sub"
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1006",1006,4,52,12,104,#TRUE#,0,"Receive: timeout 5 secs",0,0,0
+"sub object1006()
+    dim received as string
+    dim err as integer
+    
+ retry:
+    error.text=~~
+    Err = SerialReceive(Received,1,5) 
+    if Err > 0 then
+        beep
+        error.text=str(err) 
+        data.text=data.text+~.~+Received
+    else 
+        error.text=~~
+        data.text=data.text+received
+        goto retry 
+    end if  
+     
+end sub"
+"fld"
+1
+#FALSE#,#TRUE#,#FALSE#,#TRUE#,#TRUE#,500,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","data",1009,4,68,88,104,#TRUE#,0,"",0,0,0
+""
+"cho"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"cho","Cho1011",1011,116,36,12,40,#TRUE#,0,"7 bits",0,0,0
+"sub object1011() 
+    dim e as integer
+    e=serialset(~bitsperchar~,7)
+end sub"
+"cho"
+1
+#TRUE#,1,#TRUE#
+"obj"
+3
+"cho","Cho1012",1012,116,48,12,40,#TRUE#,0,"8 bits",0,0,0
+"sub object1012()
+    dim e as integer
+    e=serialSet(~bitsperchar~,8)
+end sub"
+"cho"
+1
+#FALSE#,2,#TRUE#
+"obj"
+3
+"cho","Cho1013",1013,116,104,12,40,#TRUE#,0,"Even",0,0,0
+"sub object1013()
+    dim e as integer
+    e=serialset(~parity~,2)
+end sub"
+"cho"
+1
+#TRUE#,2,#TRUE#
+"obj"
+3
+"cho","Cho1014",1014,116,116,12,40,#TRUE#,0,"None",0,0,0
+"sub object1014()
+    dim e as integer
+    e=serialSet(~parity~,3)
+end sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","error",1015,116,20,12,40,#TRUE#,0,"",0,0,0
+"sub object1015()
+
+end sub"
+"cho"
+1
+#FALSE#,3,#TRUE#
+"obj"
+3
+"cho","Cho1017",1017,116,64,12,40,#TRUE#,0,"1 stop",0,0,0
+"sub object1017()
+   dim e as integer
+   e=serialSet(~stopbits~,1)
+end sub"
+"cho"
+1
+#TRUE#,3,#TRUE#
+"obj"
+3
+"cho","Cho1018",1018,116,76,12,40,#TRUE#,0,"2 stop",0,0,0
+"sub object1018()
+   dim e as integer
+   e=serialSet(~stopbits~,2)
+end sub"
+"cho"
+1
+#FALSE#,2,#TRUE#
+"obj"
+3
+"cho","Cho1020",1020,116,92,12,40,#TRUE#,0,"Odd",0,0,0
+"sub object1020()
+   dim e as integer
+   e=serialSet(~parity~,1)
+end sub"
+"cho"
+1
+#FALSE#,4,#TRUE#
+"obj"
+3
+"cho","Handshake",1021,116,132,12,40,#TRUE#,0,"HndShke",0,0,0
+"sub object1021()
+    dim e as integer
+    e=serialSet(~handshake~,1)    
+end sub"
+"cho"
+1
+#TRUE#,4,#TRUE#
+"obj"
+3
+"cho","Cho1022",1022,116,144,12,40,#TRUE#,0,"None",0,0,0
+"sub object1022()
+    dim e as integer
+    e=serialSet(~handshake~,0)    
+
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1023",1023,4,20,12,104,#TRUE#,0,"Send a message",0,0,0
+"Sub object1023()
+    Dim res as Integer
+    Dim buffer as String
+    buffer=~This is a message from the Palm OS device.~
+    res=serialSend(buffer, len(buffer))
+    If res<>0 Then MsgBox ~Error ~ + str(res)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1024",1024,4,36,12,104,#TRUE#,0,"Receive with Event",0,0,0
+"Sub object1024()
+    Dim err as Integer
+    err=serialReceiveWithEvent()
+End Sub"
+"end"

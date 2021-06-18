@@ -1,0 +1,29 @@
+"sub TextToMemo(Message as string)
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'By Michael Verive
+'From Take-A-Memo, written by Jeff Debrosse          '
+'Purpose: to demonstrate how to write to the memopad '
+'         via a non-keyed technique.                 '
+'Created with NSBasic v1.06-1.09                     '
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'set up variables
+dim mdb as database                ' must dim the file as a database
+dim res as integer                 ' the multi-purpose ~result~
+dim reccount as integer            ' used to determine the next memo to write
+ 
+res = dbopen(mdb,~MemoDB~,0)       ' open Memo pad's database
+reccount = dbgetnorecs(mdb)        ' find out how many memos there are
+res = dbPosition(mdb,reccount+1,0) ' we'll use the next number
+res = dbPut(mdb,Message)           ' and put our text (as a record) there
+res = dbclose(mdb)                 ' and close it to keep things tidy!
+
+if res = 0 then                    ' it can only be 0 if we've had no errors
+    exit sub
+else 
+    res = dbclose(mdb)             ' close it if open due to error
+    'msgbox ~Error writing to MemoPad!~ 'uncomment this line if an error message is desired
+end if
+
+end sub"

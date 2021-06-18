@@ -1,0 +1,71 @@
+"mdl"
+8
+"ListBox","appl","List",1010,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000127"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"ListBox Sample"
+"Screen1004"
+""
+0
+"sub Screen1004_after()
+    lbox.clear
+end sub
+"
+""
+0,0,0,0
+"lst"
+2
+12
+""
+"obj"
+3
+"lst","lbox",1005,36,72,60,76,#TRUE#,0,"List1005",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1006",1006,4,40,12,68,#TRUE#,0,"Add NODISPLAY",0,0,0
+"sub object1006() 
+    lbox.add text1.text, , NODISPLAY
+end sub
+"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Text1",1007,80,36,12,64,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1009",1009,4,24,12,68,#TRUE#,0,"Add Immediate",0,0,0
+"sub object1009()
+     lbox.add text1.text
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1010",1010,4,56,12,64,#TRUE#,0,"Redraw List",0,0,0
+"sub object1010()
+  lbox.redraw
+end sub
+"
+"end"

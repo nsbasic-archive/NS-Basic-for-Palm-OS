@@ -1,0 +1,1 @@
+Beta v1.2 - NSBSystemLib is a shared library for use with NS Basic for Palm. It adds functions for accessing system globals, Alarms, Databases, Events, Forms and Objects and a bunch more: A total of 147 functions, 29 of which are new since the first release.  NOTE: Existing programs using NSBSystemLib must be recompiled before using this updated version.

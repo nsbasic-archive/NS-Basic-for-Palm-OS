@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 14: Using the NSBSystemLib Shared Library</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <P>Tech Note 14: Using the NSBSystemLib Shared Library</P>
+      <P>June 14, 2003</P>
+</FONT><FONT FACE="Helvetica" SIZE=4><P>&nbsp;</P>
+</FONT><FONT FACE="Helvetica" SIZE=2><P>Copyright 2001-2003 NS BASIC Corporation</font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Function Index and Quick Reference</a>
+    <a href="#fullRef">Function Reference</a>
+</pre>
+
+<a name="intro"><h2>Introduction:</h2>
+<P>The NSBSystemLib Shared Library contains functions that provide access
+to the PalmOS System.  Some of these functions allow calls to PalmOS
+APIs that can not currently be called using NSBasic's SysTrap statements.
+Others, just provide a simplified interface to the PalmOS.
+
+<P>The functions in this library are divided into the following categories:
+
+<P><blockquote>Alarms, Databases, Events, Field and Forms, HotSync Data,
+Localization, Preferences, Progress Manager, and System Time.  With the 
+version 2.0 release, additional categories for bitwise, encryption, decryption,
+and screen/color operations have been added.</blockquote>
+
+<P>This document, with its examples, should provide all the information 
+necessary to use the functions in the NSBSystemLib.  If more information
+about the underlying PalmOS functions is desired, please consult the 
+PalmOS SDK Reference or the SDK C header files (*.h).  The PalmOS SDK
+Reference can be downloaded from:
+<pre>    <A HREF="http://www.palmos.com/dev/tech/docs/">http://www.palmos.com/dev/tech/docs/</A></pre>
+The PalmOS SDK (Software Development Kit) can be downloaded from:
+<pre>    <A HREF="http://www.palmos.com/dev/tech/tools/">http://www.palmos.com/dev/tech/tools/</A></pre>
+
+<P>In order to use the NSBSystemLib Shared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "NSL" for this reference name.  Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "NSBSystemLib", "NSL"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the NSBSystemLib Shared Library, the 
+NSBSystemLib.INF file must be present in your "nsbasic\lib" directory 
+and the NSBSystemLib.prc file must be downloaded to your device.
+
+<P>Except for the functions that return version numbers, all the parameter 
+and return data types are either "Integer" or "String".  Version numbers
+are returned as a "Double".
+
+<pre></pre>

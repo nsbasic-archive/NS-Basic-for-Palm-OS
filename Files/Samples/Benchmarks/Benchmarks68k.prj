@@ -1,0 +1,98 @@
+"mdl"
+7
+"ARM Bench","appl","TARM",1007,420,0
+""
+0
+0
+""
+""
+""
+"vew"
+3,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Benchmarks ARM"
+"Form1003"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Bench2",1004,12,64,12,132,#TRUE#,0,"Bench2"
+"Sub object1004()
+ Dim B as Integer
+  For B=1 to 2
+    GoSub PerfectNum 
+  Next
+  Exit Sub
+  
+  PerfectNum:
+  ' Perfect Numbers finder routine
+    Dim N as Integer
+    Dim D as Integer
+    Dim M as Integer
+    Dim S as Integer
+    Dim P as Integer
+    Dim T as Integer
+    Dim R as Float
+
+    T=SysInfo(1)
+    P=0
+    For N=2 TO B*500
+      M=N/2
+      S=1
+      For D=2 TO M
+        If B=1 Then 
+          If (N/D)=int(N/D) Then S=S+D
+        EndIf  
+        If B=2 Then 
+          If mod(N,D)=0 Then S=S+D
+        EndIf 
+      Next
+      If S=N Then P=P+1
+    Next
+    R=(SysInfo(1)-T)/SysInfo(2)
+    'If (p-b)<>2 Then R=0
+    bench2.label= Str(R)+~ Seconds~
+  Return
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Bench1",1005,12,44,12,132,#TRUE#,0,"Bench1"
+"Sub object1005()
+Dim x as Integer
+Dim y as Integer
+Dim startTime as Time
+x = 100000  
+y = 0  
+startTime=now()
+
+Do while (x>0) 
+    x = x-1    
+    y = y+2  
+Loop
+
+bench1.label=str(timediff(startTime,now())) + ~ Seconds~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Bench3",1006,12,84,12,132,#TRUE#,0,"Bench3"
+"Sub object1006()
+Dim counter as Integer
+Dim limit as Time
+limit=now()
+Do while timediff(limit, now())<10
+  counter=counter+1
+Loop
+bench3.label= str(counter/10) + ~ iterations per second~
+End Sub"
+"end"

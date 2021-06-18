@@ -1,0 +1,126 @@
+Problem 22: Stupid debug code left in
+Status: Fixed
+
+--------
+
+Problem 21: Grid with multiple databases not working
+Status: Working on it
+
+--------
+
+Problem 20: Multiple databases not working
+Reported By: Toem Dornscheidt
+Status: Fixed
+
+--------
+
+Problem 19: Round and str failing
+Status: Fixed
+
+--------
+
+Problem 18: Grid clear problem
+Status: Fixed
+
+--------
+
+Problem 17: PopupSelect doesn't work
+Status: Fixed
+
+--------
+
+Problem 16: SysInfo(5) not working
+Status: Fixed
+
+--------
+
+Problem 15: CRC 32
+Status: Fixed
+
+--------
+
+Problem 14: SysTrapFunc on ARM native
+Status: Early ROM error, user has to and with 65535
+
+--------
+
+Problem 13: ResIn needs enhancement
+Status: Not done
+
+--------
+
+Problem 12: Negative coordinates fail on scroll bar
+Reported by: Toshiyuki Mounai
+Status: Fixed
+
+--------
+
+Problem 11: Scrolling on multiline field
+Reported by: Adrian Nicolaiev <nicolaiev@uol.com.br>
+Status: Fixed
+
+--------
+
+Problem 10: Nagging problem: Chunk Underlocked on first run, fat app
+Status: Working on it
+
+--------
+
+Problem 9: Scrolling in list
+Status: Fixed
+
+--------
+
+Problem 8: Bug in BitsNBytesLib
+Status: Fixed
+--------
+
+Problem 7: Bug in dirty record
+User: Andris Vizulis <avizulis@rcn.com>
+Status: Fixed
+
+--------
+
+Problem 6: DayOfYear returns 1 always
+Status: Fixed. 
+This was a really strange problem with bitfields in a struct.
+
+--------
+
+Problem 5: Bug with Zire71 and NSBjpgView
+Reported by: Patrick Humbert <patrick@interactivepixels.com>
+Status: Fixed
+
+--------
+
+Problem 4: Bug with TcpIpLiib
+Reported By: David Orriss Jr <dave@davenet.net>
+Status: Fixed
+
+--------
+
+Problem 3: Bug in Tungsten 5 way
+Reported by: Mathomas42@aol.com
+Status: Fixed
+
+--------
+
+Problem 2: Hard crash on Zire 71
+Reported by: volker <volker@reher.de>
+Status: Does not crash, but might have been related to the event code which has been
+changed. Fixed
+
+--------
+
+Problem 1: Function return
+Reported by: Stephan Hodges <stephan.hodges@distributiondynamics.com>
+Status: Needs IDE change
+
+--------
+
+Problem: Memory leak
+Reported by: volker@reher.de
+Status: Fixed
+
+--------
+

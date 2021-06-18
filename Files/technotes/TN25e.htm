@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 25e: Using Windows</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="/images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 25e: Using Windows</h2>
+	  <h3>Jan 7, 2003</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<p><TABLE align="center" BORDE="0" WIDTH="80%" BGCOLOR="#9DBF8D" CELLPADDING="10">
+<TR>
+<TD>
+<p>I posted my question about the CreateWindow command before. I don't use the command in my applications "Amisol" and "AmiKuji", but bitmaps are drawn on the screen by default. So I was wondering why we need the CreateWindow command. (Note: Both "AmiSol" and "AmiKuji" were programed at NSB1.0. And This tech note was written at that time.)
+
+<p>Then, when I was thinking to create a next application, I got a question:<br>
+<b>What happens if I try to display a bitmap which is larger than the graphic area specified by CreateWindow?</b>
+ 
+<p>To test it, I prepared this large bitmap (98x151), and draw it in the defined area (60x60).<br>
+<pre>
+          <B>Define: CreateWindow("Test",50,50,60,60)</B><BR>
+          <B>Draw:   SetCurrentWindow "Test"</B><BR>
+          <B>        DrawBitmap 1005,0,0</B><BR>
+
+</pre>
+<CENTER>
+<IMG SRC="TN25.images/04_1.gif"> &nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;
+<IMG SRC="TN25.images/04_2.gif"> &nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;
+<IMG SRC="TN25.images/04_3.gif">
+</CENTER>
+<BR>
+<p>As I expected, the graphic window area was drawn. From the result, the top left corner of the defined window seems to be coordinates (0,0) for the bitmap.<BR>
+<BR>
+<p>Next, I changed the coordinates like:<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>DrawBitmap 1005,10,5</B><BR>
+<CENTER>
+<IMG SRC="TN25.images/04_4.gif"><BR>
+</CENTER>
+<BR>
+<p>In this case, putting positive numbers is OK, but if you put a negative number such as:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>DrawBitmap 1005,-10,5</B><BR>
+<p>Then it causes a compile-time error. This was a disappointing fact if I can't specify a negative number.
+<p>However, moving a bitmap within a window was still attractive. So I prepared a global variables and made the following window.<br>
+Tapping [U], [D], [L] and [R] buttons moves the bitmap to the tapped direction.
+<BR>
+<CENTER>
+<IMG SRC="TN25.images/04_5.gif"><BR>
+</CENTER>
+<BR>
+<p>I didn't write a check routine for the negative coordinates -- in the worst case, Palm would hang but I didn't care because I was testing on POSE. However, it accepted the negative numbers.<br>
+<BR>
+<CENTER>
+<IMG SRC="TN25.images/04_6.gif"><BR>
+</CENTER>
+<BR>
+<p>With this fact I think I found a practical way to use the graphic window. Maybe we can apply this method to game applications. However, it is not clear why specifying with constants causes the compile error. I think that the compiler would accept only alphabets or numbers as the argument of DrawBitmap. It is just my guess, but if it were true, there might be more commands that behave the same.
+
+	  <p>Another thing I noticed was that the coordinates I got by GetPen was the coordinates of the current window. I found this after adding code to display the tapped coordinates. The program is <A HREF="TN25.images/sample03.prc">sample03.prc</A>. Because the Creator ID is "Test", if you have another program with the same ID, delete the program before installing this program.
+
+<p>It is easy to test. First, tap [U], [D], [L] and [R] to move the image. When the image is drawn, the current window is the small window in the center of the screen. At this point the label displays the coordinates of the tapped position (0,0)-(159,159). In this state, if you tap on the image in the center, its coordinates is displayed based on the small window (0,0)-(59,59).
+
+	  <p>Then, tap the screen where no window underneath. This makes the whole window current. If you tap the image in the middle, the displayed coordinates are based on the whole window. Therefore, when you read coordinates by GetPen, you have to know which one is the current window.
+
+<p>There is one more thing I noticed, which may be a bug. Changing the Text property when the image is current, the coordinates are displayed, instead of the top of the screen, at the relative position where the label is placed in the current window. 
+
+<BR>
+<CENTER>
+<IMG SRC="TN25.images/04_7.gif"><BR>
+Can you see a part of coordinates in the circle?<BR>
+</CENTER>
+<BR>
+<p>In this program, the window is defined by <B>CreateWindows("main",0,0,160,160,)</B>, and when the tapped coordinates are displayed, the program makes this windows current. It can be understandable that drawing happens in the current window, but it may not be acceptable to have an object placed at a different place. 
+
+<p>So there is a little problem, but with CreateWindow you can easily scroll images in NS Basic.
+
+
+</TD>
+</TR>
+</TABLE>
+<HR WIDTH="80%">
+</BODY>
+</HTML>

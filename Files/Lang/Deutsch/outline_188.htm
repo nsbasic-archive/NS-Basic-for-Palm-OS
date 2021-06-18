@@ -1,0 +1,106 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>TestNum </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>TestNum                                                                                                  Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>TESTNUM(<i>theString</i> as string, <i>SignOption</i>
+as string, <i>NoDigitsBeforeDecPt</i> as
+integer, <i>NoDigitsAfterDecPt</i> as
+integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Überprüft den Inhalt eine String Variabeln um zu sehen ob:</p>
+
+<p class=ManualBody>1. der String einen numerischen Inhalt hat.</p>
+
+<p class=ManualBody>2. Wenn <i>signOption</i>
+leer (“ “) ist, so darf der String keine Vorzeichen (+, -) haben, enthält <i>signOption</i> ein „+“ oder „-“, so sind die
+Vorzeichen erlaubt.</p>
+
+<p class=ManualBody>3. Die Anzahl Vorkommastellen im String darf <i>NoDigitsBeforeDecPt</i> nicht übersteigen.</p>
+
+<p class=ManualBody>4. Die Anzahl Nachkommastellen im String darf <i>NoDigitsAfterDecPt</i> nicht übersteigen.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Liefert 0 wenn alle Tests in Ordnung waren, ansonsten einen
+Wert ungleich 0.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b> </p>
+
+<p class=Code>Dim result as integer</p>
+
+<p class=Code>Dim temp as string</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Temp=fldVoltageLevel.text 'liest den String aus einem Feldobjekt</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>'erlaubt + oder – Zeichen, Vorkommastellen und 2 Nachkommastellen</p>
+
+<p class=Code>If Not TestNum(temp, &quot;-&quot; , 3, 2)=0 then</p>
+
+<p class=Code>  Msgbox &quot;Der Wert
+wurde korrekt eingegeben&quot;</p>
+
+<p class=Code>End if</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

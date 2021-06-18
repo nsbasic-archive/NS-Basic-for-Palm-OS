@@ -1,0 +1,1 @@
+To run this sample, you'll need to open it in NotePad and correct the paths to the bmp files to agree with where they are installed on your system.

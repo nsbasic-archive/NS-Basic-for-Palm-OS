@@ -1,0 +1,126 @@
+"mdl"
+7
+"NSB_SSM App","appl","NSB1",1028,505,0
+"Sub main()
+   Global isSymbol as Integer
+   Global LEDStatus as Integer
+   LEDStatus = 0
+   isSymbol = 0
+   Global hostMode as Integer
+
+   LoadLibrary ~NSBSymbolLib.inf~, ~NSBSymbolLib~
+   
+   hostMode = 8
+   NSBSymbolLib.CmdScanSetTriggeringModes(hostMode)
+End Sub
+
+Sub LEDAction(action as Integer)
+   If action <> LEDStatus Then
+      LEDStatus = action
+      If action = 1 Then
+         NSBSymbolLib.CmdScanLedOn
+      Else
+         NSBSymbolLib.CmdScanLedOff
+      End If
+   End If
+End Sub"
+0
+0
+""
+""
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSB_SSM"
+"Screen1004"
+""
+0
+"Sub Form1004_after()  
+   isSymbol = NSBSymbolLib.IsPalmSymbolUnit()
+   If isSymbol = 0 Then
+      fldSymbolUnit.Text = ~Not a Symbol Unit~
+   Else
+      fldSymbolUnit.Text = ~Symbol Unit~
+      choLEDOn.Show
+      choLEDOff.Show
+   End If
+End Sub"
+"Sub Form1004_events()
+   Dim foo as String
+   Dim bar as Integer
+
+   foo = NSBSymbolLib.GetLastScanData()
+   fldBarCode.Text = foo
+   
+   bar = NSBSymbolLib.GetBarType()
+   fldCodeType.Text = str(bar)
+
+End Sub"
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1014",1014,8,48,12,18,#TRUE#,0,"LED",0,0,0
+""
+"cho"
+1
+#FALSE#,2,#TRUE#
+"obj"
+3
+"cho","choLEDOn",1015,48,48,12,28,#FALSE#,0,"On",0,0,0
+"Sub object1015()
+   LEDAction 1
+End Sub"
+"cho"
+1
+#TRUE#,2,#TRUE#
+"obj"
+3
+"cho","choLEDOff",1016,76,48,12,28,#FALSE#,0,"Off",0,0,0
+"Sub object1016()
+   LEDAction 0
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSymbolUnit",1020,4,16,12,152,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldBarCode",1022,32,100,12,124,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCodeType",1024,32,120,12,124,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1026",1026,4,100,12,25,#TRUE#,0,"Code:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1027",1027,4,120,12,24,#TRUE#,0,"Type:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1028",1028,48,68,12,40,#TRUE#,0,"Scan",0,0,0
+"Sub object1028()
+    NSBSymbolLib.CmdStartDecode
+End Sub"
+"end"

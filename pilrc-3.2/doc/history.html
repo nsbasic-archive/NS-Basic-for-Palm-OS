@@ -1,0 +1,387 @@
+<html>
+<head><title>
+PilRC
+</title></head>
+<body bgcolor="#00000" text="#ffffff" link="#7f3fff" vlink="#7f3fff">
+
+<center>
+<tt>
+  <a href="index.html"   >About</a>
+- <a href="download.html">Download</a>
+- <font color="#ffff00">  History </font>
+- <a href="archive.html" >Archive</a>
+- <a href="manual.html"  >Manual</a>
+- <a href="contrib.html" >Contributors</a>
+</tt>
+</center> <p>
+
+<pre>
+What's new in 3.2 (Friday, 9 July 2004)
+-----------------
+o Fixed bug introduced in 3.0 with frame values for popup triggers that
+  caused repainting problems.
+o Updated NAVIGATION resource documentation
+o Modified header file generation to not output a new file when the header
+  file that would be output is identical to one that already exists.
+o Added NOGRAFFITISTATEINDICATOR keyword that is used to tell PilRC
+  that a form intentionally has no GSI and that it should not warn
+  about it being missing.
+o Added "#undef FOO".
+o Regardless of the native line termination, accepts text files with either
+  native, DOS (CR-LF), Unix (LF), or Macintosh (CR) line termination.
+o Changed parsing of WORDLIST, LONGWORDLIST, and BYTELIST to allow
+  expressions.  If you need to specify a negative number, you can use
+  parenthesis around the number to prevent the minus sign from being
+  interpreted incorrectly.
+o Fixed relative positioning based on the size of a Graffiti State Indicator
+
+What's new in 3.1 (Wednesday, 31 December 2003)
+-----------------
+o Form objects defined with AUTO width were made too wide by PilRC 3.0; this
+  bug is now fixed and the original widths restored
+o FONTFAMILY emits a warning if e.g. a double density glyph is not precisely
+  double the size of the corresponding single density glyph
+o FONTFAMILY now requires a FONTID to be specified, just as FONT does
+  (this is an incompatible change; previous FONTFAMILYs are now syntax errors)
+o "#define FOO" defines FOO to 0 by default rather than being a syntax error
+
+What's new in 3.0 (Monday, 22 December 2003)
+-----------------
+o Enhanced bitmap family support
+  - 108dpi (1.5x) and 144dpi (2x) density support
+  - Handspring PalmRC bitmap syntax support
+  - Unified bitmap parser
+o Transparency implemented for PBM/PGM/PPM/PNM files
+o .pbitm files now generate type 1 bitmaps (suitable for use in families)
+  rather than type 0 bitmaps
+o Accepts #error, #line, and "linemarkers" as emitted by the GNU preprocessor
+o Predefines the preprocessor symbols __rcp__ and __PILRC__
+o Supports #defines for strings
+o All text strings now support line continuation
+o FONTFAMILY resource support
+o NAVIGATION resource support (useful for the PalmOne Treo 600)
+o Palm OS 5 "LE32" resource format support
+o Added GENERATEHEADER and RESETAUTOID keywords
+o MENU SEPARATOR now supports an ID field to allow you to match PalmRez 
+  menu formats
+o New Warnings
+  - resources too large
+  - icon bitmap sizes don't follow PalmSource specifications
+  - forms with edit fields lack Graffiti State Indicator
+o Many miscellaneous bug fixes
+
+What's new in 2.9p4 
+-----------------
+o pilrc.spec update 
+- as per http://sourceforge.net/mailarchive/message.php?msg_id=492349 
+o BITMAP: direct color compression 
+- removed flag to disable correction (missing from 2.9) 
+o added -ts flag to set timestamp on -ro file generation (POSIX only)
+o adjustments to code to handle VALUE tag correctly 
+o -noIFIH option added support of Parse includes files in header files
+o resources : 'hsbd', 'locs', 'fnti', 'silk', 'cnty', 'feat', 'tkbd',
+              'fntm', 'ttli', 'csli', 'ttbl', 'tSCH'
+  are now Palm internal use only
+o -AppIcon68K option added Palm internal use only
+o -amdc option added Palm internal use only
+o Bug correction in graphical control bitmap
+o GADGET addition
+- support for "extended" flag 
+
+What's new in 2.9 (Thu, 22 Feb 2002)
+-----------------
+o added "-ro" option
+- resources are bundled into a prc database (instead of .bin) !yay!
+- DEFAULT: cr8r: 'pRES' type: 'RESO' name: same as filename
+  o ability to custom specify the above using -creator -type and -name 
+o recursive includes (32-level deep) now supported
+o added src2unix.sh script, to strip ^M chars for UN*X users
+  - fixed to be "older unix" friendly
+o added srcindent.sh script, to indent all source files using indent tool
+o fixed strdup complaints
+o updated documentation (POPUPLIST example)
+o added support for non-32bit operating systems (alpha etc)
+o configure.in can decide if pilrcui is built
+o VC++ error/warning message syntax fix
+o added source migration support for CW_PLUGIN (for neil) :P
+o pilrcui compiles once again
+  - code assumes BA16 resource types (m68k resources), someone wanna fix?
+o misc documentation fixes
+o slider defaults of (MIN=0, MAX=100, PAGESIZE=10, VALUE=50) implemented
+o pre-processor madness fixup - no more misuse of ## operator
+o add new resources:
+  - 'locs' (locales)
+  - 'hsbd' (hardSoftButtonDefault)
+  - 'pref' (sysAppPref)
+o solved bug in LIST parsing (problem reported by Laurent Dutour)
+o bug correction in COUNTRYLOCALIZATION
+o locale support
+o bug correction in 'tint' 'tkbd' and 'TRAP'
+o BITMAPPALETTE/PALETTE options added
+  - specify custom palettes to "map" source bitmap to for output
+  - use palette resource to set current display palette
+o -NoEllipsis option added
+o bug correction(s) in LIST
+o bug correction(s) in FONT
+o time stamp update for -ro [to use real time]
+o fixed default button-id for alerts
+o misc fixes for CW_PLUGIN (for neil)
+o BITMAP fix
+  - compression now support for 16bpp images [thanks mr. mcrazor]
+
+What's new in 2.8 (Tue, 1 May 2001)
+-----------------
+o added new resources
+- WORDLIST, GRAFITTIINPUTAREA, COLORTABLE, KEYBOARD, COUNTRYLOCALIZATION etc
+- [MOST ARE SYSTEM USE ONLY], see doc/manual.html for more information
+o ID generation consistancy fixes
+- ie: VERSION ID 1 "1.0", VERSION 1 "1.0" and VERSION "1.0" should work
+- restore's old behaviour to maintain compatibility in older sample code
+o SLIDER changes
+- fix warnings for sliders, no longer complain when legal :))
+o error message fix
+- adjust include file messing error to have line # printed :)
+o DATA change
+- such that the data file can be found in include directories specified
+o added -LE32 flag, generate little endian 32bit compatible resources (ARM, NT)
+o various bugfixes et al :P
+
+What's new in 2.7b  (Thu, 08 Feb 2001)
+------------------
+o BITMAP*, ICON* changes
+- added support 16, 24 and 32bpp .bmp files :)
+- compression is NOT available for 16bpp bitmap resources at this point
+o DATA parsing error
+- if a "" file name was passed, it crashed. fixed it
+o TABLE emitting error
+- extra word written out, causing problems *tut tut* :P
+- table widths were being corrupted seriously
+o added .rpm spec file
+
+What's new in 2.7a  (Fri,  5 Jan 2001)
+------------------
+o compile bugfix for xwin.c :P (sorry X11 guys) :P
+
+What's new in 2.7   (Fri,  5 Jan 2001)
+------------------
+o BITMAP*, ICON* changes
+- complete overhaul of bitmap.c :P (boy, that was fun)
+- dynamic file specification (no longer require fixed 4 file names)
+  ie: BITMAPFAMILY ID 1000 "1bpp.bmp" "2bpp.bmp" COMPRESS
+  ie: ICONFAMILY "1bpp.bmp" "2bpp.bmp"
+      - will generate bitmap family with 1bpp and 2bpp bitmaps
+- 16bpp, 24bpp and 32bpp bitmap support YAY!
+  ie: BITMAPCOLOR16K, BITMAPCOLOR24K, BITMAPCOLOR32K
+o tint resource support
+o added 3.5 user interface controls
+- controls now have graphical attributes (as per 3.5 resource definition)
+- new SLIDER control
+o added LAUNCHERCATEGORY resource
+- ie: LAUNCHERCATEGORY "Games"
+o added -allowEditID option
+- no more warnings for people using IDs 10000-10007 (for edit menus)
+o changed non 15x9 small icon resource to generate a warning instead of error
+o added ability to override the "default" icon ID values
+- ie: ICON ID 1000 "..."
+- warnings NOT given about sizes for icon resources that are not 1000/1001
+o added ability to override the "default" type for Bitmap resources
+- ie: BITMAP "SBmp" ID 1000 "..."
+o include paths can be applied to string files in addition to image paths
+o MANUAL addemdum/errata
+* Palm Computing (France Office) R&D
+- experimental ARM resource generation (subject to change, <b>DO NOT</b> use)
+
+What's new in 2.6   (Mon, 30 Oct 2000)
+-----------------
+o added -D MACRO(=VAL) option
+- provide support for "pre-processor" like symbols for use with #ifdef
+o added BITMAPCOLOR16 and BITMAPFAMILYSPECIAL tags
+- support for 16 color graphics on IIIc and other color devices
+o updated RGBToColorIndex
+- reversed the color location algorithm to identify (0,0,0) as index 255
+o minor parsing fixes here and there :)
+- comments, one small fix in lex.c (from Wes himself)
+o MANUAL errata
+
+What's new in 2.5c  (Thu, 29 Jun 2000)
+------------------
+o ICON*, SMALLICON*, BITMAP* adjustments:
+- monochrome, 16 color and 256 color bitmaps are converted as needed
+
+What's new in 2.5b9 (Wed, 28 Jun 2000)
+-------------------
+o tSTL resource support
+o xwin.c: remove deprecated GtkMenuFactory() usage 
+o PilRC example:
+- tSTL demonstration added
+o MANUAL additions
+
+What's new in 2.5b8 (Fri, 23 Jun 2000)
+-------------------
+o conditional compilation support!
+- #ifdef, #ifndef, #else, #endif
+o MANUAL errata
+
+What's new in 2.5b7 (Sun, 18 Jun 2000)
+-------------------
+o PalmRC compatability (merging)
+- support for HEX tag 
+- support for DATA tag 
+o MANUAL errata
+
+What's new in 2.5b6 (Sat, 10 Jun 2000)
+-------------------
+* PilRC licensing issues - please READ
+o VC++ error/warning message syntax fix
+o VC++ compilation error fixes
+o MANUAL errata
+
+What's new in 2.5b5 (Wed,  7 Jun 2000)
+-------------------
+o updated "example" for prc-tools 2.0
+o VERSION tag ID defaults to 1 if NONE supplied
+o -V option to generate M$ (VS-type error/warning output) 
+o PNM support added
+o .java -&gt; multiple depth "package" definitions
+o RGB -&gt; System Palette(s) fixed 
+  - 1bpp palette definition adjusted to "standard"
+
+What's new in 2.5b4 (Tue,  6 Jun 2000)
+-------------------
+* PilRC website location change (please update everyone)
+* http://www.ardiri.com/index.cfm?redir=palm&amp;cat=pilrc
+o autoconf + automake support
+o MANUAL overhaul (finally)
+o RGB -&gt; System Palette(s) fixed 
+  - no more inverted 4bpp bitmaps
+o VC++ compilation errors fixes
+o Japanese Language "shift jis" handling bugfix
+o Bugfixes
+
+What's new in 2.5b3 (Wed, 13 Apr 2000)
+-------------------
+o TRANSPARENTINDEX added to ICON and BITMAP configuration
+o RGB -&gt; System Palette(s) implemented 
+  - no more inverted 1bpp bitmaps (outputed from xv etc)
+o COLORTABLE support added for ICONS
+o Warning messages now in GNU format (for parsing by IDE's)
+o ICONGREY, ICONGREY16, ICONCOLOR items removed
+o ICONFAMILY requires that 1bpp bitmap exists
+  - application launcher must have AT LEAST 1bpp bitmaps
+
+What's new in 2.5b2 (Mon, 11 Apr 2000)
+-------------------
+o PBM, PPM, PGM image support (1bpp, 2bpp, 4bpp and color)
+  - "ppmquant" palette files added to match PalmOS palettes
+o NOSAVEBEHIND (forms) option now working correctly :P
+o ICONFAMILY, BITMAPFAMILY bug fix
+o BITMAP transparency support added
+o .BMP color table entries can be VARIABLE (not 1, 16 or 256)
+o Japanese Language "shift jis" handling bugfix
+o Korean Language support
+o Error messages now in GNU format (for parsing by IDE's)
+o Bugfixes
+
+What's new in 2.5b1 (Tue, 8 Feb 2000)
+-------------------
+o ICONFAMILY, BITMAPFAMILY fixes (optional bitmap depths)
+
+What's new in 2.5a
+------------------
+o ParseDumpString bug fix
+
+What's new in 2.5
+-----------------
+* MAINTENANCE of PilRC passed onto Aaron Ardiri (ardiri@palmgear.com)
+* http://www.hig.se/~ardiri/development/palmIII/pilrc/index.html
+o COLOR support!
+o *GREY, *GREY16 and *FAMILY resources added for Bitmap/Icon resources
+
+What's new in 2.4
+-----------------
+o Category support
+o default button in alerts
+o Longer lists allowed.
+
+What's new in 2.3a
+------------------
+o Compilation fix for *nix users
+
+What's new in 2.3
+-----------------
+o Parens supported in expressions
+o Font resources
+o No limit on the number of forms.
+o Comments anywhere in the .rcp file
+o C style /* */ comments.
+o Support for Hebrew, Japense and Chinese fonts. (-Fh, -Fj and -F5 and -Fg)
+o Support for 'XXXX' hex constants
+o Support for -rtl flag and | operator (for BiDi Hebrew)
+o Support for Bold12 fonts
+o FILE keyword for STRING 
+o Menu width calculation fixes
+
+What's new in 2.2
+-----------------
+o Support for Small Icons (finally!)
+o Changed system ID conflict error to warning.
+
+What's new in 2.0a
+------------------
+o SCROLLBAR removed for FIELDS -- it broke normal SCROLLBAR controls
+
+What's new in 2.0
+-----------------
+o Support for greyscale bitmaps (BITMAPGREY). 
+  For a 2bpp Win* drawing routines, check out ScumbySoft's Win2 2bpp library.
+o AUTOSHIFT, NUMERIC, SCROLLBAR now supported for FIELDs 
+o CENTER@ allows you to specify x or y coordinate to center contr
+o RIGHT@ and BOTTOM@ specifies left/top coordinate.
+o Bug fixes with AUTO, FONT 6.
+
+What's new in 1.9
+-----------------
+o ID id.n for controls may be replaced by AUTOID. 
+  PilRC will autoassign ids when AUTOID is specified. 
+o PilRCUI now works with XWindows (xwin.c). main() moved to main.c 
+o OS/2 makefile included (makefile.os2). 
+o Support for TRAP resources for writing HackMaster system extensions.
+
+What's new in 1.8
+-----------------
+o Fixed some bad bugs in scrollbar generation
+o Fixed bug in duplicate control detection code.
+
+What's new in 1.7
+-----------------
+o Incorporated code to read PBM, PBITM, and XBM bitmaps.
+o Bitmap compression may be specified (COMPRESS, AUTOCOMPRESS, NOCOMPRESS).
+o Automatic ID assignment (-H command line option)
+o Support for new PalmOS 2.0 scrollbar control
+
+What's new in 1.6
+-----------------
+o Fixed bug that prevented it from working on non Intel platforms 
+
+What's new in 1.5
+-----------------
+o Now checks for duplicate form, menu, string, alert and form object ids
+o Also checks for invalid ids (not in 0..9999)
+
+What's new in 1.4
+-----------------
+o New -R command line argument: emits .res files 
+o New -q command line argument: Quiet mode -- less noisy output
+o Sample .c file now builds and loads correctly on Pilots
+
+What's new in 1.3
+-----------------
+o Support for .java include files
+o New BITMAP and ICON commands convert Windows .BMP files to pilot bitmaps
+o Sample .rcp file, .c and .asm files with examples for each control type
+o New -I command line argument to specify include search paths
+o Updated user manual
+o Bug fixes </pre>
+
+</body>
+</html>

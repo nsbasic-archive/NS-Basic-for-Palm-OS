@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<?codewarrior exportversion="1.0" ideversion="5.0" ?>
+
+<!DOCTYPE EXPORTEDPANEL [
+<!ELEMENT EXPORTEDPANEL (NAME, (SETTINGLIST|VALUE))>
+<!ELEMENT SETTINGLIST (SETTING+)>
+<!ELEMENT SETTING (NAME?, (VALUE|(SETTING+)))>
+<!ELEMENT NAME (#PCDATA)>
+<!ELEMENT VALUE (#PCDATA)>
+]>
+
+<EXPORTEDPANEL>
+    <NAME>File Mappings</NAME>
+    <SETTINGLIST>
+        <SETTING><NAME>FileMappings</NAME>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>APPL</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>Appl</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>MMLB</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>Lib Import 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>MPLF</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>Lib Import 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>MWCD</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>OBJ </VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MPW Import 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>PLob</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>RSRC</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.bh</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>Balloon Help</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.c</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.c++</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.cc</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.cp</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.cpp</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.exp</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.h</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.pch</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.pch++</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>MW C/C++ 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>C/C++</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.r</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>Rez</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE>Rez</VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.seg</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>docu</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>rsrc</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>shlb</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>PEF Import 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileType</NAME><VALUE>stub</VALUE></SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE>PEF Import 68K</VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.doc</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+            </SETTING>
+            <SETTING>
+                <SETTING><NAME>FileExtension</NAME><VALUE>.rsrc</VALUE></SETTING>
+                <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>ResourceFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+            </SETTING>
+        </SETTING>
+    </SETTINGLIST>
+</EXPORTEDPANEL>

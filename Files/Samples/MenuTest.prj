@@ -1,0 +1,116 @@
+"mdl"
+8
+"menutest","appl","Mtst",1018,505,0
+""
+0
+0
+"MenuTesting"
+"1,0,0"
+""
+"Installat."
+""
+"E1000103"
+""
+"mnu"
+2,"Menu1"
+1007
+2
+"menu"
+1
+"Item1","",1008
+2
+"menu"
+1
+"Item1 Submenu1","","",1010
+"sub menu1010_click()
+    MsgBox ~Item1 SubMenu1~ 
+end sub"
+"menu"
+1
+"Item 1 Submenu2","","",1011
+"sub menu1011_click()
+  msgbox ~Item 1 Submenu2~ 
+end sub"
+"menu"
+1
+"Item2","",1009
+1
+"menu"
+1
+"Screen1006","","",1017
+"sub menu1017_click()
+  nextscreen ~Screen1006~
+end sub"
+"mnu"
+2,"Menu2"
+1012
+2
+"menu"
+1
+"Item3","",1013
+1
+"menu"
+1
+"Screen1004","","",1018
+"sub menu1018_click()
+    nextscreen ~Screen1004~
+end sub"
+"menu"
+1
+"Item4","",1014
+2
+"menu"
+1
+"Item 4 Submenu 1","","",1015
+"sub menu1015_click()
+  msgbox ~Item 4 Submenu 1~
+end sub"
+"menu"
+1
+"Item 4 Submenu 2","","",1016
+"sub menu1016_click()
+  msgbox ~Item 4 Submenu 2~
+end sub"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"Screen1004"
+"Screen1004"
+""
+0
+""
+"Sub Screen1004_events()
+  Dim res as Integer
+  Dim c as String
+
+  res=getEventType()
+  If Not res=nsbKeyOrButton Then Exit Sub   'ignore penup/down events
+  c=getKey()
+
+  If c=&h5 Then
+     MenuDraw ~Menu1~
+     SetEventHandled
+  EndIf
+End Sub"
+0,0,0,0
+"vew"
+4,1006,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Screen1006"
+"Screen1006"
+""
+0
+""
+"Sub Screen1006_events()
+  Dim res as Integer
+  Dim c as String
+
+  res=getEventType()
+  If Not res=nsbKeyOrButton Then Exit Sub   'ignore penup/down events
+  c=getKey()
+
+  If c=&h5 Then
+     MenuDraw ~Menu2~
+     SetEventHandled
+  EndIf
+End Sub"
+0,0,0,0
+"end"

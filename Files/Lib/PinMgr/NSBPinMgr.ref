@@ -1,0 +1,413 @@
+<a name="fullRef"><h2>NSBPinMgr Function Reference:</h2>
+<a name="Version Information"><h3><u>Version Information</u></h3>
+The version information functions provide information about
+the version of the NSBPinMgr Shared Library.
+<a name="Version"><h4>Version</h4>
+
+<pre>	version = NSBPinMgr.Version()</pre>
+
+<blockquote>
+	Returns the version number of the NSBPinMgr Shared Library.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as Double</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as Double
+
+	version = NPM.Version()
+</pre>
+<a name="CompileInfo"><h4>CompileInfo</h4>
+
+<pre>	compileDateTime = NSBPinMgr.CompileInfo()</pre>
+
+<blockquote>
+	Returns the date and time that the NSBPinMgr was compiled.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	compileDateTime as String</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim compileDateTime as String
+
+	compileDateTime = NPM.CompileInfo()
+</pre>
+<a name="PINMgrAPIVersion"><h4>PINMgrAPIVersion</h4>
+
+<pre>	version = NSBPinMgr.PINMgrAPIVersion()</pre>
+
+<blockquote>
+	Returns the version number of the Pen Input Manager API.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as String
+	       version number - -1.0 if the Pen Input Manager is unavailable.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as String
+
+	version = NPM.PINMgrAPIVersion()
+</pre>
+<a name="PINMgrAPIMajorMinor"><h4>PINMgrAPIMajorMinor</h4>
+
+<pre>	NSBPinMgr.PINMgrAPIMajorMinor major, minor</pre>
+
+<blockquote>
+	Returns the version number of the Pen Input Manager API as two
+	integers, major and minor.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	major as Integer (output parameter)
+	       major version number - -1 if the Pen Input Manager is unavailable.
+
+	minor as Integer (output parameter)
+	       minor version number - -1 if the Pen Input Manager is unavailable.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim major as Integer
+	Dim minor as Integer
+
+	NPM.PINMgrAPIMajorMinor major, minor
+</pre>
+<a name="RegisterNotifyEvents"><h4>RegisterNotifyEvents</h4>
+
+<pre>	NSBPinMgr.RegisterNotifyEvents displayResized, DIAOpened, DIAClosed</pre>
+
+<blockquote>
+	Register with the Notification Manager to be notified when
+	the sysNotifyDisplayResizedEvent notification occurs.  When it
+	does, an event for the specific type of notification will be
+	generated.  The parameters for this function specify the event
+	number to generate.  A value of 0 disables event notification for
+	specific notification type.  Parameter values should typically
+	be in the custom event number range (24576 to 32767).  These events
+	can be "caught" with the NSBasic GetEventType() function.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	displayResized as Integer (input parameter)
+	       event number for sysNotifyDisplayResizedEvent - The display has
+	                                                       been resized.
+
+	DIAOpened as Integer (input parameter)
+	       event number when the DIA has been opened
+
+	DIAClosed as Integer (input parameter)
+	       event number when the DIA has been closed
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Sub Form1223_After()
+	
+	    'Register to have the following events generated:
+	    '   event number 30001 - display resized
+	    '   event number 30002 - DIA has been opened
+	    '   event number 30003 - DIA has been closed
+	
+	    NPM.RegisterNotifyEvents 30001, 30002, 30003
+	End Sub
+	
+	
+	Sub Form1239_Event()
+	    Dim event as Integer
+	
+	    event = GetEventType()
+	    Select Case event
+	        Case 30003
+	            Redraw
+	    End Select
+	End Sub
+</pre>
+<a name="WinGetDisplayExtent"><h4>WinGetDisplayExtent</h4>
+
+<pre>	NSBPinMgr.WinGetDisplayExtent x, y</pre>
+
+<blockquote>
+	Return the current width and height of the display.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	x as Integer (output parameter)
+
+	y as Integer (output parameter)
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim x as Integer
+	Dim y as Integer
+
+	NPM.WinGetDisplayExtent x, y
+</pre>
+<a name="WinSetDisplayExtent"><h4>WinSetDisplayExtent</h4>
+
+<pre>	NSBPinMgr.WinSetDisplayExtent size</pre>
+
+<blockquote>
+	Sets the display width and height to either <i>normal</i> or
+	<i>large</i>.  If the size is <i>large</i>, the form's
+	Dynamic Input Area (DIA) Policy, Input Trigger, and Dynamic
+	Input Area values will be set to <i>custom</i>,
+	<i>enabled</i>, and <i>closed</i> respectively.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	size as Integer (input parameter)
+	       0 = normal - 160 pixels wide x 160 pixels high
+	       1 = large - 160 pixels wide x 225 pixels high
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim size as Integer
+
+	NPM.WinSetDisplayExtent size
+</pre>
+<a name="FrmGetDIAPolicy"><h4>FrmGetDIAPolicy</h4>
+
+<pre>	value = NSBPinMgr.FrmGetDIAPolicy()</pre>
+
+<blockquote>
+	Returns the form's current Dynamic Input Area (DIA) Policy.
+	The DIA Policy controls whether the graffiti input area
+	may be collapsed or not.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - frmDIAPolicyStayOpen.  The graffiti input area
+	                                  is always open.  It cannot
+	                                  be collapsed.
+	       1 - frmDIAPolicyCustom.  The graffiti input area is
+	                                collapsable.
+	       -1 - error.  The Pen Input Manager is not present on device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NPM.FrmGetDIAPolicy()
+</pre>
+<a name="FrmSetDIAPolicy"><h4>FrmSetDIAPolicy</h4>
+
+<pre>	NSBPinMgr.FrmSetDIAPolicy value</pre>
+
+<blockquote>
+	Sets the form's Dynamic Input Area (DIA) Policy.
+	The DIA Policy controls whether the graffiti input area
+	may be collapsed or not.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - frmDIAPolicyStayOpen.  The graffiti input area
+	                                  is always open.  It cannot
+	                                  be collapsed.
+	       1 - frmDIAPolicyCustom.  The graffiti input area is
+	                                collapsable.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	NPM.FrmSetDIAPolicy value
+</pre>
+<a name="PINGetDIAState"><h4>PINGetDIAState</h4>
+
+<pre>	value = NSBPinMgr.PINGetDIAState()</pre>
+
+<blockquote>
+	Returns the current Dynamic Input Area (DIA) state.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - pinInputAreaOpen.  The Dynamic Input Area is displayed.
+	       1 - pinInputAreaClosed.  The Dynamic Input Area is not
+	                                being displayed.
+	       2 - pinInputAreaNone.  There is no Dynamic Input Area.
+	       -1 - error.  The Pen Input Manager is not present on device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NPM.PINGetDIAState()
+</pre>
+<a name="PINSetDIAState"><h4>PINSetDIAState</h4>
+
+<pre>	NSBPinMgr.PINSetDIAState value</pre>
+
+<blockquote>
+	Sets the current Dynamic Input Area (DIA) state.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - pinInputAreaOpen.  The Dynamic Input Area will be displayed.
+	       1 - pinInputAreaClosed.  The Dynamic Input Area will not
+	                                be displayed.
+	       2 - pinInputAreaNone.  There is no Dynamic Input Area.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	NPM.PINSetDIAState value
+</pre>
+<a name="PINGetInputTriggerState"><h4>PINGetInputTriggerState</h4>
+
+<pre>	value = NSBPinMgr.PINGetInputTriggerState()</pre>
+
+<blockquote>
+	Returns the current Input Trigger state.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - pinInputTriggerEnabled.   The status bar icon is enabled,
+	                                     meaning that the user is allowed
+	                                     to open and close the Dynamic
+	                                     Input Area.
+	       1 - pinInputTriggerDisabled.  The status bar icon is disabled,
+	                                     meaning that the user is not
+	                                     allowed to open and close the
+	                                     Dynamic Input Area.
+	       2 - pinInputTriggerNone.   There is no Dynamic Input Area.
+	       -1 - error.  The Pen Input Manager is not present on device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NPM.PINGetInputTriggerState()
+</pre>
+<a name="PINSetInputTriggerState"><h4>PINSetInputTriggerState</h4>
+
+<pre>	NSBPinMgr.PINSetInputTriggerState value</pre>
+
+<blockquote>
+	Sets the current Input Trigger state.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - pinInputTriggerEnabled.   Enable the status bar icon,
+	                                     meaning that the user is allowed
+	                                     to open and close the Dynamic
+	                                     Input Area.
+	       1 - pinInputTriggerDisabled.  Disable the status bar icon,
+	                                     meaning that the user is not
+	                                     allowed to open and close the
+	                                     Dynamic Input Area.
+	       2 - pinInputTriggerNone.   There is no Dynamic Input Area.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	NPM.PINSetInputTriggerState value
+</pre>
+<a name="SysGetOrientation"><h4>SysGetOrientation</h4>
+
+<pre>	value = NSBPinMgr.SysGetOrientation()</pre>
+
+<blockquote>
+	Returns the current display orientation.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - sysOrientationUser.  Pass this value to
+	                                SysSetOrientation to tell the
+	                                system to activate the last userselected
+	                                orientation.
+	       1 - sysOrientationPortrait.  The display is in portrait
+	                                    orientation.
+	       2 - sysOrientationLandscape.  The display is in landscape
+	                                     orientation.
+	                                           orientation (upside-down from
+	                                           the normal portrait orientation).
+	       4 - sysOrientationReverseLandscape.  The display is in reverse
+	                                            landscape orientation (upsidedown
+	                                            from the normal landscape
+	                                            orientation).
+	       -1 - error.  Orientation changes are not supported on this device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NPM.SysGetOrientation()
+</pre>
+<a name="SysSetOrientation"><h4>SysSetOrientation</h4>
+
+<pre>	status = NSBPinMgr.SysSetOrientation(value)</pre>
+
+<blockquote>
+	Sets the current display orientation.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - sysOrientationUser.  Pass this value to
+	                                SysSetOrientation to tell the
+	                                system to activate the last userselected
+	                                orientation.
+	       1 - sysOrientationPortrait.  The display is in portrait
+	                                     orientation.
+	       2 - sysOrientationLandscape.  The display is in landscape
+	                                     orientation.
+	       3 - sysOrientationReversePortrait.  The display is in reverse portrait
+	                                           orientation (upside-down from
+	                                           the normal portrait orientation).
+	       4 - sysOrientationReverseLandscape.  The display is in reverse
+	                                            landscape orientation (upsidedown
+	                                            from the normal landscape
+	                                            orientation).
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 - success.
+	       -1 - error.  Changing orientation is not supported on this device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim value as Integer
+
+	status = NPM.SysSetOrientation(value)
+</pre>
+<a name="SysGetOrientationTriggerState"><h4>SysGetOrientationTriggerState</h4>
+
+<pre>	value = NSBPinMgr.SysGetOrientationTriggerState()</pre>
+
+<blockquote>
+	Returns the current Input Trigger state.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - sysOrientationTriggerDisabled.   The orientation trigger is
+	                                            disabled, meaning that the user is
+	                                            not allowed to change the
+	                                            display orientation.
+	       1 - sysOrientationTriggerEnabled.  The orientation trigger is
+	                                          enabled, meaning that the user is
+	                                          allowed to change the display
+	                                          orientation.
+	       -1 - error.  Changing orientation is not supported on this device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NPM.SysGetOrientationTriggerState()
+</pre>
+<a name="SysSetOrientationTriggerState"><h4>SysSetOrientationTriggerState</h4>
+
+<pre>	status = NSBPinMgr.SysSetOrientationTriggerState(value)</pre>
+
+<blockquote>
+	Sets the current Input Trigger state.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - sysOrientationTriggerDisabled.   The orientation trigger is
+	                                            disabled, meaning that the user is
+	                                            not allowed to change the
+	                                            display orientation.
+	       1 - sysOrientationTriggerEnabled.  The orientation trigger is
+	                                          enabled, meaning that the user is
+	                                          allowed to change the display
+	                                          orientation.
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       -1 - error.  Changing orientation is not supported on this device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim value as Integer
+
+	status = NPM.SysSetOrientationTriggerState(value)
+</pre>

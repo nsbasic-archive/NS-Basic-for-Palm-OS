@@ -1,0 +1,1479 @@
+"mdl"
+8
+"Tracker","appl","traK",194,505,0
+"Sub main()
+
+Global loadx as Integer
+Global startDate as Date
+Global endDate as Date
+Global dbHorses as Database
+Global dbJockeys as Database
+Global dbRaces as Database
+Global deDate as Date
+Global deTime as Float
+Global noRaces as Integer
+Global noMoney as Integer
+Global noWins as Integer
+Global noPlaces as Integer
+Global noShows as Integer
+Global TimeRaces as Float
+Global TimeMoney as Float
+Global TimeWins as Float
+Global TimePlaces as Float
+Global TimeShows as Float
+Global FastestTime as Float*8,2
+Global SlowestTime as Float*8,2
+Global selHorse as String
+Global selJockey as String
+Global selCond as String
+Global selDist as String
+Global xi as Integer
+Global xHorse (100 ) as String
+Global xDate ( 100 ) as Date
+Global xTime (100) as Float
+Global xFinish (100) as String
+Global xjockey(100) as String
+
+Dim theKey as String
+Dim res as Integer
+
+
+deDate=today()
+deTime=totime(~01:20:30~)
+StartDate=todate(~1998/01/01~)
+EndDate=today()
+
+res=0
+
+'msgbox ~loading horses~
+res = dbopen( dbHorses, ~Horse-trkH~, 0 )
+If res>0 Then 
+   res=DbCreate (dbHorses, ~Horse-trkH~,0,~trkH~)
+   If res>0 Then
+      MsgBox ~Error-can't create the 'horse' database~
+      Stop
+  endif
+  res=dbOpen(dbHorses,~Horse-trkH~,0)
+endif
+
+res=dbOpen (dbJockeys, ~Jockey-trkH~, 0)
+If res>0 Then 
+   res=DbCreate (dbJockeys, ~Jockey-trkH~,0,~trkH~)
+  If res>0 Then
+    MsgBox ~Error-can't create the 'jockey' database~
+    Stop
+  endif
+  res=dbOpen (dbJockeys, ~Jockey-trkH~, 0)
+endif 
+
+res = dbopen( dbRaces, ~Race-trkH~, 0 )
+If res>0 Then 
+   res=DbCreate (dbRaces, ~Race-trkH~,0,~-trkH~)
+   If res>0 Then
+      MsgBox ~Error-can't create the 'race' database~
+      Stop
+  endif
+  res=dbOpen(dbRaces,~Race-trkH~,0)
+endif
+
+theKey=~ ~
+End Sub
+
+
+
+Function loadPopupConds(x as Integer) as String
+ Dim temp as String
+  Dim res as Integer
+  Dim i as Integer
+  x=x+1
+  If x=1 Then
+      loadPopupConds= ~Fast~
+      Exit Function
+  endif
+  If x=2 Then
+      loadPopupConds= ~Good~
+      Exit Function
+   endif
+  If x=3 Then
+      loadPopupConds= ~Slow~
+      Exit Function
+   endif
+  If x=4 Then
+      loadPopupConds= ~Muddy~
+      Exit Function
+  endif
+  loadPopupConds=~~
+
+End Function
+
+Function loadPopupDists(x as Integer) as String
+  x=x+1
+ If x=1 Then
+      loadPopupDists= ~1~
+      Exit Function
+   endif
+
+ If x=2 Then
+      loadPopupDists= ~2~
+      Exit Function
+ endif
+
+ If x=3 Then
+      loadPopupDists= ~3~
+      Exit Function
+ endif
+
+ If x=4 Then
+      loadPopupDists= ~4~
+      Exit Function
+ endif
+
+ loadPopupDists=~~
+End Function
+
+'cvts time to a string for display of the form      min : secs
+Function cvtTime ( TimInSecs as Float ) as String
+  Dim wk1 as String
+  Dim wk2 as String
+  Dim theMin as Integer
+  Dim theSec as Float*6,2
+
+  theMin=int(TimInSecs/60)
+  theSec=TimInSecs-theMin*60
+  wk1=str(theMin)
+  wk2=str(theSec)
+  cvtTime=wk1+ ~ : ~ + wk2
+End Function"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000C7"
+"Sub Project_Termination()
+Dim res as Integer
+
+res=dbClose(dbHorses)
+res=dbclose(dbJockeys)
+res=dbclose(dbRaces)
+
+End Sub"
+"vew"
+4,23,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"Main Menu"
+"menu"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butEntry",24,32,48,12,92,#TRUE#,0,"Enter Race Results",0,0,0
+"sub object24_click()
+   nextScreen ~Data Entry~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butQuery",25,32,68,12,92,#TRUE#,0,"Query ",0,0,0
+"sub object25_click()
+  nextScreen ~Selection~
+end sub
+"
+"lbl"
+1
+"obj"
+3
+"lbl","object136",136,56,24,16,64,#TRUE#,2,"TRACKER",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object152",152,32,88,12,92,#TRUE#,0,"Revise List of Horses",0,0,0
+"sub object152_click()
+  nextScreen ~horse~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object153",153,32,108,12,92,#TRUE#,0,"Revise List of Jockeys",0,0,0
+"sub object153_click()
+  nextScreen ~jockey~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object176",176,64,136,12,20,#TRUE#,0,"Quit",0,0,0
+"sub object176_click()
+  Stop
+end sub
+"
+"vew"
+4,27,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Data Entry"
+"Data Entry"
+"sub Screen27_before()
+  dim i         as integer
+  dim res     as integer
+  dim temp  as string
+  dim loadx as integer
+
+    res=dbReset(dbHorses)       'reset horses database to beginning of file
+
+      i=0
+ addLoop:
+      res=DbReadNext ( dbHorses,  temp)    'read next horse from database
+      if res=0 then
+         i=i+1
+         PopupAddItem ~popDeHorse~,temp,i     'and add to popup object
+         goto addLoop
+     endif
+
+    res=dbReset(dbJockeys) 
+   i=0
+  addLoop2:
+      res=DbReadNext ( dbJockeys,  temp)    'read next jockey from database
+      if res=0 then
+          i=i+1
+         PopupAddItem ~popDeJockey~,temp,i    'and add to popup object
+         goto addLoop2
+     endif
+
+   PopupAddItem ~popDeCond~, ~Fast~    , 1           'set track condition popup list
+   PopupAddItem ~popDeCond~, ~Good~  , 2
+   PopupAddItem ~popDeCond~, ~Slow~   , 3 
+   PopupAddItem ~popDeCond~, ~Muddy~, 4
+
+loadx=0
+do 
+  temp=loadPopupDists  (loadx)
+  if temp=~~ then 
+    exit do
+  endif
+  PopupAddItem ~popDeDist~,temp,loadx     'load race distance constants from database and add to popup  
+loop
+
+'msgbox ~done with loads~
+end sub"
+0
+"sub Screen27_after()
+    dim temp as string
+    controlSetLabel ~rptDown~,&h02   'this is the DOWN ARROW character
+    controlSetLabel ~rptUp~,&h01        'this is the UP ARROW character
+    temp=  datemmddyy(deDate)       
+    controlsetlabel ~selDeDate~,temp      'set default date into date field (today)
+end sub
+"
+""
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","object28",28,8,36,12,24,#TRUE#,0,"Date",0,0,0
+""
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","selDeDate",29,52,36,12,60,#TRUE#,0,"01/01/1999",0,0,0
+"Sub object29_click() 
+  Dim i as Integer
+  Dim wk as String
+
+  'this selector object causes the standard date popup screen to appear so that a new date can be selected
+   i= popupdate(deDate,~Date of Race~)      'get the date
+
+  wk=datemmddyy(deDate)                     'reformat it 
+  selDeDate.text=wk                         'and put it into the selector field on the screen
+
+End Sub"
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popDeHorse",35,52,56,12,64,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object236",236,8,56,12,28,#TRUE#,0,"Horse",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object39",39,8,68,12,32,#TRUE#,0,"Jockey",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popDeJockey",40,52,68,8,68,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object42",42,8,80,12,40,#TRUE#,0,"Distance",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popDeDist",43,52,80,8,68,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object45",45,8,92,12,44,#TRUE#,0,"Trk Cond",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popDeCond",46,52,92,12,68,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object48",48,8,104,12,32,#TRUE#,0,"Finish",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object51",51,8,124,16,44,#TRUE#,0,"Time: Min",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butUpdate",53,80,144,12,36,#TRUE#,0,"Update",0,0,0
+"Sub object53_click()
+  Dim temp as String
+  Dim res as Integer
+  Dim key as String
+ 
+   'the operator tapped the update button, so the screen field values must be put into the database
+   
+    temp= popupGetText(~popDeHorse~)         'can't have blank horse name
+    If temp=~~ Then
+        MsgBox ~Must supply a horse name~
+        Exit Sub
+    endif
+
+   'the database is kept in sequence by the key of each record which is race date+horse name
+    key=str(deDate)+popDeHorse.text
+
+    res=dbFind( dbRaces, key )
+    If res=1 Then
+         MsgBox ~Can't find that date/horse combination.~      'error --not on database
+         Exit Sub
+   endif
+
+    res=dbUpdate(  dbRaces, key, popDeJockey.text,popDeCond.text,popDeDist.text, _
+                              fldDeFinish.text, fldDeTimeMin.text , fldDeTimeSec.text)
+    If res=1 Then
+      MsgBox ~File error in updating~
+      Exit Sub
+   endif
+
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butDone",54,4,144,12,32,#TRUE#,0,"Done",0,0,0
+"sub object54_click()
+  nextScreen ~menu~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butFind",77,40,144,12,36,#TRUE#,0,"Find",0,0,0
+"Sub object77_click()
+   Dim key as String
+    Dim temp as String
+    Dim res as Integer
+    Dim tempJockey as String
+    Dim tempCond as String
+    Dim tempDist as String
+    Dim tempFinish as String
+    Dim tempTimeMin as String
+    Dim tempTimeSec as String
+    Dim i as Integer
+
+   'the operator tapped the FIND button to find an existing database race record
+   
+    temp=popDeHorse.text
+    If temp=~~ Then
+        MsgBox ~Must supply a horse name~     'horse name can't be blank
+        Exit Sub
+    endif
+
+    'key of record = race date + horse name
+    key=str(deDate)+popDeHorse.itemtext(popDeHorse.selected)
+    res=dbFind( dbRaces, key )
+    If res=1 Then
+         MsgBox ~Can't find that date/horse combination.~    'not on database, so tell operator
+         Exit Sub
+   endif
+  
+  'found record on database, so read in all the field values into temporary fields
+
+   res=dbRead(dbRaces,key,tempJockey,tempCond,tempDist,tempFinish,tempTimeMin,tempTimeSec)
+   temp=left(key,8)        'left 8 characters of key=race date   (right portion is horse name)
+
+  
+   deDate=todate( temp)   'convert alpha date with slashes to a numeric date
+   i=len(key)-8
+   temp=right(key,i)   'horses name
+   popDeHorse.text=temp                'fill in screen fields from database values
+   popDeJockey.text=tempJockey
+   popDeDist.text=tempDist
+   popDeCond.text=tempCond
+   fldDeFinish.text=tempFinish
+   fldDeTimeMin.text=tempTimeMin
+   fldDeTimeSec.text=tempTimeSec
+   temp=datemmddyy(deDate)
+   selDeDate.text=temp
+
+   redraw     'and redraw the screen with all the new values
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object177",177,120,144,12,36,#TRUE#,0,"Add",0,0,0
+"Sub object177_click()
+    Dim key as String
+    Dim temp as String
+    Dim res as Integer
+
+   'operator tapped the ADD button, so let's add a new record to the database
+  
+    temp= popDeHorse.text
+    If temp=~~ Then
+        MsgBox ~Must supply a horse name~      'can't leave horses name blank
+        Exit Sub
+    endif
+
+    key=str(deDate)+popDeHorse.text  'key of rec = race date + horses name
+
+    res=dbFind( dbRaces, key )
+    If res=0 Then
+         MsgBox ~Can't add, the record already on file.~   'can't have duplicate recs on database
+         Exit Sub
+   endif
+
+   'insert a new record
+   res=dbInsert(  dbRaces, key, popDeJockey.text, popDeCond.text, _
+                         popDeDist.text, fldDeFinish.text, fldDeTimeMin.text, fldDeTimeSec.text)
+
+    If res=1 Then
+      MsgBox ~File error in adding~
+      Exit Sub
+   endif
+  
+'now clear the fields
+popDeHorse.text=~~
+popDeJockey.text=~~
+popDeCond.text=~~
+popDeDist.text=~~
+fldDeFinish.text=~~
+fldDeTimeMIn.text=~~
+fldDeTimeSec.text=~~
+    
+End Sub"
+"rpt"
+1
+#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"rpt","rptDown",178,60,104,12,12,#TRUE#,5," ",0,0,0
+"Sub object178_click()
+  Dim temp as String
+  Dim tempx as Integer*2
+ 
+   'operator tapped the down arrow on the FINISH field, so reduce the screen value shown by 1
+ 
+   If val(fldDeFinish.text )=1 Then    'can't go below 1
+       Exit Sub
+  endif
+  tempx= val(fldDeFinish.text)-1    'get current value from screen and reduce by 1
+
+  temp=str(tempx)
+  fldDeFinish.text=temp    'and put new value back in screen field
+  fldDeFinish.redraw                  'but need to redraw fld to see it
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","fldDeTimeMin",179,64,120,16,20,#TRUE#,0,"",0,0,0
+""
+"rpt"
+1
+#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"rpt","rptUp",181,96,104,12,12,#TRUE#,5,"",0,0,0
+"Sub object181_click()
+   Dim tempx as Integer*2
+   Dim temp as String
+   Dim i as Integer
+
+   'operator tapped the UP arrow on the FINISH field, so add 1 to FINISH value and redraw
+   tempx=val(fldDeFinish.text)+1    'get it and add 1
+
+   temp=str(tempx)
+ 
+  Do
+
+      If len(temp)<2 Then
+         Exit Do
+      endif
+
+       If  mid(temp,1,1) = ~ ~ Then     'eliminate leading space characters
+            i=len(temp)-1
+            temp=mid(temp,2,i)
+       Else
+         GoTo gotIt
+       endif
+    Loop
+gotIt:
+
+   fldDeFinish.text=temp    'and put new value into field
+   fldDeFinish.redraw                 'but need to redraw it to see it
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDeFinish",182,76,104,20,20,#TRUE#,0,"##",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl191",191,92,124,12,20,#TRUE#,0,"Sec",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","FldDETimeSec",192,116,120,16,36,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,83,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Selection Parameters"
+"Selection"
+"sub Screen83_before()
+  
+   dim temp as string
+   dim res as integer
+   dim i as integer
+   dim loadx as integer
+
+    'use the subroutine to supply track conditions for the popup list
+    loadx=0
+   do 
+      temp=loadPopupConds  (loadx)
+      if temp=~~ then       'keep calling until subrtn returns a null condition
+         exit do
+     endif
+     PopupAddItem ~popCond~,temp,loadx        'and add each condition to the popup list
+   loop
+
+
+   'use the subroutine to supply distances for the popup list
+   loadx=0
+  do 
+        temp=loadPopupDists  (loadx)
+        if temp=~~ then                        'keep calling until the subrtn returns a null string
+          exit do
+       endif
+       PopupAddItem ~popDist~,temp,loadx     'and add each distance to the popup
+   loop
+
+
+  'load horse names to the popup list
+     res=dbReset(dbHorses)
+
+      i=0
+ addLoop:
+      res=DbReadNext ( dbHorses,  temp)    'read horse name from database
+      if res=0 then
+
+          i=i+1
+         PopupAddItem ~popHorse2~,temp,i     'and add to the popup list
+         goto addLoop
+     endif
+
+
+ 'load jockey names from the database
+   res=dbreset (dbJockeys)
+   i=0
+  addLoop2:
+      res=DbReadNext ( dbJockeys,  temp)
+      if res=0 then
+          i=i+1
+         PopupAddItem ~popJockey~,temp,i
+         goto addLoop2
+     endif
+
+end sub"
+0
+"sub Screen83_after()
+   dim d1 as string
+
+   'the selection screen is used to supply the selection criteria to select race results for reporting and calculating averages  
+
+    d1=dateMMDDYY(StartDate) 
+    controlSetText ~selStartDate~, d1    'set default start and end dates
+ 
+    d1=dateMMDDYY(EndDate)
+    controlSetText ~selEndDate~, d1
+
+end sub
+"
+""
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","object84",84,5,18,10,28,#TRUE#,0,"Dates",0,0,0
+""
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","selStartDate",85,36,18,10,38,#TRUE#,0,"Start",0,0,0
+"Sub object85_click()
+      Dim res as Integer
+
+    'tapping on the start date selector causes the standard date popup screen to be displayed to select a new date
+    res=popupDate(StartDate, ~Enter the start of the date range~)
+    selStartDate.text=dateMMDDYY(startDate)           'put new date into screen field
+    selStartDate.redraw                                                        'and redraw the field to see it
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","object86",86,84,19,10,10,#TRUE#,0,"-",0,0,0
+""
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","selEndDate",87,104,18,10,46,#TRUE#,0,"end date",0,0,0
+"Sub object87_click()
+   Dim res as Integer
+
+   'call up the standard date screen so that a new date can be chosen
+   res=popupDate(EndDate, ~Enter the end of the date range~)
+   selEndDate.text=dateMMDDYY(endDate)    'set new date into the screen field
+   selEndDate.redraw                      'and redraw the field to see it
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","object88",88,4,60,12,36,#TRUE#,0,"Jockey",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popJockey",89,56,60,16,100,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object91",91,8,48,12,32,#TRUE#,0,"Horse",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popHorse2",92,56,48,12,96,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object97",97,7,78,10,42,#TRUE#,0,"Distance",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popDist",98,56,76,12,76,#TRUE#,0,"",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popCond",101,56,92,12,92,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butPrmdone",103,4,136,12,36,#TRUE#,0,"Done",0,0,0
+"sub object103_click()
+   nextScreen ~menu~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butPrmSearch",104,84,136,12,40,#TRUE#,0,"Search",0,0,0
+"Sub object104_click()
+  
+  'the operator has finished entering the search selection parameters
+  'save the selected parameters into global variables and then goto the STATS screen to read the database and display results
+
+  selHorse=popHorse2.text
+  selJockey=popJockey.text
+  selCond=popCond.text
+  selDist=popDist.text
+  
+  NextScreen ~Stats~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object183",183,44,136,12,36,#TRUE#,0,"Clear",0,0,0
+"Sub object183_click()
+    Dim temp as String
+
+    'the operator selected the clear button, so put all selection parameters back to their default values
+
+    startDate=todate(~99/01/01~)
+    endDate=today()
+    temp=datemmddyy(startDate)             
+    selStartDate.text=temp
+    temp=dateMMDDyy(endDate)
+    selEndDate.text=temp
+    popHorse2.text=~~
+    popJockey.text=~~
+    popDist.text=~~
+    popCond.text=~~
+
+    redraw        'now redraw the screen so the new values show up
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","object184",184,4,92,12,52,#TRUE#,0,"Track Cond.",0,0,0
+""
+"vew"
+4,106,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Race Results"
+"Results"
+"Sub Screen106_before()
+    Dim wk as String
+    Dim ss as String 
+    Dim i as Integer
+    Dim tempf as Float
+    Dim wkd as Date
+  
+    For i=1 to xi
+      tempf= xtime(i)  
+      wk=cvttime ( tempf )
+      wkd= xDate(i)
+      ss=wk+xFinish(i)+~/~+str( wkd )+~/~+~ ~+xhorse(i) +~/~ +xJockey(i)
+      listAddItem ~lstResults~, ss, i
+   Next   
+End Sub"
+0
+"sub Screen106_after()
+end sub
+"
+""
+0,0,0,0
+"lst"
+2
+10
+""
+"obj"
+3
+"lst","lstResults",109,4,20,113,152,#TRUE#,0,"List 109",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object110",110,104,136,12,32,#TRUE#,0,"Done",0,0,0
+"sub object110_click()
+   nextScreen ~menu~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butShowStats",111,4,136,12,32,#TRUE#,0,"Stats",0,0,0
+"sub object111_click()
+   nextScreen ~Stats~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object112",112,40,136,12,60,#TRUE#,0,"Rev. Params",0,0,0
+"sub object112_click()
+   'go back to revise the search selection parameters
+   nextScreen ~Selection~
+end sub
+"
+"vew"
+4,115,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Result Statistics"
+"Stats"
+"sub Screen115_before()
+
+end sub
+"
+0
+"sub Screen115_after()
+ dim AvgRaces as float*8,2
+ dim AvgMoney as float*8,2
+ dim AvgWins as float*8,2
+global AvgPlaces as float*8,2
+ dim AvgShows as float*8,2
+ 
+ dim j as integer
+      dim key as string
+      dim res as integer
+     dim inDate as date
+     dim inHorse as string
+     dim inJockey as string
+     dim inFinish as string
+     dim inCond as string
+     dim inDist as string
+     dim inTimeMin as string
+      dim inTimeSec as string
+     dim theTime as float
+     dim wk as string
+
+  'this code scans the databse and selects all races that meet the selection criteria
+  'results and counts are accumulated to support calculation of averages, fastest time, etc
+
+
+  
+
+noRaces=0
+noMoney=0
+noWins=0
+noPlaces=0
+noShows=0
+timeRaces=0
+timeMoney=0
+timeWins=0
+timePlaces=0
+timeShows=0
+fastestTime=9999999
+slowestTime=0
+res=dbreset (dbRaces)   'reset to beginning of the race results database
+xi=0
+do
+
+   res=dbReadNext (  dbRaces, key, inJockey,inCond,inDist,inFinish,inTimeMin,inTimeSec)  'read a race result from database
+ 
+   if not res=0 then 
+     exit do        'at end of database so exit the loop
+   endif
+      inDate=todate(left(key,8))      'race date is the leftmost 8 chars of key
+
+     j=len(key)-8  
+     inHorse=right(key,j)     'horse name is the right positions of the key
+
+ if not selHorse=~~ then                'if one specific horse is to be selected
+   if not inHorse=selHorse then     'and this race record is not for that horse
+     goto onward                            'then skip this record
+   endif
+ endif
+
+ if ((not selJockey=~~) and (not inJockey=selJockey))  then   'if only want one jockey and this race wasn't his then skip
+      goto onward
+   endif
+ 
+  'if race doesn't fit other selection criteria, then skip it
+   if ((not selDist=~~) and (not inDist=selDist)) _
+   or((not selCond=~~) and (not inCond=selCond)) _
+   or( inDate<StartDate) _
+   or( inDate>EndDate) _
+   then
+      goto onward
+   endif
+
+  'the race met all the selection criteria, so add into counters and totals
+  theTime=val(inTimeMin)*60+ val(inTimeSec)  
+  
+'msgbox ~selected race time=~+str(theTime)+~  min=~+inTimeMin+~  sec=~+inTimeSec
+
+  noRaces=noRaces+1
+  timeRaces=timeRaces+TheTime
+ 
+  if val(inFinish)=1 then
+     noWins=noWins+1
+     timeWins=timeWins+TheTime
+ else 
+     if val(inFinish)=3 then
+       noShows=noShows+1
+       timeShows=timeShows+TheTime
+     else 
+        if val(inFinish)=2 then
+           noPlaces=noPlaces+1
+           timePlaces=timePlaces+TheTime
+        endif     
+    endif
+  endif
+
+  if TheTime>slowestTime then
+     slowestTime=TheTime
+  endif
+  if TheTime<FastestTime then
+      fastestTime=TheTime
+  endif
+  
+  xi=xi+1
+
+  xHorse(xi)=inHorse      'save those races selected for reporting later
+
+  xDate(xi)=inDate
+
+  xTime(xi)=TheTime
+
+  xJockey(xi)=inJockey
+
+  xFinish(xi)=inFinish
+
+
+onward:    
+loop    'repeat for entire database
+
+
+
+'now calc totals and averages
+noMoney=noWins+noShows+noPlaces
+timeMoney=timeWins+timeShows+timePlaces
+
+
+'and put new info into screen fields for display
+fieldSetText  ~fldNoRaces~, str(noRaces) 
+
+fieldSetText  ~fldNoMoney~, str(noMoney)
+
+fieldSetText  ~fldNoWins~, str(noWins)
+
+fieldSetText  ~fldNoShows~, str(noShows)
+
+fieldSetText  ~fldNoPlaces~, str(noPlaces)
+
+if noRaces>0 then
+   avgRaces=timeRaces/noRaces
+else
+   avgRaces=0
+endif
+
+
+
+ wk= cvtTime ( AvgRaces )
+'debugon
+fieldSetText  ~fldAvgRaces~,wk
+
+if noMoney>0 then
+   avgMoney=timeMoney/noMoney
+else
+   avgMoney=0
+endif
+
+
+
+fieldSetText  ~fldAvgMoney~, cvtTime ( AvgMoney )
+
+if noWins>0 then
+   avgWins=timeWins/noWins
+else
+   avgWins=0
+endif
+
+
+fieldSetText  ~fldAvgWins~, cvtTime ( AvgWins )
+
+if noShows>0 then
+   avgShows=timeShows/noShows
+else
+   avgShows=0
+endif
+
+fieldSetText  ~fldAvgShows~,cvtTime(AvgShows)
+if noPlaces>0 then
+   avgPlaces=timePlaces/noPlaces
+else
+   avgPlaces=0
+endif
+fieldSetText  ~fldAvgPlaces~, cvtTime(AvgPlaces)
+
+fieldSetText  ~fldFastestTime~, cvtTime(FastestTime)
+
+fieldSetText  ~fldSlowestTime~, cvtTime(SlowestTime)
+
+'all done -- screen will now be displayed
+end sub
+"
+""
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","lab116",116,64,18,10,36,#TRUE#,0,"# Races",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNoRaces",117,64,32,12,40,#TRUE#,0,"Field 117",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object118",118,110,18,10,46,#TRUE#,0,"Avg. Time",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAvgRaces",119,104,32,12,52,#TRUE#,0,"Field 119",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object120",120,4,59,9,28,#TRUE#,0,"Wins",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object121",121,4,72,16,56,#TRUE#,0,"Places",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object122",122,4,84,16,56,#TRUE#,0,"Shows",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object123",123,5,32,8,55,#TRUE#,0,"All Races",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","InTheMoney",124,4,44,8,60,#TRUE#,0,"InTheMoney",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNoMoney",126,64,44,12,40,#TRUE#,0,"Field 126",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAvgMoney",127,104,44,12,52,#TRUE#,0,"Field 127",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNoWins",128,64,60,12,40,#TRUE#,0,"Field 128",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAvgWins",129,104,60,12,52,#TRUE#,0,"Field 129",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNoPlaces",130,64,72,12,40,#TRUE#,0,"Field 130",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAvgPlaces",131,104,72,12,52,#TRUE#,0,"Field 131",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNoShows",132,64,84,12,40,#TRUE#,0,"Field 132",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAvgShows",133,104,84,12,52,#TRUE#,0,"Field 133",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object135",135,84,144,12,36,#TRUE#,0,"Done",0,0,0
+"sub object135_click()
+   nextScreen ~selection~
+end sub
+"
+"lbl"
+1
+"obj"
+3
+"lbl","object148",148,4,116,12,60,#TRUE#,0,"Fastest Time",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","object149",149,4,128,12,60,#TRUE#,0,"Slowest Time",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFastestTime",150,104,116,12,52,#TRUE#,0," ",0,0,0
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSlowestTime",151,104,128,12,52,#TRUE#,0," ",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But194",194,12,144,12,68,#TRUE#,0,"Selected Races",0,0,0
+"sub object194()
+   nextScreen ~Results~
+end sub
+"
+"vew"
+4,156,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Revise List of Horses"
+"horse"
+"sub Screen156_before_display()
+
+  dim i as integer
+  dim res as integer
+  dim temp as string
+
+
+    res=dbReset(dbHorses)     'reset horse database back to 1st record
+     popupClear (~popHorse~)
+      i=0
+ addLoop:
+      res=DbReadNext ( dbHorses,  temp)       'read a horse database record
+      if res=0 then
+          i=i+1
+         PopupAddItem ~popHorse~,temp,i      'and add its name to the popup list
+         goto addLoop
+     endif
+end sub
+"
+0
+""
+""
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","object166",166,8,68,12,68,#TRUE#,0,"Name of horse :",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldHorseName",167,20,84,12,132,#TRUE#,0," ",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object169",169,16,136,12,36,#TRUE#,0,"Remove",0,0,0
+"Sub object169_click()
+  Dim res as Integer
+  
+  'the operator selected the REMOVE button to delete the horse from the database
+
+   res=dbDelete ( dbHorses,fldHorseName.text)     'see if its on the database and delete it if so
+   If res=1 Then
+     MsgBox ~Can't delete that horse from the database -- please rekey~
+     Exit Sub
+  endif
+  popHorse.text=~ ~
+  redraw       'this causes the popup list of horses to be redone and redrawn
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object170",170,56,136,12,40,#TRUE#,0,"Add",0,0,0
+"Sub object170_click()
+  Dim res as Integer
+  Dim s as String
+  Dim s1 as String
+ 'operator wants to add the horse to the database
+
+  s = fieldGetText ( ~fldHorseName~ ) 
+  If  s = ~~ Then
+      MsgBox ~Must supply a horse name.~      'cannot have a blank name
+      Exit Sub
+  endif    
+  Let s1 = s  '****store s into a separate variable so that it doesn't get over written.
+   res=dbRead(dbHorses, s1 )      'see if its already on the database
+   If res=0 Then
+      MsgBox ~Horse with that name already on file.~      'it is so cant add
+   Else
+     'its not there, so let's add it            
+ 
+     res=dbInsert ( dbHorses , s )  
+    
+     
+     If res=1 Then
+       MsgBox ~Can't add that horse to the database -- please rekey~
+       Exit Sub
+    endif
+    redraw       'and this causes the popup list of valid horses to be redone in the screen Display startup code
+  endif
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object172",172,100,136,12,40,#TRUE#,0,"Done",0,0,0
+"sub object172_click()
+ nextScreen ~menu~     'go back to the main menu screen
+end sub
+"
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","popHorse",173,20,24,12,80,#TRUE#,0,"",0,0,0
+"Sub object173_click()
+   'the operator selected a new horse name from the popup list of existing horse names on the databse
+    Dim temp as String
+    Dim i as Integer
+    
+    'get name from popup and put in the field object
+    i=popHorse.selected
+    temp=popHorse.itemText(i)
+    fldHorseName.text=temp 
+    fldHorseName.redraw                  'and redraw the field so that the new name will appear
+
+End Sub"
+"vew"
+4,158,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Revise List of Jockeys"
+"jockey"
+"sub Screen158_before_display()
+   dim i as integer
+  dim res as integer
+  dim temp as string
+
+   'load the jockey name popup list with records from the database
+
+    res=dbReset(dbJockeys) 
+    listclear ~lstJockey~
+   i=0
+  addLoop:
+      res=DbReadNext ( dbJockeys,  temp)
+      if res=0 then
+          i=i+1
+         ListAddItem ~lstJockey~,temp,i
+         goto addLoop
+     endif
+  
+end sub
+"
+0
+""
+""
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","object159",159,8,80,12,72,#TRUE#,0,"Name of Jockey",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldJockeyName",160,16,96,12,140,#TRUE#,0," ",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object162",162,16,136,12,32,#TRUE#,0,"Delete",0,0,0
+"Sub object162_click()
+   Dim res as Integer
+   'operator wants to delete this jockey from the database
+   res=dbDelete ( dbJockeys,fldJockeyName.text)
+   If res=1 Then
+       MsgBox ~Can't delete that jockey from the database -- please rekey~
+       Exit Sub
+    Else
+       redraw      'now redraw to redo the list of valid jockeys
+   endif
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object163",163,56,136,12,40,#TRUE#,0,"Add",0,0,0
+"Sub object163_click()
+    Dim res as Integer
+  
+   'operator wants to add a new jockey to the database
+   res=dbInsert ( dbJockeys,fldJockeyName.text)
+   If res=1 Then
+     MsgBox ~Can't add that jockey to the database -- please rekey~
+     Exit Sub
+  Else
+      redraw    'this causes the list of valid jockeys to be redone
+  endif
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","object165",165,100,136,12,40,#TRUE#,0,"Done",0,0,0
+"sub object165_click()
+   nextScreen ~menu~
+end sub
+"
+"lst"
+2
+1
+""
+"obj"
+3
+"lst","lstJockey",175,36,20,52,96,#TRUE#,0,"List 175",0,0,0
+"Sub object175_click()
+    'get name from list and put in the field object
+    Dim temp as String
+    Dim i as Integer
+    
+   'the operator selected a jockey from the list, so put his name in the jockey field
+    i=lstJockey.selected
+    temp=lstJockey.itemText(i)
+    fldJockeyName.text=temp 
+    fldJockeyName.redraw
+
+End Sub"
+"end"

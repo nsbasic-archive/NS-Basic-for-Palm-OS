@@ -1,0 +1,107 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 07: Calling C routines from NS Basic</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 07: Calling C routines from NS Basic</h2>
+	  <h3>May 05, 2008</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR><BR><BR>
+<I>This information is kindly provided by Ron Glowka, <A HREF="mailto:glowkar&copy; flash.net">glowkar&copy; flash.net.</A></i>
+
+<p>It is possible to call user written C programs from NSBasic (a simple alternative to Shared Libraries).  If you are not interested in writing any C code, then read no further.  If you are interested, but have no time, desire, or expertise to write a Shared Library, then "have I got a deal for you..."!
+
+<P>The new NSBasic statement "AppLaunch" allows you to call certain types of Palm programs like subroutines.  You can issue an "AppLaunch" command, it does its stuff, and then returns back to your NSBasic program at the point it left off.  Your screen, variables, your entire program is left intact.
+
+<P>You might want to use a "C Subroutine" to get at those API calls that you just can't use yet with NSBasic (ie. APIs that require pointers to integers, floats, or structures).  Or maybe you have some intense code that would just execute faster in C.  In any case, you can do this in a "simple" C program and you don't have to go to the trouble of writing a Shared Library.  The drawback (most likely) is that it is not as fast as calling a Shared Library and the data you get back is in the form of a string which you must then parse to get at multiple return items if necessary.
+
+<P>Your single "C Subroutine" can do any number of things.  With the AppLaunch command, you can send data to the launched program.  This data can be an encoded string (ie. comma delimited) where you pass the function you want and any parameters it might need.  The C program can then do its thing and then pass data back in the form of an encoded string (ie. comma delimited). The data passed back is actually stored in the C program's "Preferences". You can then read these preferences in NSBasic by using the PrefGetAppPreferences SysTrap.
+
+<P>CSubs is a small example.  It has the following functions: FldCopy, FldPaste, FldGetSelection, and newFieldCopy.  The FldCopy and FldPaste functions can already be done in NSBasic, but I wanted to see what the difference in execution time was...  The FldGetSelection function can not be done in NSBasic because it requires integer pointers as parameters. The newFieldCopy calls the regular FldCopy if the user has selected data in a field, or if no selection has been made, it calls FldGetTextPtr and ClipboardAddItem to put the entire field's contents into the clipboard buffer.  This is simple and not really useful at all, but it gives you an idea of what can be done.
+
+<P>It turns out that FldCopy and FldPaste can be done faster using NSBasic SysTrap calls than with calling the C Subroutine.  There is some overhead in just using the AppLaunch command.  Both of these commands are pretty simple.  If you had something complex to do, the gained execution speed of C code would make this worthwhile.
+
+<p>You can download the sample code <A HREF="TN07.CSUB.zip">here</A>.
+
+<P>PS. If you really want get creative, you can even insert assembler code in C subroutines!
+
+<h2>More on using the AppLaunch Command</h2>
+<I>This information is kindly provided by Rick Ragnini, <A HREF="mailto:lisa2&copy; xnet.com">lisa2&copy; xnet.com.</A></i>
+
+<p>20+ years ago using the BASIC programming language allowed me to quickly
+create applications on microcomputer.  But BASIC always left me a little
+short, some processes being just to slow or wanting some feature that was
+not implemented yet.  Then I learned that I could write little subroutines
+(in assembler), POKE them into memory, and call them from BASIC.  Talk about
+having your cake and eating it too!  
+
+<p>As outlined above, NSB-Palm can call small programs written in C,
+and  you don't have to be a C guru to do it.  Like most NSB-Palm users, I am
+not a C programmer and here are tips and tricks I have learned:
+
+<p>First get a good book on palm programming, most contain a crash course on C
+programming for the Palm, references to the PalmOS calls, and a CD with
+sample code and a free C compilers (GCC and CodeWarrior Demo Version).  
+
+<p>Keep the scope of what you want to do with your subroutine simple.  Do as
+much as you can in NSB-Palm prior to calling the C subroutine.
+
+<p>You call your subroutine in NSB using the APPLAUNCH function.  Here is a
+little more detail on using APPLAUNCH that is not in manual:
+
+<p>Result as integer = APPLAUNCH(cardNo as integer, pgm as string, cmd as
+integer, data as string)
+
+<p>Returns an integer with result code from the call.  You can set this result
+code in your C program using the RETURN statement.   For example if the last
+statement in your C program is RETURN 5;  - then the result from APPLAUNCH
+in NSB will be 5.  This is an easy way to pass any integer (short) back to
+your NSB program.
+
+<p><i>CardNo</i> should be 0,  Like most other functions, just leave this set to 0.
+
+<p><i>pgm</i> is the name of the program to launch. One would assume that APPLAUNCH
+will only launch apps, but this is not true, it will try to launch any
+database in the palm.  This seems simple enough, if your subroutine is
+called "Csub.prc" then you use "Csub" (case is important).  The problem is
+that your subroutines are really applications, and your  C compiler will 
+default to giving your apps a type of 'appl'. Any program with a type of
+'appl' will show in the launcher, and since the C subroutines are not
+stand-alone apps this is not good.  Also the launcher has problems with two
+apps having the same creator code.  I change the type to something like
+'Csub' and use the same creator code as my NSB app.  This way the subs are
+invisible to the launcher, and since they have the same creator code as the
+NSB app, they get deleted when the main application is removed.  APPLAUNCH
+does not care what the type is.
+
+<p><i>cmd</i> is a command to be passed to pgm. The PalmOS calls this a launch code. 
+It is used by the called application to do what the caller wanted.  For
+example the find application will use a launch code to tell the address book
+to look up a name.  Since launch codes are only used by applications, and we
+changed the type of our subroutine to 'Csub', we can use this number for
+what ever we wish!  It allows us to pass any integer (short) to the
+subroutine.  
+
+<p>Launch codes 0-32767 are reserved for use by the Palm OS. While few of these values are actually used, it is safest to use values from 32768 - 65535 for this argument.
+
+<p><i>data</i> is string with data to be passed to pgm. The data is not really passed here, only a pointer to the string is passed. Unlike some other OS
+functions, the string can be quite large. I have passed 1000+ byte strings
+with no problems. 
+
+<p>To distribute your application, NSB 2.11 users can add their subroutines as
+resources to their project and then extract them at runtime using the new
+DBCREATEDATABASEFROMRESOURCE function.
+
+</BODY> </HTML>
+

@@ -1,0 +1,39 @@
+#! /bin/sh
+#  Execute this script to produce a minimally "package"-like binary tarball
+
+# This script is basically just a stripped-down version of pilrc.spec.
+
+#prep
+[ -d fonts ] || mkdir fonts
+[ -f fonts/Makefile ] || unzip -d fonts -q contrib/pilfont.zip
+
+#build
+: ${prefix:=/usr/local}
+
+unix/configure --prefix=$prefix --disable-pilrcui
+make
+(cd fonts; make; cp -p README README-pilfont.txt)
+
+#install
+: ${DESTDIR:=`pwd`/buildroot} ${docdir:=$prefix/doc/pilrc}
+bindir=$prefix/bin
+
+rm -rf $DESTDIR
+make DESTDIR=$DESTDIR install
+# FIXME avoid referring to .exe so this script can be used on other platforms
+install -m 0755 fonts/pilfont.exe $DESTDIR/$bindir/pilfont.exe
+
+mkdir -p $DESTDIR$docdir
+cp -p LICENSE.txt README.txt fonts/README-pilfont.txt $DESTDIR$docdir
+cp -rp doc/*.html doc/images $DESTDIR$docdir
+
+#policy
+strip $DESTDIR$bindir/*
+
+#package
+: ${PKGARCHIVE:=`pwd`/pilrc-binary.tar}
+
+rm -f $PKGARCHIVE*
+
+(cd $DESTDIR; tar cf $PKGARCHIVE *)
+bzip2 $PKGARCHIVE

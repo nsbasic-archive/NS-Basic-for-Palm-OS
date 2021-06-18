@@ -1,0 +1,193 @@
+"mdl"
+7
+"TCPproj","appl","Test",1023,200,0
+"Sub main()
+
+'Example of using the TCP/IP Shared Library
+'Written by Floyd Worley  floyd@gswsa.com
+
+    Global commErr as Integer
+    Global fd as Integer
+    LoadLibrary ~TcpIpLib~, ~TCP~
+    NextForm ~frmMain~
+End Sub"
+0
+0
+""
+""
+""
+"vew"
+3,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"TCP/IP"
+"frmMain"
+""
+0
+"Sub Form1003_After()
+    tbIP.Text=~206.25.220.153~
+    tbPort.Text = ~1010~
+    tbStatus.Text = ~Disconnected~
+    cmdClose.hide
+    cmdSend.hide
+    lbReceived.clear
+End Sub"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1004",1004,4,20,11,73,#TRUE#,0,"Server IP Address:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,15,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","tbIP",1005,84,20,12,72,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1007",1007,28,36,11,50,#TRUE#,0,"Server Port:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","tbPort",1008,84,36,12,50,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1010",1010,4,52,11,76,#TRUE#,0,"Connection Status:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","tbStatus",1011,84,52,12,72,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","cmdConnect",1013,28,68,12,36,#TRUE#,0,"Connect"
+"Sub object1013()
+
+'Example of using the TCP/IP Shared Library
+'Written by Floyd Worley  floyd@gswsa.com
+
+
+    Dim netTimeOut as Integer
+    Dim host as String
+    Dim port as Integer
+    
+    host=tbIP.Text 'host IP address
+    port=val(tbPort.Text) 'host Port
+    netTimeOut = 5 ' 5 sec timeout
+    fd=0
+    fd = TCP.TcpOpen(host, port, netTimeOut)
+    If fd = 0
+        MsgBox ~Connect failure~
+        Exit Sub
+    Else
+        tbStatus.Text = ~Connected ~ + str(fd)
+    EndIf 
+    lbReceived.clear
+    cmdSend.show
+    cmdConnect.hide
+    cmdClose.show
+End Sub"
+"lst"
+2
+4
+""
+"obj"
+2
+"lst","lbReceived",1014,4,116,40,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","cmdClose",1015,80,68,12,48,#TRUE#,0,"Disconnect"
+"Sub object1015()
+    Dim unLoadNetLib as Integer
+    unLoadNetLib = 1 'Unload Net library
+    TCP.TcpClose(fd, unLoadNetLib)
+    tbStatus.Text = ~Disconnected~
+    fd=0
+    cmdSend.hide
+    cmdConnect.show
+    cmdClose.hide
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1016",1016,4,88,11,22,#TRUE#,0,"Send:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1017",1017,4,104,11,60,#TRUE#,0,"Received Data:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","cmdSend",1018,128,84,12,28,#TRUE#,0,"Send"
+"Sub object1018()
+    Dim writeData as String
+    Dim readData as String
+    Dim writeStatus as Integer
+    Dim toRead as Integer
+    Dim unLoadNetLib as Integer
+    
+    If fd = 0 Then 
+        MsgBox ~Not Connected~
+    End If
+    
+    commErr = 0
+    toRead=80 '200 bytes max
+    writeData = tbData.Text 
+    writeStatus = TCP.TcpWrite(fd, writeData)
+    readData = TCP.TcpRead(fd, toRead)
+    If len(readData)=0 Then
+       commErr=-1
+       unLoadNetLib = 1 'Unload Net library
+       TCP.TcpClose(fd, unLoadNetLib)
+       fd=0
+       cmdSend.hide
+       cmdConnect.show
+       cmdClose.show
+       tbStatus.Text = ~Disconnected~
+       MsgBox (~Comm Error reading Data~)
+       Exit Sub
+    End If 
+    lbReceived.add readData
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","tbData",1019,28,88,12,96,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","cmdClear",1023,128,100,12,28,#TRUE#,0,"Clear"
+"Sub object1023()
+    lbReceived.clear
+End Sub"
+"end"

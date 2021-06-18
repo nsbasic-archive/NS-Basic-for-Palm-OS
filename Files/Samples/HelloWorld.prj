@@ -1,0 +1,25 @@
+"mdl"
+8
+"Hello World","appl","HEL0",1003,505,0
+"Sub Project_Startup()
+    MsgBox ~Hello World!~
+End Sub"
+0
+0
+""
+""
+""
+"Installat."
+""
+"E100000D"
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Hello"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"end"

@@ -1,0 +1,74 @@
+"mdl"
+8
+"Timer","appl","Test",1009,505,0
+"Sub main()
+   Global count as Integer
+   count = 0
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000CD"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Timer"
+"Screen1004"
+""
+0
+""
+"Sub Screen1004_events()
+   Dim n as Time
+   Dim s as String
+
+   If geteventtype() = nsbTimer Then
+      count = count + 1
+      If count = 10 Then
+        'kill timer
+        SysInfoSet(~timer~, 0)
+      Else
+        SysInfoSet(~timer~, 2000)
+        n=now()
+        s= str(hour(n))
+        s=s+~:~+str(minute(n))
+        s=s+~:~+str(second(n))
+        field1.text = s
+      EndIf   
+   EndIf 
+End Sub"
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1005",1005,52,80,12,40,#TRUE#,0,"Start",0,0,0
+"Sub object1005()
+	count=0
+    SysInfoSet(~timer~, 2000)
+End Sub
+"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","field1",1006,40,112,12,64,#TRUE#,0,"      ",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1008",1008,8,40,12,140,#TRUE#,0,"This app triggers a timer 10 times,",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1009",1009,36,52,12,81,#TRUE#,0,"every two seconds.",0,0,0
+""
+"end"

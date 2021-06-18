@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Function </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Function                                                                                                       Befehl</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>FUNCTION <i>functionName</i>(<i>varList</i>) AS <i>resType</i></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Definiert den Beginn einer Funktion, die übergebenen
+Variablen als Parameter, und den Typ des Ergebnisses. Eine Funktion gibt immer
+einen Wert an das aufrufende Programm zurück. Jede Variable in <i>varList</i> ist definiert als <i>VariablenName</i> AS <i>varType</i>, wobei <i>varTyp</i> der
+Typ der Variabeln (Integer, Float,usw.) ist. Variabeln müssen durch Komma getrennt
+werden. Sie können von jedem gültigen Variablentyp sein (Integer, Float, Array,
+UDT, etc.), außer dem Typ Database.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Ein <i>Function</i>
+Ausdruck definiert den Beginn einer Funktion, die durch den <i>End Function</i> Ausdruck beendet wird. Das
+Ergebnis einer Funktion wird zugewiesen, indem irgendwo innerhalb der Funktion
+dem Funktionsnamen der entsprechende Wert zugewiesen wird. Array und UDT
+Datentypen können nicht zurückgegeben werden. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Bei dem Erreichen des Ausdruckes <i>End Function</i> wird das Programm an der aufrufenden Stelle weiter
+ausgeführt. Sollten keine Parameter für die Funktion verwendet werden, so
+müssen die Klammern leer gesetzt werden „()“.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Funktion Calc1(rate as Float, loanAmt as Float) as Float</p>
+
+<p class=Code>  Calc1=rate * loanAmt     'dieser Wert wird zurückgegeben</p>
+
+<p class=Code>End Funktion</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

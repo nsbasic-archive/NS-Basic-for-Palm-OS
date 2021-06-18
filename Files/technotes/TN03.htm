@@ -1,0 +1,225 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Tech Note 03: GPS data acquisition using NSBasic</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor="#FFFFFF">
+<script language="JavaScript" type="text/javascript"><!--
+function TABLE1(){
+window.open('TN04.table1.htm','table1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=780,height=350');
+};
+function TABLE2(){
+window.open('TN04.table2.htm','table2','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=640,height=350');
+};
+// --></script>
+
+<table border="0" cellspacing="0" width="478">
+    <tr>
+        <td valign="top" width="22%"><img
+        src="images/BigIcon.GIF"
+        width="86" height="103"></td>
+        <td valign="top" width="78%">
+	  <h2>Tech Note 03: Some notes on GPS data acquisition using NSBasic</h2>
+	  <h3>November 26, 2002
+        </h3>
+	</td>
+    </tr>
+</table>
+
+<hr>
+<div align="left">
+
+<table border="0" width="600">
+    <tr>
+        <td>
+		<p align="left"><br>
+        <i>Contributed by <a href="mailto:stan&copy; mallatreks.com">Stan Armington</a>.<br>
+         Originally posted <A HREF="http://www.treks.com.np/gps/gpsbasic.html">here.</A></i> </p>
+        <p align="left">
+        
+This 
+information is based on experimentation, and is probably not scientifically 
+correct. I'd certainly appreciate any input or advice that would help improve 
+this document. I wrote it in response to several requests from the NSBasic group 
+for advice on how to link a GPS to a palm. You can direct advice, corrections or 
+suggestions to <A href="mailto:stan&copy; mallatreks.com">stan&copy; mallatreks.com</A>.  For 
+some excellent links to GPS information, go to <A 
+href="http://joe.mehaffey.com/">joe.mehaffey.com</A>. I also have some 
+information and waypoints at <A 
+href="http://www.treks.com.np/gps">www.treks.com.np/gps</A>
+		<P>The Palm OS platform is excellent for GPS data collection because it allows you 
+to collect the data you want in your own way. All commercial GPS units are 
+designed to accommodate the needs of a specific application - either navigating 
+to a waypoint, collecting continuous data (tracks), collecting discrete points, 
+plotting on a map, etc. I want to handle the data in my own way - which none of 
+the commercial units allow - and therefore wrote my own system.
+		<P>For an outstanding example of what is possible with GPS, look at the system 
+written by Robin Lovelock at <A 
+href="http://www.gpss.co.uk/">http://www.gpss.co.uk/</A>. This system was what 
+gave me the confidence to go off and start manipulating my own GPS data.
+		<P>The only units I have found that attach to the Palm are the ones by <A 
+href="http://www.randmcnally.com/">Rand McNally</A> (RM) - one model (made by 
+Navman in New Zealand) for the Palm 3 and another (made by Magellan) for the 
+Palm V. I've also seen a note about a Korean unit that can be attached to a 
+Handspring. I have not tried the Magellan Palm V unit, but the Palm 3 version 
+takes a long time to lock on. Therefore, for testing and actual use I'm using a 
+<A href="http://garmin.com/products/etrex/">Garmin Etrex</A> ($US$119) and a 
+cable ($38) to connect to the Palm cable (though the hotsync cradle can also be 
+used). You need a null modem with a male-male gender changer to collect the two 
+cables. This makes a complicated and cumbersome system that almost defeats the 
+purpose of using a Palm. I'd appreciate any information on other units to try. 
+Also look at <A 
+href="http://www.celia.mehaffey.com/dale/pilotgps.htm">www.celia.mehaffey.com/dale/pilotgps.htm</A> 
+for suggestions.
+		<P>Most units (including the RM) will output NMEA sentences. These are strings 
+that start with a $ and end with a carriage return. The most straightforward 
+discussion of these sentences is in <A 
+href="http://werple.net.au/~gnb/gps/nmea.html">werple.net.au/~gnb/gps/nmea.html</A> 
+The sentence of most interest is the $GPGGA (Global Positioning System Fix Data) 
+which has latitude, longitude, elevation, number of satellites and an estimate 
+of precision.
+		<P>Remember that even with Selective Availability turned off, GPS is still prone 
+to errors. This is almost always at least 10 metres horizontally and up to 50 
+metres vertically. This can be reduced by differential correction using a base 
+station. I have not investigated how to convert the data I collect into 
+something that can be differentially corrected. For precise altitude 
+measurements I still use a US $3000 Trimble Geo Explorer and correct the data 
+using the Trimble software.
+		<P>You can also improve precision by averaging the recorded positions. That's 
+what I'm doing and it makes things a bit slower and more complicated. I would 
+like to collect data in the background (so that one could enter information 
+about a position at the same time that the GPS is averaging the readings) but 
+this may not be possible with the Palm OS.
+		<P>Note that NMEA data comes in as degrees plus decimal minutes. This means you 
+must convert into decimal degrees if you are going to do any calculations.
+		<h3>NS Basic issues:
+</h3>
+		<h4>1. Data Capture
+</h4>
+		<P>The serial input via NSBasic is slow. I tried collecting characters one by 
+one and lost a bunch (I wonder if ths could be solved by allowing a timeout of 
+less than one second in the serialreceive function?). I finally wrote the 
+following code, which works. Fortunately the NMEA sentences just keep rolling in 
+and it's no big deal if you miss one. I don't know how one would handle a 
+situation where it was critical to capture all the serial input. Ideally one 
+would have a routine that somehow worked in the background to capture and 
+average the data. The following routine is in a loop that ends when the user 
+pushes a stop button. NMEA data comes in at a baud rate of 4800 (8-1-none). 
+		<P>
+		<PRE>err=serialreceive(Buffer,150,1)    
+   if err=0 then   
+   i=instr(1,Buffer,~$~,0)     'sentence start?
+   j=instr(I+1,Buffer,&amp;h0d,0)    'sentence end?
+   if I&gt;0 and j&gt;0 then       'yes - then grab it
+     line=mid(Buffer,I,j-I)       
+     term.text=line                      'display the NMEA sentence
+     if anydata=false then
+       GPS_Status.text=~Receiving~    'put up a flag saying we're finally receiving data
+       anydata=true       
+     end if  
+     if left(Line,6)=~$GPGGA~ then
+       showlocation(line)                       'convert and save
+     end if 
+    end if             
+   end if
+</PRE>
+		<h4>2. Auto Off
+		</h4>
+		<P>George says he is going to handle this in a future version, but for now it's 
+not possible to turn off the palm auto shutoff feature. If you don't do this, 
+the unit shuts down and stops capturing data (though it does save what it has). 
+The easiest way I found to do this is to use the Autooff program. This turns the 
+Autooff OFF. When you are done with the GPS, you MUST go back to the Palm 
+preferences and set the auto-off time back to 1,2 or 3 minutes. Autooff is by 
+Joe Grand, The Grand Design, http://www.mindspring.com/~jgrand
+		<h4>3. Checksum
+</h4>
+		<P>The NMEA 0183 Standard allows for an optional checksum. The checksum is 
+preceded by the asterisk (*) character placed after the last data field. It is a 
+two-character field equal to the hex value obtained by XOR'ing all the character 
+bytes of the sentence. 
+		<P>This is impossible to calculate (at least in any straightforward manner) in 
+NSBasic. I've had to do a lot of error checking and validation of data as a 
+workaround. George Henne says that bit manipulation is also in the works.
+		<h4>4. UTM conversion
+</h4>
+		<P>It would be nice to display UTM co-ordinates so that it would be easy to 
+relate toe display to map co-ordinates. Unfortunately this is a long complex 
+calculation that takes about FIVE SECONDS on the palm. Here's the NSBasic code: 
+		<P>
+		<PRE>NS Basic routine to convert Latitude/Longitude to UTM
+
+"sub LLtoUTM(Lat as float, Long as float)        
+' results are global variables
+'formula adapted from C code on url http://www.gpsy.com/gpsinfo/geotoutm/gantz/UTMConversions.cpp          
+'East Longitudes are positive, West longitudes are negative. 
+'North latitudes are positive, South latitudes are negative
+'Lat and Long are in decimal degrees
+'If input is in dddmm.mm then need to convert
+Dim LongOrigin as float
+Dim  eccPrimeSquared as float
+Dim  N as float
+Dim  T as float
+Dim  C as float
+Dim  M as float
+Dim  A as float
+Dim  LatRad as float
+Dim  LongRad as float
+Dim  LongOriginRad as float
+Dim  Longtemp as float
+Dim  ZoneNumber as Integer
+Dim k0 as float
+Dim eradius as float
+Dim eccSquared as float
+Dim ECCcube as float
+
+k0 = 0.9996
+  eradius = 6378137  'WGS84 EquatorialRadius
+  eccSquared = 0.00669438 'WGS84 eccentricitySquared  
+  ECCcube=pow(eccSquared,3)      
+  LongTemp = (Long+180)-int((Long+180)/360)*360-180 '-180.00 .. 179.9
+  LatRad = DegtoRadians(Lat)
+  LongRad = DegtoRadians(LongTemp)
+  ZoneNumber = int((LongTemp + 180)/6)+1
+  if (Lat &gt;= 56.0) and (Lat &lt; 64.0) and (LongTemp &gt;= 3.0) and (LongTemp &lt; 12.0 ) then
+    ZoneNumber = 32   
+  end if  
+  LongOrigin = (ZoneNumber - 1)*6 - 180 + 3  '+3 puts origin in middle of zone
+  LongOriginRad = DegtoRadians(LongOrigin)
+  UTMZone=ZoneNumber
+  eccPrimeSquared = (eccSquared)/(1-eccSquared)
+  N = eradius/sqrt(1-eccSquared*Pow(sin(LatRad),2))
+  T = pow(tan(LatRad),2)
+  C = eccPrimeSquared*pow(cos(LatRad),2)
+  A = cos(LatRad)*(LongRad-LongOriginRad)
+  M = (1 - eccSquared/4 - 3*pow(eccSquared,2)/64 - 5*EccCube/256)*LatRad 
+  M=M - (3*eccSquared/8 + 3*pow(eccSquared,2)/32 + 45*EccCube/1024)*sin(2*LatRad) 
+  M=M + (15*pow(eccSquared,2)/256 + 45*EccCube/1024)*sin(4*LatRad)
+  M=M - (35*pow(eccSquared,3)/3072)*sin(6*LatRad)
+  M=eradius*M	
+  UTMEasting = A+(1-T+C)*pow(A,3)/6
+  UTMEasting=UTMEasting + (5-18*T+pow(T,2)+72*C-58*eccPrimeSquared)*pow(A,5)/120
+  UTMEasting=k0*N*UTMEasting+ 500000.0
+  UTMNorthing = M+N*tan(LatRad)*(pow(A,2)/2+(5-T+9*C+4*pow(C,2))*pow(A,4)/24)
+  UTMNorthing = UTMNorthing + (61-58*T+pow(T,2)+600*C-330*eccPrimeSquared)*pow(A,6)/720
+  UTMNorthing = k0*UTMNorthing 
+  if Lat &lt; 0 THEN
+    UTMNorthing = UTMNorthing+10000000.0 '10000000 meter offset for southern hemisphere'
+  end if
+end sub"</PRE>
+		<HR>
+		<A href="http://www.treks.com.np/gps">Back to GPS Waypoint page</A><BR>
+		<A 
+href="http://www.egroups.com/messages/nsbasic-palm/">NSBasic Palm discussion 
+group</A><BR>
+		<A href="http://www.nsbasic.com/">NSBasic Home Page</A><BR>
+		<A 
+href="http://www.trekinfo.com/">About Trekking in Nepal</A>
+		<P>Revised 8 Sep 2000 </P>
+		</table></div></BODY></HTML>
+

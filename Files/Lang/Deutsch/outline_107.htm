@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>InStr </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>InStr                                                                                                          Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>INSTR(<i>start</i> as integer, <i>s</i> as
+string, <i>pattern</i> as string, <i>type</i> as integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Durchsucht den String <i>s</i>
+von der Startposition <i>start</i> um die in
+<i>pattern</i> angegebene Zeichenfolge zu
+finden. Wenn der Typ <i>type</i> 0 ist, wird
+nach einem exakten Vergleich gesucht. Bei Typ=1 wird nicht nach der Groß- und
+Kleinschreibung unterschieden. Eine Ganzzahl wird zurückgeliefert, die entweder
+0 ist, sofern <i>pattern</i> nicht gefunden
+wurde, ansonsten die Startposition der gefundenen Zeichenfolge in <i>s</i>.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim s as string</p>
+
+<p class=Code>Dim result as integer</p>
+
+<p class=Code>s=&quot;abcdef&quot;</p>
+
+<p class=Code>result=InStr(1, s, &quot;cde&quot;, 0) ‘liefert 3 </p>
+
+<p class=Code>result=InStr(1, s, &quot;CDE&quot;, 0) 'liefert 0 wg.
+Groß/Kleinschreibung</p>
+
+<p class=Code>result=InStr(1, s, &quot;CDE&quot;, 1) 'liefert 3 </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

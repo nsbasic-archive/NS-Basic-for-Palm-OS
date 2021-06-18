@@ -1,0 +1,53 @@
+SetDESKey keyStr
+
+Establishes the encryption or decryption key to be used with the EncryptDESString() and DecryptDESString() functions.  This key value must be set before using these functions.  Once set, it will be used for all subsequent operations or until the program ends.  If the length of the key is 8 characters or less, standard DES encryption will be used.  If the key length is from 9 to 24 characters, Triple-DES encryption is used.
+Example:
+Dim keyStr as String
+keyStr = "secret"
+BNB.SetDESKey keystr
+
+EncryptDESString(plainText)
+
+Returns the encrypted value of the plainText string.  The plainText string can not be more than 248 characters in length.  The length of the encrypted string may be up to 9 characters longer than the plainText string.  Note:  the SetDESKey subroutine must have been called at least once prior to calling this function.
+Example:
+Dim plainText as String
+Dim encryptedText as String
+plainText = "The quick brown fox jumps over the lazy dog!"
+encryptedText = BNB.EncryptDESString(plainText)
+
+DecryptDESString(encryptedText)
+
+Returns the plain text value of the encryptedText string.  The encryptedText string can not be more than 250 characters in length.  Note:  the SetDESKey subroutine must have been called at least once prior to calling this function.
+Example:
+Dim encryptedText as String
+Dim plainText as String
+plainText = BNB.DecryptDESString(encryptedText)
+
+Encryption/Decryption component for the Windows Desktop
+
+There is a Windows component of the EncryptDESString() and DecryptDESString() functions.  This component is implemented as a Windows DLL file and can be called from Visual Basic/VBA and Visual C/C++.  Its purpose is to allow a conduit or other Palm Database utility to be able to encrypt or decrypt data using the same algorythms as the BitsNbytesLib routines.
+
+To use it, the EncDec.dll file must be placed in a system directory or some directory that is currently in your PATH.  For Visual Basic/VBA, include the EncDec.bas module.  For Visual C/C++, include the EncDec.h header file and link with the EncDec.lib library (note that the EncDec.dll is still required).
+
+The EncDec DLL functions have the same restrictions as their BitsNbytes library counterparts.  The main differences are that you specify the encryption key with every function call and that the functions return the length of the returned string.
+VB/VBA Example:
+Dim KeyStr As String
+Dim DecryptedStr As String
+Dim EncryptedStr As String
+Dim StrLen As Integer
+KeyStr = "secret"
+DecryptedStr = "The quick brown fox jumps over the lazy dog!"
+StrLen = EncryptData(KeyStr, DecryptedStr, EncryptedStr)
+DecryptedStr = ""
+StrLen = DecryptData(KeyStr, EncryptedStr, DecryptedStr)
+
+VC/C++ Example:
+char keyStr[25];
+char decryptedStr[251];
+char encryptedStr[251];
+int  len;
+strcpy(keyStr, "secret");
+strcpy(decryptedStr, "The quick brown fox jumps over the lazy dog!");
+len = encryptData(keyStr, decryptedStr, encryptedStr);
+strcpy(decryptedStr, "");
+len = decryptData(keyStr, encryptedStr, decryptedStr);

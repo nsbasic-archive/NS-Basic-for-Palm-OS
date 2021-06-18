@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 25d: Automatic Keyboard Pop Up</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="/images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 25d: Automatic Keyboard Pop Up</h2>
+	  <h3>Jan 7, 2003</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<p><TABLE align="center" BORDE="0" WIDTH="80%" BGCOLOR="#9DBF8D" CELLPADDING="10">
+<TR>
+<TD>
+<p>I received a question:
+<p><i>In text input, how do you display the keyboard screen as soon as the user clicks a field?</i>
+<BR>
+<BR>
+<p>I investigated how to do it after dividing it into two actions: "bring the cursor in a field" and "displaying the soft keyboard". 
+<p>First, I was interested in "displaying the soft keyboard". I searched the keyword "KeyBoard" in the PalmOS reference, and found the two API functions:<br>
+<UL>
+<LI>SysKeyboardDialog
+<LI>SysKeyboardDialogV10
+</UL>
+<p>These should be prepared to display the keyboard, but SysKeyBoardDialog needs to pass parameters, so I just ignored it and decided to use SysKeyboardDialogV10 which doesn't require a parameter or return a value. API functions like this normally work from NS Basic. 
+<p>Then, after putting a command button on the screen, I set the following line:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B><FONT COLOR="#0000FF">SysTrapSub 179,0</FONT></B><BR>
+<BR>
+<p>Compile ... Run ...<BR>
+<BR>
+<p><FONT COLOR="#FF0000"><I>Start the keyboard after moving the cursor to an input area.</I></FONT><BR>
+<BR>
+	  <p>Because the cursor was not in the filed, the error was shown...
+I thought it looks working alright despite the error, so I tried
+again after setting the cursor.<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1501.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1502.gif"><BR>
+		<BR>
+<p>Yes. If the cursor is in the field, tapping the "KEYBOARD" button brings up the soft keyboard.
+<p>Next, "bring the cursor in a field". I made a wrong judgment here:
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT SIZE="+1" COLOR="#0000FF">NS Basic should have "SetFocus" command.</FONT><BR>
+<BR>
+With this assumption, I looked though the handbook, and found this:
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT COLOR="#FF0080"><B>Cursor Id</B> moves the cursor to the specified object</FONT><BR>
+<BR>
+<p>But I couldn't find details; the handbook didn't provide it.<br>
+So I tried specifying the field's ID number like:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B><FONT COLOR="#0000FF">Cursor Id 1005</FONT></B><BR>
+<BR>
+But this is an error.<br>
+How about this:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B><FONT COLOR="#0000FF">Cursor Id,1005</FONT></B><BR>
+<BR>
+This is an error, too.<br>
+Next,<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B><FONT COLOR="#0000FF">Cursor Id Fld1005</FONT></B><BR>
+<BR>
+Error.<br>
+Maybe I am doing something totally wrong. Finally this one:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B><FONT COLOR="#0000FF">Cursor Id "Fld1005"</FONT></B><BR>
+<BR>
+It goes through.
+<p>So the combination of two lines:
+<BR><B><FONT COLOR="#FF0000">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cursor Id "Fld1005"<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SysTrapSub 179,0</FONT></B><BR>
+<BR>
+	  <p>This works fine. I was satisfied after finding how to use the Cursor Id command, but with some curiosity I checked the NS Basic's message board.
+
+<p>Mmm... I found a message "don't understand CURSOR ID". The person seemed to try the same thing. But I also found a response to the message:<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT SIZE="+1" COLOR="#FFFFFF"><I>You'd better use the SetFocus method instead of the Cursor ID command</I></FONT><BR>
+<BR>
+<p>.... I checked the handbook again. My mistake :-)<br>
+<BR><B><FONT COLOR="#FF0000">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fld1005.SetFocus<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SysTrapSub 179,0</FONT></B><BR>
+<BR>
+<p>Yes. This works.
+
+</TD>
+</TR>
+</TABLE>
+<HR WIDTH="80%">
+</BODY>
+</HTML>

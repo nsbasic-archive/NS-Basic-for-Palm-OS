@@ -1,0 +1,141 @@
+; GENERAL PROPERTIES
+;
+; All extensions must have a [General] section. Some keys are optional.
+;
+;	ExtensionName:	User visible name of extension (required)
+;	PrcName:	Name of .PRC file of extension (required)
+;	Version:	Version of extension (can contain chars) (required)
+;	Manufacturer:	Name of manufacturer of extension. (required)
+;       =HelpStart=      This key marks the beginning of the help text
+;			shown in the extension's properties. Enclose
+;			each line in double quotes and terminate the
+;			help section with the key =HelpEnd=. (optional,
+;			default = "No help available.")
+;
+
+[General]
+
+ExtensionName=BitsNbyteslib
+PrcName=BitsNbyteslib
+Version=2
+Manufacturer=DubnaWare
+
+;
+; EXTENSION HELP
+;
+
+=HelpStart=
+""
+"Shared Library BitsNbyteslib"
+""
+"This library is for work with bits and bytes with NSBasic."
+""
+"Written in Dubna, April 2001"
+""
+=HelpEnd=
+
+;
+; METHOD PROPERTIES
+;
+; This section is organized as follows:
+;       section:        [GlobalMethods]
+;                       name=index, type, numparams, helpstring
+;
+; where:
+;
+;	name:		Name of method
+;	index:		Index of function. Index will be passed as the
+;			first parameter on the evaluation stack.
+;	type:		Either "func" or "sub".  Funcs are methods
+;			that push a return value onto the interpreter's
+;			evaluation stack. Subs are methods that do
+;			not push return values.
+;	numparams:	Number of parameters required by this method.
+;       helpstring:	Descriptive text about method. (Optional)
+;
+;
+[GlobalMethods]
+OrByte= 1, func, 2, "Result = OrByte(a, b)"
+OrShort= 2, func, 2, "Result = OrShort(a, b)"
+OrInteger= 3, func, 2, "Result = OrInteger(a, b)"
+
+AndByte= 4, func, 2, "Result = AndByte(a, b)"
+AndShort= 5, func, 2, "Result = AndShort(a, b)"
+AndInteger= 6, func, 2, "Result = AndInteger(a, b)"
+
+XorByte= 7, func, 2, "Result = XorByte(a, b)"
+XorShort= 8, func, 2, "Result = XorShort(a, b)"
+XorInteger= 9, func, 2, "Result = XorInteger(a, b)"
+
+NotByte= 10, func, 1, "Result = NotByte(a)"
+NotShort= 11, func, 1, "Result = NotShort(a)"
+NotInteger= 12, func, 1, "Result = NotInteger(a)"
+
+Swap16= 13, func, 1, "Swap16(a)"
+Swap32= 14, func, 1, "Swap32(a)"
+Swap64= 15, func, 1, "Swap64(a)"
+
+ShiftByte= 16, func, 2, "Result = ShiftByte(a, b)"
+ShiftShort= 17, func, 2, "Result = ShiftShort(a, b)"
+ShiftInteger= 18, func, 2, "Result = ShiftInteger(a, b)"
+
+SignShiftByte= 19, func, 2, "Result = SignShiftByte(a, b)"
+SignShiftShort= 20, func, 2, "Result = SignShiftShort(a, b)"
+SignShiftInteger= 21, func, 2, "Result = SignShiftInteger(a, b)"
+
+CycleShiftByte= 22, func, 2, "Result = CyclShiftByte(a, b)"
+CycleShiftShort= 23, func, 2, "Result = CyclShiftShort(a, b)"
+CycleShiftInteger= 24, func, 2, "Result = CyclShiftInteger(a, b)"
+
+GetBitByte= 25, func, 2, "Result = GetBitByte(a, b)"
+GetBitShort= 26, func, 2, "Result = GetBitShort(a, b)"
+GetBitInteger= 27, func, 2, "Result = GetBitInteger(a, b)"
+
+SetBitByte= 28, func, 2, "Result = SetBitByte(a, b)"
+SetBitShort= 29, func, 2, "Result = SetBitShort(a, b)"
+SetBitInteger= 30, func, 2, "Result = SetBitInteger(a, b)"
+
+ResetBitByte= 31, func, 2, "Result = ResetBitByte(a, b)"
+ResetBitShort= 32, func, 2, "Result = ResetBitShort(a, b)"
+ResetBitInteger= 33, func, 2, "Result = ResetBitInteger(a, b)"
+
+InverseBitByte= 34, func, 2, "Result = InverseBitByte(a, b)"
+InverseBitShort= 35, func, 2, "Result = InverseBitShort(a, b)"
+InverseBitInteger= 36, func, 2, "Result = InverseBitInteger(a, b)"
+
+EqvByte= 37, func, 3, "Result = EqvByte(a, b, mask)"
+EqvShort= 38, func, 3, "Result = EqvShort(a, b, mask)"
+EqvInteger= 39, func, 3, "Result = EqvInteger(a, b, mask)"
+
+SetLowWord= 40, func, 2, "Result = SetLowWord(a, ins)"
+SetHiWord= 41, func, 2, "Result = SetHiWord(a, ins)"
+SetLowByte= 42, func, 2, "Result = SetLowByte(a, ins)"
+SetHiByte= 43, func, 2, "Result = SetHiByte(a, ins)"
+
+GetLowWord= 44, func, 1, "Result = GetLoWord(a)"
+GetHiWord= 45, func, 1, "Result = GetHiWord(a)"
+GetLowByte= 46, func, 1, "Result = GetLoByte(a)"
+GetHiByte= 47, func, 1, "Result = GetHiByte(a)"
+
+NumDec2Hex= 48, func, 1, "Result = NumDec2Hex(a)"
+NumHex2Dec= 49, func, 1, "Result = NumHex2Dec(a)"
+NumBin2Dec= 50, func, 1, "Result = NumBin2Dec(a)"
+NumDec2Bin= 51, func, 1, "Result = NumDec2Bin(a)"
+
+CRC32= 52, func, 3, "Result = CRC32(buf, count, crc)"
+
+EncryptDES= 53, func, 4, "Result = EncryptDES(src, key, dst, encrypt)"
+
+EncMD4= 54, func, 3, "Result = EncMD4(str, strLen, digest)"
+EncMD5= 55, func, 3, "Result = EncMD5(str, strLen, digest)"
+
+Version= 56, func, 0, "Result = Version()"
+
+Dec2Hex= 57, sub, 2, "Dec2Hex(a,res)"
+Hex2Dec= 58, func, 1, "Result = Hex2Dec(str)"
+Dec2Bin= 59, sub, 2,  "Dec2Bin(a,res)"
+Bin2Dec= 60, func, 1, "Result = Bin2Dec(str)"
+
+EncryptDESString= 61, func, 1, "encryptedStr = EncryptDESString(decryptedStr)"
+DecryptDESString= 62, func, 1, "decryptedStr = DecryptDESString(encryptedStr)"
+SetDESKey= 63, proc, 1, "SetDESKey keyStr"

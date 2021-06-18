@@ -1,0 +1,61 @@
+LCed is an easy to use TCP/IP shared library. It allows NS Basic programs to do simple reads and writes over a Tcp/Ip connection. It has been tested it on POSE with several ROMs and on a Visor with the Xircom wireless Ethernet module. It even restores the TCP/IP connection after sleep (when the connection is not closed from the server side). 
+
+Here are the calling conventions:
+
+fd = TcpOpen(hostname, port, timeout)
+-------------------------------------
+Hostname = string filled with dotted IP or hostname
+port     = integer for IP Port number
+timeout  = integer for timeout in mS (use 5000)
+fd       = integer; the reference or error code if negative
+
+Example:
+fd = TcpOpen("www.nsbasic.com", 80, 5000)
+If fd < 0 Then
+   msgbox "open error " + str(-fd) ' Palm error code
+end if
+
+
+TcpClose(fd)  ' closes the current connection fd
+------------------------------------------------
+fd       = integer. Value set in TcpOpen. 
+
+
+
+data = TcpRead(fd, count, matchset, timeout)
+--------------------------------------------- 
+data 	 = String. the returned data. 
+           Will be "" if timeout or connection closed.
+fd       = integer. Value set in TcpOpen. 
+count	 = integer. maximum number of characters to return
+matchSet = string, up to 2 characters. TcpRead will return 
+	   when one of these characters are encountered.
+timeout  = timeout in milliseconds.
+           This does not seem to be handled consistantly by the 
+           Palm OS.
+
+Example:
+'return when 100 chars are received, 
+' until a # or > was found in the stream, 
+' or 2.5 seconds have passed
+' or connection was closed 
+timeout = 2500
+toread = 100
+data = TcpRead(fd, toread, "#>", timeout) 
+
+
+
+written = TcpWrite(fd, data)
+----------------------------  
+fd       = integer. Value set in TcpOpen. 
+data     = string, 
+written  = integer
+
+Returns the number of bytes of data written (if negative it's an error)
+
+
+
+TcpFlush(fd)  ; flushes the input buffer
+----------------------------  
+fd       = integer. Value set in TcpOpen. 
+ 

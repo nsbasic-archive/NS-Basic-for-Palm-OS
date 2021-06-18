@@ -1,0 +1,1208 @@
+"mdl"
+9
+"Demo","appl","NSPd",1139,505,0
+"sub main()
+    global bmp as integer 
+    global kudoCount as integer
+    kudoCount=0
+end sub"
+0
+0
+"NSB Demo"
+"1,0,0"
+""
+"Installat."
+",,"
+"E1100184"
+"C:\NSBasic_Symbian\themes\Classic.pdb"
+""
+"bmpfile"
+1
+"Bmpfile1070"
+1070
+",,,..\..\..\nsbp4\files\NSB Demo\Medrules1.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1071"
+1071
+",,,..\..\..\nsbp4\files\NSB Demo\Medrules2.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1072"
+1072
+",,,..\..\..\nsbp4\files\NSB Demo\Take-A-Memo1.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1073"
+1073
+",,,..\..\..\nsbp4\files\NSB Demo\Take-A-Memo2.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1074"
+1074
+",,,..\..\..\nsbp4\files\NSB Demo\Wyzprog1.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1075"
+1075
+",,,..\..\..\nsbp4\files\NSB Demo\Wyzprog2.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1110"
+1110
+",,,C:\NSBasic\Bitmaps\logobw.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1136"
+1136
+",,,C:\NSBasic\Bitmaps\logobw.bmp,,,,,,"
+"resfile"
+1
+"Classic"
+1139
+"DBIM"
+"C:\NSBasic_Symbian\themes\Classic.pdb"
+"mnu"
+2,"Main"
+1030
+2
+"menu"
+1
+"Tell me about...","",1031
+10
+"menu"
+1
+"FAQ","","",1033
+"sub menu1033_click()
+    nextscreen ~FAQ~
+end sub"
+"menu"
+1
+"Specifications","","",1041
+"sub menu1041_click()
+    nextscreen ~Specifications~
+end sub"
+"menu"
+1
+"What Users Say","","",1034
+"sub menu1034_click()
+     nextscreen ~Kudos~
+end sub"
+"menu"
+1
+"Developing","","",1036
+"sub menu1036_click()
+      nextscreen ~Developing~
+end sub"
+"menu"
+1
+"Controls","","",1038
+"sub menu1038_click()
+     nextscreen ~controls~
+end sub"
+"menu"
+1
+"Distributing","","",1035
+"sub menu1035_click()
+    nextscreen ~Distributing~
+end sub"
+"menu"
+1
+"Documentation","","",1039
+"sub menu1039_click()
+    nextscreen ~Documentation~
+end sub"
+"menu"
+1
+"Support","","",1040
+"sub menu1040_click()
+    nextscreen ~Support~
+end sub"
+"menu"
+1
+"Contest","","",1043
+"sub menu1043_click()
+   nextscreen ~Contest~
+end sub"
+"menu"
+1
+"Purchasing","","",1037
+"sub menu1037_click()
+     nextscreen ~Purchasing~
+end sub"
+"menu"
+1
+"Help","",1032
+1
+"menu"
+1
+"About","","",1042
+"Sub menu1042_click()
+   MsgBox ~This app provides info on NS Basic/Palm 4.4.2. For more info, email sales@nsbasic.com, or visit www.nsbasic.com.~ + chr(10) + chr(10) + ~Note: This app was written using NS Basic/Palm!~
+End Sub"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"NS Basic/Palm Demo"
+"Main"
+""
+0
+"Sub Screen1004_after()
+   Dim a as String
+   a=~Welcome to NS Basic/Symbian OS - Rapid, Easy Programming for Nokia Smartphones!~+ chr(10)+chr(10)
+   a=a+~To learn about NS Basic/Symbian OS, tap the Menu button.~+ chr(10)+chr(10)
+   a=a+~NS Basic/Symbian OS was used to develop this application. It was the easiest way!~
+   txtMain.text=a
+End Sub"
+"sub Screen1004_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"bmp"
+2
+1136
+"Bitmap ID=1136,Gradient Color 1=DDDDDD,Gradient Color 2=DDDDDD,Gradient Style=1,Caption=,Alignment=2,Appearance=0,FontBold=False,FontItalic=False,Font Name=Arial,FontSize=10,FontStrikethru=False,FontUnderline=False,Caption Color=10101,Picture=,BorderStyle=0,Stretch=False,"
+"obj"
+3
+"bmp","Bmp1087",1087,64,16,28,28,#TRUE#,0,"Bmp1087",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","txtMain",1088,0,68,92,160,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1006,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Frequently Asked Questions"
+"FAQ"
+""
+0
+""
+"sub Screen1006_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"pop"
+2
+#TRUE#,0,12
+"What kind of BASIC is this?	What Palm devices does it run?	Does it run on the Palm IIIc?	Where can I buy? How much?	Has fast is it?	What support is there?	What documentation is there?	Can I distribute my apps?	How much memory is used?	Is it like NS Basic/CE or Newton?	Can you compare to NS Basic/Newton?	Can you compare to NS Basic/CE?	Can you compare to CodeWarrior?	Do NS Basic users get a break?	Is there a demo?	Can I Hotsync?	What about Japanese & Chinese?	Are new features coming?	What debugging is there?	Will it run on a Mac?	What about Linux?	Who is NS BASIC Corporation?	So what does the NS stand for?	 "
+"obj"
+3
+"pop","popFaq",1009,0,16,12,152,#TRUE#,0,"Choose a question",0,0,0
+"Sub object1009() 
+    Dim a as String
+    Dim b as String
+    Dim c as String
+    Dim d as String
+    Dim e as String 
+    Dim f as String
+    Dim g as String
+    Dim h as String  
+    answer.text=~~
+    answer.Redraw
+    Select Case popFaq.selected
+Case 1
+a=~NS Basic/Palm is a complete BASIC development environment for Palm OS devices.~
+a=a+~ NS Basic/Palm provides a full, modern implementation of BASIC, with proper subroutines, user defined data types and no line numbers.~
+a=a+~ The development environment runs on a Windows desktop. Programs can be tested using the POSE emulator, which runs on Windows, or on the device itself.~ 
+a=a+~NS Basic/Palm produces standard Palm .prc files as executables.~ 
+a=a+chr(10) + chr(10) + ~NS Basic/Palm includes over 150 statements and functions. ~
+a=a+~Support is provided for file I/O, serial I/O, trigonmetric and statistical functions and a set of standard screen input and output objects and dialog boxes. ~
+a=a+~Applications you create are freely distributable and are write-once, run anywhere. Includes a 150 page spiral bound Handbook and lots of sample code.~ 
+a=a+chr(10) + chr(10) + ~The environment features a Visual Designer, which allows you to graphically lay out your objects and set their properties.~ 
+
+Case 2
+a=~It will run on all Palm OS devices running Palm OS 3.0 or newer. ~
+a=a+~We've tested it on devices such the Palm III, Palm IIIx, Palm V, Palm VII, Symbol 1500, Symbol 1740, Kyocera, Handera, Sony, Visor Deluxe and Qualcomm PDQ 1900 with no problems. ~
+a=a+~It works on all Palm OS 3.x and 4.x devices (If you've used NS Basic/Palm on other devices sucessfully, please let us know.)~ + chr(10) + chr(10)
+a=a+~We've even tried it on Palm OS 2.0.5 units, such as the Palm Pro. It works, but can't use features that were introduced with Palm OS 3.0. ~
+a=a+~For example, it can't use the additional fonts. ~   
+
+Case 3
+a=~Yes. In Rev 1.0, it uses the default color palatte. In future releases, you'll be able to adjust the colors.~  
+
+Case 4
+a=~NS Basic/Palm is available for $149.95 USD directly from NS BASIC Corporation's website or by calling 1 888 NSBASIC (+1 416 264-5999). ~
+a=a+~It is also available from a number of resellers of Palm OS software: they are listed on the website.~  
+
+Case 5
+a=~Most applications written in NS Basic/Palm appear to run at a similar speed as the built in applications. ~
+a=a+~Operations which involve updating the screen should be just about the same speed. It isn't as fast for heavy computation: ~
+a=a+~we will be addressing this in future releases. In Rev 1.0, we concentrated on provided a large feature set. ~
+
+Case 6
+a=~NS BASIC provides support by email and on a special BBS on our web site. We will post bug fix updates to our ftp site on a regular basis. ~
+a=a+~Check our BBS for the latest announcements. ~
+
+Case 7
+a=~We provide a 150 page handbook with NS Basic/Palm. It is spiral bound, so it lies flat. In addition, documentation and examples for commands and functions are available in on line help.~
+
+Case 8
+
+a=~Yes. The programs you write will run on any Palm OS device can be distributed royalty free.~
+
+Case 9
+a=~The NSBRuntime is about 88k. Your program size will vary from 2k on up, depending on how big your program is. ~
+a=a+~Since NS Basic/Palm compiles your program into pcode, programs are very memory efficient. ~
+a=a+~You can combine the runtime with your program into a single .prc app or leave them as separate modules.~
+
+Case 10
+
+a=~There is not any practical way to do this on handheld computers.~ + chr(10) + chr(10)
+a=a+~These devices are all very resource bound: there isn't much memory, cpu speed or screen size. ~
+a=a+~To make a product like this work efficiently, one has to make full use of what is available in the hardware and the ROM. ~
+a=a+~The devices all have very different architectures. Cross OS compatibility has a real overhead cost, and there's no room for overhead on these devices.~ + chr(10)+chr(10)
+a=a+~Furthermore, each unit has a unique user interface. We wouldn't make people happy if the applications they created for Palm looked like Windows CE apps.~ +chr(10)+chr(10)
+a=a+~The BASIC itself is pretty much the same. ~ + chr(10)+chr(10)
+a=a+~What we can do is stick with our core objective: make a development tool that is easy and rewarding to use. ~
+a=a+~Add good documentation and support, and the family resemblance of the products is complete. ~
+
+Case 11
+a=~Like NS BASIC for the Newton, NS Basic/Palm is small, easy to use and powerful. ~
+a=a+~Both languages are based on industry standard BASIC and make heavy use of resources found in the underlying OS. ~ + chr(10)+chr(10)
+a=a+~NS Basic/Palm doesn't have line numbers, and is fully structured with block IF THEN ELSE, CASE and DO WHILE constructs. ~
+a=a+~Code is entered as part of the Visual Design environment, making it much easier to have your program respond to actions of the user. ~ + chr(10)+chr(10)
+a=a+~You do all development on a Windows computer. To test your program, you use the Generate command to produce a standard Palm .prc file. ~
+a=a+~The program can then be run on the Palm OS Emulator (POSE) on your desktop, or downloaded to your Palm on the next Hotsync.~
+
+Case 12
+a=~Like NS Basic/CE, NS Basic/Palm is easy to use and powerful. ~
+a=a+~Both languages are based on industry standard BASIC and make heavy use of resources found the underlying OS. ~
+a=a+~NS Basic/Palm requires far less memory for runtime applications. ~ + chr(10)+chr(10)
+a=a+~NS Basic/Palm is a typed language. You need to DIM all variables before using them, and identify their type as Integer, String, etc. ~
+a=a+~A nice addition is the ability to create your own user data type structures.~+chr(10)+chr(10) 
+a=a+~You do all development on a Windows computer. To test your program, you use the Generate command to produce a standard Palm .prc file. ~
+a=a+~The program can then be run on the Palm OS Emulator (POSE) on your desktop, or downloaded to your Palm on the next Hotsync. ~
+
+Case 13
+a=~Code Warrior is the preferred environment for professional programmers developing commercial applications. ~
+a=a+~It is based on the C programming languages, with a lot of include files that are specifically for the Palm OS. ~
+a=a+~C++ extensions are supported. There is a substantial learning curve, even for experienced C programmers, ~
+a=a+~who have to learn the specific APIs and memory management requirements. ~ + chr(10)+chr(10)
+a=a+~NS Basic/Palm simplifies things considerably. It takes care of memory management for you. It uses a familiar Visual Basic like environment and language. ~
+a=a+~The learning curve is quite short.~ + chr(10)+chr(10)
+a=a+~One of testers reported it took an hour and half after opening the NS Basic/Palm package to duplicate most of a project he had worked on for a month using CodeWarrior.~ + chr(10)+chr(10)
+a=a+~Of course, if you have to do heavy calculations or get into the guts of the machine, CodeWarrior is still the way to go. ~
+a=a+~Even if you are an ace Codewarrier for Palm programmer, you will find NS Basic/Palm is a much faster way to prototype apps. ~
+
+Case 14
+a=~Yes! There is a special order form. You will need your serial number to get the discount. ~
+
+Case 15
+
+a=~We do not distribute a demo. As with any programming environment, NS BASIC is not easy to evaluate properly without its documentation. ~
+a=a+~NS Basic/Palm comes with a 150 page handbook and lots of samples.~ + chr(10)+chr(10)
+a=a+~On the other hand, we try to have comprehensive information available on our web site, and we are happy to answer specific questions. ~
+a=a+~Start by doing a Tour of NS Basic/Palm on our website.~ + chr(10)+chr(10)
+a=a+~And there's always our 30 day money back guarantee.~ 
+
+Case 16
+a=~NS Basic/Palm allows you to create your own databases directly within a program. A database is a collection of records that you can read by record id ~
+a=a+~or sequentially. The format of each record is up to you: a record is a series of values of numbers, string, dates and other data type. ~
+a=a+~Your program is responsible for the format of the records. ~ + chr(10)+chr(10)
+a=a+~The databases that NS Basic/CE creates are standard Palm databases. ~
+a=a+~The backup bit it set, so they are automatically copied to the Archive folder on your Desktop during a Hotsync. ~ + chr(10)+chr(10)
+a=a+~You can copy databases to the Palm by using the Install option of the Palm Desktop, then use NS Basic/Palm to read and write the files.~ + chr(10)+chr(10)
+a=a+~On the desktop, a Visual Basic program could open the copy of the file in the Archive folder. ~ + chr(10)+chr(10)
+a=a+~More advanced control of files on the Palm from the desktop is possible using the SyncManager, documented in 'Developing Palm OS Conduits',~ 
+a=a+~from Palm Inc. The SyncManager includes a number of calls that allow you to read and write databases and records on the Palm unit. ~
+a=a+~Using these calls from a desktop Visual Basic or C program, you can create your own conduits to read, update and write out databases used by NS Basic/Palm. ~ + chr(10)+chr(10)
+a=a+~There are third party products that allow you to create conduits using Visual Basic. Check out Tech Note 2 in the Info section of our website for the latest list of tools.~ 
+
+Case 17
+a=a+~Yes. We even have a version of the Handbook in Japanese. The Palm screen fonts do not appear on the desktop screen, but are there at runtime on the device.~
+
+Case 18
+a=~We want to make sure the current product is stable before we start introducing a bunch of new features. ~
+a=a+~In no particular order, we looking at IR communications, TCP/IP and performance improvements. ~
+a=a+~We're looking for feedback about what's most important for you. ~
+
+Case 19
+a=~You can test your programs on the Windows desktop using the Palm OS Emulator, a true emulator of the Palm OS. ~
+a=a+~There are also commands you can use while debugging your program, such as DISPLAY, which show all your variables.~ 
+
+Case 20
+a=~We like Macs here. We've tested NS Basic/Palm on a Mac running Virtual PC: it works fine. We also have reports that it works well under SoftWindows. ~
+
+Case 21
+a=~Yes. It runs under Linux, using Win4Lin and VmWare.~
+
+Case 22
+a=~NS BASIC was formed in 1993 to create applications for developers using hand held computers. The initial product, NS BASIC for the Newton, ~
+a=a+~started shipping in 1994 and has consistently been one of the top selling packages on the Newton platform. The product has been continuously updated since its first release.~ + chr(10)+chr(10)
+a=a+~In late 1997, NS BASIC released its next product, NewtCard, a product inspired by Apple's HyperCard application. ~
+a=a+~NewtCard has probably garnered more 'Best of' awards than any application produced for hand held computers.~ + chr(10)+chr(10)
+a=a+~NS Basic/Newton and NewtCard are two of the three software products to garner a 'First Class Award' from Mobile Computing.~ + chr(10)+chr(10)
+a=a+~In 1998, we released NS Basic/CE. The product made it possible for many people to easily create applcations for Windows CE. ~
+a=a+~The product has gotten top scores in many reviews, and continues to be actively developed and sell well. ~ + chr(10)+chr(10)
+a=a+~Over the years, NS BASIC Corporation has developed a large body of special expertise in creating development environments for hand sized computers. ~
+a=a+~Combining effective user interfaces for small, pen based screens with efficient use of resources built into the ROM, ~
+a=a+~NS BASIC's applications are surprisingly powerful, small, and easy to use. ~ + chr(10)+chr(10)
+a=a+~You can contact NS BASIC Corporation by email at info@nsbasic.com, phone at 1 888 NSBASIC (416 264-5999) or fax at 416 264-5888.  ~
+
+Case 23
+a=~Nice & Smart.~
+
+End Select 
+
+answer.text=a 
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","answer",1011,4,32,128,148,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1016,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"What users say..."
+"Kudos"
+""
+0
+"Sub Screen1016_after()
+   Dim a as String
+   a=a+~We've gotten dozens of favorable comments back from our users. Sometimes they just want to encourage us, but others ~
+   a=a+~tell of types of apps they are developing and other tools they tried. Read on...~
+   fldkudos.text=a
+End Sub"
+"sub Screen1016_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,30000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldkudos",1017,0,16,128,148,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1138",1138,104,146,12,40,#TRUE#,0,"Next...",0,0,0
+"Sub object1138()
+    Dim a as String
+   kudoCount=kudoCount+1
+Select Case kudoCount
+Case 1
+  a=~'NS Basic is excellent. It means that I can now get all my own Visual Basic utilities working on my Palm. I will be recommending it. Thanks.' -- Ian Hutchings, England~
+Case 2
+  a=~'I really am pleased with the product!' -- Peter Savas~
+Case 3
+  a=~'Great Product - better than the CE one (which I also have!) and that was fantastic.' -- Tim Kiel, England~
+Case 4
+  a=~'I am very impressed.' -- Dr.H.P. Heimes, Germany~
+Case 5
+  a=~'Very cool product' -- Stewart Alpert~  
+Case 6
+  a=~'I just received NS Basic/Palm this weekend, and also own NSBasic/CE. I liked the CE version, but found it hard to develop on the CE machine itself. ~
+  a=a+~I think the Palm approach is fantastic. I was able to install it, Install POSE, and whip up a quick prototype in a relaxing Sunday Afternoon. ~
+  a=a+~Anyway, thanks for a great product, and I can't wait to talk my contract into a development project.' -- Raul Escobar~
+Case 7
+  a=~'Really great language. My program is looking great in only one hour!!! Try that with CodeWarrior on the Mac....' -- Brandon Amison~
+Case 8
+  a=~'...the product is selling, the platform is growing, and more and more VB/Windows guys like me are seeing the need to port! All good news for you! ~
+  a=a+~Thanks again. I really appreciate all your help. More companies should take their customer service cues from you guys!' -- Peter Savas~
+Case 9
+  a=~'I just received NS Basic/Palm and ran the first tutorial, installed the program and runtimes on my Palm. It worked perfectly. I am awed. ' -- Fred Thorlin~
+Case 10
+  a=~'I thank the careful attention that NS BASIC and you treated of my problem. That only demonstrates the professionalism and affection with that NS BASIC offers to your Customers. ' -- Celi da Rocha, Brazil~
+Case 11
+  a=~'Thanks for the prompt response George, I feel that the development community is in good hands with your team. I've installed NS Basic and noticed a few things... ~+chr(10)
+  a=a+~*	New/first application was created within an hour of getting NSBasic - it was very easy to re-utilize knowledge of basic/vb ~+chr(10)
+  a=a+~*	I like the default application icons ~+chr(10)
+  a=a+~*	Bitmaps work very well too ~+chr(10)
+  a=a+~*	The database handling works very well - I'll be setting up a serial app soon. ~+chr(10)
+  a=a+~*	I like the way the fonts work - I use the various symbols a lot ~+chr(10)
+  a=a+~Looking forward to updates. Keep up the excellent work - you & your team are doing a great job! ' -- Jeff Debrosse~
+Case 12
+  a=~'Thanks for producing this product. I would have no problem recommending it to anyone interested in developing for the PalmOS. ' -- Michael Frangiskakis~
+Case 13
+  a=~'So far I am very happy with the ease of use of the IDE. I have been able to create functioning (although not very functional!) programs in a few days~
+  a=a+~without a lot of effort, and it has been several years since I did any programming. ' -- Joe Shuman~
+Case 14
+  a=~'Thanks. The product itself is great and I believe the only quality combined with ease of use for the Palm out there right now. ' -- Stanislav Fritz~
+Case 15
+  a=~'NSBasic is great.' -- Scott Cismoski~
+Case 16
+  a=~'Like the program, very easy to use.' -- Kevin McGowan~
+Case 17
+  a=~'First, a quick background. I've been experimenting with Palm development tools for months now. By trade, I'm a Delphi/SQL programmer with a few years of Visual Basic experience. ~
+  a=a+~I've also got a touch of ANSI C++ from college. I thought that I might be able to work my way into using C (either in GCC or CodeWarrior) to create Palm apps, ~
+  a=a+~but the learning curve for me was a bit too frustrating. That was mostly because I can usually spend only about 30-60 minutes at a time coding at home. ~+chr(10)+chr(10)
+  a=a+~In addition to GCC/CodeWarrior (and a few of the visual IDE programs that use GCC underneath), I've looked at Quartus Forth, PDAToolbox, and CASL. ~
+  a=a+~I eventually bought CASL, and have been working on a program for the past three or so weeks. Then I came across NS Basic. *grin* ~+chr(10)+chr(10)
+  a=a+~I was a little leary of spending $100 without really seeing the product, but I trusted that the 30-day return policy would be honored if I didn't like it. ~
+  a=a+~I ordered my copy last Thursday, and decided to have it shipped express. It arrived Friday, and after flipping through the manual, was pretty excited about getting started. ~
+  a=a+~Well, to make a short story long *wink*, as of Wednesday night (5 days after receiving the software), I have a usable program! It's not completely finished, ~
+  a=a+~as I need to store a couple preferences and load them at startup (which I attempted to do, but had some problems), and I just thought of another feature this morning. ~+chr(10)+chr(10)
+  a=a+~I'm pretty pleased with the product. There are some quirks that need worked out, mostly in the IDE, but it's a young product that I'm sure will get better. ~
+  a=a+~I have found a couple of language bugs, but also discovered work-arounds for them. I am compiling a list of issues that I intend on sending in 'any day now'. ~
+  a=a+~This product is easy to use, does what I want it too (mostly...still need a table object and modal forms), and seems pretty stable. ~
+  a=a+~Oh sure, it would be nice if we could compile self-contained prc files (which I hope is something on the drawing board), but for version 1.01, this is a great tool. ~ + chr(10)+chr(10)
+  a=a+~Thanks NS Basic. If there are any CASL developers reading this and considering looking at NS Basic, do it! You won't be sorry.'~
+
+Case 18
+  a=~'Personally, I have an incredible amount of respect (and awe) of individuals who can build development tools. Am having a good experience with NS basic. ~
+  a=a+~(had nsbasic for my Newton and was delighted to see it for palm.)~+chr(10)+chr(10)
+  a=a+~I'm using nsbasic and hoping life can get a little simplier. (Have Satellite Forms but got frustrated with 'new' owners marketing strategy. ~
+  a=a+~Have CodeWarrier - apps run fast - but take a lonnnng time to build/debug for someone with limited c). ~+chr(10)+chr(10)
+  a=a+~With NSBasic - glad to see that the standard palm data format was used (less categories, which can be a lot of work). ~
+  a=a+~It makes it easier to do conduits. NSBasic is easy to install, even with the runtime element. The challenge is to get the last 10% (like the modal form), to do basic apps. ~+chr(10)+chr(10)
+  a=a+~Keep up the good work and best luck for success! ' -- Alan McCarty~
+  
+Case 19
+  a=~'I agree with everything has been said; NSBasic IS a young product, but it is going to be a winner. ~
+  a=a+~One thing I would like to underline, the support team (BTW, only ONE person? Just Mr. Henne?) is great. ~
+  a=a+~Check this out: posted a question about a possible bug on saturday night, got a reply SUNDAY morning! Mr. Henne, do you ever get any sleep?? :):):)' - from the Palm newsgroups~
+
+Case 20
+  a=~I should take a moment to say that I have been an admirer of your products since the Newton days. ~
+  a=a+~Though I worked with NewtonScript back then and never actually used NSBasic I marvelled at its conceptual elegance: BASIC on a Palmtop! ~
+  a=a+~As I started with BASIC on a GE timesharing system over thirty years ago, the existence of NSBasic on Newton perfectly represented for me the progress of the intervening decades. ~
+  a=a+~Today, not being in a position to tackle the CodeWarrior learning curve for the project at hand, I am happy to have an excuse to join the NSBasic camp and write in BASIC, ~
+  a=a+~if not on my Palm, at least for it. ~+chr(10)+chr(10)
+  a=a+~And thank you for providing an old fashioned printed manual. You would think usefulness was a dirty word these days. ~+chr(10)+chr(10)
+  a=a+~'Keep up the great work!' -- Eric Cornwell~
+  
+Case 21
+  a=~'Wow! What an impressive response time! Thanks for your help, and thanks for a great product.' -- Dean Carroll~
+Case 22
+  a=~'Great Product!!!' -- John R Franklin PhD~
+Case 23
+  a=~'You have a wonderful product and wonderful service... You know, I originally got NSB/Palm because I figured the learning curve would be easier, ~
+  a=a+~and intended to use it as a springboard (no pun intended) to later c and c++ development for the palm, but with support like you and your company offer ~
+  a=a+~I really think that it's perfectly reasonable to stay with NSB/Palm as my development environment of choice. Simply put, you guys rock!' -- Steven Lacher~
+Case 24
+  a=~Thanks and congratulations' -- Luca Raffaelli~
+Case 25
+  a=~Boy, you just saved me a lot of time! Once again your excellent tech support paid off for me. Thanks.' -- Michael Frangiskakis~
+
+Case 26
+  a=~'By the way, I demonstrated my application with the Palm 3e to my clients today. It communicates with a external recorder which downloads data to Palm via the serial port, ~
+  a=a+~saves the data to the Palm Database, draws a graph of the result. The Palm is taken away from the recorder and then you download this data at a later stage to the PC. ~
+  a=a+~I was able to do this with NsBasic to put this application together in 4 working days. Pretty good' -- Mike Cotton, South Africa~
+
+Case 27
+  a=~'You have done a super job with NS Basic. As a VB programmer I find NS Basic very straight forward to pick-up. ~
+  a=a+~Much of the code that I have used in my current project has been copy/pasted from an old VB3 project. I look forward to further releases. ~+chr(10)+chr(10)
+  a=~I have created my first Palm app and this is really cool! We'll be making tools for HVAC (Heating, Ventilating and Air Conditioning) engineers and field technicians. ~
+  a=~We offer similar app for Windows but many customers are asking for the same things on the Palm. Nobody want to carry around a notebook any more!' -- Jim Judge~
+
+Case 28
+  a=~'I was able to create something that was functional as well as useful in less than 2 hours. Good stuff.' -- David Bowden~
+Case 29
+  a=~'I installed NSBasic/Palm in English Windows and it runs well. I can develop my applications quickly. It is a great product.' -- Lai Yiu Lam, Hong Kong~
+
+Case 30
+  a=~'My 1st app has been in the field for over a month, and has been 100% reliable. I've finished the Palm part of my 2nd application, and have been buried up to about 3 feet over my head in some old,~
+  a=a+~ nasty code written by another individual in Access 95, who mainly used wizards, or so it would appear from the code, which I need to modify for my 2nd application to interface with. ~
+  a=a+~ I love NS Basic... it reminds me of the bad old days when we were banging out code on the HP 2000's - had to make it lean and mean. Keep up the good work' -- Doug Kruze~
+
+Case 31
+  a=~'Thank you for the upgrade. NS Basic/Palm is getting better every week. Congratulations for your excellent work.' -- Lino E. Costa, Argentina~
+Case 32
+  a=~'I got my package this weekend and I love the book! Spiral bound is SO much better than the others - you guys do pay attention to details. Thanks!!' -- Michael Wegner~
+Case 33
+  a=~'I just wanted to thank you for producing such a great and wonderful program such as NSBasic. ~
+  a=a+~We at Empowering Technologies are looking forward to the next contest as well as the next release of NSBasic. Keep up the great work!!!!' -- Thomas Chabra~
+Case 34
+  a=~'This is one SUPER product! I am very impressed! I did'nt expect to find the documentation built into the program either! Installation and setup was great! ~
+  a=a+~No problems on Win 98 at all. One thing I found out about the Palm IIIe similiar to most of the upper end Microsoft products is that they DO WHAT THEY SHOULD and RELIABLY ~
+  a=a+~even though you may pay a little more for them it SURE IS WORTH IT! I put NsBasic in the same category! Sure glad I did'nt got the Code warrior route now! This is great. Thanks again' -- Kent Willyard~
+Case 35
+  a=~'First let me say how pleased we are with NS Basic/Palm. While we've only used it for a couple of weeks, it's great. Performance is acceptable and while we've gotten a number of system errors, ~
+  a=a+~they're not always reproducible or incapable of workarounds. Thank you again for a terrific product. ' -- Robert Delikat~
+Case 36
+  a=~'I just have to say that you offer the best software support I have EVER experienced. Obviously there are a few teething problems with NSB, but your attitude makes it all totally tolerable. ~
+  a=a+~It's even worth having a problem just to experience your service!! Thanks, and I am recommending NSB to everyone. ' -- Hugh Denholm, Thailand~
+Case 37
+  a=~'And by the way, after working on it for 1 day, I can say - Great product. ' -- Srinivas R. Loka~
+Case 38
+  a=~'I love your NSBasic compiler. I use Visual Basic 6 on a regular basis, so NSBasic was a snap for me to pickup. ' -- Jack Sorenson~
+Case 39
+  a=~'it is pretty neat to be able to toss together a hello world style app in a couple minutes with one line of code and a button! ' -- Joel A. Foner~
+Case 40
+  a=~'Thank you! Having a lot of fun so far! Very nice product. I've been waiting a LOOONG time for something like this!.' -- Michael Taylor~
+Case 41
+  a=~'Thank you very much for NS Basic/Palm. This product is great, and I find that all of you have made an excellent job with this. Good luck in the future!' -- Patrik Engberg, Sweden~
+Case 42
+  a=~'We have compared a lot of dev environments for the Palm platform and we are impressed by your product. ~
+  a=a+~Especially when compared to such expensive (and buggy) software as Satellite Forms' -- Kambiz Darabi, Germany~
+Case 43
+  a=~'TBTW, Fantastic product, I was battling with Codewarrior and C to develop a prototype for my Boss, ~
+  a=a+~I spent a month working on (Lack of C knowledge) but ordered NSBasic and knocked it up in 4 hours!!! Many many thanks!! ' -- Chris Priest~
+Case 44
+  a=~'Now I'm a bit more used to it, NSBasic's a nice little system. It's made me a convert to the idea of Palm computing!' -- Keith McCormack, England~
+Case 45
+  a=~'Am using NSBasic/Palm and loving it. Great job!' -- Mark Ebell MD, MS~
+Case 46
+  a=~'Thank you for all of your hard work and ingenuity. I think that you have written a very powerful and versatile IDE, and I look forward to future developement.' -- Lonnie Kendall~
+Case 47
+  a=~'Thanks for a wonderful product and I look forward to future revisions!' -- Hood Gardner~
+Case 48
+  a=~'...no problem in the field. The guys love it, and NSBasic is a great product in my book. You can quote me on that.' -- Douglas J. Kruse~
+Case 49
+  a=~'this program is just what I was looking for!!!' -- Patrick J. Manganiello~
+Case 50
+  a=~'By the way... GREAT PRODUCT!!!!!' -- Ron Madow~
+Case 51
+  a=~'Again - thanks for writing NSBasic - it's the easiest way I've seen to handle a palm.' --Stan Armington, Nepal~
+Case 52
+  a=~'More companies should offer this kind of customer support, timely, accurate:) Computer Associates should take note - they're awful.' -- Brian Reed~
+Case 53
+  a=~'What started out as just an off hand suggestion, has come to fruition in a few short months, about 3 months ahead of schedule from my original target date - ~
+  a=a+~thanks to the ease of programing with your fine product, and the great support from you. ~
+  a=a+~I would (and have) recommended your product to anyone who needs a good, rugged platform to write applications for the Palm.' -- Douglas J. Kruse~
+Case 54
+  a=~'I wish more companies have your customer service. Feel free to use me as a reference.' -- Rami Habal, MIT~
+Case 55
+  a=~'Thank you very much. This is a great product.' -- Tim Jackson~
+Case 56
+  a=~'Thank you again for sending a great product.' -- Tsuyoshi Fukuda, Japan~
+Case 57
+  a=~'Thanks for the rapid response - I really appreciate the overtime you guys put in for support - it makes all the difference in the world... Keep up the good work!' -- Michael Strupp~
+Case 58
+  a=~'I received the NSBasic/Palm today. Just wanted to say that I'm really impressed with it. ~
+  a=a+~Its really a lot more than I expected so I'll be getting the NSBasic for windows CE next.' -- Hector Marroquin~
+Case 59
+  a=~'Just installed my NS Basic the other day, and can I say IT ROCKS! Not only can you use BASIC syntax, I had a test APP running on my Palm in less than an hour! Thanks guys!' -- Tom Streiff~
+Case 60
+  a=~'Thanks for your support... NS Basic rocks!' -- Phil Drummond~
+Case 61
+  a=~'Just wanted to send a note to let you know I'm a happy customer with NSBasic/palm. It started out kinda disappointing, but found the fault was with the way I handled some data checking, ~
+  a=a+~reworked my code and working just fine now and am very pleased with the product, keep up the good work....Danny (maker of Books of the Bible for PalmOS)' -- Danny H. Newport~
+Case 62
+  a=~'I'm having no problem so far putting together a very usable prescription writing program for physicians...development's going faster than ~
+  a=a+~I expected, thanks to your amazing IDE!' -- Joseph Fishkin, MD~
+Case Else
+  kudoCount=0
+End Select
+fldkudos.text=a
+
+End Sub"
+"vew"
+4,1021,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Language Specifications"
+"Specifications"
+""
+0
+""
+"sub Screen1021_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"pop"
+2
+#TRUE#,0,5
+"Statements	Variable Types	Functions	Screen Objects	Shared Libraries"
+"obj"
+3
+"pop","cat",1023,12,24,12,128,#TRUE#,0,"Category",0,0,0
+"Sub object1023() 
+    Type.clear 
+    values.text=~~ 
+    Type.selected=0
+    Select Case cat.selected   
+    Case 1 
+       Type.add ~Structure~,nodisplay
+       Type.add ~Flow of Control~ ,nodisplay
+       Type.add ~Menus~ ,nodisplay
+       Type.add ~Variables~ ,nodisplay
+       Type.add ~Drawing~ ,nodisplay
+       Type.add ~Other~ 
+    Case 2
+       Type.add ~List types~
+    Case 3 
+       Type.add ~Math~,nodisplay
+       Type.add ~Trigonometric~,nodisplay
+       Type.add ~String~ ,nodisplay
+       Type.add ~Date~,nodisplay
+       Type.add ~Time~,nodisplay
+       Type.add ~Miscellenous~,nodisplay
+       Type.add ~Database~,nodisplay
+       Type.add ~Serial~
+    Case 4 
+       Type.add ~Objects~,nodisplay
+       Type.add ~Methods~,nodisplay
+       Type.add ~Properties~,nodisplay
+    Case 5
+       Values.text=~These libraries add additional functions to NS Basic: SymbolLib, MathLib, SystemLib, ScreenLib, BitsNBytes, KyoceraLib, HandEraLib~ 
+    End Select
+End Sub"
+"pop"
+2
+#TRUE#,0,6
+""
+"obj"
+3
+"pop","type",1025,12,40,12,144,#TRUE#,0,"Type",0,0,0
+"Sub object1025()
+   Dim s as Integer 
+   Dim a as String
+   Select Case cat.selected*10+Type.selected 
+   Case 11
+a=~END FUNCTION, END SUB, EXIT FUNCTION, EXIT SUB, FUNCTION, SUB~
+Case 12
+a=~CALL, CASE, CASE ELSE, CHAIN, DO, DO UNTIL, DO WHILE, END SELECT, ENDIF, EXIT DO, EXIT FOR, FOR, GOSUB, GOTO, IF, LABEL, NEXT, NEXTFORM, RETURN, SELECT CASE, STOP~
+Case 13
+a=~MENUDRAW, MENUERASE, MENURESET~
+Case 14
+a=~DEFINE, DIM, DISPLAY, END TYPE, GLOBAL, TYPE~
+Case 15
+a=~CREATEWINDOW, DRAWBITMAP, DRAWCHARS, DRAWLINE, DRAWRECTANGLE, ERASEWINDOW, FILLRECTANGLE, REDRAW, DESTROYWINDOW~
+Case 16
+a=~BEEP, CURSOR, DELAY, LET, MSGBOX, SETCURRENTWINDOW, SETEVENTHANDLED, SOUND~
+Case 21
+a=~INTEGER, FLOAT, DATE, TIME, STRING, BYTE, SINGLE, DOUBLE, SHORT, DATABASE, USERTYPE~
+Case 31
+a=~ABS, ASC, CEILING, CHR, FLOOR, INT, MOD, RAND, REM, ROUND, SIGN~
+Case 32
+a=~ACOS, ASIN, ASINH, ATAN, ATAN2, ATANH, COS, COSH, DEGTORADIANS, EXP, LOG, LOG10, POW, POWER10, SIN, SINH, SQRT, TAN, TANH~
+Case 33
+a=~FORMAT, INSTR, LCASE, LEFT, PROPER, RIGHT, RIGHTPAD, RTRIM, STR, TESTNUM, TRIM, TRUNC, UCASE, VAL, LEFTPAD, LEN, LTRIM, MID, NOOCCURS~
+Case 34
+a=~ADDDAYS, ADDMONTHS, ADDYEARS, DATEMMDDYY, DATEVAL, DAY, DAYOFWEEK, DAYOFYEAR, FIRSTOFMONTH, LASTOFMONTH, MMDDYYTODATE, MONTH, NOW, POPUPDATE, SUBTRACTDAYS, SUBTRACTMONTHS, SUBTRACTYEARS, TODATE, TODAY, YEAR, YEARMONTH~
+Case 35
+a=~HOUR, HOURMIN, HOURMINAMPM, MINUTE, POPUPTIME, SECOND, TIMEVAL,TOTIME~
+Case 36
+a=~ALERT, GETEVENTTYPE, GETKEY, SYSEVENTAVAILABLE~
+Case 37
+a=~DBCLOSE, DBCREATE, DBDELETE, DBERASE, DBFIND, DBGET, DBGETNORECS, DBINSERT, DBOPEN, DBPOSITION, DBPUT, DBREAD, DBREADNEXT, DBREADPREV, DBRESET, DBUPDATE~
+Case 38
+a=~SERIALCODE, SERIALDRAW, SERIALHANGUP, SERIALOPEN, SERIALRECEIVE, SERIALSEND, SERIALSET~
+Case 41
+a=~BITMAP, BUTTON, CHECKBOX, FIELD, GADGET, LABEL, LIST, POPUP, PUSHBUTTON, REPEATER, SCROLLBAR, SELECTOR, SHIFT INDICATOR~
+Case 42
+a=~ADD, CLEAR, CURRENT, HIDE, ITEMTEXT, MAX, MAXCHARS, MIN, NOITEMS, PAGESIZE, REDRAW, REMOVE, SELECTED, SETFOCUS, SHOW, STATUS, TEXT~
+Case 43
+a=~NAME, ANCHOR LEFT, AUTOSHIFT, CHECKED, DYNAMICSIZE, EDITABLE, FONT, FRAME, GROUPID, HAS SCROLLBAR, HEIGHT, LABEL, LEFT, LEFT JUSTFIED, MAXCHARS, NONBOLD FRAME, NUMBER VISIBLE, NUMBERIC, RESOURCEID, SINGLE LINE, STATUS, TEXT, TOP, UNDERLINE, VISIBLE, WIDTH~
+End Select
+values.text=a
+End Sub"
+"fld"
+1
+#TRUE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,500,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","values",1027,12,64,92,132,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1045,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Contest"
+"Contest"
+""
+0
+"sub Screen1045_after()
+   intro.text=~From time to time, NS BASIC holds programming contests. ~
+   intro.text=intro.text+~Awards are given in three categories: Business, Games and Open. Here are a couple of screenshots of the winners in each category. ~
+   intro.text=intro.text+~Click on start, and each screen will display for 3 seconds.~
+   bmp=0
+end sub"
+"sub Screen1045_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#TRUE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,400,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Intro",1049,4,20,116,148,#TRUE#,0,"",0,0,0
+"sub object1049()
+
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1051",1051,40,140,12,80,#TRUE#,0,"Start the show!",0,0,0
+"Sub object1051()
+   CreateWindow(~bitmaps~,1,1,160,160) 
+   For bmp=1070 to 1075
+    DrawBitmap bmp,0,0
+    Delay 3
+   Next  
+   DestroyWindow ~bitmaps~ 
+   NextScreen ~Contest~
+End Sub"
+"vew"
+4,1055,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Developing Apps"
+"Developing"
+""
+0
+"sub Screen1055_after()
+  dim a as string
+  a=~NS Basic/Palm is the easiest way to develop apps for Palm OS devices.~+chr(10)+chr(10)
+  a=a+~Start your program by naming your project and setting its icon. Here is where you can add code to be executed when the project is started and stopped.~+chr(10)+chr(10)
+  a=a+~Next, add the screens you want: a program can have one or more screens of data. For each screen, you can also specify code to run when it opens, closes or has an event. ~ +chr(10)+chr(10)
+  a=a+~Each screen has objects on it. Objects can be titles, text input fields, checkboxes, etc. (See the Objects section for more info.)~+chr(10)+chr(10)
+  a=a+~For each object, you specify properties: screen position, initial values, formatting, etc. You can write code that gets executed when the object is accessed.~ +chr(10)+chr(10)
+  a=a+~You can also create standard Palm OS menus, activated from the menu button, and associate code to run for each selection.~+chr(10)+chr(10)
+  a=a+~All these functions are wrapped up into an easy to use IDE (Interactive Development Environment), which allows you to visually edit your program. Once everything is set up, you ask the IDE to generate your program.~+chr(10)+chr(10)
+  a=a+~The generated app can then be run on a Palm OS device (it will automatically Hotsync), or within POSE, an emulator from Palm that allows you to run your applications on the desktop.~  +chr(10)+chr(10)
+  a=a+~You can use any PC running Windows 95 or later, or a Mac running Virtual PC, to develop your app.~                                                                                                                                                                                      
+                                                                                                                                                                                                 
+  
+  dev.text=a
+end sub"
+"sub Screen1055_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","dev",1076,0,16,144,148,#TRUE#,0,"",0,0,0
+"sub object1076()
+
+end sub"
+"vew"
+4,1057,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Controls"
+"Controls"
+""
+0
+"sub Screen1057_after()
+    dim a as string
+    field0.text=~Controls are the building blocks of programs. NS Basic/Palm uses Palm OS controls, so they have the look and feel of standard Palm apps. (BTW, I'm a field.)~
+    field1.text=~I am a field that allows input.~ 
+    field2.text=~Fields and labels are the easiest controls.~
+end sub"
+"sub Screen1057_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,200,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","field1",1092,76,104,36,80,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1094",1094,44,88,12,64,#TRUE#,1,"I am a Label.",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,100,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","field2",1095,4,104,36,68,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1097",1097,28,144,12,92,#TRUE#,0,"Next (I'm a button!)",0,0,0
+"sub object1097()
+   msgbox ~You pushed a button. It runs some code and goes to the next screen.~
+   nextscreen ~Controls1~
+end sub"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,300,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","field0",1098,4,16,64,152,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1059,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Distributing your App"
+"Distributing"
+""
+0
+"sub Screen1059_after()
+    dim a as string
+    a=~Once you have generated and tested your application, it is easy to distribute.~+chr(10)+chr(10)
+    a=a+~NS Basic/Palm programs tend to be pretty small. The language uses facilities that are in the Palm OS ROM wherever possible, which keeps program size low. ~
+    a=a+~NS Basic/Palm apps automatically have a natural Palm 'look and feel', since they use the same built in functions that the apps that come with the Palm device use.~+chr(10)+chr(10)
+    a=a+~You can generate your program with the runtime code included in the same prc file, or leave it separate. Including the runtime libraries with your program adds less than 90k to the program size.~+chr(10)+chr(10)
+    a=a+~Programs, once generated, are secure: there is no practical way to reverse compile them.~+chr(10)+chr(10)
+    a=a+~Best of all, there are no payments to make to NS Basic when you distribute your completed app.~
+    
+    dist.text=a
+end sub"
+"sub Screen1059_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","dist",1078,0,16,144,148,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1061,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Documentation"
+"Documentation"
+""
+0
+"sub Screen1061_after()
+   dim a as string 
+   a=~NS Basic/Palm comes with comprehensive documentation.~+chr(10)+chr(10)
+   a=a+~The NS Basic/Palm Handbook is a 150 page spiral bound book that shows how to operate the IDE and has a language reference. Each statement and function has a sample showing how to use it.~+chr(10)+chr(10)
+   a=a+~The reference section of the Handbook is also available online, as part of the IDE's help facility.~+chr(10)+chr(10)
+   a=a+~When you install NS Basic/Palm, over a dozen samples are installed, giving you live code to look at and modify.~+chr(10)+chr(10)
+   a=a+~Further samples appear on the Downloads area of the Support section and on the Web Board.~+chr(10)+chr(10)
+   a=a+~We also publish Tech Notes, which appear in the Info section of our website.~
+   
+   docs.text=a
+end sub"
+"sub Screen1061_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","docs",1080,0,16,144,152,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1063,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Support"
+"Support"
+""
+0
+"Sub Screen1063_after()
+   Dim a as String
+   a=~NS Basic has always provided outstanding support for its customers. Most questions are successfully resolved within 24 hours.~+chr(10)+chr(10)
+   a=a+~We offer the following support facilties:~+chr(10)+chr(10)
+   a=a+~1. email support: Send your questions to support@nsbasic.com~+chr(10)+chr(10)
+   a=a+~2. Web Board: We maintain a web board where you can post questions, comments or anything NS Basic/Palm related. These posting are available to the entire NS Basic community.~+chr(10)+chr(10)
+   a=a+~3. To stay on top of things, you can have all Web Board postings emailed to you as soon as they are posted.~+chr(10)+chr(10)
+   a=a+~4. Or, you can get a digest of the postings on a regular basis.~+chr(10)+chr(10)
+   a=a+~5. All the old messages are archived - you can often find answers that someone else has asked about.~+chr(10)+chr(10)
+   a=a+~6. Finally, there's a database of frequently asked questions, on the Web Board.~+chr(10)+chr(10)
+   fldsupport.text=a
+End Sub"
+"sub Screen1063_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldsupport",1082,0,16,144,152,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1065,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"How to get NS Basic/Palm"
+"Purchasing"
+""
+0
+"Sub Screen1065_after()
+    Dim a as String
+    a=~NS Basic/Palm costs $149.95 USD. It is available directly from NS BASIC Corporation and from its resellers.~+chr(10)+chr(10)
+    a=a+~To purchase from NS BASIC directly, visit our website and complete the secure order form. Orders are shipped within 24 hours.~+chr(10)+chr(10)
+    a=a+~NS Basic/Palm is also available from resellers around the world. There's a list of resellers on our website.~
+    buy.text=a
+End Sub"
+"sub Screen1065_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","buy",1084,0,16,144,148,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1101,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"More Controls (II)"
+"Controls1"
+""
+0
+"sub Screen1101_after()
+   push.text=~The Pushbutton lets you pick one and only one from a list.~ 
+   check.text=~Checkboxes are great on handhelds.~  
+   bit.text=~Bitmaps can simply display a picture, or act as a button.~
+end sub"
+"sub Screen1101_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"cho"
+1
+#TRUE#,1,#TRUE#
+"obj"
+3
+"cho","Cho1102",1102,8,20,12,12,#TRUE#,0,"M",0,0,0
+""
+"cho"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"cho","Cho1103",1103,20,20,12,12,#TRUE#,0,"F",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,100,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","push",1104,36,16,36,116,#TRUE#,0,"",0,0,0
+""
+"chk"
+1
+#TRUE#,0,#TRUE#
+"obj"
+3
+"chk","Chk1106",1106,8,60,12,68,#TRUE#,0,"Box 1",0,0,0
+""
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","Chk1107",1107,8,76,12,68,#TRUE#,0,"Box 2",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,100,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","check",1108,68,60,24,84,#TRUE#,0,"",0,0,0
+""
+"bmp"
+2
+1110
+"Bitmap ID=1110,Gradient Color 1=DDDDDD,Gradient Color 2=DDDDDD,Gradient Style=1,Caption=,Alignment=2,Appearance=0,FontBold=False,FontItalic=False,Font Name=Arial,FontSize=10,FontStrikethru=False,FontUnderline=False,Caption Color=10101,Picture=,BorderStyle=0,Stretch=False,"
+"obj"
+3
+"bmp","Bmp1111",1111,116,92,12,12,#TRUE#,0,"Bmp1111",0,0,0
+"sub object1111()
+   dim a as integer
+   a=alert(~NS Basic Palm~,~What do you think so far?~+chr(10)+~(I'm an Alert box)~,0,~Great!~,~Bravo!~,~Hooray!~)
+end sub"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,200,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","bit",1112,8,100,48,104,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1114",1114,120,144,12,36,#TRUE#,0,"More...",0,0,0
+"sub object1114()
+    nextscreen ~Controls2~
+end sub"
+"vew"
+4,1116,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"More Controls (III)"
+"Controls2"
+""
+0
+"sub Screen1116_after()
+    listfield.text=~The ListBox gives a list of choices.~
+    popfield.text=~A Popup presents a triangle to indicate there's a popup list.~
+    selfield.text=~A Selector is good when popping up another control.~
+    list.clear
+    list.add ~Monday~,nodisplay
+    list.add ~Tuesday~,nodisplay
+    list.add ~Wednesday~,nodisplay
+    list.add ~Thursday~,nodisplay
+    list.add ~Friday~,nodisplay
+    list.add ~Saturday~,nodisplay
+    list.add ~Sunday~
+    list.redraw 
+    
+    pop.clear
+    pop.add ~January~,nodisplay
+    pop.add ~February~,nodisplay
+    pop.add ~March~,nodisplay
+    pop.add ~April~,nodisplay
+    pop.add ~May~,nodisplay
+    pop.add ~June~,nodisplay
+    pop.add ~July~,nodisplay
+    pop.add ~August~,nodisplay
+    pop.add ~September~,nodisplay
+    pop.add ~October~,nodisplay
+    pop.add ~November~,nodisplay
+    pop.add ~December~ 
+    
+end sub"
+"sub Screen1116_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"lst"
+2
+3
+""
+"obj"
+3
+"lst","list",1119,4,20,36,68,#TRUE#,0,"ListBox",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","Pop",1120,76,20,12,68,#TRUE#,0,"Popup",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1122",1122,112,144,12,40,#TRUE#,0,"More...",0,0,0
+"sub object1122()
+   nextscreen ~Controls3~
+end sub"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,200,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","listfield",1125,4,60,40,68,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,200,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","popfield",1127,80,44,56,72,#TRUE#,0,"",0,0,0
+""
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","Sel1129",1129,4,112,12,24,#TRUE#,0,"Date",0,0,0
+"sub object1129()
+    dim d as date
+    d=popupDate(today(),~When is your birthday?~ )
+end sub"
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","Sel1130",1130,4,128,12,24,#TRUE#,0,"Time",0,0,0
+"sub object1130()
+   dim t as time
+   t=popuptime(now(), now()+1000, ~From when to when?~)
+end sub"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,200,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","selfield",1131,32,108,36,72,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1118,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"More Controls (IV)"
+"Controls3"
+""
+0
+"sub Screen1118_after()
+  dim a as string
+  a=~Scrollbar is an object you can use for scrolling or as a slider to select a value.~ + chr(10)+chr(10)  
+  a=a+~Repeaters are invisible. The script repeats as long as the user has his pen down.~ + chr(10)+chr(10)
+  a=a+~Gadgets are invisible.  Like bitmaps without the picture.~+ chr(10)+chr(10)
+  a=a+~The Shift Indicator object displays when the Grafitti shift is on.~
+  
+  more.text=a
+end sub"
+"sub Screen1118_events()
+  if not getEventType()=NSBKeyOrButton then exit sub   'ignore penup/down events
+  if asc(getkey())=5 then
+    menuDraw ~main~
+    setEventHandled
+  end if 
+end sub"
+0,0,0,0
+"scr"
+2
+0,0,1,1
+"obj"
+3
+"scr","Scr1133",1133,144,20,136,12,#TRUE#,0,"Scr1133",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,300,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","more",1134,0,16,144,140,#TRUE#,0,"",0,0,0
+""
+"end"

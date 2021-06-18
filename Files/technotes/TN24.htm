@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 24: How to Make Icons: Drawing Characters</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 24: How to Make Icons: Drawing Characters</h2>
+	  <h3>Dec 20, 2002</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+
+
+<i>Contributed by <A HREF="mizuno-ami&copy; aimnet.ne.jp">mizuno-ami</A>.</i>
+
+<p><TABLE align=center BORDE="0" WIDTH="85%" BGCOLOR="#9DBF8D" CELLPADDING="10">
+<TR>
+<TD>
+
+
+<p>You may need an icon when you develop your application, but there may be other cases in which you have to prepare your own icons. For example, this Japanese site, "<a href="http://www.clieclub.jp/ccc/">CLIE USer Club!'s ccc</a>", uses an icon to represent a linked web site. So the site owner has to prepare an icon to get his/her site linked.
+
+<p>The purpose of this document is to help people create their own icons.
+
+<p>The issue that arises when you create an icon is not the tool you choose but the design of the icon. Here is an icon in my web site:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1901.gif"><BR>
+<BR>
+Here is another one in <A HREF="http://www.page.sannet.ne.jp/lwol/" TARGET="_blank">CliCliClie</A>:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1902.gif"><BR>
+<BR>
+The texts in these icons are seen clearly, but it is not so easy to create a small icon with text in it. There are some techniques you need to use. Most painting and drawing tools are capable of writing text strings using desktop fonts. When the text is written large, it looks nice showing the font's characteristic.<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1903.gif"><BR>
+<BR>However, if the text is very small, it is hard for people to recognize what font to be used. And the text may not be balanced well. The text above uses 28-point MS Gothic. The same font in 10 point looks like this:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1904.gif"><BR>
+<BR>
+Let's compare the two enlarged small icons:<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1901.gif" WIDTH="96" HEIGHT="66">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1904.gif" WIDTH="96" HEIGHT="66"><BR>
+<BR>
+The right icon looks better but the size is slightly larger. So I am comparing one more icon that is written using 9-point MS Gothic:<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1901.gif" WIDTH="96" HEIGHT="66">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1904.gif" WIDTH="96" HEIGHT="66">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1905.gif" WIDTH="96" HEIGHT="66"><BR>
+<BR>
+Reducing one point unshapes the character "m", and space between "Pa" and "lm" becomes noticeable.<BR>
+<BR>
+	  <p>To make characters look better, anti-aliasing is a good option to use. It can eliminate jaggy borders. The characters below are 100-point MS Gothic (Japanese). The right character is anti-aliased and looks much better than the left one.<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1906.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1907.gif"><BR>
+		<BR>
+
+For those small icons, however, antialiasing blurs them:<br>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1904.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1908.gif"><BR>
+		<BR>
+Therefore, the text tool in painting/drawing applications is not practical to create small icons with text.<BR>
+		<BR>
+How can we create nice looking text in a small icon?<BR>
+Even though it is very old fashioned, making your own fonts is very effective.<BR>
+You don't have to create all characters you know - just designing required characters is all you need.<BR>
+Since all alphabet characters can be written nicely in the area of 5x7 pixels, Windows standard application "Paint" is good enough for this task.<BR>
+Each of characters below can fit into 5x7 pixels. It looks good, doesn't it?<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1909.gif"><BR>
+		<BR>
+In the enlarged picture below, oops! it doesn't look good, does it?<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1909.gif" WIDTH="120" HEIGHT="120"><BR>
+		<BR>
+		However, the 60x60 pixel square surprisingly contains 52 characters! Still you can make them even smaller.The next pictures, for example, are 40x40 pixel squares.<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1910.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1911.gif"><BR>
+		<BR>
+Maybe on the desktop it is hard to recognize all characters. Let's enlarge them to check:<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1910.gif" WIDTH="120" HEIGHT="120">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1911.gif" WIDTH="120" HEIGHT="120"><BR>
+		<BR>
+They are not perfect shapes. :-) But you don't need all 26 alphabet characters - just arrange required characters with readable size.<br>
+		Let's look at the icon I showed at beginning:<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1902.gif" WIDTH="96" HEIGHT="66"><BR>
+		<BR>
+It would probably be hard to use wide characters, such as "M" and "W", in this design. But with absence of those characters, CliCliClie is able to be a slim design.<br>
+Now you've got tools and techniques, the rest is your design taste.<BR>
+		<BR>
+		<BR>
+NS Basic now accepts common graphic formats.<br>
+		By the way, do you know how big the icon can be? To find out, I experimented with the picture below. It is 70x40 in size and contains grid lines in every 5 pixels.<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1912.gif"><BR>
+		<BR>
+I use this as an icon in my project. After the project is compiled, the result looks like this in the launcher:<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1913.gif"><BR>
+		<BR>
+Let's take a look at it in bigger size:<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1913.gif" WIDTH="320" HEIGHT="320"><BR>
+		<BR>
+Probably the area of 60x24 pixels is drawn. Because of the title, 60x22 should be the biggest size.
+This screen shot is taken from PalmOS4.0-based POSE (Japanese version), but I got the same result on my device CLIE N600C. This is just an experiment, so it is probably wise to make your icon less than 40 pixels in width. But just in case, keep in mind that you have the larger area to play with.<BR>
+
+	  <p><A HREF="http://isweb41.infoseek.co.jp/computer/crspalm/" TARGET="_blank">Mr. Takahashi's</A> Crs-Launcher hi-res version displays the whole picture. If you want to go wild, try it!<BR>
+		<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN24.images/1914.gif" WIDTH="320" HEIGHT="320"><BR>
+		<BR>
+		<BR>
+That's all about icons. I hope someone will find this article useful.
+	  <p>
+		You can freely use alphabet characters I provided in this document.
+	  </TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

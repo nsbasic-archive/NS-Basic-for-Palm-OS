@@ -1,0 +1,4 @@
+Holding SHIFT down while selecting a resource forces its display in binary dump mode
+Holding ALT down while selecting a resource allows to select a viewer for that resource
+Holding ALT+SHIFT down while selecting a resource displays it with a secondary viewer. Actually the only case in which it's beging used is to display alerts using the form viewer.
+Using F5 refreshes the right view. Holding SHIFT down while doing that forces its display in binary dump mode

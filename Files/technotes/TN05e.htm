@@ -1,0 +1,439 @@
+<HTML> 
+<HEAD> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"> 
+<TITLE>Tech Note 05e: Tutorial: Creating a Shared Library
+</TITLE> 
+<link rel="stylesheet" href="style2.css"> 
+</HEAD> <BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478> 
+<TR><TD WIDTH="22%" VALIGN="TOP"> 
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD> 
+<TD WIDTH="78%" VALIGN="TOP"> 
+<h2>Tech Note 05e: Tutorial: Creating a Shared Library
+</h2> 
+<h3>October 10, 2003</h3> 
+<h5>© 2009 NS BASIC Corporation. All rights reserved.</h5> </TD> </TR> 
+</TABLE> 
+<HR>
+
+
+This tutorial describes adding Palm OS shared libraries written in C
+to an NSBasic program.  It assumes
+NSBasic 3.2.0 or better and CodeWarrior for Palm OS version 9.
+
+<h3>Introduction</h3>
+
+Shared libraries provide a way to extend the functionality of NSBasic
+programs.  They are small pieces of executable code that
+can either be embedded into an NSBasic program or distributed separately
+as .prc files for the Palm.  Each shared library contains a series of
+uniquely named procedures and functions.  A shared library procedure
+can be called much like an NSBasic subroutine, and a shared library function can be evaluated much like an NSBasic function.  Because shared libraries are written in C and then compiled directly to native machine code,  they are fast and have access to all the features of the Palm OS.
+
+<h3>Step 1: Design</h3>
+
+The first step is to design the shared library.  While this is recommended
+as the first step in any software project, it is especially important when
+designing shared libraries, as changing the number of functions and procedures after creating the first project is awkward.
+
+<p>Our first shared library will be a simple base conversion package called Cnv.  It will contain two functions to convert positive to different bases, such as binary and hexadecimal, and vice-versa.  We will start the design by imagining how we want to use the library in NSBasic:
+
+<pre>
+Dim s As String
+Dim n As Integer
+s = Cnv.DecToBase(37, 16)     's will be 37 in base 16
+n = Cnv.BaseToDec("177", 8)   'n will be the value of 177 in octal
+s = Cnv.DecToBase(42, 10)     'Works like Str for positive integers
+</pre>
+
+When the input is out of range, DecToBase will return a blank string,
+and BaseToDec will return -1.
+
+<p>There is one more design decision that, strictly speaking, does not 
+need to be made now, but we need to be aware of it.  A shared library
+can either be distributed as a separate .prc file for the user to 
+download to the Palm or embedded within the .prc file that NSBasic
+creates.  We will refer to these kinds of shared libraries as 
+"separate" and "embedded."
+
+<h3>Step 2: Create the .inf file</h3>
+
+NSBasic needs a file with an extension of .inf at compile time to determine
+how to use the library.  Create a file in C:\nsbasic\lib called Cnv.inf
+and enter these lines:
+
+<pre>
+[General]
+ExtensionName=Base-Conversion-Library
+PrcName=Cnv.prc
+Version=1.0 Alpha
+InfVers=2.0
+Manufacturer=myself
+
+[GlobalMethods]
+DecToBase = 1, func, 2, "convertedValue = DecToBase(in n as integer, in base as Integer) as String"
+BaseToDec = 2, func, 2, "decValue = BaseToDec(in s as String, in base as Integer) as integer"
+</pre>
+
+Each line in the GlobalMechods section of the .inf file specifies a single function
+or procedure.  (Even if this line wraps around when you view it, it must be entered
+as a single line.)  Reading from left to right, each procedure or function has a
+name, an index, a type, a number of arguments, and a descriptor.
+
+<p>The name of each must be unique.  The index should start at 1 for the first function
+or procedure and increase for subsequent ones with no gaps.  The type is either
+func for a function or proc for a procedure.  Both in our example are functions,
+but we will see how to use procedures later.  The next number is the number of
+arguments that are passed from NSBasic; in both cases the number is 2.
+
+<p>The descriptor is new to this version of NSBasic.  Old versions permitted anything
+in the descripor.  The new version used this descriptor for type information.  Take
+care when writing the descriptor; if there is an error, NSBasic will assume that
+this is an old-style library.  For new development, always use the new style.
+
+<p>Let's look at the descriptor for the DecToBase function:
+
+<pre>
+convertedValue = DecToBase(in n as integer, in base as Integer) as String
+</pre>
+
+The "convertedValue = " is for documentation purposes only and can be
+omitted.  Next comes the name of the function, Dec2Base, and an opening
+parenthesis.  (The function name must be exactly the same as the name at
+the beginning of the line, and the parentheses must be present even if the
+function takes no arguments.)  Next are the arguments, separated by commas.
+Take the first argument:
+
+<pre>
+in n as integer
+</pre>
+
+This specifies three pieces of information: that the argument is an "in"
+argument, it is named "n," and it is an integer.
+
+<p>In arguments are used when the argument only goes into the function
+and is passed to the shared library by value.  Out and inout arguments 
+are used when the argument is expected to come out of or both go into
+and come out of the function and is passed by pointer reference.  There
+is currently no difference between out and inout.  Strings and variants
+are exceptions to this rule, as they are always passed as pointer
+references and work like inout arguments.
+
+<p>Now look at the second argument:
+
+<pre>
+in base as Integer
+</pre>
+
+It's quite similar, but in this case Integer is capitalized.  This is 
+to show that capitalization does not matter.
+
+<p>After the closing parenthesis, there is an as clause giving the type
+of the return value.  In this case, it is returned as a String.
+
+<p>Now look at the second function:
+
+<pre>
+decValue = BaseToDec(in s as String, in base as Integer) as integer
+</pre>
+
+Note that the first argument is declared as an in argument with 
+a type of String.  Strings are always treated as inout arguments,
+but they should still be declared as in variables.
+
+<p>Shared libraries support most NSBasic types.  When writing the code
+of the shared library, you will need to know which NSBasic type 
+corresponds to which C type.  Out and inout arguments are referred
+to in C as pointers to the appropriate type (except for String and
+Variants, which are pointers already):
+
+<pre>
+NSBasic type         .inf type                             C type
+Integer		     Int32, Int4, long, UInt32, UInt4      long
+Short                Int16, Int2, int, UInt16, UInt2       short
+Float, Date, Time    double, date, time, Flt4, Flt32       double
+Single               float, flt2, flt16                    float
+Variant              Variant                               double *
+String               String                                char *
+</pre>
+
+There are a few things to notice about this table.  First, the
+NSBasic type Float is represented in a .inf file and in the C
+code as double, and the NSBasic type double is represented as
+float.  Second, the variant record for historical reasons is a
+pointer to a double.  The only recommended use for variant records
+is to keep pointers between function calls.  Dates and times are 
+also represented as doubles.
+
+<p>Currently, entire arrays cannot be passed to shared libraries.
+This capability would require major changes to the way NSBasic
+works.
+
+<h3>Step 3: Create the shared library</h3>
+
+CodeWarrior 9 provides a wizard for creating shared libraries.
+
+<p>Start up CodeWarrior and close any files it may remember from
+the previous session.  Pull down New... from the File menu.
+Make sure the Project tab is chosen.  Select Palm OS Shared Library
+Wizard, enter Cnv in the Project name field, choose an appropriate
+destination, and press OK.
+
+<p>You will then see a window with four fields.  The default values
+for all four fields will work.  For production work, it is 
+srtongly recommended that you get a unique creator ID from Palm
+at this point.  The process is free and painless; just press the
+Visit Creator ID Website and follow the directions.  However,
+as this is to be used for testing purposes only, we can leave
+the creator ID as STRT.  Press the Next > button and dismiss the
+warning dialog window that comes up.
+
+<p>Now you will see a window for adding function names.  Enter all
+the functions and procedures in your .inf file in order.  Press
+Add and type DecToBase.  Press Add again and type BaseToDec.
+Press Next >.
+
+<p>You will see a window with a list of libraries to add to
+your project.  Most shared libraries do not need to call other
+libraries.  Many of these libraries will not even work within
+shared libraries.  Simply press the Finish button.  A new 
+project will appear.
+
+<h3>Step 4: Write the shared library</h3>
+
+Go into the Source folder.  There should be a file called CnvImpl.c.
+Open this file.  CodeWarrior has already produced a lot of
+useful code for you, including code to handle "global" variables
+you can use between function calls.  It has implemented the
+CnvOpen, CnvClose, CnvSleep, and CnvWake functions.
+
+<p>It has also provided stubs for your the two functions to implement,
+CnvDecToBase and CnvBaseToDec.  (Even though you may have functions
+and procedures for NSBasic, C uses the word "function" to describe
+both, and they are implemented the same way.
+
+<p>Take a look at CnvDecToBase.  It is declared like this:
+
+<pre>
+Err CnvDecToBase(UInt16 refNum)
+</pre>
+
+The "Err" indicates that this function returns an error value.
+This is not the value returned to NSBasic.  All shared library
+functions for NSBasic should return errNone, indicating no
+error.  The function contains one argument, a refNum.  This is
+always the same.  It is the reference number of one particular
+instance of a shared library.  (They are shared, so several
+applications can use them.  Each has a unique reference number.)
+You will not need to use this unless you want to keep values
+between function calls, in which case, study the other code
+that CodeWarrior has provided.
+
+<p>To start implementing this function, we look back at the line
+in the .inf file:
+
+<pre>
+convertedValue = DecToBase(in n as integer, in base as Integer) as String
+</pre>
+
+Using the table of type conversions, we can derive the additional
+arguments:
+
+<pre>
+Argument 1: An Int32
+Argument 2: An Int32
+Return value: A char *
+</pre>
+
+The return value is always last in the declaration.  Using this 
+information, we change the C declaration to the following:
+
+<pre>
+Err CnvDecToBase(UInt16 refNum, Int32 n, Int32 base, char *retVal)
+</pre>
+
+We also have to go into Cnv.h, within the Headers directory, and
+change the declaration to the following:
+
+<pre>
+extern Err CnvDecToBase(UInt16 refNum, Int32 n, Int32 base, char *retVal)
+	CNV_LIB_TRAP(sysLibTrapBase + 5);
+</pre>
+
+Similarly, we can use the .inf line for the CnvBaseToDec to change the
+declarations as follows:
+
+<pre>
+decValue = BaseToDec(in s as String, in base as Integer) as integer
+
+Err CnvBaseToDec(UInt16 refNum, char *s, Int32 base, Int32 *retVal)
+
+extern Err CnvBaseToDec(UInt16 refNum, char *s, Int32 base, Int32 *retVal)
+	CNV_LIB_TRAP(sysLibTrapBase + 6);
+</pre>
+
+Note that the return value is declared as a pointer.
+
+<p>Now the only thing left to do is implement the actual functions.
+Here is one possible implementation, which can be typed
+or pasted into CodeWarrior, replacing the stubs provided by the
+wizard:
+
+<pre>
+Err CnvDecToBase(UInt16 refNum, Int32 n, Int32 base, char *retVal)
+{
+	#pragma unused(refNum)
+	
+	if (n < 0 || refNum < 2 || refNum > 32)
+	{
+	    /* Bad parameters */
+	    StrCopy(retVal, "");
+	    return errNone;
+	}
+	
+	*retVal = '\0';
+	do
+	{
+	    char *s;
+	    char remainder;
+	    
+	    /* Open up a space for the next digit */
+	    for (s = retVal; *s; ++s){}
+	    for (++s; s > retVal; --s)
+	    {
+	        *s = *(s - 1);
+	    }
+	    
+	    remainder = n % base;
+	    
+	    if (remainder < 10)
+	    {
+	        *retVal = '0' + remainder;
+	    }
+	    else
+	    {
+	        *retVal = 'A' + (remainder - 10);
+	    }
+	    
+	    n /= base;
+	} while (n > 0);
+	
+    return errNone;
+}    
+
+
+Err CnvBaseToDec(UInt16 refNum, char *s, Int32 base, Int32 *retVal)
+{
+	#pragma unused(refNum)
+	char *runner;
+	
+	*retVal = 0;
+	
+	if (base < 2 || base > 36)
+	{
+	    /* Bad parameters */
+	    *retVal = -1;
+	    return errNone;
+	}
+	
+	for (runner = s; *runner; ++runner)
+	{
+	    UInt16 digit;
+	    
+	    if (*runner >= '0' && *runner <= '9')
+	    {
+	        digit = *runner - '0';
+	    }
+	    else if (*runner >= 'A' && *runner <= 'Z')
+	    {
+	        digit = *runner - 'A' + 10;
+	    }
+	    else if (*runner >= 'a' && *runner <= 'z')
+	    {
+	        digit = *runner - 'a' + 10;
+	    }
+	    else
+	    {
+	        *retVal = -1;
+	        return errNone;
+	    }
+	    
+	    if (digit >= base)
+	    {
+	        *retVal = -1;
+	        return errNone;
+	    }
+	    
+	    *retVal = *retVal * 10 + digit;
+	}
+		
+    return errNone;
+}
+</pre>
+
+Compile the shared library by choosing Make from the Project menu.
+If you did not make any errors in typing, it should compile and 
+produce a file called Cnv.prc.
+
+<p>It is considered good practice in NSBasic shared libraries to include
+a 'tver' resource with ID 0 consisting of a string with the version
+number (in this case, "1.0 Devel").  However, CodeWarrior tries to
+prevent additional resources from being added to shared libraries.
+Use one of the free, downloadable editors available on the Palm
+developer web site to add this resource after the file has been
+created.
+
+<h4>Step 5: Using the shared library in an NSBasic program</h4>
+
+Now we need to use and test the new shared library in an NSBasic
+program.
+
+<p>First create a new project to test it.  In the Startup Code, insert
+this line:
+
+<pre>
+   LoadLibrary Cnv
+</pre>
+
+We're going to make a simple decimal to hexidecimal converter.  Create
+two text fields, one called Dec and the other called Hex.  Then create
+a button.  Within the subroutine of the button, insert these lines:
+
+<pre>
+Dim ins as String
+Dim in as Integer
+Dim outs as String
+
+    ins = Dec.text
+    in = Cnv.BaseToDec(ins, 10)
+    outs = Cnv.DecToBase(in, 16)
+    Hex.text = outs
+</pre>
+
+Test the new project by running it.  If you successfully installed
+the .inf file, it should compile.  However, when it runs, it should
+produce an error message because the library has been loaded.
+
+<p>As mentioned before, libraries can be embedded or separate.  To get
+Cnv to work as a separate library, use the Install Application Database
+menu item from within the Palm OS Emulator to install Cnv.prc.
+
+<p>Now it should work.  Enter a decimal number into the Dec field and 
+press the button.  Its hexadecimal equivalent should appear in the
+Hex field.
+
+<p>A new feature allows any number of shared libraries to be embedded
+in the application.  To try this, first delete the Cnv shared library
+from the Palm OS Emulator.  Go back to your NSBasic project.  In
+the Project Explorer, there should be a folder called Resources.
+There should be no resources yet.
+
+<p>Right-click on the Resources folder and choose Add Resource.
+Navigate to Cnv.prc, select it, and press Open.  A new resource
+will be added.  Change the Resource Type to libr and the name to
+Cnv and recompile.  You may note that the size of the project is
+a little bigger.  This is because the shared library is now present
+in the project.  It should run fine without having to install the
+shared library separately.
+

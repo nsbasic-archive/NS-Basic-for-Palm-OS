@@ -1,0 +1,107 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Call </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Call                                                                                                                 Befehl</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>CALL <i>subName</i>(<i>argList</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Übergibt die Kontrolle an eine andere Prozedur. <i>ArgList</i> enthält eine Liste mit
+Parametern, durch Komma getrennt, welche an die aufzurufende Prozedur übergeben
+werden sollen. Parameter können dazu verwendet werden, Daten zu übergeben, oder
+aber Variablen durch die aufzurufende Prozedur neu füllen zu lassen. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Parameter in der Liste können auch Ausdrücke sein, sofern
+diese an die Prozedur übergeben werden sollen. Der Ausdruck wird ausgewertet,
+und sein Ergebnis an die Prozedur übergeben.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Es muss eine 1:1 Beziehung zwischen der Anzahl der
+übergebenen Parameter, und der Anzahl der definierten Parameter der Prozedur
+geben, die diese erwartet. Übergebene Parameter sollten auch den selben
+Datentyp (String, Ganzzahl, Fließkommazahl, ...) wie die erwarteten Parameter
+haben. Die Benamung der Parameter muss nicht identisch sein, da diese anhand
+ihrer Position in <i>argList</i> ermittelt
+werden.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Die Unterprogramme dürfen nicht innerhalb anderer
+Unterprogramme oder Funktionen liegen.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>...</p>
+
+<p class=Code>...Call PayrollRoutine(Salary, Deductions, NoDependents, NetSalary)</p>
+
+<p class=Code>End Sub</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Sub PayrollRoutine(Sal as Float, Deduct as Float, NoDepends   as Integer, Net as Float)</p>
+
+<p class=Code>  Let Net=Sal-Deduct</p>
+
+<p class=Code>End Sub</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

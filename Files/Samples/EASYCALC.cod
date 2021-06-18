@@ -1,0 +1,69 @@
+"Sub ProcessKey(key as String ) 
+Dim i as Integer
+Dim wk as String
+If firstDigit = 1 Then
+   firstDigit=0
+   wk=key
+Else
+   If key=~.~ Then
+        If instr(1,fldAmount.text,~.~,0)<>0 Then
+            MsgBox ~Already have a decimal point in the amount.~
+            Exit Sub
+        End If
+    EndIf
+    wk=fldAmount.text
+    wk=wk+key
+End If
+fldAmount.text=wk
+End Sub
+
+Sub UpdateDisplay()
+   Dim intWk as Integer
+   Dim wk as String
+   Dim i as Integer
+   Dim j as Integer
+   Dim incr as Integer
+
+If int(Amount)=amount Then
+    intWk=amount
+    fldAmount.text=ltrim(str(intWk)) 
+Else 
+    wk=str(Amount)
+    'MsgBox ~Input=~+wk
+    If amount <> 0 Then
+        incr=-1
+        For i=len(wk) to 1 step incr
+            'msgbox ~wk=~+wk+~  len=~+str(len(wk))
+            If mid(wk,i,1)=~0~ Then
+                j=len(wk)-1
+                wk=left  ( wk , j ) 
+            Else
+                Exit For    
+            EndIf
+        Next
+    EndIf
+    'MsgBox ~final=~+wk  
+    fldAmount.text=ltrim(wk)
+EndIf
+End Sub
+
+Sub UpdateAmount ( )
+If firstDigit=1 Then Exit Sub
+Select Case Operator
+    Case ~~
+    Case ~+~
+        Amount=Amount + val(fldAmount.text)
+    Case ~-~
+        Amount=Amount - val(fldAmount.text)
+    Case ~*~
+        Amount=Amount * val(fldAmount.text)
+    Case ~/~
+        If val(fldAmount.text) = 0 Then
+            MsgBox ~Can't divide by 0~
+        Else
+            Amount=Amount / val(fldAmount.text)
+        EndIf  
+End Select 
+UpdateDisplay 
+firstDigit=1
+End Sub"

@@ -1,0 +1,462 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbOpen </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>DbOpen                                                                                                   Function</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBOPEN(<i>dbName</i> as Database, <i>fileName</i> as String, <i>cardNo</i>
+as Integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>To open an existing database on a specified memory card of
+the Palm OS device. Returns an integer result.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>DbName</i> is the
+reference to the database inside the program. All actions on the database will
+identify it by this name. <i>FileName</i> is
+the name of the database as recorded on the Palm OS device Memory system. <i>CardNo</i> is the Palm OS device memory card
+on which this database resides. Normally, this is card 0. A database name must
+be defined by DIM <i>dbname</i> as Database before being used in a DBOPEN command.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>A DBOPEN is required before any subsequent actions on a
+database.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Database Result
+Codes</b></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>-1</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>EOF on DbGet </p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Operation Successful</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Operation Failed</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>2</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Key not found - next higher key returned</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>3</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>File opened in read only mode</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>513</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Memory Error</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>514</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Index Out Of Range</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>515</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Invalid Parameter</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>516</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Read Only</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>517</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Database Open</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>518</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Can't Open</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>519</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Can't Find</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>520</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Record In Wrong Card</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>521</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Corrupt Database</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>522</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Record Deleted</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>523</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Record Archived</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>524</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Not Record DB</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>525</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Not Resource DB</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>526</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>ROM Based or invalid Database name</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>527</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Record Busy</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>528</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Resource Not Found</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>529</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>No Open Database</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>530</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Invalid Category</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>531</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Not Valid Record</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>532</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Write Out Of Bounds</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>533</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Seek Failed</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>534</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Already Open For Writes</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>535</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Opened By Another Task</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>536</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>UniqueID Not Found</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>537</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Already Exists</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>538</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Invalid Database Name</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>539</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Database Protected</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>540</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Database Not Protected</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim result as integer</p>
+
+<p class=Code>Dim CustomerDb as database</p>
+
+<p class=MsoNormal>Result=DbOpen(CustomerDb, &quot;Company-Test&quot;, 0)</p>
+
+</div>
+
+</body>
+
+</html>

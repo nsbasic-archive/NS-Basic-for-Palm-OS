@@ -1,0 +1,530 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 04c: Tutorial: How to Create Transparent Icons and Bitmaps</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+  <TD WIDTH="18%" VALIGN="TOP">
+    <IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+  </TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	<h2>Tech Note 04c: Tutorial: How to Create Transparent Icons and Bitmaps</h2>
+      <h3>March 30, 2004</h3>
+	<h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+    </TD>
+</TR>
+</TABLE>
+
+<HR>
+<i>Contributed by <a HREF="mailto: oarian&copy; compuserve.com"><b>Onik Arian</b></a></i>
+
+
+
+
+<H2>Contents</H2>
+<ul>
+  <a href="#Intro"><b>1.) Introduction</b></a><br>
+  <a href="#CreateBitmaps"><b>2.) Creating Bitmap Images</b></a><br>
+  <a href="#CreatePRC"><b>3.) Creating the Project and PRC File</b></a><br>
+    <ul>
+    <a href="#ThreeA"><b>3a.) Create a New Project</b></a><br>
+    <a href="#ThreeB"><b>3b.) Add the Bitmap Resources to the Project</b></a><br>
+    <a href="#ThreeC"><b>3c.) Create 3 Families of Bitmaps</b></a><br>
+    <a href="#ThreeD"><b>3d.) Assign the Families of Bitmaps</b></a><br>
+    <a href="#ThreeE"><b>3e.) Compile and Test TransBit.prc</b></a>
+    </ul>
+  <a href="#UsingPilRC"><b>4.) Using PilRC to Generate Bitmap Resources</b></a><br>
+    <ul>
+    <a href="#FourA"><b>4a.) Understanding the RCP File Syntax</b></a><br>
+    <a href="#FourB"><b>4b.) Creating an RCP File</b></a><br>
+    <a href="#FourC"><b>4c.) Using PilRC to Compile Bitmap Files</b></a>
+    </ul>
+  <a href="#UsingPAR"><b>5.) Using PAR to Replace the Bitmaps</b></a><br>
+    <ul>
+    <a href="#FiveA"><b>5a.) A PAR Batch File to List the PRC Contents</b></a><br>
+    <a href="#FiveB"><b>5b.) A PAR Batch File to Delete the Old Bitmap Resources</b></a><br>
+    <a href="#FiveC"><b>5c.) A PAR Batch File to Add the PilRC Binary Files</b></a>
+    </ul>
+  <a href="#TestNewPRC"><b>6.) Testing the New PRC File</b></a><br>
+  <a href="#Misc"><b>7.) Miscellaneous Tips</b></a><br>
+  <a href="#FurtherInfo"><b>8.) Acknowledgements and Further Information</b></a>
+</ul>
+
+
+
+
+<BR>
+<H2><a name="Intro"></a>1.) Introduction</H2>
+<p>
+This Tech Note gives detailed instructions for creating and using transparent Icons and bitmaps in an 
+NS Basic project. It assumes you have POSE and a handheld with Palm OS 3.5 or greater. To use transparent bitmaps 
+in a PRC file, there are 4 steps that are required. Here is the overview:
+</p>
+
+<ul>
+  <li><b>Step 1:</b> Use an image editor to create a set of BMP files that will serve as a bitmap family. 
+Choose a transparent background color and note its Red, Green, Blue values. 
+These values will be necessary later on.</li>
+  <br><br>
+  <li><b>Step 2:</b> Using NS Basic, compile a PRC file using the desired BMP files. At this point, 
+those bitmaps are opaque.</li>
+  <br><br>
+  <li><b>Step 3:</b> Use <B><I>PilRC</I></B> (Pilot Resource Compiler) to create a set of binary (*.BIN) 
+files from the BMP files. These files have transparent backgrounds.</li>
+  <br><br>
+  <li><b>Step 4:</b> Use <B><I>PAR</I></B> (Palm Database Archiver) to delete the original BMP files from the PRC file, 
+and then use <b><i>PAR</i></b> again to add the binary files that were created in step 3.</li>
+</ul>
+
+<p>
+For demonstration purposes, we will create and install 3 families of transparent images into a PRC file:
+</p>
+
+<ul>
+  <li>A family of 8-bit LoRes and HiRes Large Icons</li>
+  <li>A family of 8-bit LoRes and HiRes Small Icons</li>
+  <li>A family of 8-bit LoRes and HiRes Bitmaps</li>
+</ul>
+
+
+
+
+<BR>
+<H2><a name="CreateBitmaps"></a>2.) Creating Bitmap Images</H2>
+<p>
+Use your favorite image editor and save the images as BMP files. There are some important things to know about them:
+</p>
+
+<ul>
+  <li>Standard (LoRes) Large icons should be either 22x22, 32x22, or 32x32. Small Icons should be 15x9. Large HiRes
+ Icons are double the size - 44x44, 64x44, 64x64. Small HiRes Icons should be 30x18.</li>
+<br><br>
+  <li>Size other bitmap images to the appropriate height and width for your application. Remember to include 
+HiRes bitmap files that are exactly twice the width and height of the LoRes ones.</li>
+<br><br>
+  <li>Save all images as BMP files. This is the only format supported by PilRC at this time.</li>
+<br><br>
+  <li>Choose a transparent background color. Pick a color that <b><i>will not</i></b> be used for other 
+elements of the bitmaps, and one thatís not too hard on your eyes! <i>Again, remember to note the color's RGB 
+values. You will need those values when you use PilRC to convert the BMP files to transparent BIN files.</i></li>
+<br><br>
+  <IMG SRC="TN04c.images/Beige.gif" HSPACE="15" ALIGN="left" BORDER="1" WIDTH="30" HEIGHT="30">
+  I use a beige color (Palm Color Table Index #31, which has the Hex Value of &HCCCC99, R:204, G:204, B:153).
+</ul>
+
+<br><br>
+<p>
+Now, go ahead and create 6 bitmaps, representing 3 families, and save them as 8-bit BMP files into your 
+NS Basic Bitmaps folder:
+</p>
+
+<ul><pre>
+<b>SmallIcon15x9.bmp</b>  & <b>SmallIcon30x18.bmp</b>  A family of 8-bit LoRes and HiRes Small Icons
+<b>LargeIcon22x22.bmp</b> & <b>LargeIcon44x44.bmp</b>  A family of 8-bit LoRes and HiRes Large Icons
+<b>Bitmap30x30.bmp</b>    & <b>Bitmap60x60.bmp</b>     A family of 8-bit LoRes and HiRes Bitmaps
+</ul></pre>
+
+
+
+
+<BR>
+<H2><a name="CreatePRC"></a>3.) Creating the Project and PRC File</H2>
+<p>
+We will now create an NS Basic project, add the 6 bitmaps as resources, and compile a PRC file. 
+At this point, the BMP files all have an opaque background. <i>Note the ID# of the Bitmap family; you will need 
+that number later. Donít worry about the ID# for the family of Large and Small icons.</i>
+</p>
+
+<UL>
+<a name="ThreeA"></a> <li><b>3a.) Create a New Project</b></li>
+<br>
+Start NS Basic and create a new project. Change the name from Project1 to <b>TransBit</b>. Set the Creator ID 
+to <b>TraB</b>. Change the formís title from Form1 to <b>Transparent Demo</b>. Add a Bitmap Object to the middle 
+of the form. Now, save the project as <b>TransBit.prj</b>.
+<br><br><br>
+
+<a name="ThreeB"> <li><b>3b.) Add the Bitmap Resources to the Project</b></li>
+<br>
+Choose <u>P</u>roject | Add <u>B</u>itmap and add the following BMP files 
+<i>in exactly the same order as listed below:</i>
+
+  <pre>
+    <b>SmallIcon15x9.bmp</b>
+    <b>LargeIcon22x22.bmp</b>
+    <b>Bitmap30x30.bmp</b>
+  </pre>
+
+  <p>Now look at the Project Explorer. It should look like this:</p>
+  
+  <IMG SRC="TN04c.images/ProjectWindow.png" BORDER="1" WIDTH="260" HEIGHT="184">
+
+  <p>Notice that we added the LoRes bitmaps as resources to our project. We will deal with the HiRes versions shortly. 
+Also, pay attention to the ID of Bitmap30x30, which is <b>1007</b>. We will need to remember that ID a little bit later. 
+Now save your project file.</p>
+
+<br>
+<a name="ThreeC">  <li><b>3c.) Create 3 Families of Bitmaps</b></li>
+<br>
+Now its time to add the other bitmap resources to our project. 
+In the Project Explorer, click on the <b>1005/Bitmap 1005</b> entry. Then, in the <b>Properties - Bitmap 1005</b> 
+window, click on <b>Path, 8-bit</b> and add <b>SmallIcon15x9.bmp</b>. Then click on <b>Path, HiRes 8-bit</b> 
+and add <b>SmallIcon30x18.bmp</b>. Weíve just created a family of bitmaps which we will use for our Small Icon. 
+The properties window should now look like this:
+<br><br>
+  <IMG SRC="TN04c.images/PropWindow.png" BORDER="1" WIDTH="298" HEIGHT="194">
+<p>
+Notice that NS Basic set <b>Path, 1-bit</b> to point to one of the 2 bitmaps. Go ahead and delete this entry. 
+Now click on <b>1006/Bitmap 1006</b> and set <b>Path, 8-bit</b> to <b>LargeIcon22x22.bmp</b>, and set 
+<b>Path, HiRes 8-bit</b> to <b>LargeIcon44x44.bmp</b>. Delete the <b>Path, 1-bit</b> entry. Click on 
+<b>1007/Bitmap 1007</b> and set <b>Path, 8-bit</b> to <b>Bitmap30x30.bmp</b>, and <b>Path, HiRes 8-bit</b> to 
+<b>Bitmap60x60.bmp</b>. Again, delete the <b>Path, 1-bit</b> entry. Save your project. Now that we have setup our 
+3 families of bitmaps, its time to tell NS Basic what to do with them.
+</p>
+
+<br>
+  <a name="ThreeD"> <li><b>3d.) Assign the Families of Bitmaps</b></li>
+<br>
+Open the <b>Properties - TransBit</b> window. Set <b>ID, Large Icon</b> to <b>1006</b>, and <b>ID, 
+Small Icon</b> to <b>1005</b>.
+<br>
+The properties window should now look like this:
+<br><br>
+  <IMG SRC="TN04c.images/PropWindow1.png" BORDER="1" WIDTH="114" HEIGHT="53">
+<p>
+Weíve just told NS Basic to use the Bitmap 1006 family (LargeIcon22x22.bmp & LargeIcon22x22.bmp) for our Large Icons, 
+and the Bitmap 1005 family(SmallIcon15x9.bmp & SmallIcon30x18.bmp) for our Small Icons. Now click the 
+Bitmap Object on our form. In its properties window, set <b>Bitmap ID</b> to <b>1007</b>. The program will now 
+display a member of the Bitmap 1007 family when the application is run. Again, save your project. 
+Now its time to compile and test our PRC file.
+</p>
+
+<br>
+  <a name="ThreeE"> <li><b>3e.) Compile and Test TransBit.prc</b></li>
+<br>
+Compile the project. Start POSE and load TransBit. If everything went as planned, 
+you should see your LoRes Large Icon. Switch to List View to check out the LoRes Small Icon. Then run TransBit to see 
+the LoRes bitmap. Now, HotSync TransBit.prc. The 44x44 Large Icon should look much better in HiRes. Switch to 
+List View to see the HiRes version of the Small Icon, and again load the application to see the HiRes bitmap 
+displayed on the form. Note that, in all views, the icons and bitmaps are opaque. If you followed my earlier advice, 
+they will all sport an unattractive beige background color. Weíre going to give all the images transparent 
+backgrounds in just a bit.
+</UL>
+
+
+
+
+<BR>
+<H2><a name="UsingPilRC"></a>4.) Using PilRC to Generate Bitmap Resources</H2>
+<p>
+The <b><i>Pilot Resource Compiler (PilRC)</i></b> is an application that takes a resource script file and generates 
+one or more binary resource files that can be used when developing for the Palm Computing Platform. For example, PilRC 
+can compile a group of BMP files into a PRC database. It can also compile BMP files into binary (*.BIN) files. 
+These can then can be used to replace the original BMP files that were used in our NS Basic project. PilRC is a 
+command line utility that uses an <b>.rcp</b> file with information about what resources to compile, and what kind 
+of resource file to generate. This <b>.rcp</b> file is created with a text editor, like Notepad. The syntax for the 
+commands within the file are covered in the PilRC manual. Read the manual carefully, and pay special attention to the 
+section on Bitmaps. PilRC is a free utility that was created by <a HREF="mailto:wesc&copy; technosis.com"><b>Wes Cherry</b></a> 
+and <a HREF="mailto:aaron&copy; ardiri.com"><b>Aaron Ardiri</b></a>, and can be found on the internet.
+</p>
+
+<UL>
+  <a name="FourA">  <li><b>4a.) Understanding the RCP File Syntax</b></li>
+<br>
+Again, read the PilRC manual for details. My approach is to use PilRCís <b>Flexible Bitmap Syntax</b>. This has a 
+bitmap family feature that allows us to put several bitmaps together at different color depths and resolution 
+combinations, similar to the way NS Basic handles bitmaps in the application. According to the PilRC manual, 
+<i>this is the only way to specify HiRes bitmaps</i>. A <u>much-simplified</u> version of the syntax for the RCP 
+file is as follows:
+
+<p><b><u>For regular bitmaps:</b></u></p>
+<ul>
+<pre>
+<b>BITMAP</b> [ìResTypeî] <b>ID</b> Resource Id#
+<b>BEGIN</b>
+<b>BITMAP</b> ìFilenameî <b>BPP</b> Depth#  [<b>TRANSPARENT</b> R# G# B#]  [<b>DENSITY</b> Density#]
+... etc
+<b>END</b>
+</pre>
+</ul>
+
+<p><b><u>For Large and Small Icons:</b></u></p>
+<ul><pre>
+<b>ICON</b> (or <b>SMALLICON</b>)  [<b>ID</b> Resource Id#]
+<b>BEGIN</b>
+<b>BITMAP</b>  ìFilenameî  <b>BPP</b> Depth# [<b>TRANSPARENT</b> R# G# B#]  [<b>DENSITY</b> Density#]
+... etc
+<b>END</b>
+</pre></ul>
+
+
+<p>
+<b>BITMAP [ìRes Typeî]:</b>
+<br>
+This keyword starts a bitmap family. The ìRes Typeî (Resource Type) 
+is optional, and defaults to ìTbmpî. However, you must specify a resource <b>ID</b>. <i>Make sure the 
+ID# is the same as your corresponding bitmap or bitmap family in PRJ file</i>.
+</p>
+
+<p>
+<b>ICON</b> or <b>SMALLICON:</b>
+<br>
+These keywords start a Large Icon or Small Icon family. Definitions starting with any of the <b>ICON</b> 
+(Large Icon) or <b>SMALLICON</b> (Small Icon) keywords are always given type 'tAIB', and may include an 
+optional ResId#. <i>All ICONs have a default ID# of 1000; SMALLICONs default to 1001</i>.
+</p>
+
+<p>
+<b>ID Resource ID#:</b>
+<br>
+As noted above, it is the Resource ID#. If you are replacing bitmaps your PRC file, this number must match the 
+Resource ID# of the corresponding bitmaps. <i>However, in the PRC file, Large Icons (ICON) have an ID=1000, and 
+Small Icons (SMALLICON) have an ID=1001 regardless of their actual ID # in the project (PRJ) file.</i>
+</p>
+
+<p>
+<b>BEGIN...END:</b>
+<br>
+Defines a bitmap family, all with the same resource <b>ID</b>. You must include at least one LoRes bitmap or else 
+you will get errors in your program.
+</p>
+
+<p>
+<b>BPP Depth#:</b>
+<br>
+The depth of the bitmap (Bits Per Pixel). <b>Depth#</b> must equal 1, 2, 4, 8, or 16. Typically, 
+I deal only with 8-bit (256 colors) icons and bitmaps (<b>BPP 8</b>).
+</p>
+ 
+<p>
+<b>DENSITY Density#:</b>
+>br>
+The density of the bitmap or icon file. What PilRC refers to as <b>single density</b> bitmaps, NS Basic calls 
+<b>LoRes</b>. What PilRC refers to as <b>double density</b> bitmaps, NS Basic calls <b>HiRes</b>. 
+<b>Density#</b> = <b>1</b> or <b>72</b> for LoRes images. <b>Density#</b> = <b>2</b> or <b>144</b> for 
+HiRes images. <i>Generally a bitmap family must contain at least one single-density member</i>. By default, the sizes of 
+icons are checked: for LoRes, Large Icons should be either 22x22, 32x22, or 32x32 and Small Icons should be 15x9. Double 
+the sizes of the HiRes files in the family (44x44, 64x44, 64x64, and 30x18).
+</p>
+
+<p>
+<b>TRANSPARENT R# G# B#:</b>
+<br>
+Ahhh! This is the whole reason for this exercise! This keyword tells PilRC how to treat the bitmap or icon file. 
+<b>TRANSPARENT 204 204 153</b> tells the compiler to make every pixel holding Red:204, Green:204, Blue:153 transparent. 
+Thatís why you need to pick a transparent color and remember its RGB values when you create the image file.
+</p>
+
+<br>
+  <a name="FourB"> <li><b>4b.) Creating an RCP File</b></li>
+<br>
+Open a text editor, like Notepad, and add the following commands <u>exactly</u> 
+as they appear below. Better yet, Copy and Paste the following code into the file. 
+Then save the file as <b>PilRC-Demo.rcp</b>.
+
+<ul><pre><b>
+ICON ID 1000
+BEGIN
+  BITMAP "LargeIcon22x22.bmp" BPP 8 DENSITY 72 TRANSPARENT 204 204 153
+  BITMAP "LargeIcon44x44.bmp" BPP 8 DENSITY 144 TRANSPARENT 204 204 153
+END
+
+ICON ID 1001
+BEGIN
+  BITMAP "SmallIcon15x9.bmp" BPP 8 DENSITY 72 TRANSPARENT 204 204 153
+  BITMAP "SmallIcon30x18.bmp" BPP 8 DENSITY 144 TRANSPARENT 204 204 153
+END
+
+BITMAP ID 1007
+BEGIN
+  BITMAP "Bitmap30x30.bmp" BPP 8 DENSITY 72 TRANSPARENT 204 204 153
+  BITMAP "Bitmap60x60.bmp" BPP 8 DENSITY 144 TRANSPARENT 204 204 153
+END
+</b></pre></ul>
+
+<p>
+<b>Comments:</b> The above series of commands tells PilRC to create 3 bitmap resources. The first section creates 
+a resource for a family of LoRes and HiRes 8-bit Large Icons (<b>tAIB03e8.bin</b>). The second section creates a 
+resource for a family of LoRes and HiRes 8-bit Small Icons (<b>tAIB03e9.bin</b>). The final section creates a resource 
+for a family of LoRes and HiRes 8-bit bitmaps (<b>Tbmp03ef.bin</b>). <i>Note: For Small or Large Icons, it 
+doesnít matter what their Res ID is in the PRJ file. Large Icons always default to an ID of 1000, and 
+Small Icons default to 1001. <b>However, we must match the Res ID of bitmaps. In this case, the ID 
+of the bitmap in our project is 1007.</b></i>
+</p>
+
+<br>
+<a name="FourC"><li><b>4c.) Using PilRC to Compile Bitmap Files</b>.</li>
+<br>
+Now, weíre ready to use <b>PilRC-Demo.rcp</b> to compile our bitmaps into binary resources with transparent backgrounds. 
+PilRC is a DOS command line compiler. A quick look at its manual reveals a rather complex command line syntax. 
+However, for our purposes, the syntax is very simple:
+
+<ul>
+<p><b>PILRC PilRC-Demo.rcp</b></p>
+</ul>
+
+<p>
+To make compiling painless, we will create a BAT file that consists of the one-line command thatís listed above. 
+Create the file with a text editor and name it <b>PilRC-Demo.bat</b>. 
+Now we can compile the bitmaps directly from the Windows Explorer. The final step is simple: make a temp folder 
+and put <b>pilrc.exe</b>, <b>PilRC-Demo.rcp</b>, <b>PilRC-Demo.bat</b>, and all 6 of our BMP files together. 
+Then, from Windows Explorer, double-click on the BAT file. PilRC will open a DOS window and display messages 
+about generating 68k resources from the RCP file and list the binary files that were created.
+</p>
+  <IMG SRC="TN04c.images/PilRC.png" BORDER="1" WIDTH="436" HEIGHT="103">
+<p>
+Each output filename is constructed by appending the hexcode resource ID and ".bin" to the four character resource type. 
+Thus, our family of Large Icons (Resource Type ìtAIBî, ID 1000/Hex 03e8 ) generates a binary file named 
+<b>tAIB03e8.bin</b>. Likewise, the Small Icons (Resource Type ìtAIBî, ID 1001/Hex 03e9 ) results in <b>tAIB03e9.bin</b>. 
+And finally, our family of bitmaps (Resource Type ìTbmpî, ID 1007/Hex 03ef) results in a file named <b>Tbmp03ef.bin</b>. 
+These binary files will be used to replace the corresponding opaque bitmaps in our PRC file. 
+Go ahead and close the DOS window. Now its time to replace our opaque bitmaps with the transparent ones 
+that weíve just created.
+</p>
+</UL>
+
+
+
+
+<BR>
+<H2><a name="UsingPAR"></a>5.) Using PAR to Replace the Bitmaps</H2>
+<p>
+<b><i>PAR</i></b> (Palm Database Archiver) is a utility that creates and manipulates 
+PalmOS database (<b>.pdb</b>) and resource (<b>.prc</b>) files. Like PilRC, it is a free utility and can 
+be found on the internet. PAR was written by <a HREF="mailto:djw&copy; djw.org"><b>David Williams</b></a>.
+</p>
+
+<p>
+We will use it to first delete the opaque bitmaps. Then weíll replace them with the corresponding binary files that 
+contain our transparent bitmaps and icons. Again, read the PAR manual carefully to understand the command-line syntax 
+of this DOS utility. Like PilRC, we can make batch files to simplify things. Letís make 3 of them: 
+to <b>List</b> whatís in our PRC file, to <b>Delete</b> the opaque bitmaps, and to <b>Add</b> 
+our newly created binary files. We will name them: <b>ParList.bat</b>, <b>ParDel.bat</b>, & <b>ParAdd.bat</b>. 
+See the next section for instructions on how to create these batch files. After you've written them, copy the batch 
+files, along with the PAR utility (<b>par.exe</b>) to the temp folder containing PilRC and the image files. 
+Then, weíll ready for the final steps.
+</p>
+
+<UL>
+<a name="FiveA"><li><b>5a.) A PAR Batch File to List the PRC Contents</b></li>
+<br>
+While not strictly necessary, it is educational to list the contents of the PRC file. 
+The PAR command line syntax is:  <b>par t filename.prc</b>
+<br>
+Our BAT file, <b>ParList.bat</b> consists of one line: <b>par t TransBit.prc</b>
+<br>
+Running this batch file results in a listing of all the resources in the PRC file:
+
+<p>
+<IMG SRC="TN04c.images/PAR.png" BORDER="1" WIDTH="117" HEIGHT="231">
+</p>
+
+<p>
+The first column shows the Resource Type, the 2nd column lists the Hex equivalent of the ID, and the 3rd column 
+lists the size. In among the listing are 3 entries (which I highlighted) representing our families of Large and 
+Small Icons, and the Bitmaps. Notice that the PAR's naming scheme is identical to PilRC's.
+</p>
+
+<ul><pre>
+<b>tAIB 03e8</b> (ID 1000, our Large Icon family)
+<b>tAIB 03e9</b> (ID 1001, our Small Icon family)
+<b>Tbmp 03ef</b> (ID 1007, our Bitmap family)
+</ul></pre>
+
+<br>
+<p>
+  <a name="FiveB"><li><b>5b.) A PAR Batch File to Delete the Old Bitmap Resources</b></li>
+<br>
+The PAR command line syntax for deleting a resource from the PRC file is: <b>par d filename.prc res type id#</b>
+<br>
+Our BAT file, <b>ParDel.bat</b>, tells PAR to delete the current Large/Small Icon families, and the bitmap family. 
+It consists of 3 lines:
+</p>
+
+<ul><pre>
+<b>par d TransBit.prc tAIB 1000 
+par d TransBit.prc tAIB 1001
+par d TransBit.prc Tbmp 1007</b>
+</ul></pre>
+
+<p>
+Just double-click on the batch file, and PAR will delete the opaque bitmaps from the PRC file.
+</p>
+
+<br>
+<p>
+  <a name="FiveC"><li><b>5c.) A PAR Batch File to Add the PilRC Binary Files</b></li>
+<br>
+The PAR command line syntax for adding a resource to the PRC file is: <b>par d filename.prc resource filename</b>
+<br>
+The final BAT file, <b>ParAdd.bat</b>, tells PAR to add the 3 binary files we created earlier.
+<br>
+Thanks to PilRC, these binary files contain our transparent icons and bitmaps!
+</p>
+
+<ul><pre>
+<b>par a TransBit.prc tAIB03e8.bin
+par a TransBit.prc tAIB03e9.bin
+par a TransBit.prc Tbmp03ef.bin</b>
+</ul></pre>
+
+<p>
+Again, just double-click on the batch file, and PAR will add the new resources to the PRC file.<br>
+<b>Done!</b> If everything went right, we can now enjoy icons and bitmaps that have transparent backgrounds.
+</p>
+</UL>
+
+
+
+
+<BR>
+<H2><a name="TestNewPRC"></a>6.) Testing the New PRC File</H2>
+<p>
+Load the new TransBit.prc into both the POSE and your handheld. Check out the Large & Small Icons in Icon View and 
+List View. Then run TransBit and check out the bitmap image. The ugly beige background should now be gone, 
+replaced by a transparent background.
+</p>
+
+
+
+
+<BR>
+<H2><a name="Misc"></a>7.) Miscellaneous Tips</H2>
+<UL>
+  <li>Including bitmaps and icons into your project greatly increases the compiling time. If you are actively 
+developing or revising an application, consider waiting until the end of development before adding all your 
+graphics files.</li>
+<br><br>
+  <li>Since Large Icons and Small Icons always default to a Resource ID of 1000 and 1001, there is no need to 
+add them to the PRJ file at all! Wait until youíve compiled the final PRC file. Then use PilRC and PAR to add them 
+to the PRC file. Again, this will save lots of compiling time.</li>
+</UL>
+
+
+
+
+<BR>
+<H2><a name="FurtherInfo"></a>8.) Acknowledgements and Further Information</H2>
+<UL>
+  <li>Special thanks to <b>Adrian Nicolaiev</b>. This Tech Note would never have been possible without his help!</li>
+<br>
+<br>
+  <li><a HREF="http://www.nsbasic.com/palm/info/technotes/TN04b.htm"><i><b>NS Basic Tech Note 04b: Creating an Images 
+Database</i></b></a>, by <b>Oscar De Leon</b>. This article demonstrates how to use PilRC to create 
+a database of images from a collection of BMP files. Very helpful reading!</li>
+<br>
+<br>
+  <li><a HREF="http://www.nsbasic.com/palm/info/technotes/TN24.htm"><b><i>NS Basic Tech Note 24: How to Make Icons: 
+Drawing Characters</i></b></a>, by <b>Misuno-Ami</b>. Some nice tips about Icon design.</li>
+<br>
+<br>
+  <li>Link to download <a href="http://www.ardiri.com/index.php?redir=palm&amp;cat=pilrc"><b><i>PilRC</i></b></a></li>
+<br>
+<br>
+  <li>Link to download <a href="http://www.djw.org/product/palm/par/"><b><i>PAR</i></b></a></li>
+</UL
+
+</BODY></HTML>

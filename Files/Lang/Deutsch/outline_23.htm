@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>AppLaunch </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>AppLaunch                                                                                             Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>APPLAUNCH(<i> cardNo </i>as integer,<i> pgm </i>as
+string,<i> cmd </i>as integer,<i> data </i>as string)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>liefert eine Ganzzahl mit dem Antwortcode des Aufrufes. <i>CardNo</i> sollte auf 0 gesetzt werden, <i>pgm</i> ist ein String der den Namen der
+aufzurufenden Anwendung enthält, <i>cmd</i>
+enthält die Parameter als String, die an <i>pgm</i>
+übergeben werden sollen. Diese Funktion ruft eine andere Anwendung von NS
+Basic/Palm aus auf. Anders als bei CHAIN wird die aufrufende Anwendung nach dem
+Aufruf weiter ausgeführt. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b> </p>
+
+<p class=Code>' in dem code eines objektes:</p>
+
+<p class=Code>PalmPrint &quot;Hello World&quot;  'ruft die PalmPrint function im Code auf</p>
+
+<p class=Code>...</p>
+
+<p class=Code>sub PalmPrint(PrintData as string)</p>
+
+<p class=Code>   dim res as integer</p>
+
+<p class=Code>   res=AppLaunch(0,
+&quot;PalmPrint&quot;, 32768, PrintData)</p>
+
+<p class=Code>end sub</p>
+
+<p class=Code>'Dieses Beispiel ruft PalmPrint von Steven's Creek
+(http://www.stevenscreek.com) auf, um &quot;Hello World&quot; an den IR Drucker
+zu senden.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

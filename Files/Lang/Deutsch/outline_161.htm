@@ -1,0 +1,497 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SerialOpen </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>SerialOpen                                                                                              Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SERIALOPEN(<i>port</i> as integer, <i>baudRate</i>
+as integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Öffnet den seriellen Port <i>port</i> und bereitet diesen auf nachfolgende Ein-/Ausgabefunktionen
+vor. Port ist die Nummer des seriellen Ports, die im Normalfall 0 ist. Der
+nachfolgenden Tabelle können Sie die weiteren Möglichkeiten entnehmen. <i>BaudRate</i> enthält die
+Übertragungsgeschwindigkeit, wobei alle Standardwerte bis 57600 getestet
+wurden. Palm gibt an, dass theoretisch Übertragungsraten bis 1mBit möglich
+sind. Ein ganzzahliger Fehlercode wird zurückgegeben. Für mehr Informationen
+zum Thema Kommunikation sehen Sie bitte Tech Note 16.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Port Values</b></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Cradle Port (USB or RS-232)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>32768</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Cradle Port (USB or RS-232)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>32769</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>IR – Raw IRDA, Keine Protokoll Unterstützung</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>32770</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Debug console port</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>32771</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Cradle - RS-232</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>32772</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Cradle - USB</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1651794800</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>‚btcp’ Bluetooth Connection Manager</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1769104237</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>‚ircm’ IR Kommunikations Protokol</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=74 valign=top style='width:55.3pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1919312749</p>
+  </td>
+  <td width=469 valign=top style='width:351.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>‚rcfm’ Bluetooth Virtual port</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>Physikalische und virtuelle Portnummern sind ebenfalls erlaubt.
+Für zusätzliche Informationen ziehen Sie bitte die Palm OS Dokumentation heran.
+Um einen virtuellen Portnamen (z.B. „rcfm“ für das virtuelle Bluetooth Plug-In),  zu konvertieren, benutzen Sie bitte die String4ToInt Funktion der
+NSBSystemLib.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Serial Result Codes</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Operation erfolgreich</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Operation fehlgeschlagen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>2</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Interner Maschinenstatusfehler</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>104</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Nicht genügend Speicher zum Öffnen des Ports</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>769</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Falscher Parameter</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>770 </p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Falscher port</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>771</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kein Speicher</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>772</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Falsche Verbindungs ID</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>773</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Zeitüberlauf (Timeout)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>774</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Leitungsfehler</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>775</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Bereits geöffnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>776</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Noch immer geöffnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>777</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Nicht offen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>778</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Nicht unterstützt</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>779</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kein Gerät verfügbar</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>780</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Konfiguration fehlgeschlagen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1286</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Time Out</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4353</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kein Wählton</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4354</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kein Trägersignal/Zeitüberschreitung</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4355</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Besetzton</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4356</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Abbruch durch Anwender</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4357</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Befehlsfehler</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4358</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kein Modem gefunden</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4359</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Nicht genügend Speicher</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4360</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Modem Vorseinstellungen nicht eingegeben</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4361</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Anwahlstring falsch: zu lang oder nicht erkannte Zeichen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=55 valign=top style='width:41.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4362</p>
+  </td>
+  <td width=487 valign=top style='width:365.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Keine Telefonnummer gefunden und kein: „direct connect“</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Err=SerialOpen(0,28800)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

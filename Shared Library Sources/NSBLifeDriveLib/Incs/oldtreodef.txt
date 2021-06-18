@@ -1,0 +1,45 @@
+func Err PhoneOn(UInt16 refNum, long *ret) 		// Checks whether the phone is on
+func Err SignalQuality(UInt16 refNum, long *ret)// Returns signal quality
+func Err PhoneType(UInt16 refNum, char *ret)	// Returns the phone type
+func Err PhoneReady(UInt16 refNum, long *ret)	// Returns true if phone is ready
+func Err MainNumber(UInt16 refNum, char *ret)	// Returns the local numbers
+func Err NetworkAvailable(UInt16 refNum, long *ret)	// Returns whether the network is available
+func Err CallWaiting(UInt16 refNum, long *ret)	// Get the call waiting
+Err CallWaitingSet(UInt16 refNum, long whether)	// Set call waiting
+func Err OperatorCurName(UInt16 refNum, char *ret)		// Get the operator
+func Err OperatorCurID(UInt16 refNum, char *ret)	// Get the operator ID
+func Err Provider(UInt16 refNum, char *ret)		// Get the provider
+func Err OperatorCount(UInt16 refNum, long *ret)	// Get the number of operators
+func Err OperatorName(UInt16 refNum, long which, char *ret)	// Get an indexed operator
+Err Operator(UInt16 refNum, long which, long type)	// Set an indexed operator
+func Err BookCount(UInt16 refNum, long *ret)		// Get the number of phone numbers
+func Err BookFirstName(UInt16 refNum, long which, char *ret)// Get a particular first name
+func Err BookLastName(UInt16 refNum, long which, char *ret)	// Get a particular first name
+func Err BookPhoneNumber(UInt16 refNum, long which, char *ret)// Get a particular first name
+Err DialPhone(UInt16 refNum, char *number)						// Dial a number
+Err SendSMSMessage(UInt16 refNum, char *nbr, char *name, char *msg)// Send an SMS message
+Err SendEMail(UInt16 refNum, char *addr, char *cc, char *subj, char *msg) // Send an email message
+Err Browse(UInt16 refNum, char *msg)				// Browse a URL
+Err BookReload(UInt16 refNum)						// Reload the phone book
+Err PhoneTurnOn(UInt16 refNum)						// Turn on the phone if not already on
+Err TCPIPDropConnection(UInt16 refNum)				// Drop the IP connection
+Err Vibrate(UInt16 refNum, long *count)				// Set vibration
+Err Blink(UInt16 refNum, long *count)				// Blink the LED
+func Err Roaming(UInt16 refNum, long *count)		// Return whether roaming
+func Err Software(UInt16 refNum, char *count)		// Return the software revision
+func Err Hardware(UInt16 refNum, char *count)		// Return the hardware revision
+func Err ProductName(UInt16 refNum, char *count)	// Return the name of the product
+func Err SerialNumber(UInt16 refNum, char *count)	// Return the serial number
+func Err CarrierID(UInt16 refNum, char *count)		// Return the serial number
+func Err ProductRevision(UInt16 refNum, char *count)// Return the product revision
+func Err ROM(UInt16 refNum, char *count)			// Return the ROM version
+func Err Firmware(UInt16 refNum, char *count)		// Return the ROM version
+func Err HTTPOpen(UInt16 refNum, long *result)		// Open an HTTP connection
+Err HTTPClose(UInt16 refNum)						// Close the HTTP connection
+func Err HTTPSendRequest(UInt16 refNum, char *url, long timeInMs, long *ret)	// Send a request
+func Err KeyboardLocked(UInt16 refNum, long *ret)	// Return if the keyboard is locked
+Err KeyboardLock(UInt16 refNum, long whether)		// Lock or unlock the keyboard
+func Err HTTPGetHeader(UInt16 refNum, long timeInMs, char *ret)	// Get the header
+func Err HTTPRead(UInt16 refNum, long size, long timeInMs, char *ret)  // Get some data
+func Err HTTPSendPostRequest(UInt16 refNum, char *url, char *postData, long timeInMs, long *ret)	// Send a request
+Err HTTPEnd(UInt16 refNum)							// End a transaction

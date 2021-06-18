@@ -1,0 +1,54 @@
+[General]
+
+ExtensionName=NSBiQueGPS
+PrcName=NSBiQueGPS.prc
+Version=1.1
+Manufacturer=GlowkaWare
+InfVers=2.0
+=HelpStart=
+""
+"NSBiQueGPS Shared Library"
+""
+"This library provides an NSBasic wrapper library for the
+"Garmin iQue 3600 GPS shared library.
+""
+"Written by Ron Glowka, June 2004"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as Double"
+CompileInfo= 2, func, 0, "CompileInfo() as String"
+GPSLibLoaded= 3, func, 0, "GPSLibLoaded() as Integer"
+GPSGetLibAPIVersion= 4, func, 0, "GPSGetLibAPIVersion() as Integer"
+GPSClose= 5, sub, 0, "GPSClose())"
+GPSOpen= 6, func, 0, "GPSOpen() as Integer"
+GPSGetMaxSatellites= 7, func, 0, "GPSGetMaxSatellites() as Integer"
+GPSGetPosition= 8, func, 4, "GPSGetPosition(out lat as Double, out lon as Double, out altMSL as Double, out altWGS84 as Double) as Integer"
+GPSGetPVT= 9, func, 16, "GPSGetPVT(out mode as Integer, out fix as Integer, out epe as Double, out eph as Double, out epv as Double, out lat as Double, out lon as Double, out altMSL as Double, out altWGS84 as Double, out east as Double, out north as Double, out up as Double, out track as Double, out speed as Double, out seconds as Integer, out fracSeconds as Integer) as Integer"
+GPSGetStatus= 10, func, 5, "GPSGetStatus(out mode as Integer, out fix as Integer, out epe as Double, out eph as Double, out epv as Double) as Integer"
+GPSGetTime= 11, func, 2, "GPSGetTime(out seconds as Integer, out fracSeconds as Integer) as Integer"
+GPSGetVelocity= 12, func, 5, "GPSGetVelocity(out east as Double, out north as Double, out up as Double, out track as Double, out speed as Double) as Integer"
+GPSGetSatellites= 13, func, 6, "GPSGetSatellites(in satellite as Integer, out svid as Integer, out statusBits as Integer, out snr as Integer, out azimuth as Double, out elevation as Double) as Integer"
+GetLatLonSemicircles= 14, sub, 2, "GetLatLonSemicircles(out lat as Integer, out lon as Integer)"
+GetLatLonDegMin= 15, sub, 2, "GetLatLonDegMin(out lat as String, out lon as String)"
+GetLatLonDegMinSec= 16, sub, 2, "GetLatLonDegMinSec(out lat as String, out lon as String)"
+GetErrString= 17, func, 1, "GetErrString(in status as Integer) as String"
+GetModeString= 18, func, 1, "GetModeString(in mode as Integer) as String"
+GetFixString= 19, func, 1, "GetFixString(in fix as Integer) as String"
+GetSatStatusValues= 20, sub, 5, "GetSatStatusValues(in statusBits as Integer, out ephemeris as Integer, out differential as Integer, out used as Integer, out rising as Integer)"
+ConvertDouble= 21, func, 2, "ConvertDouble(in originalValue as Double, in conversionType as Integer) as Double"
+LatLonToUTM= 22, func, 5, "LatLonToUTM(in datumID as Integer, in lat as Double, in lon as Double, out easting as Double, out northing as Double) as String"
+UTMToLatLon= 23, sub, 6, "UTMToLatLon(in datumID as Integer, in zone as String, in easting as Double, in northing as Double, out lat as Double, out lon as Double)"
+UTMDistance= 24, func, 10, "UTMDistance(in zone1 as String, in easting1 as Double, in northing1 as Double, in zone2 as String, in easting2 as Double, in northing2 as Double, out ewDir as String, out ewDist as Double, out nsDir as String, out nsDist as Double) as Double"
+PwrSetLowPowerMode= 25, func, 2, "PwrSetLowPowerMode(in creatorID as String, in enabled as Integer) as Integer"
+RegisterNotifyEvents= 26, sub, 6, "RegisterNotifyEvents(in locationChange as Integer, in statusChange as Integer, in lostFix as Integer, in satDataChange as Integer, in modeChange as Integer, in displayResized as Integer)"
+WinGetDisplayExtent= 27, sub, 2, "WinGetDisplayExtent(out x as Integer, out y as Integer)"
+WinSetDisplayExtent= 28, sub, 1, "WinSetDisplayExtent(in size as Integer)"
+FrmGetDIAPolicy= 29, func, 0, "FrmGetDIAPolicy() as Integer"
+FrmSetDIAPolicy= 30, sub, 1, "FrmSetDIAPolicy(in value as Integer)"
+PINGetDIAState= 31, func, 0, "PINGetDIAState() as Integer"
+PINSetDIAState= 32, sub, 1, "PINSetDIAState(in value as Integer)"
+PINGetInputTriggerState= 33, func, 0, "PINGetInputTriggerState() as Integer"
+PINSetInputTriggerState= 34, sub, 1, "PINSetInputTriggerState(in value as Integer)"

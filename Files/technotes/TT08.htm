@@ -1,0 +1,114 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tutorial 08: Using TcpIpLib to Obtain Stock Quotesm</TITLE>
+<link rel="stylesheet" href="/style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+		
+    <TD WIDTH="17%" VALIGN="TOP"> 
+      <P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+    	</TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tutorial 08: Using TcpIpLib to Obtain Stock Quotes</h2>
+	  <h3>September 26, 2007</h3>
+      		  
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.
+		</h5>
+		
+	</TD>
+	</TR>
+</TABLE>
+<i>Contributed by Larry Hill</i>
+<HR>
+
+<p>This tutorial will help you create an application that will obtain stock quotes from the Yahoo website.  It uses the TcpIpLib .prc which is one of the members of the Lib folder in recent versions of NS Basic for Palm.  The tutorial itself will build on one of the sample programs included in recent distributions of NS Basic.  Using that project as a starting point, we will make a working copy of it and then modify it to accomplish the objective of this tutorial.  We will begin our development by testing on the POSE but if you have an 'internet' capable Palm device we should be able to hot sync it for use over there. 
+<p>Here is what to do - First you will want to locate the sample project called TCPIPDemo.  It may already be in your Projects folder which is usually found in C:\NSBasic.  If not there, it might be found in a sub-folder to C:\NSBasic\Projects called Samples - Shared Library.  Its full title should be TCPIPDemo.prj.  Once you have found it, make a copy of the original and change the name of the copy to NSBQuotes.prj.  If not already there, move NSBQuotes.prj so that it resides in C:\NSBasic\Projects.
+<p>Now it is time to get to work.  Start up the NSBasic development environment and open the existing project called NSBQuotes (the .prj you just made).  Go to the Run Menu and take the choice to compile.  If the POSE is not currently running, get it started also.  One of the ways to do this is to go to the folder C:\NSBasic\Tools and run the application called Emulator.  At this time you want to get both the newly compiled application and the TcpIpLib library installed on the POSE.  One way to do this is to locate NSBQuotes in the folder called C:\NSBasic\Download and simply drag it on top of the running POSE.  For the TcpIpLib library, go to the folder C:\NSBasic\Lib and this time drag TcpIpLib.prc onto the running POSE.  This latter drag will only have to be done one time since we will not be making any changes in it.
+<p>Now go to the POSE and run this new application.  You might be surprised that the application you want to run is called TcpIpDemo but run that one anyway.  We'll make those changes later provided we can get this first part to work.   Once it is going, click the button called Get Web Page.  If everything is working properly you should get some data to appear on the POSE.  If that field is scrolled to the bottom you should see something very similar to the image below.
+<p align="center"><img src="images/TT08.1.gif"></p>
+
+<p>If your results do not look like what is shown above, then you have either done something wrong or your  version of POSE does not have the ability to see  the internet through your laptop.  You need to look to make the necessary changes before continuing with this tutorial.  If this doesn't work now then nothing this tutorial suggests will help it later.  Possible errors might include using a simulator rather than POSE, not having the NSB runtime present in the POSE, or not having the proper library installed.
+Now that everything is working properly, go back to your project in NSBasic.  You should have a window that looks something like the one shown in the image below.
+<p align="center"><img src="images/TT08.2.gif"></p>
+
+<p>Now make the following changes:
+<p>1.  Delete the buttons called 'Get News', 'Send Mail' and 'Get Email'.  This is accomplished by right-clicking the button and taking the choice 'Delete'.  Do NOT delete the button 'Get Web Page'.
+<p>2. At the top of the form window you will see a label called 'messages'.  Right-click and delete it also.
+<p>3. Now click once at the top of the form window on the title 'Tcp/Ip Demo' just to make sure that the properties for this Form 1003 are displayed in the Properties window.
+<p>4. In the Properties window, change the Title to read 'Stock Quotes' rather than 'Tcp/Ip Demo'.
+<p>After these changes are made you should have a window that looks like this:
+<p align="center"><img src="images/TT08.3.gif"></p>
+
+<p>Compile the application again and drag the compiled project from the Download folder to the POSE.  When run on the POSE and the 'Get Web Page' button is clicked you should get this window:
+<p align="center"><img src="images/TT08.4.gif"></p>
+
+<p>If your results are different from this, go back and make the appropriate changes.  When your results on the POSE agree with Figure 4 then go back to the NSB Basic window and save your project.  Don't worry that the POSE still thinks it is still called TcpIpDemo.  We'll change that next.
+<p>Go back to the project (NS Basic) window and click one time on the top line of Project Explorer Window (the one that says 'TcpIpDemo'.  That will change the contents of the Properties window.  In that window change the top line Name to 'NSBQuotes' and you might also want to change the lines for 'Creator ID' and 'Version' to appropriate values.  You can also assign a different Launcher name if you wish.  Now you will see in the top line of the Project Explorer window that the project is called NSBQuotes and the next time you compile and drag it to the POSE, it will be called NSBQuotes.  You can try this now if you want.  At any time you may delete the application TcpIpDemo from the POSE.
+<p>Now go to the Project Menu and take the option ' Startup Code'.  We will leave that just as it is.  The only really critical thing there is the code that loads TcpIpLib.  It must be correct otherwise you would not have gotten this far in the project without problems.  There are two functions there which we will not use but it doesn't hurt to keep them there in case you want to do something fancier with the project at a later time.  You may close the StartUp code window.
+<p>Next go to the window that shows the form and click once on the button with the title 'Get Web Page'.  This will cause the Properties window to show the properties for button1004.  In the Properties window, change the 'Label' to read 'Quote' rather than 'Get Web Page'.  If you click back on the Form window now, you will see that the button now has a new name.
+<p>Now click two times on the 'Quote' button to cause its code to appear in a window.  You may want to maximize this window in order to better see the code.  We are now going to change two lines of code in order to get a stock quote for Apple Computer.  The lines that we will change are the ones that contain the host name and the one that contains the message we send it.  Rather than destroy the old lines of code, let's copy them, comment out the original and then modify the new one.  Here is the code, with changes for hostname and msg.
+<p align="center"><img src="images/TT08.5.gif"></p>
+
+
+<p>Right below the first original line of code (other than Dim statements) we have defined a new hostname.  Down a few lines from that change you will see that there is a new value for msg.  It is now:
+<pre>    msg="GET /d/quotes.csv?f=sd1t1l1c1&e=.cvs&s=AAPL" + CRLF
+</pre>
+
+<p>That message will cause the host (Yahoo) to give the symbol, the date, the time of last trade, the latest price, and the change in dollars from the opening price for Apple Computer.  These are respectively coded with s, d1, t1, l1and c1.  (I'm not sure where Yahoo officially publishes these codes but this article from the Motley Fool shows many of them:  <a href="http://boards.fool.com/Message.asp?mid=18825035" target="_top">http://boards.fool.com/Message.asp?mid=18825035</a>)
+<p>Now if the application is compiled, loaded onto the POSE and run, the POSE should look this. The values shown will most certainly differ though. 
+<p align="center"><img src="images/TT08.6.gif"></p>
+
+
+<p>We need to clean this up a bit and give it the versatility to find quotes for all companies, not just Apple Computer.  We will first start with the cleanup.  The original TcpIpDemo showed the message sent as well as the result.  If we can remove the message from the above, we'll have just the information starting with "AAPL". 
+<p> In the next image, you can see that a new line of code has been added just a few lines below where 'msg' was first defined.  The effective part of the line is msg = "" and the rest is comment.  This will clean off the top part of the output and leave us with just the pertinent information.  You need to insert this new line into your code in exactly the same position as shown in the figure.  The comment part after the single quote is optional.  You are welcome to compile this again and give it a try.  
+<p>It is beginning to look better already but versatility is even more important at this stage.  To accomplish this, we will need to add a new label, a new field and reposition the objects on the form a bit.
+
+<p align="center"><img src="images/TT08.7.gif"></p>
+
+<p align="center"><img src="images/TT08.8.gif"></p>
+
+<p>The above shows the form after adding these objects and repositioning the ones we already had.  Here are the steps you need to accomplish this;
+<p>1.  Drag the field called 'data' closer to the top of the form.
+<p>2. Drag the button called 'Quote' toward the lower right of the form and also make it a little smaller to make room for some additional objects.  You do this by dragging the edge of the button.
+<p>3. On the Tool Bar, click on the Label tool and place a label on the left side of the form.  Adjust its position so that it is in line with the Quote button.  Go to the Properties window and make sure it says 'Symbol:'.
+<p>4. On the Tool Bar, use the Field tool to insert a new field between the new label and the Quote button.  Go to the Properties window for this field and give it the name 'fldSymbol'.  Make sure this is correct because that is how we will be referring to this important object in our code.
+<p>5. Finally, arrange and size all the form objects so that they will be similar to those shown in Figure 8.
+<p>Now we have a little more scripting to do.  We need to go back to the script for the 'Quote' button and put in the necessary code that will allow the user to put any ticker symbol in the symbol field and when the button is pushed, the corresponding quote will be retrieved.  Here are the steps to accomplish this:
+<p>1. Double-click on the Quote button to bring up its script.  We want to be able to see as much code as possible so maximize the code window and close both the Project Explorer and Properties windows.
+<p>2. We need to dimension a new string variable called 'symbol' so just below the other dimension statements at the top of the code add:  Dim symbol as String.
+<p>3. Just below that new Dim statement, add an empty line and then these two lines of code:
+<pre>symbol = fldSymbol.text
+If symbol = "" Then Exit Sub     'Check to make sure something is entered
+</pre>
+<p>(The second line is not absolutely critical but you might even want to add a message here letting the user 
+know that they have forgotten to enter a ticker symbol.)
+
+<p>4. The next thing we need to do is to remove the specific reference to AAPL that is in the definition for the variable called 'msg' in order to get something that will work for any symbol entered.  Here is what that new line will look like:    msg="GET /d/quotes.csv?f=sd1t1l1c1&e=.cvs&s=" + symbol + CRLF  You can look at Figure 9 below to see it in context.  Make that change now.
+<p>Now let's go ahead and compile and test.  See if you can get a quote for 'MSFT'.  Your result on the POSE should look like the one in Figure 10.  You will notice that the data that the user enters can be in either upper or lower case and the Yahoo data will be retrieved correctly.  You can go ahead and retrieve quotes for whatever you want. To get the DOW Jones, NASDAQ and the S&P500 use '^DJI', '^IXIC' and '^GSPC' respectively.  
+<p>You could elect to stop development right here because you can now get any quote that Yahoo handles.  You could make a number of enhancements such as the message to the user mentioned previously and then because the special symbols for the Dow etc. are difficult to remember, you might want to add three buttons, which when clicked, will automatically enter the appropriate special symbol into fldSymbol.  You may also want to make provision for erasing and then setting focus on fldSymbol after the data is retrieved.  This will make that field ready for the next symbol.  These additional changes are left to the user.   
+
+<p align="center"><img src="images/TT08.9.gif"></p>
+
+<p align="center"><img src="images/TT08.10.gif"></p>
+
+<p>There is something we should do to clean up and give more meaning to the data that is retrieved.  It would be nice to put each piece of the quote on its own line and maybe even make sure that each of those lines has a label to identify the contents.  That is what we will do next and unfortunately, this is the part that will take the most work.   We will need to parse the comma delimited data to split it up into data that is delimited with the return character.   
+<p>I am not aware of a 'Replace' function in NS Basic so we are going to have do it the hard way by using the Instr function to pull the parts away from the string that Yahoo returns.  The string will have to be disassembled and then reassembled before being placed in the results field.  While we're doing it, we will have to remove the quotation marks as well.  This code will involve manipulating the results of the Yahoo data before placing it in the field called 'data'.
+<p>Go back to the script of the Quote button and get the script ready for modification.    I think the simplest way to accomplish this to first comment out the line near the bottom that says 'data.text=msg'.  If we were to run this program without this line, we would still retrieve the data from Yahoo but we wouldn't be showing it to anyone.  
+<p>After commenting that line out, add the following code between the line that says 'tcp.tcpClose(fd)' and the line that says 'End Sub'.   Figure 11 shows what it should look like.  I apologize for all the typing but you can leave out the comments if you wish.  Also the three new Dim statements would normally be at the top with the others but this way you can see everything that needs to be changed.
+<p align="center"><img src="images/TT08.11.gif"></p>
+
+
+<p>Once this code has been entered, go ahead and test the application by compiling it and dragging it onto the POSE.  Running on the POSE, it should now look something this:                                                   
+<p align="center"><img src="images/TT08.12.gif"></p>
+
+<p>We can make it look even better by going back to the form window and adding some labels to identify the results.  We can even make the data field conform in size better to the data being displayed.  Here is how this might look with those changes:
+<p align="center"><img src="images/TT08.13.gif"></p>
+
+
+<p>You might finally decide you want to put this on your device.  Remember that your device must be able to access the internet.  Also when you hot sync the new application for the first time don't forget to hot sync over the library (TcpIplib). 
+<p>While you have been testing this application on the POSE or your device, you may have noticed a quick flash of some data in the screen before the final display.  If that is a bother to you, there is a line in the code of the Quote button that you could comment out to alleviate this problem.  I'll leave that as an extra credit assignment for you.  That is about it, but as I said before, you may want to make some other enhancements or additions.  You may even decide you want to get more information from Yahoo to display.  Have fun.

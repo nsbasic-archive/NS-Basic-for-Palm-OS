@@ -1,0 +1,127 @@
+"mdl"
+7
+"BenchFile68K","appl","Ben2",1006,505,0
+"Sub Project_Startup()
+    global db as database
+    Type customer
+        name as String
+        age as Short
+        salary as Float*6,2
+        birthdate as Date
+        birthtime as Time
+        idnumber as Integer
+        hexcode as Byte
+        singleFP as Single*6,2
+    End Type
+    Global cust as customer
+    
+    cust.name=~Kasper Hauser~
+    cust.age=52
+    cust.salary=22.50
+    cust.birthdate=dateval(1964,12,28)
+    cust.birthtime=now()
+    cust.idnumber=int(rand()*1000)
+    cust.hexCode=chr(15)
+    cust.singleFP=3.145926
+End Sub"
+0
+0
+""
+""
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form1"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Bench1",1004,20,36,12,108,#TRUE#,0,"Create 10000 Records",0,0,0
+"Sub object1004()
+    Dim err as Integer
+    Dim i as Integer
+    Dim name as String
+    Dim address as String
+    Dim startTime as Time
+
+	bench1.label=~Running...~
+    startTime=now()
+	err=dbopen(db,~TestDB~,0)
+    If err=0 Then  'delete if already there 
+        err=dbclose(db)
+        err=dbErase(db)
+    End If  
+    err=dbCreate(db,~TestDB~,0,~DBTe~)
+    err=dbOpen(db,~TestDB~,0)
+
+	For i=1 to 10000
+		err=dbinsert(db, i,	cust)
+	Next
+	bench1.label=~Create: ~ & str(timediff(startTime,now()))	
+	err=dbclose(db)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Bench2",1005,20,68,12,108,#TRUE#,0,"Read 10000 Records",0,0,0
+"Sub object1005()
+    Dim err as Integer
+    Dim i as Integer
+    Dim startTime as Time
+
+	bench2.label=~Running...~
+    startTime=now()
+	err=dbopen(db,~TestDB~,0)
+    If err<>0 Then
+    	MsgBox ~Could not open TestDB~
+    	Exit Sub
+    End If  
+
+	For i=1 to 10000	
+		err=dbReadNext(db,i,cust)
+	Next
+	bench2.label=~Read:~ & str(timediff(startTime,now()))	
+	err=dbclose(db)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Bench3",1006,20,100,12,108,#TRUE#,0,"Update 10000 at Random",0,0,0
+"Sub object1006()
+    Dim err as Integer
+    Dim i as Integer
+    Dim key as Integer
+    Dim startTime as Time
+
+	bench3.label=~Running...~
+    startTime=now()
+	err=dbopen(db,~TestDB~,0)
+    If err<>0 Then
+    	MsgBox ~Could not open TestDB~
+    	Exit Sub
+    End If  
+
+	For i=1 to 10000
+		key=int(rand()*10000)+1
+		err=dbRead(db,key,cust)			
+		cust.salary=cust.salary+1
+		err=dbupdate(db,key,cust)			
+	Next
+	
+	bench3.label=~Update: ~ & str(timediff(startTime,now()))	
+	err=dbclose(db)
+
+End Sub"
+"end"

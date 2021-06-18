@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Type </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Type                                                                                                              Befehl</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>TYPE userName</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Beginn einer Definition eines Benutzerspezifischen
+Variablentyps oder einer Struktur.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Type PersonType</p>
+
+<p class=Code>  Name as string</p>
+
+<p class=Code>  Occupation as string</p>
+
+<p class=Code>  Salary as double</p>
+
+<p class=Code>End Type</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Dim person as PersonType</p>
+
+<p class=Code>Person.name=&quot;John Doe&quot;</p>
+
+<p class=Code>Person.Occupation=&quot;Freelance artist&quot;</p>
+
+<p class=Code>Person.Salary=50000.00</p>
+
+<p class=Code>msgbox &quot;Der Name ist &quot; + person.name</p>
+
+<p class=Code>msgbox &quot;Der Beruf ist &quot; + person.occupation</p>
+
+<p class=Code>msgbox &quot;Das Gehalt ist &quot; + str(person.salary)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Es können auch Arrays mit benutzerdefinierten Typen
+angelegt werden:</p>
+
+<p class=Code>Dim workers(100) as PersonType </p>
+
+<p class=Code>Sum=0</p>
+
+<p class=Code>For I=1 to noWorkers</p>
+
+<p class=Code>  Sum=Sum +
+workers.salary(i)</p>
+
+<p class=Code>Next</p>
+
+<p class=Code>Avg=sum / noWorkers </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

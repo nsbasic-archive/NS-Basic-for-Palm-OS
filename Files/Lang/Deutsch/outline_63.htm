@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbReadPrev </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>DbReadPrev                                                                                           Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBREADPREV(<i>dbName</i> as Database , <i>dbKey</i> as anyVarType, <i>varlist</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Liest den vorhergehenden Datensatz innerhalb der
+Schlüsselsequenz aus der angegebenen Datenbank. Es werden alle Variabeln in der
+Liste <i>varList</i> gefüllt, und der
+gefundene Schlüssel in <i>dbKey</i>
+abgespeichert. Die Datenbank muss bereits mittels <i>dbOpen </i>geöffnet worden sein. Der Fehlercode wird bei <i>dbOpen</i> detailliert beschrieben. Um mit <i>dbReadPrev</i> korrekt arbeiten zu können,
+muss die Position innerhalb der Datenbank mittels eines fehlerfreien Aufrufes
+an <i>dbReset</i>, <i>dbRead</i>, <i>dbReadNext</i> oder <i>dbReadPrev</i> gesetzt, und ein Datensatz
+gefunden worden sein.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim res as integer</p>
+
+<p class=Code>Dim theKey as String</p>
+
+<p class=Code>Res=DbReadPrev(CustomerDb, theKey, custName, custAddress,
+custPhone)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

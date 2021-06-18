@@ -1,0 +1,26 @@
+:Base PDB Converter Pro Help.hlp
+1 PDB Converter Pro Help
+2 General
+3 About PDB Converter Pro=1
+3 Common Errors and Error Messages=18
+3 Known issues=21
+2 Operating Modes
+3 Interactive mode=2
+3 Command-line mode=3
+3 Byte-level editor (when all else fails)=4
+2 Working with desktop files
+3 Supported file types=5
+3 Reading desktop files=6
+3 Writing desktop files=7
+2 Working with Palm OS databases
+3 Palm Database format=15
+3 Reading PDB files=8
+3 Writing PDB Files=9
+3 Reading PDB's using Field Descriptors=10
+3 Writing PDB's using Field Descriptors=11
+3 Valid Field Descriptors=16
+3 Working with Configuration Files=20
+2 NSBasic/Palm support
+3 Variable types=12
+3 Database format=13
+3 Sample code=14

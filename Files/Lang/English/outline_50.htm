@@ -1,0 +1,99 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbCreate </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>DbCreate                                                                                                 Function</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBCREATE(<i>dbName</i> as Database, <i>fileName</i> as String, <i>cardNo</i>
+as Integer, <i>creator</i> as String)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Creates a new database on a specified memory card of the
+Palm OS device, and returns an integer result. See DBOPEN for a table of result
+codes.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>DbName</i> references
+the database inside the program. All actions on the database will identify it
+by this name. <i>FileName</i> is the name of
+the database as recorded on the Palm OS device Memory system. <i>CardNo</i> is 0 on all modern devices. <i>Creator</i> is a 4-character Creator ID used
+to identify the owner or creator of the database Normally, you will use the
+same Creator ID as you used for your project.. To avoid duplications, Palm
+Computing allows you to register your Creator ID on their website to insure it
+is unique and not duplicated by someone else. The file is created with the
+backup attribute set, which means that Hotsync will automatically back it up to
+your desktop. The Palm naming convention is to follow your database name with a
+hyphen and your Creator ID.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim result as integer</p>
+
+<p class=Code>Dim CustomerDb as database</p>
+
+<p class=Code>Result=DbCreate(CustomerDb, &quot;Company-Test&quot;, 0,
+&quot;JimB&quot;)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Tech Note 17: Using the HostTraceLib Shared Library</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF"
+vlink="#800080">
+
+<table border="0" cellspacing="0" width="550">
+  <TBODY>    
+  <tr>
+        
+	<td valign="top" width="18%"><img
+        src="http://nsbasic.com/palm/info/technotes/images/BigIcon.GIF"
+        width="86" height="103"></td>
+        
+	<td valign="top" width="82%">
+	  <h2>Tech Note 17: Using the HostTraceLib Shared Library</h2>
+	  <h3>Jan 27, 2002
+</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+        </td>
+    </tr>
+</TBODY></table>
+
+<hr>
+
+<p>(Contributed by <a href="http://www.niconnect.com">Adrian
+Nicolaiev</a>) </p>
+
+<p>NSBHostTraceLib adds handy functions to NS Basic/Palm for
+doing tracing of your applications. You won't need to use MsgBox
+Function anymore, nor clicking its button :) Your application
+will run while you trace it.<br>
+<br>
+To use it, download NSBHostTraceLib.prc to your POSE. It is a
+small file, about 1.4k in size. Initialise it in your Startup
+code as follows: </p>
+
+<blockquote>
+    <pre><font face="Courier">Dim Error as Integer
+LoadLibrary &quot;NSBHostTraceLib&quot;,&quot;HT&quot; 'case is important
+Error = HT.NSBHostTraceInit()
+</font></pre>
+</blockquote>
+
+<p><font face="Times New Roman">To stop it, remember to include
+in your Termination code as follows:</font></p>
+
+<blockquote>
+    <pre><font face="Courier">Error = HT.NSBHostTraceClose()</font></pre>
+</blockquote>
+
+<p><font face="Times New Roman">You will need to download (370k) and follow
+instructions about &quot;Reporter&quot; too:<br>
+</font><a
+href="http://www.palmos.com/dev/support/docs/devguide/UsingReporter.html"><font
+face="Times New Roman">http://www.palmos.com/dev/support/docs/devguide/UsingReporter.html</font></a><font
+face="Times New Roman">
+<p>Put the file  Reporter.exe into \nsbasic\tools. Put the file PalmTrace.dll into the same folder as
+the copy of Emulator.exe your are using. 
+<p>If you are using the Emulator from NS Basic with the built in ROM, you will need to download the
+full emulator and obtain a ROM image. Go to the Palm Emulator page at PalmOS.com to get this.
+<br>
+</font>
+<p>Files included: </p>
+
+<table border="0">
+<TBODY>    <tr>
+        <td>NSBHostTraceLib.INF</td>
+        <td>The info file for NSBHostTraceLib. Put this in your
+        \nsbasic\lib folder.</td>
+    </tr>
+    <tr>
+        <td>NSBHostTraceLib.prc</td>
+        <td>The library. Put this into your \nsbasic\lib folder
+        and download it to your POSE.</td>
+    </tr>
+    <tr>
+        <td>HostTraceLib.prj</td>
+        <td>The NSBasic project showing how to use this Shared
+        Library</td>
+    </tr>
+    <tr>
+        <td><a
+        href="http://nsbasic.com/pub/palm/updates/HostTraceLib.zip">HostTraceLib.zip</a></td>
+        <td>All above files in a ZIP file</td>
+    </tr>
+</TBODY></table>
+
+<h2>Using the HostTrace functions in your program</h2>
+
+<p>1. The NSBHostTraceLib.PRC and NSBHostTraceLib.INF files must
+be put into \NSBasic\Lib.</p>
+
+<p>2. The library must be loaded using the NSBasic LoadLibrary
+statement. This statement should be located in the program's
+Startup code so that the functions will be available throughout
+the program. The LoadLibrary statement has an optional second
+parameter to allow you to specify an abbreviated reference name
+for the library's functions. The examples in this document use
+&quot;HT&quot; for this reference name. Example: </p>
+
+<p>Program's Startup code: </p>
+
+<blockquote>
+    <pre><font face="Courier">Sub main() 
+	LoadLibrary &quot;NSBHostTraceLib&quot;, &quot;HT&quot; 
+End Sub</font></pre>
+</blockquote>
+
+<p>3. Every time you need to trace something, <font
+color="#FF0000">without</font> Line Feed in Reporter, you will
+need to do as follows:</p>
+
+<blockquote>
+    <pre><font face="Courier">Dim MyMessage as String  ' just an example
+Dim MyNumber  as Integer ' just an example
+MyNumber = 100 * Rand()  ' just an example
+
+Error = HT.NSBHostTraceOutput</font><font color="#FF0000"
+face="Courier">T</font><font face="Courier">(&quot;Your Message&quot;) ' or
+MyMessage = Str(MyNumber)
+Error = HT.NSBHostTraceOutput</font><font color="#FF0000"
+face="Courier">T</font><font face="Courier">(MyMessage)
+</font></pre>
+</blockquote>
+
+<p>4. Every time you need to trace something, <font
+color="#FF0000">with</font> Line Feed in Reporter, you will need
+to do as follows:</p>
+
+<blockquote>
+    <pre><font face="Courier">Dim MyMessage as String  ' just an example
+Dim MyNumber  as Integer ' just an example
+MyNumber = 100 * Rand()  ' just an example
+
+Error = HT.NSBHostTraceOutput</font><font color="#FF0000"
+face="Courier">TL</font><font face="Courier">(&quot;Your Message&quot;) ' or
+MyMessage = Str(MyNumber)
+Error = HT.NSBHostTraceOutput</font><font color="#FF0000"
+face="Courier">TL</font><font face="Courier">(MyMessage)
+</font></pre>
+</blockquote>
+
+<p>5. If you would rather, in Startup Code, do as follows:</p>
+
+<blockquote>
+    <pre>Sub Msg(Message as String)
+Error = HT.NSBHostTraceOutputT(Message)
+End Sub
+
+Sub MsgL(Message as String)
+Error = HT.NSBHostTraceOutputTL(Message)
+End Sub</pre>
+</blockquote>
+
+<p>6. Reporter must be active and it will trace all your messages.</p>
+
+<h2>Some useful screenshots</h2>
+<div align="left">
+
+<table border="2" cellpadding="4" cellspacing="4"
+bordercolor="#000000">
+    <tr>
+        <td colspan="2"><p align="center"><img
+        src="images/hosttrace2.gif" width="353" height="415"></p>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" colspan="2"><img src="images/hosttrace4.gif"
+        width="335" height="136"></td>
+    </tr>
+    <tr>
+        <td colspan="2"><p align="center"><img
+        src="images/hosttrace3.gif" width="335" height="136"></p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><p align="center"><img
+        src="images/hosttrace5.gif" width="219" height="333"></p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><img src="images/hosttrace1.gif" width="509"
+        height="266"></td>
+    </tr>
+    <tr>
+        <td colspan="2"><p align="center"><img
+        src="images/hosttrace1a.gif" width="496" height="378"></p>
+        </td>
+    </tr>
+</table>
+</div>
+
+<p><br>
+</p>
+</body>
+</html>

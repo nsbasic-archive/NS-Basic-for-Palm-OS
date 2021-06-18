@@ -1,0 +1,241 @@
+"mdl"
+8
+"Keyed DB Test","appl","Kdbt",1043,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100011B"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Keyed DB Test"
+"Screen1004"
+""
+0
+"sub Screen1004_after()
+end sub"
+""
+0,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldKey",1005,108,0,12,42,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1011",1011,84,0,12,16,#TRUE#,1,"Key",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,4096,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldData",1012,6,30,30,144,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1020",1020,6,18,12,49,#TRUE#,1,"Data Field 1",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1021",1021,6,120,12,66,#TRUE#,0,"Create DB",0,0,0
+"sub object1021()
+dim testdb as database
+dim result as integer
+result=dbcreate(testdb,~keydbtest.pdb~,0,~Kdbt~) ' create the database
+if result=0 then
+    msgbox ~Database created successfully~
+else
+    msgbox ~Error ~+str(result)+ ~ creating database (537=database already exists)~
+end if
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1034",1034,78,132,12,78,#TRUE#,0,"Read record",0,0,0
+"sub object1034()
+dim testdb as database
+dim result as integer  
+dim dbKey as string
+dim dbData as string  
+dim dbData2 as string
+dbKey=fldKey.text
+if dbKey=~~ then 
+    msgbox ~Can't read without key...~
+    exit sub ' no sense continuing if no key
+else
+    result=dbOpen(testdb,~keydbtest.pdb~,0)    ' open database
+    if result not= 0 then 
+        msgbox ~Database not found~
+        exit sub               ' can't continue without database!                  
+    end if
+    result=dbFind(testdb,dbKey)                ' otherwise, see if record exists with the key
+    if result=0 then
+        result=dbRead(testdb,dbKey,dbData, dbData2)
+        fldData.text=dbData 
+        fldData2.text=dbData2
+    else
+        msgbox ~No record found with key: ~+dbKey  
+    end if
+    result=dbClose(testdb)                     ' close the database to release the pointers
+end if
+
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1037",1037,78,120,12,78,#TRUE#,0,"Write record",0,0,0
+"sub object1037()
+dim testdb as database
+dim result as integer  
+dim dbKey as string
+dim dbData as string  
+dim dbData2 as string
+dbKey=fldKey.text
+dbData=fldData.text
+dbData2=fldData2.text
+if dbKey=~~ then 
+    msgbox ~Can't write without key...~
+    exit sub ' no sense continuing if no key
+else
+    result=dbOpen(testdb,~keydbtest.pdb~,0) ' open database
+    if result not= 0 then 
+        msgbox ~Database not found~
+        exit sub               ' can't continue without database!                  
+    end if
+    result=dbFind(testdb,dbKey)             ' see if record exists with the key
+    if result=0 then
+        result=alert(~Record exists~, ~Found record with key: ~+dbKey,2,~Replace~,~Skip~) ' yep, something's there 
+        if result=0 then
+            result=dbUpdate(testdb,dbKey,dbData, dbData2) ' allow update with current data
+            msgbox ~Record updated~
+        end if
+    else
+        result=dbInsert(testdb,dbKey,dbData,dbData2)   ' record available for key, so put the new data there
+   end if   
+    result=dbClose(testdb)                     ' close the database to release the pointers
+end if
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1038",1038,78,144,12,78,#TRUE#,0,"Remove Record",0,0,0
+"sub object1038()
+dim testdb as database
+dim result as integer  
+dim dbKey as string
+dbKey=fldKey.text
+if dbKey=~~ then 
+    msgbox ~Can't delete without key...~
+    exit sub ' no sense continuing if no key
+else
+    result=dbOpen(testdb,~keydbtest.pdb~,0) ' open database
+    if result not= 0 then 
+        msgbox ~Database not found~
+        exit sub                            ' can't continue without database!                  
+    end if
+    result=dbFind(testdb,dbKey)             ' see if record exists with the key
+    if result=0 then
+        result=alert(~Delete Record?~, ~Found record with key: ~+dbKey,2,~Delete~,~Skip~) ' yep, something's there
+        if result=0 then 
+            result=dbDelete(testdb,dbKey)
+            msgbox ~Record deleted~
+        end if
+    else
+        msgbox ~Record for key: ~+dbKey+~ not found~
+    end if   
+    result=dbClose(testdb)                     ' close the database to release the pointers
+end if
+
+
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1039",1039,6,132,12,66,#TRUE#,0,"Erase DB",0,0,0
+"sub object1039()
+dim testdb as database
+dim result as integer 
+result=dbOpen(testdb,~keydbtest.pdb~,0)    ' open database to see if it even exists 
+                                           ' otherwise, fatal exception can occur
+if result = 0 then
+    result=dbClose(testdb)                 ' can't erase an open database
+    result=dbErase(testdb)                 ' completely erase the database
+    if result = 0 then
+        msgbox ~Database erased (deleted from memory) successfully~
+    else
+        msgbox ~Erase error ~+str(result)+~ during erase.~
+    end if
+else
+    msgbox ~Database already erased (or not created).~
+end if
+end sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,4096,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldData2",1040,6,78,30,144,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1042",1042,6,66,12,49,#TRUE#,1,"Data Field 2",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1043",1043,6,144,12,66,#TRUE#,0,"Sequential Walk",0,0,0
+"sub object1043()
+dim testdb as database
+dim result as integer 
+dim RecNo as integer   
+dim RecNums as integer
+dim dbKey as string  
+dim dbData as string  
+dim dbData2 as string
+result=dbOpen(testdb,~keydbtest.pdb~,0)    ' open database
+if result not= 0 then 
+    msgbox ~Error ~ +str(result)+ ~ during database open~  ' can't open database, so can't continue 
+    exit sub
+end if
+
+RecNums=dbGetNoRecs(testdb)                ' how many records are there?
+msgbox ~Database contains ~+str(RecNums)+~ records~                 
+'result=dbPosition(testdb, 1,0)            ' could use dbPosition, but dbReadNext would miss the first record
+result=dbreset(testdb)                     ' instead, dbReset allows the first record to be read
+for RecNo = 1 to RecNums
+    result=dbReadNext(testdb,dbKey,dbData, dbData2)  ' this is the recommended way to sequentially read keyed fields
+    msgbox ~dbReadNext result: ~+str(result)+~ - (0 if OK)~   ' if ok, we'll get a 0 as our result
+    fldKey.text=dbKey
+    fldData.text=dbData 
+    fldData2.text=dbData2
+next
+result=dbClose(testdb)                     ' close the database to release the pointers
+end sub"
+"end"

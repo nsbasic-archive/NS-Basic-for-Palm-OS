@@ -1,0 +1,158 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Field </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Field                                                                                                               Objekt</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><img width=193 height=79
+src="./outline_86_files/image003.gif" align=left hspace=12>Ein
+<i>Field</i> Objekt ist ein Bereich auf dem
+Formular, in dem der Anwender Text eingeben kann. Der Inhalt kann ebenfalls
+durch die Anwendung gesetzt werden. Wenn Sie einen Zeilenumbruch innerhalb des
+Textes erzwingen möchten, so verwenden Sie das Zeichen %h0A (Chr(10)).</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Der Code des Feldes wird ausgeführt, sobald der Anwender
+das Feld verlässt indem er ein anderes Objekt oder Menü anklickt. Der Code kann
+dann Eingabeprüfungen oder, basierend auf dem Feldinhalt, weitere Berechnungen
+durchführen. Er wird ausgeführt, unabhängig davon ob sich der Feldinhalt
+geändert hat oder nicht. NS Basic/Palm speichert den vorherigen und neuen Wert
+intern nicht ab – es ist nur bekannt, dass der Anwender das Feld selektiert
+hat, und sich dann zu einem anderen Objekt bewegt hat.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Ein normales Programm liest Datensätze ein und stellt deren
+Inhalt mittels Felder für den Anwender sichtbar dar. Nun kann der Anwender
+Änderungen vornehmen, so dass das Programm diese Änderungen speichern kann.
+Dies bedeutet normalerweise, dass in dem Startcode des Formulars der Datensatz
+gelesen, und die Feldinhalte in jedes Feld geschrieben werden.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>unterstützt
+Eigenschaften</b> (in der Entwicklungsphase setzten)</p>
+
+<p class=ManualBody><span lang=EN-GB>Label,
+Font ID, Text, Max Characters, Left Justified, Underline, Single Line,
+AutoShift, HasScrollbar, Dynamic Size, Editable, Numeric, Visible</span></p>
+
+<p class=ManualBody><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=ManualBody><b>unterstützt Methoden</b>
+(siehe &quot;Methoden&quot;)</p>
+
+<p class=ManualBody><span lang=EN-GB>Left, Top,
+Width, Height, Hide, Show, Redraw, Text, Status, SetFocus, ID, Index, Type</span></p>
+
+<p class=ManualBody><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>' liest Datensätze ein, stellt sie dar und speichert die
+Änderungen.</p>
+
+<p class=Code>Dim Name as string</p>
+
+<p class=Code>Dim Age as integer</p>
+
+<p class=Code>Dim Married as integer 
+'0=ledig oder 1=verheiratet </p>
+
+<p class=Code>Dim err as integer</p>
+
+<p class=Code>Err=DbRead(MyDb, Name, Age, Married) 'verwendet Name als
+Schlüssel</p>
+
+<p class=Code>FldName.text=Name </p>
+
+<p class=Code>FldAge.text=str(Age)</p>
+
+<p class=Code>ChkMarried.status=Married</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Die “Done” Schaltfläche die der Anwender betätigt nachdem
+er die Werte entsprechend modifiziert hat, könnte folgenden Code enthalten:</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=Code>Dim Name as string</p>
+
+<p class=Code>Dim Age as integer</p>
+
+<p class=Code>Dim Married as integer</p>
+
+<p class=Code>Dim err as Integer</p>
+
+<p class=Code>If not testNum(fldAge.Age, &quot; &quot;,3,0)=0 then</p>
+
+<p class=Code>  Beep</p>
+
+<p class=Code>  Msgbox &quot;Das
+eingegebene Alter ist ungültig.&quot;</p>
+
+<p class=Code>  Exit sub </p>
+
+<p class=Code>end if </p>
+
+<p class=Code>Name=fldname.text</p>
+
+<p class=Code>Age=val(fldAge.text)</p>
+
+<p class=Code>Married=chkMarried.status</p>
+
+<p class=Code>Err=DbUpdate(MyDb, Name, Age, Married) </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

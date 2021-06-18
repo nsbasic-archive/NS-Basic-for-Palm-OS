@@ -1,0 +1,348 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tutorial 01: A Simple Program</TITLE>
+<link rel="stylesheet" href="/style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+		
+    <TD WIDTH="17%" VALIGN="TOP"> 
+      <P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+    	</TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tutorial 01: A Simple Program</h2>
+	  <h3>February 12, 2007</h3>
+      		  
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.
+		</h5>
+		
+	</TD>
+	</TR>
+</TABLE>
+<HR>
+
+<h2>Purpose </h2>
+<p>The purpose of this tutorial is to demonstrate how a simple 
+  program is created using NS Basic/Palm. You should have NS Basic/Palm installed 
+  before beginning this tutorial.</p>
+<h2>Description of the Program </h2>
+<p>The program to be developed will display a form with a button 
+  on it. When the user taps the button, the program responds with the message</p>
+<p>&nbsp;&quot;Hello--Welcome to NS Basic/Palm&quot;</p>
+<h2>Program Development </h2>
+<h4>1. Startup</h4>
+<ul>
+  <li>Start NS Basic/Palm from the Start menu.</li>
+  <li>At the initial screen select New Project</li>
+</ul>
+<p align="center"><img src="images/TT01.0.gif" width="663" height="578"></p>
+<h4>2. Modify Project Properties</h4>
+<ul>
+  <li>Change the 
+    (Name) to &quot;HelloPgm&quot;.</li>
+  <li>Change the 
+    Creator ID to &quot;Hllo&quot;</li>
+</ul>
+<h4>3. Modify Form Properties</h4>
+<ul>
+  <li>You should 
+    now see a blank screen with the title &quot;Form1&quot;</li>
+  <li>Select the 
+    form in the Project Explorer by clicking on it.</li>
+  <li>In Properties, 
+    change (Name) to &quot;Hello&quot;</li>
+</ul>
+<h4>4. Add a button to the form</h4>
+<ul>
+  <li>Select button 
+    (&quot;OK&quot;) in the Toolbox by left clicking on it</li>
+  <li>Move the 
+    cursor to the desired location within the Palm Screen</li>
+  <li>Click the 
+    left mouse button to place the button object on the screen</li>
+</ul>
+<p>Change the button's text:</p>
+<ul>
+  <li>Click on 
+    the new button in the Palm Screen</li>
+  <li>In the Properties 
+    window, change Label to Tap Here</li>
+</ul>
+<p>Resize the button:</p>
+<ul>
+  <li>Select the 
+    button by left clicking on it</li>
+  <li>Position 
+    the mouse cursor to any resize marker around the button</li>
+  <li>Depress the 
+    left mouse button and drag the object to a different size</li>
+  <li>Release the 
+    left mouse button to stop the action</li>
+</ul>
+<p>Relocate the button on the screen:</p>
+<ul>
+  <li>Select the 
+    button by left clicking on it</li>
+  <li>Position 
+    the mouse cursor to the middle of the button</li>
+  <li>Depress the 
+    left mouse button and drag the object to some other screen location</li>
+  <li>Release the 
+    left mouse button to stop the action</li>
+</ul>
+<h4>5. Add commands to be executed when the button is tapped</h4>
+<ul>
+  <li>Double click 
+    on the button</li>
+  <li>A code window 
+    will appear with some code statements already supplied for you</li>
+  <li>Position 
+    the cursor to the line below the SUB statement</li>
+  <li>Enter the 
+    following command
+    <p>MsgBox &quot;Hello -- Welcome to NS Basic/Palm&quot; </p>
+  </li>
+</ul>
+<p align="center">&nbsp;<img border="0" src="images/TT01.1.gif" width="491" height="207"> 
+</p>
+<ul>
+  <li>Close the 
+    code window.</li>
+</ul>
+<h4>6. Save the Project</h4>
+<ul>
+  <li>Select &quot;File&quot; 
+    from the top main menu</li>
+  <li>Select &quot;Save 
+    project&quot; and save your program as HelloPgm</li>
+  <li>This will 
+    save your project in the directory c:\NSBasic\Projects under the name HelloPgm.prj</li>
+  <li>All form 
+    definitions, form objects, all code, and other project info are saved into 
+    the one project file.</li>
+</ul>
+<h4>7. Generate the Downloadable Palm app</h4>
+<ul>
+  <li>Select &quot;Run&quot; 
+    from the main menu.</li>
+  <li>Select &quot;Compile 
+    HelloPgm&quot; from the dropdown menu.</li>
+</ul>
+<p>If you have any errors, an error message will appear and 
+  the code window will appear with the section of code where the error occurred 
+  highlighted. Errors must be corrected and Compile repeated until there are no 
+  more errors. If you do not have errors, a message box will appear showing the 
+  size of the compiled application.</p>
+<p align="center"><img border="0" src="images/TT01.3.gif" width="155" height="100"> 
+</p>
+<ul>
+  <li>If you corrected 
+    any errors, you should re-save the project. </li>
+  <li>This action 
+    creates a downloadable file in the c:\NSBasic\Download directory: c:\NSBasic\Download\HelloPgm.prc 
+  </li>
+  <li>The file 
+    must be downloaded to the Palm device or to POSE to execute your project. 
+  </li>
+</ul>
+<p>Congratulations !! You have now written your first NS Basic/Palm 
+  program.</p>
+<h2>Testing The Project</h2>
+<h3>Test Using the POSE </h3>
+<p>Make sure you have POSE installed and working before trying 
+  this. Instructions for installing POSE are in the ReadMe file. </p>
+<ul>
+  <li>In the Tools 
+    menu, select Options, then the Compile/Download tab. Select Send to Palm OS 
+    Emulator and Run Immediately in the After Compile section.</li>
+</ul>
+<p align="center"><img border="0" src="images/TT01.5.gif" width="558" height="298"></p>
+<ul>
+  <li>Start POSE 
+    from the Run menu</li>
+  <li>Load the 
+    PRC file by clicking the right mouse button and select Load</li>
+</ul>
+<p align="center">&nbsp;<img border="0" src="images/TT01.4.gif" width="219" height="333"> 
+</p>
+<h3>Test Using Your Palm Device </h3>
+<ul>
+  <li>In the Tools 
+    menu, select Options, then the Compile/Download tab. Select Hotsync to Device 
+    in the After Compile section</li>
+  <li>From the 
+    Run menu, select Download (project name).</li>
+  <li>Hotsync as 
+    you normally would do with your device.</li>
+  <li>After the 
+    Hotsync completes, tap the application menu button.</li>
+  <li>Select the 
+    HelloPgm icon and your program should begin execution. </li>
+</ul>
+<h2>Extending the Tutorial</h2>
+<p>Let's explore some further features of NS Basic/Palm. We'll 
+  do this by modifying your first program to be more complicated. </p>
+<p>Exit NS Basic/Palm by choosing File and Exit from the menu.</p>
+<h2>Restart</h2>
+<ul>
+  <li>Restart NS 
+    Basic/Palm from the Start menu.</li>
+  <li>The first 
+    screen will list recent projects you have worked on, so that you may easily 
+    pick one for modification.</li>
+</ul>
+<p align="center"><img border="0" src="images/TT01.6.gif" width="435" height="383"></p>
+<ul>
+  <li>Select the 
+    HelloPgm project by clicking on it.</li>
+  <li>The project 
+    will load into the IDE and show you the project as you last left it.</li>
+</ul>
+<h2>Revision: Change the message </h2>
+<ul>
+  <li>Double click 
+    on the button to bring up the code window.</li>
+  <li>Enter the 
+    following code after the SUB statement</li>
+</ul>
+<pre>
+	Dim s as string
+	Dim d as date
+	d=today()
+	s=str(d)</pre>
+<ul>
+  <li>Change the 
+    MsgBox statement to be</li>
+</ul>
+<pre>
+	MsgBox &quot;Today is &quot; + s </pre>
+<p align="center">&nbsp;<img border="0" src="images/TT01.7.gif" width="413" height="209"> 
+</p>
+<ul>
+  <li>Close the 
+    code window.</li>
+  <li>Compile.</li>
+  <li>Test using 
+    the POSE or download as done earlier in the tutorial.</li>
+  <li>When you 
+    run, the message displayed should be 
+    <p>Today is yy/mm/dd </p>
+    <p>where today's date replaces yy/mm/dd</p>
+  </li>
+</ul>
+<h2>Revision: Add code at program startup</h2>
+<ul>
+  <li>From the 
+    menu, select Project...Startup Code</li>
+  <li>After the 
+    Sub line, enter this command:</li>
+</ul>
+<pre>
+	msgbox &quot;HelloPgm will continue when you tap on OK&quot;</pre>
+<p align="center"><img border="0" src="images/TT01.9.gif" width="527" height="201"> 
+</p>
+<ul>
+  <li>Close the 
+    code window. </li>
+</ul>
+<p>This code will be executed when the program starts execution. 
+  The program displays the message and waits until the user taps on the OK button 
+</p>
+<ul>
+  <li>Compile the 
+    program. If error free, test using POSE or your Palm device.</li>
+</ul>
+<h2>Revision: Code at Form display time</h2>
+<p>This change will add a field which shows the time-of-day. 
+  Another button will be added to cause the time to be updated with the latest 
+  time. </p>
+<p>Add a field to the form to be used to display the time of 
+  day</p>
+<ul>
+  <li>Select the 
+    field object from the Toolbox by clicking on it. The field object looks like 
+    &quot;T&quot;.</li>
+  <li>Move the 
+    cursor to the desired screen location and left click to place the field object.</li>
+  <li>Select the 
+    object by left clicking on it.</li>
+  <li>In the Properties 
+    Window, change the field's Name to &quot;fldTime&quot;</li>
+  <li>Resize the 
+    object as needed.</li>
+</ul>
+<p align="center"><img border="0" src="images/TT01.10.gif" width="663" height="382"> 
+</p>
+<p>Add code to fill in the time-of-day when the form displays</p>
+<ul>
+  <li>Right click 
+    on the form name in the Project Explorer</li>
+  <li>Select &quot;View 
+    After Code&quot;</li>
+  <li>Enter the 
+    following code after the SUB line</li>
+</ul>
+<pre>
+	dim wk as string
+	dim t as time
+	t = now()
+	wk = str(t)
+	fldTime.text = wk</pre>
+<p align="center">&nbsp;<img border="0" src="images/TT01.11.gif" width="506" height="212"> 
+</p>
+<ul>
+  <li>Close the 
+    code window. </li>
+</ul>
+<p>This code will set the time of day into the field object 
+  &quot;fldTime&quot; just after the Palm device displays the form to the user. 
+  The statement</p>
+<pre>
+	t = now() </pre>
+<p>gets the current time and stores it in the time variable 
+  &quot;t&quot;. The str function converts the internal time format into a text 
+  string of the format hh:mm:ss which is the used to store into the field object 
+  for display. </p>
+<p>The above code could be compressed into one statement as</p>
+<pre>
+	fldTime.text=str(now()) </pre>
+<p>Add a button to redraw the form so that the latest time appears</p>
+<ul>
+  <li>Select the 
+    button object in the toolbox</li>
+  <li>Place it 
+    on the Palm Screen with a left click</li>
+  <li>Select the 
+    object</li>
+  <li>In the Properties 
+    Winddow, enter &quot;Redraw the screen&quot; as the button's Label.</li>
+  <li>Resize object 
+    as needed.</li>
+</ul>
+<p>Add code to the button to cause the redraw</p>
+<ul>
+  <li>Double click 
+    on the button</li>
+  <li>Enter the 
+    following statement after the SUB line</li>
+</ul>
+<pre>
+	Redraw </pre>
+<ul>
+  <li>Close the 
+    code window</li>
+  <li>This will 
+    cause the entire screen to be redrawn. This will trigger the code supplied 
+    for the form that is executed before the form objects are redrawn. This code 
+    fills in the latest time to the form&Aring;fs field object for display.</li>
+  <li>Compile and 
+    when error free, test using POSE or download to your Palm device.</li>
+</ul>
+<p align="center"><img border="0" src="images/TT01.12.gif" width="219" height="333"></p>
+</body>
+
+</html>

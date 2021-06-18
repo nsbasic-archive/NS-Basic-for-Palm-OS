@@ -1,0 +1,70 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SetEventHandled </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>SetEventHandled                                                                                Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SETEVENTHANDLED</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>To cause the Palm OS device operating system to ignore the
+special event. This command should only be issued in special event code
+subroutines. If you use call SetEventHandled, then the Palm OS will not process
+the event.  This includes the power
+on/off key.  You should use great
+caution in your handling of the power on/off key as you could prevent the
+machine from powering off if you do not let the Palm operating system handle this
+key.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=MsoNormal>SetEventHandled</p>
+
+</div>
+
+</body>
+
+</html>

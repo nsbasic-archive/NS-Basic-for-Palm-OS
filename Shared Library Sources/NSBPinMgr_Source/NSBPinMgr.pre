@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note XX: Using the NSBPinMgr Shared Library</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <P>Tech Note XX: Using the NSBPinMgr Shared Library</P>
+      <P>June 8, 2004</P>
+</FONT><FONT FACE="Helvetica" SIZE=4><P>&nbsp;</P>
+</FONT><FONT FACE="Helvetica" SIZE=2><P>Copyright 2004 Ron Glowka</font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Function Index and Quick Reference</a>
+    <a href="#fullRef">Function Reference</a>
+</pre>
+
+<a name="intro"><h2>Introduction:</h2>
+<P> This library provides a wrapper for the PIN Manager (Pen Input Manager)
+for manipulating the the Dynamic Input/virtual graffiti Area (DIA).
+
+<P>In order to use the NSBPinMgr Shared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "NPM" for this reference name.  Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "NSBPinMgr", "NPM"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the NSBPinMgr Shared Library, the 
+NSBPinMgr.INF file must be present in your "nsbasic\lib" directory 
+and the NSBPinMgr.prc file must be downloaded to your device.
+
+<P>Please be sure that your function return variables are dimensioned as
+the correct variable type.  This library will return variable types of
+"Integer", "Double", or "String".

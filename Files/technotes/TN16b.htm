@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 16b: More on Serial IR Communications</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 16b: Notes on Serial Communications</h2>
+	  <h3>June 4, 2004</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<h4>1. Opening an IR port</h4>
+
+<p>To open an IR port for serial communications,
+<pre>
+   res=serialopen(32769,9600)
+   res=serialset("IR",1)
+   res=serialset("IR",32769) but not work with T with all palms it works
+</pre>
+
+This code has also been suggested:
+<pre>
+   res=serialopen(32769,9600)
+   res=serialset("PortID",sysinfo(3))
+   res=serialset("IR",1)
+</pre>
+
+<p>To force serial comms on a TungstenT use port 32771 in the serialopen 
+statement.  RAW IR serial comms does not work on the TungstenT, 
+Zire71, and other OS5 palms.  This is known problem and can not be 
+fixed.
+
+<h4>2. Using Serial Comms on a device with USB port</h4>
+
+To do serial communcations with a device that has a USB port, you'll need the proper cable. 
+If you have the right cable, you should be able to open and use the serial port normally.
+
+<p>Here are some sources for cables:
+<UL>
+	<LI><A HREF="http://www.cablestogo.com/index.asp">Cables To Go</A>
+	<LI><A HREF="http://eforcity.com/">eforcity</A>
+	<LI><A HREF="http://www.boxwave.com/products/minisync/minisync-retractable-cable-palm-os_cat.htm">Boxwave MiniSync - charges too!</A>
+</UL>
+
+</html>
+
+
+

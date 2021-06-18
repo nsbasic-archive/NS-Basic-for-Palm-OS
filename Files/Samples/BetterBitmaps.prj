@@ -1,0 +1,50 @@
+"mdl"
+9
+"BetterBitmaps","appl","Test",1007,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+""
+""
+""
+"..\themes\Symbian.pdb"
+""
+"resfile"
+1
+"Symbian"
+1007
+"DBIM"
+"..\..\Themes\Symbian.pdb"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#FALSE#
+"Form1"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"bmp"
+2
+1005
+"Bitmap ID=0,Gradient Color 1=0,Gradient Color 2=FFFFFF,Gradient Style=1,Caption=1972 Dino 246 GT,Alignment=2,Appearance=0,FontBold=True,FontItalic=True,Font Name=Arial Black,FontSize=15.75,FontStrikethru=False,FontUnderline=False,Caption Color=FFFF,Picture=,BorderStyle=0,Stretch=False,"
+"obj"
+3
+"bmp","Bitmap1005",1005,16,16,16,108,#TRUE#,0,"",0,0,0
+"Sub object1005()
+	msgbox ~Caption clicked~
+End Sub"
+"bmp"
+2
+1006
+"Bitmap ID=0,Gradient Color 1=FFCCCC,Gradient Color 2=FFCCCC,Gradient Style=1,Caption=,Alignment=2,Appearance=0,FontBold=False,FontItalic=False,Font Name=Arial,FontSize=9.75,FontStrikethru=False,FontUnderline=False,Caption Color=10101,Picture=..\..\Bitmaps\Dino160wide16bit.bmp,BorderStyle=0,Stretch=False,"
+"obj"
+3
+"bmp","Bitmap1006",1006,32,48,54,80,#TRUE#,0,"",0,0,0
+"Sub object1006()
+	msgbox ~Picture Clicked~
+End Sub"
+"end"

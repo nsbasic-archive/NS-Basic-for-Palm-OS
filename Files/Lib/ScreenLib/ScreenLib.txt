@@ -1,0 +1,1457 @@
+********************
+General Information:
+********************
+
+The ScreenLib Shared Library provides support for the PalmOS 
+WinScreenMode API function.  This library was written to provide the
+methods for determining a PalmOS device's bit depth and color 
+capabilities and for setting the "screen mode" to take advantage of 
+these capabilities.  It eliminates the need for using third-party 
+applications to perform these functions prior to running your NSBasic
+program.
+
+A copy of the PalmOS documentation for the WinScreenMode API function is
+provided at the end of this document.  This documentation should be
+reviewed to gain a more full understanding of the functions in this 
+shared library.
+
+This library was adapted from a library called "ScrModes".  Soon after 
+releasing the first version of this library, it was suggested
+that it would be nice if it contained some additional functions to help
+support color capabilities.  These functions are now included and the
+library name has been changed to "ScreenLib".  More information on using 
+color capabilities can be found in the "Tech Note 04: Using Color 
+Objects and Graphics" contributed by Adrian Nicolaiev.  This Tech Note 
+can be found at:
+
+	http://nsbasic.com/palm/info/technotes/TN04.htm
+
+All of the PalmOS "SysTraps" mentioned in Tech Note 4, plus a few others,
+are now supported in this library.  While most of these functions can be 
+called using the built-in SysTrapSub and SysTrapFunc statements, they 
+have been included here to make them easier to call and are somewhat 
+more "self documenting".
+
+In order to use the ScreenLib Shared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "SL" for this reference name.  Example:
+
+    Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "ScreenLib", "SL"
+	End Sub
+
+Also, in order to use the ScreenLib Shared Library, the ScreenLib.INF 
+file must be present in your "nsbasic\lib" directory and the 
+ScreenLib.prc file must be downloaded to your device.
+
+Except for the function that returns a version number, all the parameter 
+and return data types are either "Integer"or "String".  Version numbers 
+are returned as a "Double".  
+
+*******************************************
+ScreenLib Shared Library Function Reference:
+*******************************************
+
+Version
+-------
+
+	Version = ScreenLib.Version()
+
+    Description:
+
+	Returns the version number of the ScreenLib Shared Library.
+
+    Parameters: None
+
+    Returns:	Version as Double
+
+    Example:
+
+	Dim Version as Double
+
+	Version = SL.Version()
+
+CompileInfo
+-----------
+
+	ScreenLib.CompileInfo CompileDate, CompileTime
+
+    Description:
+
+	Returns the date and time that the ScreenLib Shared Library 
+	was compiled.
+
+    Parameters: CompileDate as String
+		CompileTime as String
+
+    Returns:	None
+
+    Example:
+
+	Dim CompileDate as String
+	Dim CompileTime as String
+
+	CompileDate = "mon dd yyyy"	'11 characters
+	CompileTime = "hh:mm:ss"	'8 characters
+
+	SL.CompileInfo CompileDate, CompileTime
+
+    Comments:
+
+	The CompileDate and CompileTime string variables must be 
+	initialized prior to calling CompileInfo.  
+
+GetSupportedDepths
+------------------
+
+	Depths = ScreenLib.GetSupportedDepths()
+
+    Description:
+
+	Returns a bitmapped integer with each bit indicating a
+	bitmap depth supported by the PalmOS device.
+
+    Parameters:	None
+
+    Returns:	Depths as Integer
+
+    Example:
+
+	    Dim Depths as Integer
+   
+	    Depths = SL.GetSupportedDepths()
+
+    Comments:
+
+	The NS Basic Shared Library "BitsNBytes" probably provides
+	the best suited functions for evaluating the returned value
+	from this function.
+
+DepthSupported
+--------------
+
+	Boolean = ScreenLib.DepthSupported(Depth)
+
+    Description:
+
+	Returns 1 if the specified depth is supported by the
+	PalmOS device.  Otherwise, it returns 0.
+
+    Parameters:	Depth as Integer
+
+    Returns:	Boolean as Integer
+
+    Example:
+
+	Dim Boolean as Integer
+	Dim Depth as Integer
+
+	Depth = 4
+	Boolean = SL.DepthSupported(Depth)
+
+ColorSupported
+--------------
+
+	Boolean = ScreenLib.ColorSupported()
+
+    Description:
+
+	Returns 1 if the PalmOS device has color capabilities.
+	Otherwise, it returns 0.
+
+    Parameters:	None
+
+    Returns:	Boolean as Integer
+
+    Example:
+
+	Dim Boolean as Integer
+
+	Boolean = SL.ColorSupported(Depth)
+
+SetDepth
+--------
+
+	ScreenLib.SetDepth Depth
+
+    Description:
+
+	Sets the screen mode to support the specified bitmap 
+	bit depth.
+
+    Parameters:	Depth as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim Depth as Integer
+
+	Depth = 4
+	SL.SetDepth Depth
+
+SetColor
+--------
+
+	ScreenLib.SetColor Boolean
+
+    Description:
+
+	Sets the screen mode to support color bitmaps.
+
+    Parameters:	Boolean as Integer
+			(1 = support color)
+			(0 = do not support color)
+
+    Example:
+
+	Dim Boolean as Integer
+
+	Boolean = 1
+	SL.SetColor Boolean
+
+SetWidth
+--------
+
+	ScreenLib.SetWidth Width
+
+    Description:
+
+	Sets the current screen width.
+
+    Parameters:	Width as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim Width as Integer
+
+	Width = 160
+	SL.SetWidth Width
+
+    Comments:
+
+	This function does not appear to work correctly with NS Basic
+	programs.
+
+SetHeight
+---------
+
+	ScreenLib.SetHeight Height
+
+    Description:
+
+	Sets the current screen height.
+
+    Parameters:	Height as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim Height as Integer
+
+	Height = 160
+	SL.SetHeight Height
+
+    Comments:
+
+	This function does not appear to work correctly with NS Basic
+	programs.
+
+SaveScreenMode
+--------------
+
+	ScreenLib.SaveScreenMode()
+
+    Description:
+
+	Saves the current screen mode parameters.  These parameters
+	can later be restored by calling "RestoreScreenMode".  It is
+	suggested that the current screen mode parameters be saved before
+	any changes are requested and that these saved parameters
+	are restored when the program exits.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	SL.SaveScreenMode()
+
+RestoreScreenMode
+-----------------
+
+	ScreenLib.RestoreScreenMode()
+
+    Description:
+
+	Restores saved screen mode parameters.  These parameters
+	must have been saved by calling "SaveScreenMode".  It is
+	suggested that the current screen mode parameters be saved before
+	any changes are requested and that these saved parameters
+	are restored when the program exits.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	SL.RestoreScreenMode()
+
+CurrentDepth
+------------
+
+	Depth = ScreenLib.CurrentDepth()
+
+    Description:
+
+	Returns the current bitmap depth.
+
+    Parameters:	None
+
+    Returns:	Depth as Integer
+
+    Example:
+
+	Dim Depth as Integer
+
+	Depth = SL.CurrentDepth()
+
+CurrentColor
+------------
+
+	Boolean = ScreenLib.CurrentColor()
+
+    Description:
+
+	Returns 1 if the PalmOS Device's screen mode is currently
+	set to support color.   Otherwise, it returns 0.
+
+    Parameters:	None
+
+    Returns:	Boolean as Integer
+
+    Example:
+
+	Dim Boolean as Integer
+
+	Boolean = SL.CurrentColor()
+
+CurrentWidth
+------------
+
+	Width = ScreenLib.CurrentWidth()
+
+    Description:
+
+	Returns the current screen width.
+
+    Parameters:	None
+
+    Returns:	Width as Integer
+
+    Example:
+
+	Dim Width as Integer
+
+	Width = SL.CurrentWidth()
+
+CurrentHeight
+-------------
+
+	Height = ScreenLib.CurrentHeight()
+
+    Description:
+
+	Returns the current screen height.
+
+    Parameters:	None
+
+    Returns:	Height as Integer
+
+    Example:
+
+	Dim Height as Integer
+
+	Height = SL.CurrentHeight()
+
+SetToDefaults
+-------------
+
+	ScreenLib.SetToDefaults()
+
+    Description:
+
+	Sets all screen mode parameters to their default values.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	SL.SetToDefaults()
+
+DefaultDepth
+------------
+
+	Depth = ScreenLib.DefaultDepth()
+
+    Description:
+
+	Returns the default bitmap depth.
+
+    Parameters:	None
+
+    Returns:	Depth as Integer
+
+    Example:
+
+	Dim Depth as Integer
+
+	Depth = SL.DefaultDepth()
+
+DefaultColor
+------------
+
+	Boolean = ScreenLib.DefaultColor()
+
+    Description:
+
+	Returns 1 if the PalmOS Device's screen mode default is
+	set to support color.   Otherwise, it returns 0.
+
+    Parameters:	None
+
+    Returns:	Boolean as Integer
+
+    Example:
+
+	Dim Boolean as Integer
+
+	Boolean = SL.DefaultColor()
+
+DefaultWidth
+------------
+
+	Width = ScreenLib.DefaultWidth()
+
+    Description:
+
+	Returns the default screen width.
+
+    Parameters:	None
+
+    Returns:	Width as Integer
+
+    Example:
+
+	Dim Width as Integer
+
+	Width = SL.DefaultWidth()
+
+DefaultHeight
+-------------
+
+	Height = ScreenLib.DefaultHeight()
+
+    Description:
+
+	Returns the default screen height.
+
+    Parameters:	None
+
+    Returns:	Height as Integer
+
+    Example:
+
+	Dim Height as Integer
+
+	Height = SL.DefaultHeight()
+
+GetTableEntryIndex
+------------------
+
+	Index = ScreenLib.GetTableEntryIndex(Which)
+
+    Description:
+
+	This function calls the PalmOS UIColorGetTableEntryIndex
+	function.  It returns the index value for a UI color for the 
+	current system palette.
+
+    Parameters:	Which as Integer
+			UIObjectFrame = 0,
+			UIObjectFill = 1
+			UIObjectForeground = 2
+			UIObjectSelectedFill = 3
+			UIObjectSelectedForeground = 4
+
+			UIMenuFrame = 5
+			UIMenuFill = 6
+			UIMenuForeground = 7
+			UIMenuSelectedFill = 8
+			UIMenuSelectedForeground = 9
+
+			UIFieldBackground = 10
+			UIFieldText = 11
+			UIFieldTextLines = 12
+			UIFieldCaret = 13
+			UIFieldTextHighlightBackground = 14
+			UIFieldTextHighlightForeground = 15
+			UIFieldFepRawText = 16
+			UIFieldFepRawBackground = 17
+			UIFieldFepConvertedText = 18
+			UIFieldFepConvertedBackground = 19
+			UIFieldFepUnderline = 20
+
+			UIFormFrame = 21
+			UIFormFill = 22
+	
+			UIDialogFrame = 23
+			UIDialogFill = 24
+
+			UIAlertFrame = 25
+			UIAlertFill = 26
+
+			UIOK = 27
+			UICaution = 28
+			UIWarning = 29
+
+    Returns:	Index as Integer
+
+    Example:
+
+	Dim Which as Integer
+	Dim Index as Integer
+
+	Which = 11   'UIFieldText
+	Index = SL.GetTableEntryIndex(Which)
+
+GetTableEntryRGB
+----------------
+
+	Index = ScreenLib.GetTableEntryRGB(Which)
+
+    Description:
+
+	This function calls the PalmOS UIColorGetTableEntryRGB function.
+	It retrieves the RGB values for the UI Color.  RGB Values are
+	returned in a structure called "RGBColorType".  It contains the 
+	following fields:
+		index, red, green, blue.
+	This function retrieves all these values, but only returns
+	the index.  To get the red, green, and blue values, call this
+	function first and then call GetRGBRed, GetRGBGreen, and 
+	GetRGBBlue.  See the example for more information.
+
+    Parameters:	Which as Integer
+			(see the GetTableEntryIndex function for
+			 a list of valid "Which" values")
+
+    Returns:	Index as Integer
+
+    Example:
+
+	Dim Which as Integer
+	Dim Index as Integer
+	Dim Red as Integer
+	Dim Green as Integer
+	Dim Blue as Integer
+
+	Which = 11  'UIFieldText
+	Index = SL.GetTableEntryRGB(Which)
+	Red = SL.GetRGBRed()
+	Green = SL.GetRGBGreen()
+	Blue = SL.GetRGBBlue()
+
+GetRGBIndex
+-----------
+
+	Index = ScreenLib.GetRGBIndex()
+
+    Description:
+
+	RGB Values are returned in a structure called "RGBColorType".  
+	It contains the following fields:
+		index, red, green, blue.
+
+	This function returns the index value that was previously
+	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+
+    Parameters:	None
+
+    Returns:	Index as Integer
+
+    Example:
+
+	Dim Index as Integer
+	Index = SL.GetRGBIndex()
+	
+GetRGBRed
+---------
+
+	Red = ScreenLib.GetRGBRed()
+
+    Description:
+
+	RGB Values are returned in a structure called "RGBColorType".  
+	It contains the following fields:
+		index, red, green, blue.
+
+	This function returns the red value that was previously
+	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+
+    Parameters:	None
+
+    Returns:	Red as Integer
+
+    Example:
+
+	See the example provided with either the GetTableEntryRGB or 
+	IndexToRGB functions.
+
+GetRGBGreen
+-----------
+
+	Green = ScreenLib.GetRGBGreen()
+
+    Description:
+
+	RGB Values are returned in a structure called "RGBColorType".  
+	It contains the following fields:
+		index, red, green, blue.
+
+	This function returns the green value that was previously
+	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+
+    Parameters:	None
+
+    Returns:	Green as Integer
+
+    Example:
+
+	See the example provided with either the GetTableEntryRGB or 
+	IndexToRGB functions.
+
+GetRGBBlue
+----------
+
+	Blue = ScreenLib.GetRGBBlue()
+
+    Description:
+
+	RGB Values are returned in a structure called "RGBColorType".  
+	It contains the following fields:
+		index, red, green, blue.
+
+	This function returns the blue value that was previously
+	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+
+    Parameters:	None
+
+    Returns:	Blue as Integer
+
+    Example:
+
+	See the example provided with either the GetTableEntryRGB or 
+	IndexToRGB functions.
+
+SetTableEntryIndex
+------------------
+
+	ScreenLib.SetTableEntryIndex Which, Index
+
+    Description:
+
+	This subroutine calls the PalmOS IndexToRGB function and then 
+        it calls UIColorSetTableEntry.	It changes a value in the UI 
+        Color list.
+
+    Parameters:	Which as Integer
+			(see the GetTableEntryIndex function for
+			 a list of valid "Which" values")
+		Index as Integer (valid values: 0 to 255)
+
+    Returns:	None
+
+    Example:
+
+	Dim Which as Integer
+	Dim Index as Integer
+
+	Which = 11 'UIFieldText
+	Index = 42
+	SL.SetTableEntryIndex Which, Index
+
+    Note:
+
+	Some changes aren't reflected until the object or form is
+	redrawn with the "Redraw" statement.  Even then, some changes
+	like the form background (UIFormFill - 22) aren't reflected
+	until until you change forms with a "NextScreen" statement.
+	You might want to set some table entries in either the
+	programs "Startup" code or just before you use the "NextScreen"
+	statement.
+
+SetTableEntryRGB
+----------------
+
+	ScreenLib.SetTableEntryRGB Which, Red, Green, Blue
+
+    Description:
+
+	This subroutine calls the PalmOS UIColorSetTableEntry function.
+	It changes a value in the UI Color list.
+
+    Parameters:	Which as Integer
+			(see the GetTableEntryIndex function for
+			 a list of valid "Which" values")
+		Red as Integer	 (valid values: 0 to 255)
+		Green as Integer (valid values: 0 to 255)
+		Blue as Integer  (valid values: 0 to 255)
+
+    Returns:	None
+
+    Example:
+
+	Dim Which as Integer
+	Dim Red as Integer
+	Dim Green as Integer
+	Dim Blue as Integer
+
+	Which = 11 'UIFieldText
+	Red = 255
+	Green = 0
+	Blue = 0
+	SL.SetTableEntryRGB Which, Red, Green, Blue
+
+    Note:
+
+	Some changes aren't reflected until the object or form is
+	redrawn with the "Redraw" statement.  Even then, some changes
+	like the form background (UIFormFill - 22) aren't reflected
+	until until you change forms with a "NextScreen" statement.
+	You might want to set some table entries in either the
+	programs "Startup" code or just before you use the "NextScreen"
+	statement.
+
+BrightnessAdjust
+----------------
+
+	ScreenLib.BrightnessAdjust()
+
+    Description:
+
+	This subroutine calls the PalmOS UIBrightnessAdjust function.  
+	It displays the "Brightness Adjust" dialog.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	SL.BrightnessAdjust()
+
+ContrastAdjust
+--------------
+
+	ScreenLib.ContrastAdjust()
+
+    Description:
+
+	This subroutine calls the PalmOS UIContrastAdjust function.  
+	It displays the "Contrast Adjust" dialog.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	SL.ContrastAdjust()
+
+    Note:
+
+	The PalmOS documentation states that this function only works
+	on the "Palm V Connected Organizer".
+
+PickColorIndex
+--------------
+
+	Changed = ScreenLib.PickColorIndex(Index, Title)
+
+    Description:
+
+	This function calls the PalmOS UIPickColor function.  It
+	displays a Palette dialog to allow a user to select a
+	color.  The selected index and RGB values can be retrieved
+	by calling the GetRGBIndex, GetRGBRed, GetRGBGreen and 
+	GetRGBBlue functions.
+
+    Parameters:	Index as Integer - suggested Index
+		Title as String - Dialog title to display
+
+    Returns:	Changed as Integer
+		(0 = User cancelled or chose suggested index)
+		(1 = User chose a new index)
+
+    Example:
+
+	Dim Index as Integer
+	Dim Red as Integer
+	Dim Green as Integer
+	Dim Blue as Integer
+	Dim Changed as Integer
+	Dim Title as String
+
+	Index = 42
+	Title = "Pick a Color"
+	Changed = SL.PickColorIndex(Index, Title)
+	If Changed = 1 Then
+	    Index = SL.GetRGBIndex()
+	    Red = SL.GetRGBRed()
+	    Green = SL.GetRGBGreen()
+	    Blue = SL.GetRGBBlue()
+	End If
+
+PickColorRGB
+--------------
+
+	Changed = ScreenLib.PickColorRGB(Red, Green, Blue, Title)
+
+    Description:
+
+	This function calls the PalmOS UIPickColor function.  It
+	displays an RGB dialog to allow a user to select a
+	color.  The selected index and RGB values can be retrieved
+	by calling the GetRGBIndex, GetRGBRed, GetRGBGreen and 
+	GetRGBBlue functions.
+
+    Parameters:	Red as Integer - suggested red value - 0 to 255)
+		Green as Integer - suggested green value - 0 to 255)
+		Blue as Integer - suggested blue value - 0 to 255)
+		Title as String - Dialog title to display
+
+    Returns:	Changed as Integer
+		(0 = User cancelled or chose suggested RGB values)
+		(1 = User chose new RGB values)
+
+    Example:
+
+	Dim Index as Integer
+	Dim Red as Integer
+	Dim Green as Integer
+	Dim Blue as Integer
+	Dim Changed as Integer
+	Dim Title as String
+
+	Red = 255
+	Green = 0
+	Blue = 0
+	Title = "Pick a Color"
+	Changed = SL.PickColorRGB(Red, Green, Blue, Title)
+	If Changed = 1 Then
+	    Index = SL.GetRGBIndex()
+	    Red = SL.GetRGBRed()
+	    Green = SL.GetRGBGreen()
+	    Blue = SL.GetRGBBlue()
+	End If
+
+IndexToRGB
+----------
+
+	ScreenLib.IndexToRGB Index
+
+    Description:
+
+	This subroutine calls the PalmOS WinIndexToRGB function.  It
+	converts an index in the currently active color table to an
+	RGB value.  RGB Values are returned in a structure called 
+	"RGBColorType".  It contains the following fields:
+		index, red, green, blue.
+	To get the actual index, red, green, and blue values, call this
+	function first and then call GetRGBIndex, GetRGBRed, GetRGBGreen,
+	and GetRGBBlue.  See the example for more information.
+
+    Parameters:	Index as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim Index as Integer
+	Dim Red as Integer
+	Dim Green as Integer
+	Dim Blue as Integer
+
+	Index = 134
+	SL.IndexToRGB Index
+	Index = SL.GetRGBIndex()
+	Red = SL.GetRGBRed()
+	Green = SL.GetRGBGreen()
+	Blue = SL.GetRGBBlue()
+
+RGBToIndex
+----------
+
+	Index = ScreenLib.RGBToIndex(Red, Green, Blue)
+
+    Description:
+
+	This function calls the PalmOS WinRGBToIndex function.  It 
+	converts RGB values to the index of the closest color in the
+	currently active color lookup table (CLUT).
+
+    Parameters:	Red as Integer   (valid values:  0 to 255)
+		Green as Integer (valid values:  0 to 255)
+		Blue as Integer  (valid values:  0 to 255)
+
+    Returns:	Index as Integer
+
+    Example:
+
+	Dim Index as Integer
+	Dim Red as Integer
+	Dim Green as Integer
+	Dim Blue as Integer
+
+	Red = 255
+	Green = 0
+	Blue = 0
+	Index = SL.RGBToIndex(Red, Green, Blue)
+
+SetForeColor
+------------
+
+	OldIndex = ScreenLib.SetForeColor(NewIndex)
+
+    Description:
+
+	This function calls the PalmOS WinSetForeColor function.  It
+	sets the foreground color to use in subsequent draw operations.
+
+    Parameter:	NewIndex as Integer
+
+    Returns:	OldIndex as Integer  - previous foreground index
+
+    Example:
+
+	Dim OldIndex as Integer
+	Dim NewIndex as Integer
+
+	NewIndex = 134
+	OldIndex = SL.SetForeColor(NewIndex)
+
+    Note:
+
+	Colors set with this function appear to be reset to default
+	values when switching between forms or when a form is redrawn.
+	It is probably best to call this function in the form's
+	"After" code section.
+
+SetBackColor
+------------
+
+	OldIndex = ScreenLib.SetBackColor(NewIndex)
+
+    Description:
+
+	This function calls the PalmOS WinSetBackColor function.  It
+	sets the background color to use in subsequent draw operations.
+
+    Parameter:	NewIndex as Integer
+
+    Returns:	OldIndex as Integer  - previous background index
+
+    Example:
+
+	Dim OldIndex as Integer
+	Dim NewIndex as Integer
+
+	NewIndex = 134
+	OldIndex = SL.SetBackColor(NewIndex)
+
+    Note:
+
+	Colors set with this function appear to be reset to default
+	values when switching between forms or when a form is redrawn.
+	It is probably best to call this function in the form's
+	"After" code section.
+
+SetTextColor
+------------
+
+	OldIndex = ScreenLib.SetTextColor(NewIndex)
+
+    Description:
+
+	This function calls the PalmOS WinSetTextColor function.  It
+	sets the color to use for drawing characters in subsequent draw 
+	operations.
+
+    Parameter:	NewIndex as Integer
+
+    Returns:	OldIndex as Integer  - previous text index
+
+    Example:
+
+	Dim OldIndex as Integer
+	Dim NewIndex as Integer
+
+	NewIndex = 134
+	OldIndex = SL.SetTextColor(NewIndex)
+
+    Note:
+
+	Colors set with this function appear to be reset to default
+	values when switching between forms or when a form is redrawn.
+	It is probably best to call this function in the form's
+	"After" code section.
+
+DrawLine
+--------
+
+	ScreenLib.DrawLine X1, Y1, X2, Y2
+
+    Description:
+
+	This soubroutine calls the PalmOS WinDrawLine function.  It 
+	draws a line in the draw window using the current foreground 
+	color.
+	Note:  This function was provided for completeness only.  The
+	built-in DrawLine NSBasic statement produces the same result.
+
+    Parameters:	X1 as Integer
+		Y1 as Integer
+		X2 as Integer
+		Y2 as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X1 as Integer
+	Dim Y1 as Integer
+	Dim X2 as Integer
+	Dim Y2 as Integer
+
+	X1 = 10
+	Y1 = 20
+	X2 = 120
+	Y2 = 20
+	SL.DrawLine X1, Y1, X2, Y2
+
+DrawGrayLine
+------------
+
+	ScreenLib.DrawGrayLine X1, Y1, X2, Y2
+
+    Description:
+
+	This subroutine calls the PalmOS WinDrawGrayLine function.  It
+	does not draw in a gray color, but rather draws with
+	alternating foreground and background colors.
+
+    Parameters:	X1 as Integer
+		Y1 as Integer
+		X2 as Integer
+		Y2 as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X1 as Integer
+	Dim Y1 as Integer
+	Dim X2 as Integer
+	Dim Y2 as Integer
+
+	X1 = 10
+	Y1 = 20
+	X2 = 120
+	Y2 = 20
+	SL.DrawGrayLine X1, Y1, X2, Y2
+
+EraseLine
+---------
+
+	ScreenLib.EraseLine X1, Y1, X2, Y2
+
+    Description:
+
+	This subroutine calls the PalmOS WinEraseLine function.  It
+	draws a line in the draw window using the current background
+	color.
+
+    Parameters:	X1 as Integer
+		Y1 as Integer
+		X2 as Integer
+		Y2 as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X1 as Integer
+	Dim Y1 as Integer
+	Dim X2 as Integer
+	Dim Y2 as Integer
+
+	X1 = 10
+	Y1 = 20
+	X2 = 120
+	Y2 = 20
+	SL.EraseLine X1, Y1, X2, Y2
+
+InvertLine
+----------
+
+	ScreenLib.InvertLine X1, Y1, X2, Y2
+
+    Description:
+
+	This subroutine calls the PalmOS WinInvertLine function.  It
+	draws an inverted line in the draw window.
+
+    Parameters:	X1 as Integer
+		Y1 as Integer
+		X2 as Integer
+		Y2 as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X1 as Integer
+	Dim Y1 as Integer
+	Dim X2 as Integer
+	Dim Y2 as Integer
+
+	X1 = 10
+	Y1 = 20
+	X2 = 120
+	Y2 = 20
+	SL.InvertLine X1, Y1, X2, Y2
+
+DrawPixel
+---------
+
+	ScreenLib.DrawPixel X, Y
+
+    Description:
+
+	This subroutine calls the PalmOS WinDrawPixel function.  It
+	draws a pixel in the draw window using the current foreground
+	color.
+
+    Parameters:	X as Integer
+		Y as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X as Integer
+	Dim Y as Integer
+	X = 10
+	Y = 20
+	SL.DrawPixel X, Y
+
+ErasePixel
+----------
+
+	ScreenLib.ErasePixel X, Y
+
+    Description:
+
+	This subroutine calls the PalmOS WinErasePixel function.  It
+	draws a pixel in the draw window using the current background
+	color.
+
+    Parameters:	X as Integer
+		Y as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X as Integer
+	Dim Y as Integer
+	X = 10
+	Y = 20
+	SL.ErasePixel X, Y
+
+InvertPixel
+-----------
+
+	ScreenLib.InvertPixel X, Y
+
+    Description:
+
+	This subroutine calls the PalmOS WinInvertPixel function.  It
+	draws an inverted pixel in the draw window.
+
+    Parameters:	X as Integer
+		Y as Integer
+
+    Returns:	None
+
+    Example:
+
+	Dim X as Integer
+	Dim Y as Integer
+	X = 10
+	Y = 20
+	SL.InvertPixel X, Y
+
+GetPixel
+--------
+
+	Index = ScreenLib.GetPixel(X, Y)
+
+    Description:
+
+	This function calls the PalmOS WinGetPixel function.  It
+	returns the color of the specified a pixel in the draw window.
+
+    Parameters:	X as Integer
+		Y as Integer
+
+    Returns:	Index as Integer
+
+    Example:
+
+	Dim Index as Integer
+	Dim X as Integer
+	Dim Y as Integer
+	X = 10
+	Y = 20
+	Index = SL.GetPixel(X, Y)
+
+ScreenLock
+----------
+
+	Success = ScreenLib.ScreenLock(Mode)
+
+    Description:
+
+	This function calls the PalmOS WinScreenLock function.  It 
+	"locks" the current screen by switching the UI concept of the 
+	screen base address to an area that is not reflected on the
+	display.  This routine can be used to "freeze" the display 
+	while doing lengthy drawing operations to avoid a flickering
+	effect.  Call ScreenUnlock to unlock the display and cause
+	it to be updated with any changes.  The screen must be unlocked
+	as many times as it is locked to actually update the display.
+
+    Parameters:	Mode as Integer
+			(winLockCopy = 0 - copy old screen to new)
+			(winLockErase = 1 - erase new screen to white)
+			(winLockDontCare = 2 - don't do anything)
+
+    Returns:	Success as Integer
+		(1 = Success)
+		(0 = Failure)
+
+    Example:
+
+	Dim Success as Integer
+	Dim Mode as Integer
+	
+	Mode = 0  'winLockCopy
+	Success = SL.ScreenLock(Mode)
+
+ScreenUnlock
+------------
+
+	ScreenLib.ScreenUnlock()
+
+    Description:
+
+	This subroutine calls the PalmOS WinScreenUnlock function.  Call 
+	ScreenUnlock to unlock the display and cause it to be updated 
+	with any changes.  The screen, which was locked by calling
+	ScreenLock, must be unlocked as many times as it is locked to 
+	actually update the display.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	SL.ScreenUnlock()
+
+***************************************
+PalmOS WinScreenMode API Documentation:
+***************************************
+
+Purpose:
+
+Sets or returns display parameters, including display geometry, 
+bit depth, and color support. 
+
+Prototype:
+
+	Err WinScreenMode (WinScreenModeOperation operation, 
+			   UInt32 *widthP, UInt32 *heightP, 
+			   UInt32 *depthP, Boolean *enableColorP) 
+Parameters:
+
+The widthP, heightP, depthP, and enableColorP parameters are used in 
+different ways for different operations. See Comments at the end of 
+this description for details.    
+
+	-> operation
+
+		The work this function is to perform, as specified by 
+		one of the following selectors:
+ 
+ 		  winScreenModeGet
+			 Return the current settings for the display. 
+ 
+ 		  winScreenModeGetDefaults
+			 Return the default settings for the display. 
+ 
+ 		  winScreenModeGetSupportedDepths
+			 Return in depthP a hexadecimal value indicating
+			 the supported screen depths. The binary 
+			 representation of this value defines a bitfield
+			 in which the value 1 indicates support for a 
+			 particular display depth. The position 
+			 representing a particular bit depth corresponds
+			 to the value 2(bitDepth-1). See the Example at 
+			 the end of this function description for more 
+			 information.
+ 
+ 		  winScreenModeGetSupportsColor
+ 			Return true as the value of the enableColorP
+			parameter when color mode can be enabled.
+ 
+ 		  winScreenModeSet
+			Change display settings to the values specified
+			by the other arguments to the WinScreenMode 
+			function. 
+ 
+ 		  winScreenModeSetToDefaults
+			 Change display settings to default values. 
+ 
+	<-> widthP
+
+		Pointer to new/old screen width.
+ 
+	<-> heightP
+
+		 Pointer to new/old screen height.
+ 
+	<-> depthP
+		
+		Pointer to new/old/available screen depth.
+ 
+	<-> enableColorP
+
+		Pass true to enable color drawing mode.
+ 
+
+Result:
+
+	If no error, returns values as specified by the operation 
+	argument. Various invalid arguments may cause this function 
+	to return a sysErrParamErr result code. In rare cases, a failed 
+	allocation can cause this function to return a 
+	memErrNotEnoughSpace error. 
+
+Comments:
+
+The widthP, heightP, depthP, and enableColorP parameters are used in 
+different ways for different operations. All "get" operations overwrite 
+these values with a result when the function returns. The 
+winScreenModeSet operation changes current display parameters when 
+passed valid argument values that are not NULL pointers. The 
+winScreenModeSetToDefaults operation ignores values passed for all of 
+these parameters. 
+
+Table 48.1 summarizes parameter usage for each operation this function 
+performs. 
+
+
+Table 48.1 Use of parameters to WinScreenMode function  
+
+Operation  winScreenMode...  widthP    heightP   depthP    enableColorP  
+...Get			     returned  returned  returned  returned  
+...GetDefaults               returned  returned  returned  returned  
+...GetSupportedDepths        pass in   pass in   returned  pass in  
+...GetSupportsColor          pass in   pass in   pass in   returned  
+...Set  		     pass in   pass in   pass in   pass in  
+...SetToDefaults  	     ignored   ignored   ignored   ignored  
+ 
+
+
+
+This function ignores NULL pointer arguments to the widthP, heightP, 
+depthP, and enableColorP parameters; thus, you can pass a NULL pointer 
+for any of these values to leave the current value unchanged. Similarly, 
+when getting values, this function does not return a value for any NULL 
+pointer argument. 
+
+If you change the display depth, it is recommended that you restore it 
+to its previous state when your application closes, even though the 
+system sets display parameters back to their default values when 
+launching an application. 
+
+Note that none of the other operations interprets the depth parameter 
+the same way that winScreenModeGetSupportedDepths does. For example, to 
+set the display depth to 8-bit mode, you use 8 (decimal) for the display 
+depth, not 0x08 (128 decimal). 
+
+Compatibility:
+
+Implemented only if 3.5 New Feature Set is present. In OS versions prior 
+to 3.5, this function is called ScrDisplayMode. The prototype for 
+ScrDisplayMode is similar to WinScreenMode: 
+
+	Err ScrDisplayMode ( ScrDisplayModeOperation operation, 
+			     DWordPtr widthP, DWordPtr heightP, 
+			     DWordPtr depthP, BooleanPtr enableColorP)
+
+
+The only other difference between ScrDisplayMode and WinScreenMode is 
+that the ScrDisplayModeOperation constants begin with the prefix 
+scrDisplayMode rather than winScreenMode. 
+
+Example: 
+
+Here are some additional examples of return values provided by the 
+winScreenModeGetSupportedDepths mode of the WinScreenMode function. 
+
+This function indicates support for 4-bit drawing by returning a value 
+of 0x08, or 23, which corresponds to a binary value of 1000. Support for 
+bit depths of 2 and 1 is indicated by a return value of 0x03. Support for
+bit depths of 4, 2, and 1 is indicated by 0x0B, which is a binary value 
+of 1011. Support for bit depths of 24, 8, 4 and 2 is indicated by 
+0x80008A. The figure immediately following depicts this final example 
+graphically. 
+
+        24-bit drawing
+        |                               8-bit drawing
+        |                               |       4-bit drawing
+        |                               |       |   2-bit drawing
+        |                               |       |   |
+	1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 1 0
+	|                               |       |   |
+       2^23                            2^7     2^3 2^1
+
+	Bit depth support indicated by interpreting 0x80008A as
+	binary value.

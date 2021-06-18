@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SerialReceiveWithEvent </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>SerialReceiveWithEvent                                                                      Function</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SERIALRECEIVEWITHEVENT()</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>This function sets up the device to wait for data to come
+in, When characters arrive, an NsbSerialEvent is generated that you can pick up in your Event code. This
+function has no parameters. See SerialOpen for a list of result codes. Requires
+Palm OS 3.5 or later; not supported in all versions of Palm OS 5. A workaround
+for devices which do not have this feature is to use a timer to check the
+serial port regularly.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>'anywhere in your program after serial port is opened</p>
+
+<p class=Code>Global err as integer</p>
+
+<p class=Code>err=SerialReceiveWithEvent()'in your form's Event Script</p>
+
+<p class=Code>   Dim received as String</p>
+
+<p class=Code>    If
+getEventType()=nsbSerialIn Then</p>
+
+<p class=Code>        MsgBox
+&quot;Serial In Event&quot;</p>
+
+<p class=Code>       
+err=serialReceive(received, 10, 0)</p>
+
+<p class=Code>      If Err &gt; 0 Then</p>
+
+<p class=Code>        Beep</p>
+
+<p class=Code>       
+error.text=str(err) </p>
+
+<p class=Code>       
+data.text=data.text+&quot;.&quot;+Received</p>
+
+<p class=Code>      Else </p>
+
+<p class=Code>        error.text=&quot;&quot;</p>
+
+<p class=Code>       
+data.text=data.text+received</p>
+
+<p class=Code>      End If </p>
+
+<p class=Code>    End If </p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>PopupDate </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>PopupDate                                                                                              Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>POPUPDATE(<i>DateVal</i> as Date, <i>title</i> as
+String) </p>
+
+<p class=ManualBody><img width=213 height=213
+src="./outline_139_files/image003.gif" align=left hspace=12></p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Zeigt dem Anwender das Datum an, und lässt Ihn dieses durch
+den Palm OS Standard Datumsdialog ändern. Ein gültiges Datum für <i>DateVal</i> muss beim Aufruf übergeben
+werden. Wenn der Anwender das Datum ändert, so wird der neue Datumswert in <i>DateVal</i> zurückgeliefert, und die
+Funktion liefert als Ergebnis den Wert 1. Sollte der Anwender das Datum nicht
+ändern, so wird der Wert 0 zurückgeliefert. Der Text in <i>title</i> wird als Titel des Dialoges angezeigt, und kann daher für
+eigene Zwecke verwendet werden. Diese Funktion setzt Palm OS 3.3 oder neuer
+voraus. Auf manchen Geräten führt der Aufruf dieser Funktion dazu, dass das
+After Script nach Ausführung aufgerufen wird.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim theDate as date</p>
+
+<p class=Code>Dim Res as integer</p>
+
+<p class=Code>TheDate=today()</p>
+
+<p class=Code>Res=PopupDate(theDate, “Enter
+anniversary date”)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

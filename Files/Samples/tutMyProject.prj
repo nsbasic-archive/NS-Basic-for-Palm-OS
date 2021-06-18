@@ -1,0 +1,125 @@
+"mdl"
+8
+"tutMyProject","appl","MyPr",1016,505,0
+"sub main()
+  Global MyName as String
+  Global MyDate as date
+
+  MyDate=ToDate(~1999/01/01~)
+end sub
+"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100012D"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"Screen1004"
+"My Screen 1"
+""
+0
+""
+""
+0,0,0,0
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","selDate",1005,36,44,20,68,#TRUE#,0,"01/01/1999",0,0,0
+"sub object1005()
+ dim result as integer
+ result=PopupDate (MyDate, ~Enter your birthdate:~) 
+ controlSetText( ~selDate~, str(  MyDate))
+  redraw
+end sub
+"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldName",1006,36,72,12,52,#TRUE#,0,"Test Name",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1007",1007,44,108,12,64,#TRUE#,0,"Show the Date",0,0,0
+"sub object1007()
+   MyName = fieldGetText( ~fldName~ ) 
+   NextScreen ~My Screen 2~
+end sub
+"
+"vew"
+4,1009,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Screen1009"
+"My Screen 2"
+"sub Screen1009_before()
+end sub
+"
+0
+"sub Screen1009_after()
+  fieldSetText( ~fldName2~,  MyName)
+  fieldSetText( ~fldDate2~, DateMMDDYY ( MyDate ))
+  fieldSetText(~fldDayName~, str(DayOfWeek(MyDate)) 
+end sub
+"
+""
+0,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldName2",1010,48,28,20,104,#TRUE#,0,"Test",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1011",1011,16,28,12,36,#TRUE#,0,"Name=",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1012",1012,16,56,12,52,#TRUE#,0,"Birthdate=",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDate2",1013,76,52,16,80,#TRUE#,0,"TEST",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1014",1014,40,124,12,40,#TRUE#,0,"Go Back",0,0,0
+"sub object1014()
+  nextScreen ~My Screen 1~
+end sub
+"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDayName",1015,72,104,12,64,#TRUE#,0,"XXXXXXXXXX",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1016",1016,16,88,12,96,#TRUE#,0,"The day of the week is",0,0,0
+""
+"end"

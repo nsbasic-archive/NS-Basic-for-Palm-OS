@@ -1,0 +1,348 @@
+Introduction:
+The NSBLifeDriveLib shared library allows many of the multimedia features of the
+LifeDrive Palm device to be used from within an NSBasic program.
+
+In order to use the NSBLifeDriveLib shared library, the library must be loaded using the 
+NSBasic LoadLibrary statement. This statement should be located in the Startup Code
+of the program, as in this example:
+
+@Sub main()@%
+@####LoadLibrary "NSBLifeDriveLib"@%
+@End Sub@
+
+This document assumes that the shared library has been loaded this way.
+The LoadLibrary statement also has an optional second parameter to allow you to 
+specify an abbreviated reference name for the library's functions, as in this example:
+
+@Sub main()@%
+@####LoadLibrary "NSBLifeDriveLib", "LD"@%
+@End Sub@
+
+For this example, you can use the functions and subroutines described in this
+document with a prefix of @LD@ instead of @NSBLifeDriveLib@.
+
+In order to use the NSBLifeDriveLib Shared Library, the @NSBLifeDriveLib.inf@ 
+file must be present in your @C:\nsbasic\lib@ directory,
+and the @NSBLifeDriveLib.prc@ file must be downloaded to your device or
+included in your NSBasic program.  For more information on shared libraries, 
+refer to the NSBasic documentation.
+
+Many of the subroutines and functions within the NSBLifeDriveLib shared library
+use virtual files.  Utility subroutines and functions for accessing these files
+are found in the NSBVFSLib library.  See Tech Note 28 for more information.
+
+For an example of how to use this library, see @LifeDriveTest.prj@, which is 
+included with full distributions of NSBasic 5 or later.
+
+
+Entry: BrowserPresent~Function
+Syntax:
+_success_ = NSBLifeDriveLib.BrowserPresent
+Description:
+The file browser on the LifeDrive and some other devices mimics the behavior of 
+the Open and Save As... dialog windows on desktop machines.  PalmOne recommends
+this only in cases where a PalmOS program must look like its desktop equivalent.
+
+BrowserPresnt returns true (-1) if the file browser is present and false (0) otherwise.
+Do not use any subsequent file browser functions if the browser is not present.
+
+See: BrowserOpen~Function,BroswerSave~Function
+
+Entry: BrowserOpen~Function
+Syntax:
+_success_ = NSBLifeDriveLib.BrowserOpen(_volumeID_, _path_, _extensions_, _title_)
+Description:
+BrowserOpen presents a file brower dialog window to open a file.  _VolumeID_ and _path_
+are the volume ID and full path name of the file selected by the user.  _Extensions_
+is a string containing a list of filename extensions or MIME types, separated by commas.  Only files with these
+extensions will be shown.  _Title_ is the title of the dialog window.
+
+Do not use BrowserOpen to open images or videos.  Use PhotoSelectImage, PhotoSelectImages,
+PhotoSelectVideo, or PhotoSelectVideos.
+
+BrowserOpen returns true (-1) if the user selects a file or false (0) if the user cancels.
+
+Example:
+Dim volume as Integer
+Dim path as String
+Dim extend as String
+Dim title as String
+Dim r as Integer
+    
+title = "Choose a file"
+extend = "txt,text,text/plain"
+path = ""
+    
+volume = 0   ' Use the device as the default volume
+r = LD.BrowserOpenDialog(volume, path, extend, title)
+
+If r <> 0 Then
+    ' Do something with the opened file here
+End If
+
+See: 
+BrowserPresent~Function
+
+Entry: BrowserSave~function
+Syntax:
+_success_ = NSBLifeDriveLib.BrowserSave(_volumeID_, _path_, _extensions_, _title_)
+Description:
+BrowserOpen presents a file brower dialog window to open a file.  _VolumeID_ and _path_
+are the volume ID and full path name of the file selected by the user.  _Extensions_
+is a string containing a list of filename extensions or MIME types, separated by commas.  The first entry
+in this list should be the default extension of a saved file and should be an extension, not a MIME type.
+_Title_ is the title of the dialog window.
+
+BrowserSave returns true (-1) if the user chooses to save a file or false (0) if the user cancels.
+
+Example:
+Dim volume as Integer
+Dim path as String
+Dim extend as String
+Dim title as String
+Dim r as Integer
+    
+title = "Choose a file"
+extend = "txt,text,text/plain"
+path = ""
+    
+volume = 0   ' Use the device as the default volume
+r = LD.BrowserOpenDialog(volume, path, extend, title)
+
+If r <> 0 Then
+    ' Do something with the opened file here
+End If
+
+See: 
+BrowserPresent~Function
+
+Entry: PhotoPresent~function
+Syntax:
+_success_ = NSBLifeDriveLib.PhotoPresent
+Description:
+PhotoPresent returns true (-1) if the photo functions are present or false (0) if they are
+absent.  Check the value of this before trying to use any of the photo functions.
+
+Entry: PhotoAlbumCount~function
+Syntax:
+_numAlbums_ = NSBLifeDriveLib.PhotoAlbumCount(_volumeID_)
+Description:
+PhotoAlbumCount returns the number of photo albums on _volumeID_, which is an integer volume ID.
+Pass 0 for _volumeID_ to specify the device itself.  Other volumes IDs can be obtained using the NSBVFSLib
+library or from any of the LifeDrive functions that return volume IDs.
+
+Entry: PhotoAlbumID~function
+Syntax:
+_albumID_ = NSBLifeDriveLib.PhotoAlbumID(_volume_, _index_)
+Description:
+PhotoAlbumID returns the ID of the photo album specified by _volume_ and _index_.  The
+ID should be stored in a variable of type Integer.  _Volume_ is the ID of the volume on which to
+look for the photo album.  Pass 0 for _volume_ to use the local volume on the device.  Other
+volumes can be obtained from functions in the NSBVFSLib library or from any of the LifeDrive
+functions that return volume IDs. _Index_ must be between 1 and the number of albums returned
+from PhotoAlbumCount.
+
+See:
+PhotoAlbumCount~function
+
+Entry: PhotoAlbumName~function
+Syntax:
+_name_ = NSBLifeDriveLib.PhotoAlbumName(_albumID_)
+Description:
+PhotoAlbumName returns as a string the name of the photo album specified by _albumID_, which should have
+been returned by PhotoAlbumID.  
+
+See:
+PhotoAlbumID~function
+
+Entry: PhotoNewAlbum~function
+Syntax:
+_albumID_ = NSBLifeDriveLib.PhotoNewAlbum(_volumeID_, _name_)
+Description:
+PhotoNewAlbum creates a new photo album named _name_ on the volume specified by _volumeID_.
+Pass 0 for _volume_ to use the local volume on the device.  Other
+volumes can be obtained from functions in the NSBVFSLib library or from any of the LifeDrive
+functions that return volume IDs.  PhotoNewAlbum returns the ID of the newly created photo album or
+-1 if the album could not be created.
+
+Entry: PhotoRenameAlbum~function
+Syntax:
+_success_ = NSBLifeDriveLib.PhotoRenameAlbum(_albumID_, _newName_)
+Description:
+PhotoRenameAlbum renames a photo album specified by _albumID_ to _newName_, returning true (-1)
+if renaming was successful and false (0) otherwise.
+
+See:
+PhotoAlbumID~function
+
+Entry: PhotoDeleteAlbum~function
+Syntax:
+_success_ = NSBLifeDriveLib.PhotoDeleteAlbum(_albumID_)
+Description:
+PhotoDeleteAlbum deletes the specified album.  Photos within the album are moved to Unfiled.
+Returns true (-1) if successful and false (0) otherwise.  The Unfiled album cannot be deleted.
+
+See:
+PhotoAlbumID~function
+
+Entry: PhotoDeleteAlbumAndContents~function
+Syntax:
+_success_ = NSBLifeDriveLib.PhotoDeleteAlbum(_albumID_)
+Description:
+PhotoDeleteAlbum deletes the specified album.  Photos within the album are deleted as well.
+Returns true (-1) if successful and false (0) otherwise.  The Unfiled album cannot be deleted.
+
+See:
+PhotoAlbumID~function
+
+Entry: PhotoImageCount~function
+Syntax:
+_numImages_ = NSBLifeDriveLib.PhotoImageCount(_albumID_)
+Description:
+PhotoImageCount returns the number of images in the album specified by _albumID_.
+
+See:
+PhotoAlbumID~function
+
+Entry: PhotoSelectFromAlbum~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoSelectFromAlbum(_albumID_, _start_, _numImages_)
+Description:
+PhotoSelectFromAlbum selects one or more images from an album specified by _albumID_.
+_Start_ is the number of the first image to select and must be between 1 and the 
+number of images returned by PhotoImageCount.  _NumImages_ is the number of images to
+select.  For example, NSBLifeDriveLib.PhotoSelectFromAlbum(ID, 2, 3) will select images
+2, 3, and 4 from album ID.
+
+Only one selection containing zero or more images or videos is available at one time.  
+It is called the current selection.
+
+See:
+PhotoAlbumID~function, PhotoImageCount~function, PhotoSelectImage~subroutine, PhotoSelectImages~subroutine, PhotoSelectVideo~subroutine, PhotoSelectVideos~subroutine
+
+Entry: PhotoSelectImage~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoSelectImage
+Description:
+PhotoSelectImage presents the user with a dialog window to select a single image.
+If the user cancels the dialog window, the selection will remain unchanged.
+
+Only one selection containing zero or more images or videos is available at one time.  
+It is called the current selection.
+
+On older devices, this subroutine may select videos as well as images but should 
+only select images on newer devices.
+
+See:
+PhotoAlbumID~function, PhotoSelectFromAlbum~subroutine, PhotoSelectImages~subroutine, PhotoSelectVideo~subroutine, PhotoSelectVideos~subroutine
+
+Entry: PhotoSelectImages~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoSelectImages
+Description:
+PhotoSelectImages presents the user with a dialog window to select any number of images.
+If the user cancels the dialog window, the selection will remain unchanged.
+
+Only one selection containing zero or more images or videos is available at one time.  
+It is called the current selection.
+
+On older devices, this subroutine may select videos as well as images but should 
+only select images on newer devices.
+
+See:
+PhotoAlbumID~function, PhotoSelectFromAlbum~subroutine, PhotoSelectImage~subroutine, PhotoSelectVideo~subroutine, PhotoSelectVideos~subroutine
+
+Entry: PhotoSelectVideo~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoSelectVideo
+Description:
+PhotoSelectVideo presents the user with a dialog window to select a single video.
+If the user cancels the dialog window, the selection will remain unchanged.
+
+Only one selection containing zero or more images or videos is available at one time.  
+It is called the current selection.
+
+On older devices, this subroutine may select images as well as videos but should 
+only select videos on newer devices.
+
+See:
+PhotoAlbumID~function, PhotoSelectFromAlbum~subroutine, PhotoSelectImage~subroutine, PhotoSelectImages~subroutine, PhotoSelectVideos~subroutine
+
+Entry: PhotoSelectVideos~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoSelectVideos
+Description:
+PhotoSelectVideos presents the user with a dialog window to select any number of videos.
+If the user cancels the dialog window, the selection will remain unchanged.
+
+Only one selection containing zero or more images or videos is available at one time.  
+It is called the current selection.
+
+On older devices, this subroutine may select images as well as videos but should 
+only select videos on newer devices.
+
+See:
+PhotoAlbumID~function, PhotoSelectFromAlbum~subroutine, PhotoSelectImage~subroutine, PhotoSelectImages~subroutine, PhotoSelectVideo~subroutine
+
+Entry: PhotoSelectNone~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoSelectNone
+Description:
+PhotoSelectNone clears the current selection.  Use this before a PhotoSelectImage(s) or PhotoSelectVideo(s)
+to determine whether the user selected images or videos.
+
+Entry: PhotoSelectionCount~function
+Syntax:
+_numImages_ = NSBLifeDriveLib.PhotoSelectionCount
+Description:
+PhotoSelectionCount returns the number of images or videos in the current selection.
+
+Entry: PhotoSelectedImage~function
+Syntax:
+_imageID_ = NSBLifeDriveLib.PhotoSelectedImage(_which_)
+Description:
+PhotoSelectedImage returns the ID of of image _which_ in the current selection.  _Which_ must
+be between 1 and the number of images returned by PhotoSelectionCount.  The return value should
+be stored in a variable of type Integer.
+
+_ImageID_ can be a still image or a video, depending on the type of media in the selection.
+
+See: 
+PhotoSelectionCount~function, PhotoSelectFromAlbum~subroutine, PhotoSelectImage~subroutine, PhotoSelectImages~subroutine, PhotoSelectVideo~subroutine, PhotoSelectVideos~subroutine
+
+Entry: PhotoDisplayImage~subroutine
+Syntax:
+NSBLifeDriveLib.PhotoDisplayImage(_imageID_, _left_, _top_, _width_, _height_)
+Description:
+PhotoDisplayImage displays the image given by _imageID_ in the rectangle described by
+_left_, _top_, _width_, and _height_.  Coordinates are given in NSBasic coordinates, where
+the standard LifeDrive screen is 160 by 160.  Images with higher resolution will make use of
+the higher resolution of the LifeDrive screen.  For example, a 320 by 320 JPEG image will display
+at perfect resulution in a 180 by 180 rectangle.  Images that do not perfectly fit within the 
+rectangle will be shrunk to fit.
+
+If _imageID_ refers to a still image, the function will return immediately after the image has
+been displayed.  An ideal use of this is to display an image within the bounds of a gadget.
+
+If _imageID_ refers to a video rather than a still image, the rectangle will be ignored, and the 
+video will open within the video player.
+
+See:
+PhotoSelectedImage~function
+
+Entry: PhotoImageName~function
+Syntax:
+_name_ = NSBLifeDriveLib.PhotoImageName(_imageID_)
+Description:
+PhotoImageName returns the name of the image specified by _imageID_.  The name is the full path
+name of the image within the volume it resides on.
+
+See:
+PhotoSelectedImage~function
+
+
+
+
+
+
+

@@ -1,0 +1,165 @@
+"mdl"
+8
+"IRTest","appl","SWir",1013,505,0
+"Sub Project_Startup()
+  Dim iError as Integer
+  Global iOpen as Integer
+  
+  iOpen = 0
+  
+  iError=serialreceivewithevent()  
+'  If iError = 0 Then
+'    iOpen = 1
+'  End If
+  
+End Sub"
+0
+0
+"IRTest"
+"1,0,0"
+""
+"Installat."
+""
+"E10000DF"
+"Sub Project_Termination()
+  Dim iError as Integer
+  
+  If iOpen = 1 Then
+    iError = serialclose()
+  End If
+  If iError <> 0 And iError <> 777 Then
+    MsgBox ~Serial close error ~ + str(iError)
+  End If
+  iError = Serialset(~IR~,0)
+End Sub"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"IRTest"
+"frmMain"
+""
+0
+""
+"Sub Form1003_Event()
+  Dim iError as Integer, strTemp as String, strReceived as String
+
+   strReceived=~~
+   If GetEventType()=nsbSerialIn Then
+      iError=serialReceive(strReceived, 120, 0)
+      If iError > 0 Then
+        error.text = ~Reseive error ~ + str(iError)
+      Else 
+        fldIn.text= fldIn.text + strReceived   'display received string
+      End If 
+    End If 
+    iError=serialreceivewithevent()    'reset for next receive
+  
+End Sub"
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnStart",1004,20,130,12,40,#TRUE#,0,"Open IR",0,0,0
+"Sub object1004()
+  Dim iError as Integer
+  
+  If iOpen = 0 Then
+    iError = serialopen(32769, 9600)
+    If iError = 0 Then
+      iOpen = 1
+    Else
+      MsgBox ~Serial open error ~ + str(iError)
+      Exit Sub
+    End If
+    iError = Serialset(~IR~,1)
+    If iError <> 0 Then
+      MsgBox ~serial set error ~ + str(iError)
+    End If
+  End If
+  
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnStop",1005,102,130,12,40,#TRUE#,0,"Close IR",0,0,0
+"Sub object1005()
+  Dim iError as Integer
+  
+  If iOpen = 1 Then
+    iError = serialclose()
+    If iError = 0 Then
+      iOpen = 0
+    Else
+      MsgBox ~Serial close error ~ + str(iError)
+    End If
+  End If
+  
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","error",1006,22,148,12,118,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldIn",1008,10,40,66,140,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldOut",1010,10,20,12,110,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnSend",1012,126,18,12,28,#TRUE#,0,"Send",0,0,0
+"Sub object1012()
+  Dim iError as Integer, strTemp as String
+  
+  If fldOut.text=~~ Then
+    Exit Sub
+  End If
+  
+  If iOpen = 1 Then
+    strTemp=fldOut.text
+    iError=SerialSet(~IR~,2) 'turn off receive
+    If iError > 0 Then
+      MsgBox ~SerialSet error ~ + str(iError)
+    End If
+    
+    iError=serialsend(strTemp, len(strTemp))
+    If iError > 0 Then
+      MsgBox ~Serial send error ~ + str(iError)
+    End If
+    
+    iError=SerialSet(~IR~,1) 'turn on receive again
+    If iError > 0 Then
+      MsgBox ~Serial send error ~ + str(iError)
+    End If
+  Else
+    MsgBox ~Port not open~
+  End If
+  
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnClear",1013,34,114,12,94,#TRUE#,0,"Clear Received Data",0,0,0
+"Sub object1013()
+  fldIn.text=~~
+End Sub"
+"end"

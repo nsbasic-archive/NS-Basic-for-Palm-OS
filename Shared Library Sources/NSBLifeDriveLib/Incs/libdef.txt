@@ -1,0 +1,44 @@
+# libdef 
+# Eric Pepke
+# 26 February 2001
+# This contains the definitions of the library to be created
+# Put in this file the function definition header for the implementation
+# Then run snip.pl
+#
+
+[General]
+ExtensionName=NSB-LifeDrive-Manager
+PrcName=NSBLifeDriveLib.prc
+Version=1.0
+InfVers=2.0
+Manufacturer=NSBasic.com
+
+[GlobalMethods]
+ 
+Err NSBLifeDriveLibOpen(UInt16 refNum)   			// Open the library
+Err NSBLifeDriveLibClose(UInt16 refNum)  			// Close the library
+Err NSBLifeDriveLibSleep(UInt16 refNum)  			// Sleep (actually does nothing)
+Err NSBLifeDriveLibWake(UInt16 refNum)   			// Wake (actually does nothing)
+func Err BrowserPresent(UInt16 refNum, UInt16 *ret)
+func Err BrowserOpenDialog(UInt16 refNum, UInt16 *volume, char *path, char *extensions, char *title, UInt16 *ret)	// Display an open dialog
+func Err BrowserSaveDialog(UInt16 refNum, UInt16 *volume, char *path, char *extensions, char *title, UInt16 *ret)	// Display an open dialog
+func Err PhotoPresent(UInt16 refNum, UInt16 *ret)
+func Err PhotoAlbumCount(UInt16 refNum, UInt16 vRefNum, UInt16 *ret)
+func Err PhotoAlbumID(UInt16 refNum, UInt16 vRefNum, UInt16 index, UInt16 *ret)
+func Err PhotoAlbumName(UInt16 refNum, UInt16 albumID, char *name)
+func Err PhotoNewAlbum(UInt16 refNum, UInt16 vRefNum, char *name, UInt16 *ret)
+func Err PhotoRenameAlbum(UInt16 refNum, UInt16 albumID, char *name, UInt16 *ret)
+func Err PhotoDeleteAlbum(UInt16 refNum, UInt16 albumID, UInt16 *ret)
+func Err PhotoDeleteAlbumAndContents(UInt16 refNum, UInt16 albumID, UInt16 *ret)
+func Err PhotoImageCount(UInt16 refNum, UInt16 albumID, UInt16 *ret)
+Err PhotoSelectFromAlbum(UInt16 refNum, UInt16 albumID, UInt16 start, UInt16 number)
+Err PhotoSelectImage(UInt16 refNum)
+Err PhotoSelectImages(UInt16 refNum)
+Err PhotoSelectVideo(UInt16 refNum)
+Err PhotoSelectVideos(UInt16 refNum)
+Err PhotoSelectNone(UInt16 refNum)
+func Err PhotoSelectionCount(UInt16 refNum, UInt16 *ret)
+func Err PhotoSelectedImage(UInt16 refNum, UInt16 which, UInt32 *ret)
+Err PhotoDisplayImage(UInt16 refNum, UInt32 imageH, UInt16 left, UInt16 top, UInt16 width, UInt16 height)
+func Err PhotoImageName(UInt16 refNum, UInt32 imageH, char *ret)
+

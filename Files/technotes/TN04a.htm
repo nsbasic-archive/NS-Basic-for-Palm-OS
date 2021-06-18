@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 04a: Using ResIn on Color Bitmaps</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 04a: Using ResIn on Color Bitmaps</h2>
+	  <h3>January 24, 2003</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR><BR><BR>
+
+It is easy to display color bitmaps in NS Basic/Palm programs. <p>First, a bit of background on how Palm devices display bitmaps. Palm devices come in different varieties: some can display a full set of colors, while other can only display simple black and white. Some can do settings in between.  There are 5 levels that can currently be displayed: 1 bit, 2 bit, 4 bit, 8 bit and 16 bit. A 1 bit (monochrome) device cannot display an 8 bit picture, nor can it convert it to something it can display. Therefore, for a program to run on all possible devices, you need to supply bitmaps in all for levels.
+
+<p>Bitmaps are stored in your program as resources. NS Basic/Palm creates a bitmap resource for each bitmap you add to the program, and gives it the 4 digit ID number you see in the Project Explorer. You can add a list of up to 5 paths to images for a single bitmap resource. Make sure the images you add to your project already have the correct bit depth for the place you are assigning them!
+
+<p>Internally, NS Basic using a handy utility to do this called ResIn. It allows you to use .bmp, .gif, .jpg, ico, .emf or .wmf files as input: they are automatically converted to the special .bmp format that the Palm OS requires. It is in NS Basic Tools folder.
+
+<p>This same utility is used create color icons for your application. 
+
+<p>Internally, the format of the ResIn command line is<br>
+<code>ResIn.exe imageNames:n filename.prc resType resID</code>
+<UL COMPACT>
+	<LI><code>imageName</code> is the name of the image file. There can be up to 5. The value n following the image name is the bit depth. The images can be .bmp, .gif, .jpg, ico, .emf or .wmf format.
+	<LI><code>filename.prc</code> is the name of the project you have generated.
+	<LI><code>resType</code> is either Tbmp for a bitmap or tAIB for the icon
+	<LI><code>resID</code> is the four digit ID number from the IDE. If you are creating an Icon, use 1000.
+</UL>
+Sample:<br>
+<code>ResIn.exe a1.bmp:1 a2.bmp:2 a4.bmp:4 a8.bmp:8 ColorBitmap.prc Tbmp 1006</code>
+
+
+<H4>Enabling gray scale on non-color Palm devices</h4>
+Most non color Palm devices are capable of gray scale display, but are set to display only black and white. However, there is a utility to change the setting of your Palm, called <A HREF="http://mikemccollister.com/palm">ScreenPrefs</A>. Note that after running this, you may need to adjust the contrast of your Palm to get optimal viewing.
+
+

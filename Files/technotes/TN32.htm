@@ -1,0 +1,1344 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 32: Using the NSBiQueGPS Shared Library</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <P>Tech Note 32: Using the NSBiQueGPS Shared Library</P>
+      <P>June 6, 2004</P>
+</FONT><FONT FACE="Helvetica" SIZE=4><P>&nbsp;</P>
+</FONT><FONT FACE="Helvetica" SIZE=2><P>Copyright 2004 Ron Glowka</font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Function Index and Quick Reference</a>
+    <a href="#fullRef">Function Reference</a>
+</pre>
+
+<a name="intro"><h2>Introduction:</h2>
+<P> This library provides a wrapper for the Garmin iQue 3600 shared library
+for it's GPS functions.
+
+<P>In order to use the NSBiQueGPS Shared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "NQG" for this reference name.  Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "NSBiQueGPS", "NQG"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the NSBiQueGPS Shared Library, the 
+NSBiQueGPS.INF file must be present in your "nsbasic\lib" directory 
+and the NSBiQueGPS.prc file must be downloaded to your device.
+
+<P>Please be sure that your function return variables are dimensioned as
+the correct variable type.  This library will return variable types of
+"Integer", "Double", or "String".
+<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+    <a href="#Version">Version</a>                   version = Version()
+    <a href="#CompileInfo">CompileInfo</a>               compileDateTime = CompileInfo()
+    <a href="#GPSLibLoaded">GPSLibLoaded</a>              loaded = GPSLibLoaded()
+    <a href="#GPSGetLibAPIVersion">GPSGetLibAPIVersion</a>       version = GPSGetLibAPIVersion()
+    <a href="#GPSClose">GPSClose</a>                  GPSClose()
+    <a href="#GPSOpen">GPSOpen</a>                   status = GPSOpen()
+    <a href="#GPSGetMaxSatellites">GPSGetMaxSatellites</a>       maxSatellites = GPSGetMaxSatellites()
+    <a href="#GPSGetPosition">GPSGetPosition</a>            status = GPSGetPosition(lat, lon, altMSL, altWGS84)
+    <a href="#GPSGetPVT">GPSGetPVT</a>                 status = GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+    <a href="#GPSGetStatus">GPSGetStatus</a>              status = GPSGetStatus(mode, fix, epe, eph, epv)
+    <a href="#GPSGetTime">GPSGetTime</a>                status = GPSGetTime(seconds, fracSeconds)
+    <a href="#GPSGetVelocity">GPSGetVelocity</a>            status = GPSGetVelocity(east, north, up, track, speed)
+    <a href="#GPSGetSatellites">GPSGetSatellites</a>          status = GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)
+    <a href="#GetLatLonSemicircles">GetLatLonSemicircles</a>      GetLatLonSemicircles lat, lon
+    <a href="#GetLatLonDegMin">GetLatLonDegMin</a>           GetLatLonDegMin lat, lon
+    <a href="#GetLatLonDegMinSec">GetLatLonDegMinSec</a>        GetLatLonDegMinSec lat, lon
+    <a href="#GetErrString">GetErrString</a>              errString = GetErrString(status)
+    <a href="#GetModeString">GetModeString</a>             modeString = GetModeString(mode)
+    <a href="#GetFixString">GetFixString</a>              fixString = GetFixString(fix)
+    <a href="#GetSatStatusValues">GetSatStatusValues</a>        GetSatStatusValues statusBits, ephemeris, differential, used, rising
+    <a href="#ConvertDouble">ConvertDouble</a>             convertedValue = ConvertDouble(originalValue, conversionType)
+    <a href="#LatLonToUTM">LatLonToUTM</a>               zone = LatLonToUTM(datumID, lat, lon, easting, northing)
+    <a href="#UTMToLatLon">UTMToLatLon</a>               UTMToLatLon datumID, zone, easting, northing, lat, lon
+    <a href="#UTMDistance">UTMDistance</a>               distance = UTMDistance(zone1, easting1, northing1, zone2, easting2, northing2, ewDir, ewDist, nsDir, nsDist)
+    <a href="#PwrSetLowPowerMode">PwrSetLowPowerMode</a>        status = PwrSetLowPowerMode(creatorID, enabled)
+    <a href="#RegisterNotifyEvents">RegisterNotifyEvents</a>      RegisterNotifyEvents locationChange, statusChange, lostFix, satDataChange, modeChange, displayResized
+    <a href="#WinGetDisplayExtent">WinGetDisplayExtent</a>       WinGetDisplayExtent x, y
+    <a href="#WinSetDisplayExtent">WinSetDisplayExtent</a>       WinSetDisplayExtent size
+    <a href="#FrmGetDIAPolicy">FrmGetDIAPolicy</a>           value = FrmGetDIAPolicy()
+    <a href="#FrmSetDIAPolicy">FrmSetDIAPolicy</a>           FrmSetDIAPolicy value
+    <a href="#PINGetDIAState">PINGetDIAState</a>            value = PINGetDIAState()
+    <a href="#PINSetDIAState">PINSetDIAState</a>            PINSetDIAState value
+    <a href="#PINGetInputTriggerState">PINGetInputTriggerState</a>   value = PINGetInputTriggerState()
+    <a href="#PINSetInputTriggerState">PINSetInputTriggerState</a>   PINSetInputTriggerState value
+</pre>
+<a name="fullRef"><h2>NSBiQueGPS Function Reference:</h2>
+<a name="Version"><h4>Version</h4>
+
+<pre>	version = NSBiQueGPS.Version()</pre>
+
+<blockquote>
+	Returns the version number of the NSBiQueGPS Shared Library.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as Double</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as Double
+	
+	version = NQG.Version()
+</pre>
+<a name="CompileInfo"><h4>CompileInfo</h4>
+
+<pre>	compileDateTime = NSBiQueGPS.CompileInfo()</pre>
+
+<blockquote>
+	Returns the date and time that the NSBiQueGPS was compiled.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	compileDateTime as String</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim compileDateTime as String
+	
+	compileDateTime = NQG.CompileInfo()
+</pre>
+<a name="GPSLibLoaded"><h4>GPSLibLoaded</h4>
+
+<pre>	loaded = NSBiQueGPS.GPSLibLoaded()</pre>
+
+<blockquote>
+	Check to see if the Garmin iQue GPS shared library is loaded
+	and open.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	loaded as Integer
+	       1 - the library is loaded and open and is ready to use.
+	       0 - the library is not loaded and no GPS functions should
+	           be called except for the GPSOpen() function.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim loaded as Integer
+	
+	loaded = NQG.GPSLibLoaded()
+</pre>
+<blockquote>
+This function should always be called and the value returned
+should always be 1 before any other functions, except Version ()
+or CompileInfo(), in this library are called.
+</blockquote>
+<a name="GPSGetLibAPIVersion"><h4>GPSGetLibAPIVersion</h4>
+
+<pre>	version = NSBiQueGPS.GPSGetLibAPIVersion()</pre>
+
+<blockquote>
+	Returns the Garmin iQue Shared Library API Version number.
+	If the Garmin iQue Shared Library is not loaded, the
+	return value will be -1.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as Integer</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as Integer
+	
+	version = NQG.GPSGetLibAPIVersion()
+</pre>
+<a name="GPSClose"><h4>GPSClose</h4>
+
+<pre>	NSBiQueGPS.GPSClose()</pre>
+
+<blockquote>
+	Explicity close the GPS library. (See Notes)
+</blockquote>
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	
+	NQG.GPSClose()
+</pre>
+<blockquote>
+Normally, the GPS library is automatically closed when
+the NSBasic program gets terminated.  The GPSOpen()
+function must be called before any other GPS library
+functions are called after the GPS library has been closed.
+</blockquote>
+<a name="GPSOpen"><h4>GPSOpen</h4>
+
+<pre>	status = NSBiQueGPS.GPSOpen()</pre>
+
+<blockquote>
+	Explicity open the GPS library. (See Notes)
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       1 if the library was opened succussfully.
+	       0 if the library could not be loaded or opened.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	
+	status = NQG.GPSOpen()
+</pre>
+<blockquote>
+Normally, the GPS library is automatically opened when
+the NSBasic program loads this library.  This function
+function must be called before any other GPS library
+functions are called after the GPS library has been closed.
+</blockquote>
+<a name="GPSGetMaxSatellites"><h4>GPSGetMaxSatellites</h4>
+
+<pre>	maxSatellites = NSBiQueGPS.GPSGetMaxSatellites()</pre>
+
+<blockquote>
+	Get the maximum number of satellites that are currently
+	supported.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	maxSatellites as Integer
+	       -1 if the Garmin iQue shared libary is not loaded and open.
+	       nbr, the maximum number of satellites currently supported.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim maxSatellites as Integer
+	
+	maxSatellites = NQG.GPSGetMaxSatellites()
+</pre>
+<a name="GPSGetPosition"><h4>GPSGetPosition</h4>
+
+<pre>	status = NSBiQueGPS.GPSGetPosition(lat, lon, altMSL, altWGS84)</pre>
+
+<blockquote>
+	Get current position data.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	lat as Double (output parameter)
+	        lat - latitude in degrees
+
+	lon as Double (output parameter)
+	        lon - longitude in degrees
+
+	altMSL as Double (output parameter)
+	        altMSL - altitude above mean sea level (meters)
+
+	altWGS84 as Double (output parameter)
+	        altWGS84 - altitude above WGS84 ellipsoid (meters)
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 = gpsErrNone
+	           If the return status is not gpsErrNone (0), the data
+	           should be considered invalid.
+	       32769 = gpsErrNotOpen
+	       32770 = gpsErrStillOpen
+	       32771 = gpsErrMemory
+	       32772 = gpsErrNoData</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim errString as String
+	
+	status = NQG.GPSGetPosition(lat, lon, altMSL, altWGS84)
+	If status &lt;&gt; 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox "GPSGetPosition error = " + errString
+	End If
+</pre>
+<a name="GPSGetPVT"><h4>GPSGetPVT</h4>
+
+<pre>	status = NSBiQueGPS.GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)</pre>
+
+<blockquote>
+	Get current position, velocity, and time data.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	mode as Integer (output parameter)
+	       mode - mode type.  Values returned are:
+	           0 = gpsModeOff - GPS is off
+	           1 = gpsModeNormal - continuous satellite tracking
+	           2 = gpsModeBatSaver - periodic satellite tracking
+	           3 = gpsModeSim - simulated GPS information
+	           4 = gpsModeExternal - external source of GPS information
+
+	fix as Integer (output parameter)
+	       fix - fix type.  Values returned are:
+	           0 = gpsFixUnusable - failed integrity check
+	           1 = gpsFixInvalid - invalid or unavailable
+	           2 = gpsFix2D - 2 dimension
+	           3 = gpsFix3D - 3 dimension
+	           4 = gpsFix2DDiff - 2 dimension differential
+	           5 = gpsFix3DDiff - 3 dimension differential
+
+	epe as Double (output parameter)
+	       epe - estimated position error, 1-sigma (meters)
+
+	eph as Double (output parameter)
+	       eph - epe, horizontal only (meters)
+
+	epv as Double (output parameter)
+	       epv - epe, vertical only (meters)
+
+	lat as Double (output parameter)
+	       lat - latitude in degrees
+
+	lon as Double (output parameter)
+	       lon - longitude in degrees
+
+	altMSL as Double (output parameter)
+	       altMSL - altitude above mean sea level (meters)
+
+	altWGS84 as Double (output parameter)
+	       altWGS84 - altitude above WGS84 ellipsoid (meters)
+
+	east as Double (output parameter)
+	       east - east (m/s)
+
+	north as Double (output parameter)
+	       north - north (m/s)
+
+	up as Double (output parameter)
+	       up - upwards (m/s)
+
+	track as Double (output parameter)
+	       track - track (radians)
+
+	speed as Double (output parameter)
+	       speed - speed, horizontal only (m/s)
+
+	seconds as Integer (output parameter)
+	       seconds - seconds since midnight (UTC)
+
+	fracSeconds as Integer (output parameter)
+	       fracSeconds - 0..1 second *2^32
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 = gpsErrNone
+	           If the return status is not gpsErrNone (0), the data
+	           should be considered invalid.
+	       32769 = gpsErrNotOpen
+	       32770 = gpsErrStillOpen
+	       32771 = gpsErrMemory
+	       32772 = gpsErrNoData</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	
+	status = NQG.GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+	If status &lt;&gt; 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox "GPSGetPVT error = " + errString
+	End If
+</pre>
+<a name="GPSGetStatus"><h4>GPSGetStatus</h4>
+
+<pre>	status = NSBiQueGPS.GPSGetStatus(mode, fix, epe, eph, epv)</pre>
+
+<blockquote>
+	Get current status data.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	mode as Integer (output parameter)
+	       mode - mode type.  Values returned are:
+	           0 = gpsModeOff - GPS is off
+	           1 = gpsModeNormal - continuous satellite tracking
+	           2 = gpsModeBatSaver - periodic satellite tracking
+	           3 = gpsModeSim - simulated GPS information
+	           4 = gpsModeExternal - external source of GPS information
+
+	fix as Integer (output parameter)
+	       fix - fix type.  Values returned are:
+	           0 = gpsFixUnusable - failed integrity check
+	           1 = gpsFixInvalid - invalid or unavailable
+	           2 = gpsFix2D - 2 dimension
+	           3 = gpsFix3D - 3 dimension
+	           4 = gpsFix2DDiff - 2 dimension differential
+	           5 = gpsFix3DDiff - 3 dimension differential
+
+	epe as Double (output parameter)
+	       epe - estimated position error, 1-sigma (meters)
+
+	eph as Double (output parameter)
+	       eph - epe, horizontal only (meters)
+
+	epv as Double (output parameter)
+	       epv - epe, vertical only (meters)
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 = gpsErrNone
+	           If the return status is not gpsErrNone (0), the data
+	           should be considered invalid.
+	       32769 = gpsErrNotOpen
+	       32770 = gpsErrStillOpen
+	       32771 = gpsErrMemory
+	       32772 = gpsErrNoData</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim errString as String
+	
+	status = NQG.GPSGetStatus(mode, fix, epe, eph, epv)
+	If status &lt;&gt; 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox "GPSGetStatus error = " + errString
+	End If
+</pre>
+<a name="GPSGetTime"><h4>GPSGetTime</h4>
+
+<pre>	status = NSBiQueGPS.GPSGetTime(seconds, fracSeconds)</pre>
+
+<blockquote>
+	Get current time data.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	seconds as Integer (output parameter)
+	       seconds - seconds since midnight (UTC)
+
+	fracSeconds as Integer (output parameter)
+	       fracSeconds - 0..1 second *2^32
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 = gpsErrNone
+	           If the return status is not gpsErrNone (0), the data
+	           should be considered invalid.
+	       32769 = gpsErrNotOpen
+	       32770 = gpsErrStillOpen
+	       32771 = gpsErrMemory
+	       32772 = gpsErrNoData</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	
+	status = NQG.GPSGetTime(seconds, fracSeconds)
+	If status &lt;&gt; 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox "GPSGetTime error = " + errString
+	End If
+</pre>
+<a name="GPSGetVelocity"><h4>GPSGetVelocity</h4>
+
+<pre>	status = NSBiQueGPS.GPSGetVelocity(east, north, up, track, speed)</pre>
+
+<blockquote>
+	Get current velocity data.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	east as Double (output parameter)
+	       east - east (m/s)
+
+	north as Double (output parameter)
+	       north - north (m/s)
+
+	up as Double (output parameter)
+	       up - upwards (m/s)
+
+	track as Double (output parameter)
+	       track - track (radians)
+
+	speed as Double (output parameter)
+	       speed - speed, horizontal only (m/s)
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 = gpsErrNone
+	           If the return status is not gpsErrNone (0), the data
+	           should be considered invalid.
+	       32769 = gpsErrNotOpen
+	       32770 = gpsErrStillOpen
+	       32771 = gpsErrMemory
+	       32772 = gpsErrNoData</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim errString as String
+	
+	status = NQG.GPSGetVelocity(east, north, up, track, speed)
+	If status &lt;&gt; 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox "GPSGetVelocity error = " + errString
+	End If
+</pre>
+<a name="GPSGetSatellites"><h4>GPSGetSatellites</h4>
+
+<pre>	status = NSBiQueGPS.GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)</pre>
+
+<blockquote>
+	Get current satellite data for the indicated satellite.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	satellite as Integer (input parameter)
+	       satellite - (1..maxSatellites)
+
+	svid as Integer (output parameter)
+	       svid - space vehicle identifier
+
+	statusBits as Integer (output parameter)
+	       status bitfield
+	           bit 0 (bitmask 1) = gpsSatEphMask (ephemeris mask)
+	           bit 1 (bitmask 2) = gpsSatDifMask (differential mask)
+	           bit 2 (bitmask 4) = gpsSatUsedMask (used in solution mask)
+	           bit 3 (bitmask 8) = gpsSatRisingMask (rising mask)
+	           Note:  The GetSatStatusValues() in this library can be
+	                  used to retrieve these individual bit values.
+
+	snr as Integer (output parameter)
+	       snr - signal to noise ratio *100 (dB Hz)
+
+	azimuth as Double (output parameter)
+	       azimuth - azimuth (radians)
+
+	elevation as Double (output parameter)
+	       elevation - elevation (radians)
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       0 = gpsErrNone
+	           If the return status is not gpsErrNone (0), the data
+	           should be considered invalid.
+	       32769 = gpsErrNotOpen
+	       32770 = gpsErrStillOpen
+	       32771 = gpsErrMemory
+	       32772 = gpsErrNoData
+	       -1 = GPSGetMaxSatellites() returned &lt;= 0</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim satellite as Integer
+	Dim svid as Integer
+	Dim statusBits as Integer
+	Dim snr as Integer
+	Dim azimuth as Double
+	Dim elevation as Double
+	Dim errString as String
+	
+	status = NQG.GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)
+	If status &lt;&gt; 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox "GPSGetSatellites error = " + errString
+	End If
+</pre>
+<a name="GetLatLonSemicircles"><h4>GetLatLonSemicircles</h4>
+
+<pre>	NSBiQueGPS.GetLatLonSemicircles lat, lon</pre>
+
+<blockquote>
+	Return the latitude and longitude as expressed in semicircles
+	(not degrees).  The return values from the Garmin library's
+	GPSGetPosition() and GPSGetPVT() functions actually
+	return latitude and longitude as expressed in semicircles - not
+	degrees.  Except for this function, the other functions in this
+	library convert latitude and longitude to degrees.  This function
+	retrieves the raw values returned from the Garmin Library's
+	GPSGetPosition() and GPSGetPVT() functions.
+<br><br>
+	The Garmin iQue 3600 Shared Library .h files documents the following:
+<br><br>
+	GPS Position Data Type
+<br><br>
+	The GPSPositionDataType uses integers to indicate latitude
+	and longitude in semicircles, where 2^31 semicircles equals
+	180 degrees. North latitudes and East longitudes are
+	indicated with positive numbers; South latitudes and West
+	longitudes are indicated with negative numbers. The
+	following formulas show how to convert between degrees and
+	semicircles:
+<br><br>
+	    degrees = semicircles * ( 180 / 2^31 )
+<br><br>
+	This is the equation used by this library for converting from
+	semicircles to degrees.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	lat as Integer (output parameter)
+	       lat - latitude in semicircles
+
+	lon as Integer (output parameter)
+	       lon - longitude in semicircles
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim lat as Integer
+	Dim lon as Integer
+
+	NQG.GetLatLonSemicircles lat, lon
+</pre>
+<a name="GetLatLonDegMin"><h4>GetLatLonDegMin</h4>
+
+<pre>	NSBiQueGPS.GetLatLonDegMin lat, lon</pre>
+
+<blockquote>
+	Return the last retrieved latitude and longitude as expressed
+	in degrees and minutes (not decimal degrees).
+<br><br>
+	Example:  W097&deg08.957880'
+<br><br>
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	lat as String (output parameter)
+	       lat - latitude in degrees and minutes
+
+	lon as String (output parameter)
+	       lon - longitude in degrees and minutes
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim lat as String
+	Dim lon as String
+
+	NQG.GetLatLonDegMin lat, lon
+</pre>
+<a name="GetLatLonDegMinSec"><h4>GetLatLonDegMinSec</h4>
+
+<pre>	NSBiQueGPS.GetLatLonDegMinSec lat, lon</pre>
+
+<blockquote>
+	Return the last retrieved latitude and longitude as expressed
+	in degrees, minutes, and seconds (not decimal degrees).
+<br><br>
+	Example: W097&deg08'57.472844"
+<br><br>
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	lat as String (output parameter)
+	       lat - latitude in degrees, minutes, and seconds
+
+	lon as String (output parameter)
+	       lon - longitude in degrees, minutes, and seconds
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim lat as String
+	Dim lon as String
+
+	NQG.GetLatLonDegMinSec lat, lon
+</pre>
+<a name="GetErrString"><h4>GetErrString</h4>
+
+<pre>	errString = NSBiQueGPS.GetErrString(status)</pre>
+
+<blockquote>
+	Returns a string interpretation of the passed status value.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	status as Integer (input parameter)
+	       result status returned from a library call
+</pre><blockquote>Returns:</blockquote>
+<pre>	errString as String
+	       "badCreatorID" if status is -2
+	       "failure" if status is -1
+	       "success" if status is gpsErrNone (0)
+	       "gpsErrNotOpen" if status is gpsErrNotOpen (32769)
+	       "gpsErrStillOpen" if staus is gpsErrStillOpen (32770)
+	       "gpsErrMemory" if status is gpsErrMemory (32771)
+	       "gspErrNoData" if status is gpsErrNoData (32772)</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim errString as String
+	Dim status as Integer
+
+	errString = NQG.GetErrString(status)
+</pre>
+<a name="GetModeString"><h4>GetModeString</h4>
+
+<pre>	modeString = NSBiQueGPS.GetModeString(mode)</pre>
+
+<blockquote>
+	Returns a string interpretation of the passed status mode value.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	mode as Integer (input parameter)
+	       mode value returned from GPSGetStatus() or GPSGetPVT()
+</pre><blockquote>Returns:</blockquote>
+<pre>	modeString as String
+	       "Off" when mode is gpsModeOff (0)
+	       "Continuous" when mode is gpsModeNormal (1)
+	       "Periodic" when mode is gpsModeBatSaver (2)
+	       "Simulated" when mode is gpsModeSim (3)
+	       "External" when mode is gpsModeExternal (4)</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim modeString as String
+	Dim mode as Integer
+
+	modeString = NQG.GetModeString(mode)
+</pre>
+<a name="GetFixString"><h4>GetFixString</h4>
+
+<pre>	fixString = NSBiQueGPS.GetFixString(fix)</pre>
+
+<blockquote>
+	Returns a string interpretation of the passed status fix value.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	fix as Integer (input parameter)
+	       fix value returned from GPSGetStatus() or GPSGetPVT()
+</pre><blockquote>Returns:</blockquote>
+<pre>	fixString as String
+	       "Unusable" when fix is gpsFixUnusable (0)
+	       "Invalid" when fix is gpsFixInvalid (1)
+	       "2D" when fix is gpsFix2D (2)
+	       "3D" when fix is gpsFix3D (3)
+	       "2DDiff" when fix is gspFix2DDiff (4)
+	       "3DDiff" when fix is gspFix3DDiff (5)</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim fixString as String
+	Dim fix as Integer
+
+	fixString = NQG.GetFixString(fix)
+</pre>
+<a name="GetSatStatusValues"><h4>GetSatStatusValues</h4>
+
+<pre>	NSBiQueGPS.GetSatStatusValues statusBits, ephemeris, differential, used, rising</pre>
+
+<blockquote>
+	Returns the value of each of the status bitfield bits
+	returned by the GPSGetSatellites() function.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	statusBits as Integer (input parameter)
+
+	ephemeris as Integer (output parameter)
+	       returns 1 if the "ephemeris" bit is set, otherwise 0
+
+	differential as Integer (output parameter)
+	       returns 1 if the "differential" bit is set, otherwise 0
+
+	used as Integer (output parameter)
+	       returns 1 if the "used in solution bit" is set,
+	           otherwise 0
+
+	rising as Integer (output parameter)
+	       returns 1 if the "rising" bit is set, otherwise 0
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim statusBits as Integer
+	Dim ephemeris as Integer
+	Dim differential as Integer
+	Dim used as Integer
+	Dim rising as Integer
+
+	NQG.GetSatStatusValues statusBits, ephemeris, differential, used, rising
+</pre>
+<a name="ConvertDouble"><h4>ConvertDouble</h4>
+
+<pre>	convertedValue = NSBiQueGPS.ConvertDouble(originalValue, conversionType)</pre>
+
+<blockquote>
+	Returns a converted value based on the passed conversionType.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	originalValue as Double (input parameter)
+	       original value
+
+	conversionType as Integer (input parameter)
+	        1 = meters to inches
+	        2 = meters to feet
+	        3 = meters to miles
+	        4 = kilometers to miles
+	        5 = meters per second to miles per hour
+	        6 = meters per second to kilometers per hour
+	        7 = inches to meters
+	        8 = feet to meters
+	        9 = miles to meters
+	       10 = miles to kilometers
+	       11 = miles per hour to meters per second
+	       12 = kilometers per hour to meters per second
+</pre><blockquote>Returns:</blockquote>
+<pre>	convertedValue as Double
+	       converted value</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim convertedValue as Double
+	Dim originalValue as Double
+	Dim conversionType as Integer
+
+	convertedValue = NQG.ConvertDouble(originalValue, conversionType)
+</pre>
+<a name="LatLonToUTM"><h4>LatLonToUTM</h4>
+
+<pre>	zone = NSBiQueGPS.LatLonToUTM(datumID, lat, lon, easting, northing)</pre>
+
+<blockquote>
+	Converts latitude and longitude to UTM (Universal Transverse
+	Mercator) coordinates.  The accuracy of the conversion, when
+	compared to another source such as a map, depends on the
+	"datum" (set of parameters) used by the other source.  The
+	following table shows the ID and parameters that can be used
+	for converting lat/lon to UTM coordinates.  ID 0 is probably
+	the best datum to use if you don't have a reference to
+	another specific datum.
+<br><br>
+	<table border=1 width="80%"><FONT FACE="Helvetica" SIZE=1>
+	  <tr><td width="5%"><b>ID</b></td><td width="25%"><b>Datum</b></td>
+	    <td width="25%"><b>Equatorial Radius, meters</b></td><td width="25%"><b>Eccentricity Squared</b></td></tr>
+	  <tr><td width="5%">0</td><td width="45%">WGS-84, GRS 1980, NAD83</td>
+	    <td width="25%">6378137</td><td width="25%">0.00669438</td></tr>
+	  <tr><td width="5%">1</td><td width="45%">Everest</td>
+	    <td width="25%">6377276</td><td width="25%">0.006637847</td></tr>
+	  <tr><td width="5%">2</td><td width="45%">Modified Everest</td>
+	    <td width="25%">6377304</td><td width="25%">0.006637847</td></tr>
+	  <tr><td width="5%">3</td><td width="45%">Modified Airy</td>
+	    <td width="25%">6377340</td><td width="25%">0.00667054</td></tr>
+	  <tr><td width="5%">4</td><td width="45%">Bessel 1841</td>
+	    <td width="25%">6377397</td><td width="25%">0.006674372</td></tr>
+	  <tr><td width="5%">5</td><td width="45%">Bessel 1841 (Nambia)</td>
+	    <td width="25%">6377484</td><td width="25%">0.006674372</td></tr>
+	  <tr><td width="5%">6</td><td width="45%">Airy</td>
+	    <td width="25%">6377563</td><td width="25%">0.00667054</td></tr>
+	  <tr><td width="5%">7</td><td width="45%">WGS-72</td>
+	    <td width="25%">6378135</td><td width="25%">0.006694318</td></tr>
+	  <tr><td width="5%">8</td><td width="45%">WGS-84, GRS 1980, NAD83</td>
+	    <td width="25%">6378137</td><td width="25%">0.00669438</td></tr>
+	  <tr><td width="5%">9</td><td width="45%">WGS 66</td>
+	    <td width="25%">6378145</td><td width="25%">0.006694542</td></tr>
+	  <tr><td width="5%">10</td><td width="45%">Fischer 1968</td>
+	    <td width="25%">6378150</td><td width="25%">0.006693422</td></tr>
+	  <tr><td width="5%">11</td><td width="45%">Modified Fischer 1960</td>
+	    <td width="25%">6378155</td><td width="25%">0.006693422</td></tr>
+	  <tr><td width="5%">12</td><td width="45%">Australian National, South American 1969, GRS 1967</td>
+	    <td width="25%">6378160</td><td width="25%">0.006694542</td></tr>
+	  <tr><td width="5%">13</td><td width="45%">WGS 60</td>
+	    <td width="25%">6378165</td><td width="25%">0.006693422</td></tr>
+	  <tr><td width="5%">14</td><td width="45%">Fischer 1960 (Mercury)</td>
+	    <td width="25%">6378166</td><td width="25%">0.006693422</td></tr>
+	  <tr><td width="5%">15</td><td width="45%">Helmert 1906</td>
+	    <td width="25%">6378200</td><td width="25%">0.006693422</td></tr>
+	  <tr><td width="5%">16</td><td width="45%">Clarke 1866</td>
+	    <td width="25%">6378206</td><td width="25%">0.006768658</td></tr>
+	  <tr><td width="5%">17</td><td width="45%">Krassovsky</td>
+	    <td width="25%">6378245</td><td width="25%">0.006693422</td></tr>
+	  <tr><td width="5%">18</td><td width="45%">Clarke 1880</td>
+	    <td width="25%">6378249</td><td width="25%">0.006803511</td></tr>
+	  <tr><td width="5%">19</td><td width="45%">Hough</td>
+	    <td width="25%">6378270</td><td width="25%">0.00672267</td></tr>
+	  <tr><td width="5%">20</td><td width="45%">International</td>
+	    <td width="25%">6378388</td><td width="25%">0.00672267</td></tr>
+	</FONT></table>
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	datumID as Integer (input parameter)
+	       see the description and datum table above
+
+	lat as Double (input parameter)
+	       latitude in decimal degrees
+
+	lon as Double (input parameter)
+	       longitude in decimal degrees
+
+	easting as Double (output parameter)
+	       UTM "easting" coordinate
+	           -1 is returned if MathLib is not available.
+
+	northing as Double (output parameter)
+	       UTM "northing" coordinate
+	           -1 is returned if MathLib is not available.
+</pre><blockquote>Returns:</blockquote>
+<pre>	zone as String
+	       UTM "zone" identifier
+	           An empty string ("") if the datumID is invalid.
+	       
+	           The last character of the zone id is an indicator of the
+	           coordinate's hemisphere.  With the exception of "Z", if
+	           it is "N" or greater, the coordinate is in the northern
+	           hemisphere.  Less than "N", the coordinate is in
+	           the southern hemisphere.  If the last character is "Z",
+	           the coordinate is outside the UTM limits of latitude
+	           84&degN and 80&degS</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim zone as String
+	Dim datumID as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim easting as Double
+	Dim northing as Double
+
+	zone = NQG.LatLonToUTM(datumID, lat, lon, easting, northing)
+</pre>
+<a name="UTMToLatLon"><h4>UTMToLatLon</h4>
+
+<pre>	NSBiQueGPS.UTMToLatLon datumID, zone, easting, northing, lat, lon</pre>
+
+<blockquote>
+	Converts UTM (Universal Transverse Mercator) coordinates
+	to latitude and longitude.  The accuracy of the
+	conversion, when compared to another source such as a map,
+	depends on the "datum" (set of parameters) used by the other
+	source.  Please see the LatLonToUTM() function for a list
+	and description of the datums supported.  ID 0 is probably
+	the best datum to use if you don't have a reference to
+	another specific datum.
+<br><br>
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	datumID as Integer (input parameter)
+	       see the description and datum table described for the
+	           LatLonToUTM() function
+
+	zone as String (input parameter)
+	       UTM "zone" identifier
+
+	easting as Double (input parameter)
+	       UTM "easting" coordinate
+
+	northing as Double (input parameter)
+	       UTM "northing" coordinate
+
+	lat as Double (output parameter)
+	       latitude in decimal degrees
+	           -1 is returned if MathLib is not available or the
+	           datumID is invalid.
+
+	lon as Double (output parameter)
+	       longitude in decimal degrees
+	           -1 is returned if MathLib is not available or the
+	           datumID is invalid.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim datumID as Integer
+	Dim zone as String
+	Dim easting as Double
+	Dim northing as Double
+	Dim lat as Double
+	Dim lon as Double
+
+	NQG.UTMToLatLon datumID, zone, easting, northing, lat, lon
+</pre>
+<a name="UTMDistance"><h4>UTMDistance</h4>
+
+<pre>	distance = NSBiQueGPS.UTMDistance(zone1, easting1, northing1, zone2, easting2, northing2, ewDir, ewDist, nsDir, nsDist)</pre>
+
+<blockquote>
+	Returns the distances between two UTM coordinates.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	zone1 as String (input parameter)
+	       UTM 1's zone
+
+	easting1 as Double (input parameter)
+	       UTM 1's easting coordinate
+
+	northing1 as Double (input parameter)
+	       UTM 1's northing coordinate
+
+	zone2 as String (input parameter)
+	       UTM 2's zone
+
+	easting2 as Double (input parameter)
+	       UTM 2's easting coordinate
+
+	northing2 as Double (input parameter)
+	       UTM 2's northing coordinate
+
+	ewDir as String (output parameter)
+	       returns "E" if UTM 2 is east of UTM 1, otherwise the
+	           return value is "W"
+
+	ewDist as Double (output parameter)
+	       east/west distance in meters
+
+	nsDir as String (output parameter)
+	       returns "N" if UTM 2 is north of UTM 1, otherwise the
+	           return value is "S"
+
+	nsDist as Double (output parameter)
+	       north/south distance in meters
+</pre><blockquote>Returns:</blockquote>
+<pre>	distance as Double
+	       straight line distance between UTM 1 and UTM 2 in meters
+	          returns -1.0 if zone1 and zone2 are not equal.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim distance as Double
+	Dim zone1 as String
+	Dim easting1 as Double
+	Dim northing1 as Double
+	Dim zone2 as String
+	Dim easting2 as Double
+	Dim northing2 as Double
+	Dim ewDir as String
+	Dim ewDist as Double
+	Dim nsDir as String
+	Dim nsDist as Double
+
+	distance = NQG.UTMDistance(zone1, easting1, northing1, zone2, easting2, northing2, ewDir, ewDist, nsDir, nsDist)
+</pre>
+<blockquote>
+This function can only calculate distances between
+UTM coordinates if they are in the same zone.
+</blockquote>
+<a name="PwrSetLowPowerMode"><h4>PwrSetLowPowerMode</h4>
+
+<pre>	status = NSBiQueGPS.PwrSetLowPowerMode(creatorID, enabled)</pre>
+
+<blockquote>
+	Set or unset the LowPowerMode of the Garmin iQue 3600 device.
+	The Garmin SDK has this to say about "LowPowerMode":
+<br><br>
+	<blockquote> "<b><u><I>Low Power Mode:</u></b>
+<br><br>
+	When the iQue 3600 enters low power mode, the display and
+	backlight are turned off, while the processor, GPS, and audio
+	continue to operate normally.  Low power mode can be used to
+	extend the battery life while continuing to allow the unit
+	to execute applications, such as an audio player.  If any
+	application has enabled low power mode, while the auto-off time
+	has expired the iQue 3600 will enter low power mode instead of
+	powering off.  Low power mode is indicated by the LED blinking
+	briefly approximately every 10 seconds.  Note that low power
+	mode uses substantially more battery power than allowing the
+	unit to power off.
+<br><br>
+	If an application desires to have the iQue 3600 enter
+	low power mode when the auto-off time has expired, the
+	application should enable low power mode.  Low power
+	mode will stay enabled until your application disables
+	it; therefore it is <b>extremely</b> important that
+	your application disables low power mode when it no longer
+	needs to be enabled.  Note that if your application
+	<b>disables</b> low power mode it does not
+	guarantee that the unit will power off, as another
+	application could also have low power mode enabled;
+	however if your application enables low power mode, it
+	<b>does</b> guarantee that the unit will enter
+	low power mode and will <b>not</b> power off."</I></blockquote>
+<br><br>
+	<b><u>NOTE:</u></b>  Unless the enable parameter
+	is 2, this library will automatically disable the Low
+	Power Mode setting for the <u>last</u> creator ID
+	specified when this library is closed (ie. when the
+	NSBasic program exits).  It is still important however, that
+	the correct actual creator Id of the NSBasic program is
+	used for this function.
+<br><br>
+	This function only works on Palm OS software v.5.2.1r3 or higher.
+	To update your Garmin device, visit
+	<A HREF="https://www.garmin.com/support/download.jsp">https://www.garmin.com/support/download.jsp</A>
+	and choose the software updates for the iQue 3600.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	creatorID as String (input parameter)
+	       4 character creator ID of the NSBasic program
+
+	enabled as Integer (input parameter)
+	       0 = disable
+	       1 = enable
+	       2 = enable, but don't disable when this library closes
+</pre><blockquote>Returns:</blockquote>
+<pre>	status as Integer
+	       -2 if the creator ID is less than 4 characters
+	       -1 if the Power Manager library couldn't be loaded
+	       0 if unsuccessful for some other reason
+	       1 if successful</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim status as Integer
+	Dim creatorID as String
+	Dim enabled as Integer
+	
+	creatorID = "Nigt"    'NSBiQueGPS_Test creator ID
+	enabled = 1
+	status = NQG.PwrSetLowPowerMode(creatorID, enabled)
+</pre>
+<a name="RegisterNotifyEvents"><h4>RegisterNotifyEvents</h4>
+
+<pre>	NSBiQueGPS.RegisterNotifyEvents locationChange, statusChange, lostFix, satDataChange, modeChange, displayResized</pre>
+
+<blockquote>
+	Register with the Notification Manager to be notified when
+	the sysNotifyGPSDataEvent or sysNotifyDisplayResizedEvent
+	events occur.  When they do occur, an event for the specific
+	type of notification will be generated.  The parameters for
+	this function specify the event number to generate.  A value
+	of 0 disables event notification for that specific notification
+	type.  Parameter values should typically be in the custom
+	event number range (24576 to 32767).  These events can be
+	"caught" with the NSBasic GetEventType() function.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	locationChange as Integer (input parameter)
+	       event number for gpsLocationChange - The GPS position has changed.
+
+	statusChange as Integer (input parameter)
+	       event number for gpsStatusChange - The GPS status has changed.
+
+	lostFix as Integer (input parameter)
+	       event number for gpsLostFix  - The quality of the GPS position
+	                                      computation has become less than
+	                                      two dimensional.
+
+	satDataChange as Integer (input parameter)
+	       event number for gpsSatDataChange - The GPS satellite data has
+	                                           changed.
+
+	modeChange as Integer (input parameter)
+	       event number for gpsModeChange - The GPS mode has changed.
+
+	displayResized as Integer (input parameter)
+	       event number for sysNotifyDisplayResizedEvent - The display has
+	                                                       been resized.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Sub Form1223_After()
+	
+	    'Register to have the following events generated:
+	    '   event number 30001 - location change
+	    '   event number 30002 - status change
+	    '   event number 30003 - lost fix
+	    '   event number 30004 - satellite data change
+	    '   event number 30005 - mode change
+	    '   event number 30006 - display was resized
+	
+	    NQG.RegisterNotifyEvents 30001, 30002, 30003, 30004, 30005, 30006
+	End Sub
+	
+	
+	Sub Form1239_Event()
+	    Dim event as Integer
+	
+	    event = GetEventType()
+	    Select Case event
+	        Case 30001
+	            fldLocationChange.text = str(val(fldLocationChange.text) + 1)
+	        Case 30002
+	            fldStatusChange.text = str(val(fldStatusChange.text) + 1)
+	        Case 30003
+	            fldLostFix.text = str(val(fldLostFix.text) + 1)
+	        Case 30004
+	            fldSatDataChange.text = str(val(fldSatDataChange.text) + 1)
+	        Case 30005
+	            fldModeChange.text = str(val(fldModeChange.text) + 1)
+	        Case 30006
+	            fldDisplayResized.text = str(val(fldDisplayResized.text) + 1)
+	    End Select
+	End Sub
+</pre>
+<a name="WinGetDisplayExtent"><h4>WinGetDisplayExtent</h4>
+
+<pre>	NSBiQueGPS.WinGetDisplayExtent x, y</pre>
+
+<blockquote>
+	Return the current width and height of the display.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	x as Integer (output parameter)
+
+	y as Integer (output parameter)
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim x as Integer
+	Dim y as Integer
+
+	NQG.WinGetDisplayExtent x, y
+</pre>
+<a name="WinSetDisplayExtent"><h4>WinSetDisplayExtent</h4>
+
+<pre>	NSBiQueGPS.WinSetDisplayExtent size</pre>
+
+<blockquote>
+	Sets the display width and height to either <i>normal</i> or
+	<i>large</i>.  If the size is <i>large</i>, the form's
+	Dynamic Input Area (DIA) Policy, Input Trigger, and Dynamic
+	Input Area values will be set to <i>custom</i>,
+	<i>enabled</i>, and <i>closed</i> respectively.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	size as Integer (input parameter)
+	       0 = normal - 160 pixels wide x 160 pixels high
+	       1 = large - 160 pixels wide x 225 pixels high
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim size as Integer
+
+	NQG.WinSetDisplayExtent size
+</pre>
+<a name="FrmGetDIAPolicy"><h4>FrmGetDIAPolicy</h4>
+
+<pre>	value = NSBiQueGPS.FrmGetDIAPolicy()</pre>
+
+<blockquote>
+	Returns the form's current Dynamic Input Area (DIA) Policy.
+	The DIA Policy controls whether the graffiti input area
+	may be collapsed or not.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - frmDIAPolicyStayOpen.  The graffiti input area
+	                                  is always open.  It cannot
+	                                  be collapsed.
+	       1 - frmDIAPolicyCustom.  The graffiti input area is
+	                                collapsable.
+	       -1 - error.  The Pen Input Manager is not present on device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NQG.FrmGetDIAPolicy()
+</pre>
+<a name="FrmSetDIAPolicy"><h4>FrmSetDIAPolicy</h4>
+
+<pre>	NSBiQueGPS.FrmSetDIAPolicy value</pre>
+
+<blockquote>
+	Sets the form's Dynamic Input Area (DIA) Policy.
+	The DIA Policy controls whether the graffiti input area
+	may be collapsed or not.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - frmDIAPolicyStayOpen.  The graffiti input area
+	                                  is always open.  It cannot
+	                                  be collapsed.
+	       1 - frmDIAPolicyCustom.  The graffiti input area is
+	                                collapsable.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	NQG.FrmSetDIAPolicy value
+</pre>
+<a name="PINGetDIAState"><h4>PINGetDIAState</h4>
+
+<pre>	value = NSBiQueGPS.PINGetDIAState()</pre>
+
+<blockquote>
+	Returns the current Dynamic Input Area (DIA) state.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - pinInputAreaOpen.  The Dynamic Input Area is displayed.
+	       1 - pinInputAreaClosed.  The Dynamic Input Area is not
+	                                being displayed.
+	       2 - pinInputAreaNone.  There is no Dynamic Input Area.
+	       -1 - error.  The Pen Input Manager is not present on device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NQG.PINGetDIAState()
+</pre>
+<a name="PINSetDIAState"><h4>PINSetDIAState</h4>
+
+<pre>	NSBiQueGPS.PINSetDIAState value</pre>
+
+<blockquote>
+	Sets the current Dynamic Input Area (DIA) state.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - pinInputAreaOpen.  The Dynamic Input Area will be displayed.
+	       1 - pinInputAreaClosed.  The Dynamic Input Area will not
+	                                be displayed.
+	       2 - pinInputAreaNone.  There is no Dynamic Input Area.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	NQG.PINSetDIAState value
+</pre>
+<a name="PINGetInputTriggerState"><h4>PINGetInputTriggerState</h4>
+
+<pre>	value = NSBiQueGPS.PINGetInputTriggerState()</pre>
+
+<blockquote>
+	Returns the current Input Trigger state.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer
+	       0 - pinInputTriggerEnabled.   The status bar icon is enabled,
+	                                     meaning that the user is allowed
+	                                     to open and close the Dynamic
+	                                     Input Area.
+	       1 - pinInputTriggerDisabled.  The status bar icon is disabled,
+	                                     meaning that the user is not
+	                                     allowed to open and close the
+	                                     Dynamic Input Area.
+	       2 - pinInputTriggerNone.   There is no Dynamic Input Area.
+	       -1 - error.  The Pen Input Manager is not present on device.</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	value = NQG.PINGetInputTriggerState()
+</pre>
+<a name="PINSetInputTriggerState"><h4>PINSetInputTriggerState</h4>
+
+<pre>	NSBiQueGPS.PINSetInputTriggerState value</pre>
+
+<blockquote>
+	Sets the current Input Trigger state.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	value as Integer (input parameter)
+	       0 - pinInputTriggerEnabled.   Enable the status bar icon,
+	                                     meaning that the user is allowed
+	                                     to open and close the Dynamic
+	                                     Input Area.
+	       1 - pinInputTriggerDisabled.  Disable the status bar icon,
+	                                     meaning that the user is not
+	                                     allowed to open and close the
+	                                     Dynamic Input Area.
+	       2 - pinInputTriggerNone.   There is no Dynamic Input Area.
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+
+	NQG.PINSetInputTriggerState value
+</pre>
+</html>
+

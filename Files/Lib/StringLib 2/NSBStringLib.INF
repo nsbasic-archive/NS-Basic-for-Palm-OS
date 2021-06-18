@@ -1,0 +1,73 @@
+; GENERAL PROPERTIES
+;
+; All extensions must have a [General] section. Some keys are optional.
+;
+;	ExtensionName:	User visible name of extension (required)
+;	PrcName:	Name of .PRC file of extension (required)
+;	Version:	Version of extension (can contain chars) (required)
+;	Manufacturer:	Name of manufacturer of extension. (required)
+;       =HelpStart=      This key marks the beginning of the help text
+;			shown in the extension's properties. Enclose
+;			each line in double quotes and terminate the
+;			help section with the key =HelpEnd=. (optional,
+;			default = "No help available.")
+;
+
+[General]
+
+ExtensionName=NSBStringLib
+PrcName=NSBStringLib
+Version=1
+Manufacturer=DubnaWare
+InfVers=2.0
+
+;
+; EXTENSION HELP
+;
+
+=HelpStart=
+""
+"Shared Library NSBStringLib"
+""
+"This library is for work with bits and bytes with NSBasic."
+""
+"Written in Dubna, September 2001"
+""
+=HelpEnd=
+
+;
+; METHOD PROPERTIES
+;
+; This section is organized as follows:
+;       section:        [GlobalMethods]
+;                       name=index, type, numparams, helpstring
+;
+; where:
+;
+;	name:		Name of method
+;	index:		Index of function. Index will be passed as the
+;			first parameter on the evaluation stack.
+;	type:		Either "func" or "sub".  Funcs are methods
+;			that push a return value onto the interpreter's
+;			evaluation stack. Subs are methods that do
+;			not push return values.
+;	numparams:	Number of parameters required by this method.
+;       helpstring:	Descriptive text about method. (Optional)
+;
+;
+[GlobalMethods]
+Version= 1, func, 0, "Version() as int32"
+Replace= 2, func, 4, "Replace(in expression as string, in find as string, in replace as string, in count as int16) as string"
+StrReverse = 3, func, 1, "StrReverse (in expression as string) as string"
+Space= 4, func, 1, "Space (in num as int16) as string" 
+CreateString= 5, func, 2, "CreateString(in number as int16, in ch as string) as string"
+MonthName= 6, func, 2, "MonthName(in month as int16, in abbreviate as int16) as string" 
+WeekdayName= 7, func, 3, "WeekdayName(in weekday as int16, in abbreviate as int16, in firstdayofweek as int16) as string" 
+InstrRev= 8, func, 3,"InstrRev(in expression as string, in find as string, in start as int16) as int16"
+LSet = 9, sub, 2, "LSet(in expression as string, in replace as string)"
+RSet = 10, sub, 2, "RSet(in expression as string, in replace as string)"
+FormatNumber = 11, func, 3, "FormatNumber(in expr as flt8, in numDig as int16, in format as int16) as string"
+FormatTime = 12, func, 2, "FormatTime(in time as flt8, in format as int16) as string"
+FormatDate = 13, func, 2, "FormatDate(in date as flt8, in format as int16) as string"
+FormatPercent = 14, func, 3, "FormatPercent(in expression as flt8, in numDig as int16, in format as int16) as string"
+FormatCurrency = 15, func, 3, "FormatCurrency(in expression as flt8, in numDig as int16, in format as int16) as string"

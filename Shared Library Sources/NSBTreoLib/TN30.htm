@@ -1,0 +1,575 @@
+<html><head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Tech Note 30: Using the NSBTreoLib Shared Library</title>
+<link rel="stylesheet" href="/style2.css"></head>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <h2>Tech Note 30: Using the NSBTreoLib Shared Library</h2>
+	  <h3>June 17, 2004<FONT FACE="Helvetica" SIZE=2>
+	  </font></h3>
+	  </FONT><FONT FACE="Helvetica" SIZE=2>
+	  <h5>Copyright 2004 NS BASIC Corporation</h5>
+	  </font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Index and Quick Reference</a>
+    <a href="#fullRef">Full Reference</a>
+</pre>
+<hr><a name="intro"><h2>Introduction:</h2>
+<p>The Treo line of mobile phones combine a full-featured mobile phone with a color Palm OS PDA.  The NSBTreoLib shared library provides access to the Treo API.  This is a special library for the Treo, which does not support the standard Palm telephony library. </p>
+<p>Depending on the service, Treo phones come in two varieties: GSM and CDMA.  Both provide telephony, SMS messaging, and web browsing capabilities, with optional EMail.  GSM phones also provide a phone book, resident on a card or loaded directly from the network. </p>
+<p>In order to use the NSBTreoLib shared library, the library must be loaded using the  NSBasic LoadLibrary statement. This statement should be located in the Startup Code of the program, as in this example: </p>
+<p><code>Sub main()</code><br> <code>&nbsp;&nbsp;&nbsp;&nbsp;LoadLibrary "NSBTreoLib"</code><br> <code>End Sub</code> </p>
+<p>This document assumes that the shared library has been loaded this way. The LoadLibrary statement also has an optional second parameter to allow you to  specify an abbreviated reference name for the library's functions, as in this example: </p>
+<p><code>Sub main()</code><br> <code>&nbsp;&nbsp;&nbsp;&nbsp;LoadLibrary "NSBTreoLib", "Treo"</code><br> <code>End Sub</code> </p>
+<p>For this example, you can use the functions and subroutines described in this document with a prefix of <code>Treo</code> instead of <code>NSBTreoLib</code>. </p>
+<p>In order to use the NSBTreoLib Shared Library, the <code>NSBTreoLib.inf</code>  file must be present in your <code>C:\nsbasic\lib</code> directory, and the <code>NSBTreoLib.prc</code> file must be downloaded to your device or included in your NSBasic program.  For more information on shared libraries,  refer to the NSBasic documentation.  </p>
+<p>The Treo shared library is fully compatible with the NSBasic TCP/IP library, but you will have to use that shared library for general TCP/IP functions.  The Treo library  also provides basic HTTP services for retrieving content from web servers.  If you need more capabilities, there are commercial shared libraries for this purpose. </p>
+<p>Some desirable features, such as interception and construction of SMS messages,  have not been implemented yet because they would require modifications to NSBasic outside of the shared library. </p>
+<hr><a name="quickRef"><h2>Index and Quick Reference:</h2>
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><a href='#0001'> Blink</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.Blink(<i>count</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0002'> BookCount</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.BookCount
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0003'> BookFirstName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.BookFirstName(<i>which</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0004'> BookLastName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.BookLastName(<i>which</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0005'> BookPhoneNumber</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.BookPhoneNumber(<i>which</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0006'> BookReload</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.BookReload
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0007'> Browse</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.Browse(<i>URL</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0008'> CallWaitingSet</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.SetCallWaiting(<i>value</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0009'> CarrierID</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.CarrierID
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0010'> Dial</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.Dial(<i>phoneNumber</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0011'> EMail</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.EMail(<i>address</i>, <i>CC</i>, <i>message</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0012'> Firmware</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.Firmware
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0013'> HTTPClose</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.HTTPClose
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0014'> HTTPEnd</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.HTTPEnd
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0015'> HTTPGetHeader</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.HTTPGetHeader(<i>timeInMs</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0016'> HTTPOpen</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.HTTPOpen
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0017'> HTTPRead</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.HTTPRead(<i>size</i>, <i>timeInMs</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0018'> HTTPSendPostRequest</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.HTTPSendPostRequest(<i>URL</i>, <i>postData</i>, <i>timeInMs</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0019'> HTTPSendRequest</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.HTTPSendRequest(<i>URL</i>, <i>timeInMs</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0020'> Hardware</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.Hardware
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0021'> KeyboardLocked</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.KeyboardLocked
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0022'> KeyboardLock</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.KeyboardLock(<i>whether</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0023'> MainNumber</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>numberString</i> = NSBTreoLib.MainNumber
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0024'> NetworkAvailable</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.NetworkAvailable
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0025'> OperatorCount</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.OperatorCount
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0026'> OperatorCurID</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.OperatorCurID
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0027'> OperatorCurName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.OperatorCurName
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0028'> OperatorName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.OperatorName(<i>which</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0029'> Operator</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.Operator(<i>which</i>, <i>mode</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0030'> PhoneOn</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.PhoneOn
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0031'> PhoneReady</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.PhoneReady
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0032'> PhoneTurnOn</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.PhoneTurnOn
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0033'> PhoneType</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.PhoneType
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0034'> ProductName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.ProductName
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0035'> ProductRevision</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.ProductRevision
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0036'> Provider</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.Provider
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0037'> ROM</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.ROM
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0038'> Roaming</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.Roaming
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0039'> SMSMessage</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.SMSMessage(<i>phoneNumber</i>, <i>name</i>, <i>message</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0040'> SerialNumber</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.SerialNumber
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0041'> SignalQuality</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>intVar</i> = NSBTreoLib.SignalQuality
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0042'> Software</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>stringVar</i> = NSBTreoLib.Software
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0043'> TCPIPDrop</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.TCPIPDrop
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0044'> Vibrate</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBTreoLib.Vibrate(<i>count</i>)
+</code></td>
+  </tr>
+</table><hr><a><a name="fullRef"><h2>Full Reference:</h2>
+<a name='0001'>
+<h3>Blink</h3>
+<p><code>NSBTreoLib.Blink(<i>count</i>)</code><br>
+</p><p>Blink makes the green LED near the antenna blink at about four blinks per second.  <i>Count</i> is the number of times to blink. </p>
+<h4>Also see:</h4>
+<p><a href='#0044'> Vibrate</a></p>
+<a name='0002'>
+<h3>BookCount</h3>
+<p><code><i>intVar</i> = NSBTreoLib.BookCount</code><br>
+</p><p>BookCount returns the number of phone entries stored in the phone book.  It  only works on GSM phones. </p>
+<p>BookCount gets the phone book information from the  SIM card or from the network itself.  Each entry consists of a first name, a last name, and a phone number. </p>
+<p>The phone book is part of the mobile phone system and is distinct from the Palm address book. </p>
+<p>BookCount should be called before any of the other Book functions or subroutines.  If the phone book is large, BookCount may take several seconds to download the phone book.  If BookCount returns zero, there are no entries in the phone book, and none of the other Book functions should be used. </p>
+<p>BookCount will return 0 if the phone is off or is not a GSM phone, so  use PhoneType and PhoneOn first. BookCount may also return zero if the phone book is temporarily unavailable, such as if the phone is in an area that lacks service.  To try again later, call the BookReload subroutine and use BookCount again. </p>
+<h4>Also see:</h4>
+<p><a href='#0033'> PhoneType</a>, <a href='#0030'> PhoneOn</a>, <a href='#0005'> BookPhoneNumber</a>, <a href='#0003'> BookFirstName</a>, <a href='#0004'> BookLastName</a>, <a href='#0006'> BookReload</a></p>
+<a name='0003'>
+<h3>BookFirstName</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.BookFirstName(<i>which</i>)</code><br>
+</p><p>BookFirstName returns a particular first name given by <i>which</i> from the address book  on the phone.  <i>Which</i> must be between 1 and the value returned by BookCount. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: Name not found"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if the name was not found.  This most commonly means the radio is off. </td></tr>
+</table><h4>Also see:</h4>
+<p><a href='#0002'> BookCount</a></p>
+<a name='0004'>
+<h3>BookLastName</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.BookLastName(<i>which</i>)</code><br>
+</p><p>BookLastName returns a particular last name given by <i>which</i> from the address book  on the phone.  <i>Which</i> must be between 1 and the value returned by BookCount. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: Name not found"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if the name was not found.  This most commonly means the radio is off. </td></tr>
+</table><h4>Also see:</h4>
+<p><a href='#0002'> BookCount</a></p>
+<a name='0005'>
+<h3>BookPhoneNumber</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.BookPhoneNumber(<i>which</i>)</code><br>
+</p><p>BookPhoneNumber returns a particular phone number given by <i>which</i> from the address book on the phone.  <i>Which</i> must be between 1 and the value returned by BookCount. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: Number not found"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if the number was not found.  This most commonly means the radio is off. </td></tr>
+</table><h4>Also see:</h4>
+<p><a href='#0002'> BookCount</a></p>
+<a name='0006'>
+<h3>BookReload</h3>
+<p><code>NSBTreoLib.BookReload</code><br>
+</p><p>All of the Book functions as well as MainNumber, use the phone book associated with the mobile phone system.  On GSM phones, this phone book may be downloaded from the network, which depending on the size, may take several seconds.  To improve the speed, the NSBasic Treo library only loads the phone book when needed and keeps it for subsequent use.  This also allows the phone book to be used efen after the radio is switched off. </p>
+<p>However, if the phone book changes, which may happen during roaming, then the copy in memory will become out-of-date. BookReload forces the phone book to be reloaded the next time it is needed.  When the  book is reloaded, you must call BookCount again, because the number of entries may have changed. </p>
+<h4>Also see:</h4>
+<p><a href='#0002'> BookCount</a>, <a href='#0005'> BookPhoneNumber</a>, <a href='#0003'> BookFirstName</a>, <a href='#0004'> BookLastName</a></p>
+<a name='0007'>
+<h3>Browse</h3>
+<p><code>NSBTreoLib.Browse(<i>URL</i>)</code><br>
+</p><p>Browse allows the user to browse a particular URL.  <i>URL</i> must be a string containing a well formatted URL, such as <code>"http://www.nsbasic.com/"</code>. </p>
+<p>After calling Browse, your NSBasic application will exit, and the browser will appear.  As always, make sure that your application stores any needed state variables in a database before exiting. </p>
+<a name='0008'>
+<h3>CallWaitingSet</h3>
+<p><code>NSBTreoLib.SetCallWaiting(<i>value</i>)</code><br>
+</p><p>CallWaitingSet enables call waiting if <i>value</i> is true (nonzero) and disables it otherwise. This only works on phones that have call waiting as a feature; on other phones it will have no effect. </p>
+<a name='0009'>
+<h3>CarrierID</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.CarrierID</code><br>
+</p><p>CarrierID returns a string containing the carrier for which the Treo was built. </p>
+<a name='0010'>
+<h3>Dial</h3>
+<p><code>NSBTreoLib.Dial(<i>phoneNumber</i>)</code><br>
+</p><p>Dial brings up the dial dialog with <i>phoneNumber</i>, which must be a string containing the number to dial. The user can change the phone number before dialing. </p>
+<p>Unless the user cancels, Dial will exit your program.  As always, make sure that your application stores any needed state variables in a database before exiting. </p>
+<a name='0011'>
+<h3>EMail</h3>
+<p><code>NSBTreoLib.EMail(<i>address</i>, <i>CC</i>, <i>message</i>)</code><br>
+</p><p>Message brings up the SMS messaging dialog with some fields filled in. The user can change the fields before sending. </p>
+<p><i>Address</i> is a string containing the EMail address of the recipient. <i>CC</i> is the EMail address to send a copy.  Either can be lists of addresses separated by comments.  <i>Message</i> is the text of the message. Any or all of the parameters can contain a string with no characters (""), in which case, the user is expected to fill in the fields. </p>
+<p>EMail does not use the standard Palm Mail application, which is not provided on Treo phones.  Instead, depending on the service, a third-party application may be used.  If the user has not subsribed to this application, a registration form may appear.  There is no way to test for this case which works for all Treo phones. </p>
+<p>After calling EMail your NSBasic application will exit, and the appropriate application will appear.  As always, make sure that your application stores any needed state variables in a database before exiting. </p>
+<a name='0012'>
+<h3>Firmware</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.Firmware</code><br>
+</p><p>Firmware returns a string containing the version of the firmware. </p>
+<a name='0013'>
+<h3>HTTPClose</h3>
+<p><code>NSBTreoLib.HTTPClose</code><br>
+</p><p>HTTPClose closes the HTTP library.  It is normally called at the end of a program if HTTPOpen  has been called.  HTTPClose will automatically terminate any existing connection. </p>
+<a name='0014'>
+<h3>HTTPEnd</h3>
+<p><code>NSBTreoLib.HTTPEnd</code><br>
+</p><p>Call HTTPEnd after receiving all the data from HTTPRead.  You can also call HTTPEnd in the  middle of a connection to abort it and ignore the rest of the data.  </p>
+<a name='0015'>
+<h3>HTTPGetHeader</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.HTTPGetHeader(<i>timeInMs</i>)</code><br>
+</p><p>HTTPGetHeader returns the header information for a response from a URL.  You must call HTTPGetHeader after calling either HTTPSendRequest or HTTPSendPostRequest.   </p>
+<p><i>TimeInMs</i> is  the timeout in milliseconds.  During a transaction, this call will typically take the most time to execute, if the web site is slow.  There are two strategies to deal with this.  One is to provide a long timeout.  The other is to provide a short timeout and keep polling HTTPGetHeader until a value is returned or the application gives up.  Which strategy to use is left up to the developer.   </p>
+<p>It is not  possible to tell the difference between a case where the header has not shown up yet and  a case where it will not show up at all.  Writers of applications should show appropriate judgement about when to give up.  Unlike HTTPRead, HTTPGetHeader will always return a complete header or an empty string. </p>
+<p>The application is responsible for interpreting the header.  Headers generally consist of several lines, separated by <code>chr(10)</code> or <code>chr(13)</code> characters, consisting each of a keyword, a colon (<code>":"</code>), and a value.  Headers are not completely standardized.  See <code>http://www.w3c.org</code> and the RFC archives for more information, but in many cases it is easier to check some websites. </p>
+<a name='0016'>
+<h3>HTTPOpen</h3>
+<p><code><i>intVar</i> = NSBTreoLib.HTTPOpen</code><br>
+</p><p>HTTPOpen opens the HTTP library.  Call this function before calling any of the other HTTP functions.  HTTPOpen will return true (-1) if the library could be opened and false (0) otherwise. </p>
+<p>HTTPOpen will make a connection to the network if one is not present.  This may take several seconds and require user input.  However, it is probably preferable to call PhoneTUrnOn before calling HTTPOpen. </p>
+<p>A program may call HTTPOpen upon startup and HTTPClose at termination, or the HTTP services may be available on demand. </p>
+<h4>Example:</h4>
+<tt>
+'&nbsp;Note:&nbsp;This&nbsp;example&nbsp;is&nbsp;intended&nbsp;for&nbsp;educational&nbsp;purposes&nbsp;only.<br>
+'&nbsp;Real&nbsp;applications&nbsp;should&nbsp;probably&nbsp;use&nbsp;a&nbsp;more&nbsp;sophisticated&nbsp;implementation,<br>
+'&nbsp;such&nbsp;as&nbsp;a&nbsp;state&nbsp;machine<br>
+<br>
+Sub&nbsp;object1103()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Dim&nbsp;result&nbsp;as&nbsp;Integer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Dim&nbsp;header&nbsp;as&nbsp;String<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Dim&nbsp;body&nbsp;as&nbsp;String<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;NSBTreoLib.HTTPOpen<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;result&nbsp;&lt;&gt;&nbsp;0&nbsp;Then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MsgBox("Opened")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result&nbsp;=&nbsp;NSBTreoLib.HTTPSendRequest("http://www.slashdot.org/",&nbsp;20000)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;result&nbsp;&lt;&gt;&nbsp;0&nbsp;Then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MsgBox("Send&nbsp;succeded")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header&nbsp;=&nbsp;NSBTreoLib.HTTPGetHeader(20000)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MsgBox("Header:&nbsp;"&nbsp;+&nbsp;header)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;"ERROR"&nbsp;&lt;&gt;&nbsp;Left(header,&nbsp;5)&nbsp;Then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body&nbsp;=&nbsp;"init"&nbsp;'Set&nbsp;it&nbsp;to&nbsp;something&nbsp;non-null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Do&nbsp;While&nbsp;""&nbsp;&lt;&gt;&nbsp;body<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body&nbsp;=&nbsp;NSBTreoLib.HTTPRead(250,&nbsp;20000)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MsgBox(body)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loop<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NSBTreoLib.HTTPEnd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End&nbsp;If<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MsgBox("Send&nbsp;failed")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End&nbsp;If<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NSBTreoLib.HTTPClose<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MsgBox("Couldn't&nbsp;open")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;End&nbsp;If<br>
+End&nbsp;Sub<br>
+</tt>
+<h4>Also see:</h4>
+<p><a href='#0013'> HTTPClose</a></p>
+<a name='0017'>
+<h3>HTTPRead</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.HTTPRead(<i>size</i>, <i>timeInMs</i>)</code><br>
+</p><p>HTTPRead returns a string containing the next block of information returned from the URL. The string will contain no more than <i>size</i> characters, excluding the terminating null character.  HTTPRead will return an empty string if no characters were received during the timeout period or if there are no more characters to receive.  As with HTTPGetHeader, it is not possible to distinguish between the case where communication is slow and the case where there is no more information. </p>
+<p><i>TimeInMs</i> is the timeout in milliseconds.  Once the header has been received, HTTPRead is  usually fairly fast.  It should be polled repeatedly until it receives no more characters after a time appropriate to the application. </p>
+<a name='0018'>
+<h3>HTTPSendPostRequest</h3>
+<p><code><i>intVar</i> = NSBTreoLib.HTTPSendPostRequest(<i>URL</i>, <i>postData</i>, <i>timeInMs</i>)</code><br>
+</p><p>HTTPSendPostRequest sends information to a URL using the Post protocol.   <i>URL</i> must be a well formed URL, such as <code>"http://www.nsbasic.com/"</code>.  <i>PostData</i> is a string containing the data to send to the web site. <i>TimeInMs</i> is the timeout in milliseconds.  Connections  through a cell phone are slow, so values should be in the tens of seconds (<i>e.g.</i> 20000). HTTPSendPostRequest returns true (-1) if successful and false (0) otherwise. </p>
+<h4>Also see:</h4>
+<p><a href='#0016'> HTTPOpen</a>, <a href='#0019'> HTTPSendRequest</a></p>
+<a name='0019'>
+<h3>HTTPSendRequest</h3>
+<p><code><i>intVar</i> = NSBTreoLib.HTTPSendRequest(<i>URL</i>, <i>timeInMs</i>)</code><br>
+</p><p>HTTPSendRequest sends a request to a URL.  <i>URL</i> must be a well formed URL, such as <code>"http://www.nsbasic.com/"</code>.  <i>TimeInMs</i> is the timeout in milliseconds.  Connections  through a cell phone are slow, so values should be in the tens of seconds (<i>e.g.</i> 20000). HTTPSendRequest returns true (-1) if successful and false (0) otherwise. </p>
+<p>HTTPSendRequest can also be used to submit information to the web site using the Get protocol, in which the information follows the URL.  For more information, see <code>http://www.w3c.org</code>.  To send information using the Post protocol, use HTTPSendPostRequest. </p>
+<h4>Also see:</h4>
+<p><a href='#0016'> HTTPOpen</a>, <a href='#0018'> HTTPSendPostRequest</a></p>
+<a name='0020'>
+<h3>Hardware</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.Hardware</code><br>
+</p><p>Hardware returns a string describing the current version of the hardware. </p>
+<a name='0021'>
+<h3>KeyboardLocked</h3>
+<p><code><i>intVar</i> = NSBTreoLib.KeyboardLocked</code><br>
+</p><p>KeyboardLocked returns true (-1) if keyguard is active and false (0) otherwise. </p>
+<a name='0022'>
+<h3>KeyboardLock</h3>
+<p><code>NSBTreoLib.KeyboardLock(<i>whether</i>)</code><br>
+</p><p>KeyboardLock turns keyguard on if <i>whether</i> is true (nonzero) or off it <i>whether</i> is false (0). The change to keyguard is not immediate but occurs the next time an event is processed. </p>
+<a name='0023'>
+<h3>MainNumber</h3>
+<p><code><i>numberString</i> = NSBTreoLib.MainNumber</code><br>
+</p><p>MainNumber returns a string containing the main voice telephone number of this  phone.  It only works when the phone radio is on. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: Phone not on"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if the phone radio is not on. </td></tr>
+<tr><td><code>"ERROR: Number not found"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if there is no entry for the phone number. </td></tr>
+</table><a name='0024'>
+<h3>NetworkAvailable</h3>
+<p><code><i>intVar</i> = NSBTreoLib.NetworkAvailable</code><br>
+</p><p>NetworkAvailable returns true (-1) if the phone radio is on and the network is available, false (0) otherwise. </p>
+<h4>Also see:</h4>
+<p><a href='#0031'> PhoneReady</a>, <a href='#0030'> PhoneOn</a></p>
+<a name='0025'>
+<h3>OperatorCount</h3>
+<p><code><i>intVar</i> = NSBTreoLib.OperatorCount</code><br>
+</p><p>OperatorCount returns the number of operators available on the current network.  On CDMA phones, OperatorCount always returns zero. </p>
+<h4>Also see:</h4>
+<p><a href='#0028'> OperatorName</a>, <a href='#0029'> Operator</a></p>
+<a name='0026'>
+<h3>OperatorCurID</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.OperatorCurID</code><br>
+</p><p>OperatorCurID returns a string describing the ID of the current operator of the current network. </p>
+<p>OperatorCurID only works on GSM phones. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: No current operator"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if there is no operator.  This most commonly means the radio is off. </td></tr>
+</table><a name='0027'>
+<h3>OperatorCurName</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.OperatorCurName</code><br>
+</p><p>OperatorCurName returns a string describing the current operator of the current network. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: No current operator"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if there is no operator.  This most commonly means the radio is off. </td></tr>
+</table><h4>Also see:</h4>
+<p><a href='#0036'> Provider</a></p>
+<a name='0028'>
+<h3>OperatorName</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.OperatorName(<i>which</i>)</code><br>
+</p><p>OperatorName returns the name of one of the available operators. <i>Which</i> is an index that determines which operator.  It must be a number between 1 and the value OperatorCount returns. </p>
+<h4>Also see:</h4>
+<p><a href='#0025'> OperatorCount</a></p>
+<a name='0029'>
+<h3>Operator</h3>
+<p><code>NSBTreoLib.Operator(<i>which</i>, <i>mode</i>)</code><br>
+</p><p>Operator sets the current operator from the list of available operators. <i>Which</i> is the number of the operator and must be between 1 and the value  returned by OperatorCount.  <i>Mode</i> gives the registration mode according to the following table: </p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td>0</td><td>&nbsp; &nbsp; &nbsp;Automatic </td></tr>
+<tr><td>1</td><td>&nbsp; &nbsp; &nbsp;Manual </td></tr>
+<tr><td>3</td><td>&nbsp; &nbsp; &nbsp;Deregister </td></tr>
+<tr><td>4</td><td>&nbsp; &nbsp; &nbsp;Format </td></tr>
+<tr><td>5</td><td>&nbsp; &nbsp; &nbsp;Manual/Automatic </td></tr>
+</table><p>Operator only works on GSM phones. </p>
+<a name='0030'>
+<h3>PhoneOn</h3>
+<p><code><i>intVar</i> = NSBTreoLib.PhoneOn</code><br>
+</p><p>PhoneOn returns true (-1) if the phone radio is on and false (0) otherwise. </p>
+<p>To save power, the phone portion of a Treo can by turned on or off separately from the PDA portion.  This allows the Treo to be used as a PDA without consuming battery power running the phone or in places such as hospitals and airplanes where the phone radio must be off. </p>
+<p>Most of the features of the Treo are unavailable when the phone is off.  It is usually a good idea to enclose portions of a program that access a phone within an If block, as shown in the example. </p>
+<h4>Example:</h4>
+<tt>
+If&nbsp;(PhoneOn)&nbsp;Then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Dim&nbsp;s&nbsp;as&nbsp;String<br>
+&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;=&nbsp;NSBTreoLib.MainNumber&nbsp;'Will&nbsp;not&nbsp;work&nbsp;if&nbsp;phone&nbsp;is&nbsp;off<br>
+&nbsp;&nbsp;&nbsp;&nbsp;MsgBox(s)<br>
+End&nbsp;If<br>
+</tt>
+<h4>Also see:</h4>
+<p><a href='#0031'> PhoneReady</a>, <a href='#0032'> PhoneTurnOn</a></p>
+<a name='0031'>
+<h3>PhoneReady</h3>
+<p><code><i>intVar</i> = NSBTreoLib.PhoneReady</code><br>
+</p><p>PhoneReady returns true (-1) if the phone is ready to make a normal call and false (0) otherwise.  If PhoneReady returns false, it may still be possible to make an emergency call. </p>
+<h4>Also see:</h4>
+<p><a href='#0030'> PhoneOn</a></p>
+<a name='0032'>
+<h3>PhoneTurnOn</h3>
+<p><code>NSBTreoLib.PhoneTurnOn</code><br>
+</p><p>PhoneTurnOn turns the phone radio on if it is not already on. </p>
+<p>The user still has the option of preventing the phone from being turned on, so do not assume that the phone is on after a call to PhoneTurnOn.  Always use the PhoneOn function to check. </p>
+<h4>Also see:</h4>
+<p><a href='#0030'> PhoneOn</a></p>
+<a name='0033'>
+<h3>PhoneType</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.PhoneType</code><br>
+</p><p>PhoneType returns <code>"CDMA"</code> if this is a CDMA phone and <code>"GSM"</code> if this is a GSM phone. </p>
+<a name='0034'>
+<h3>ProductName</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.ProductName</code><br>
+</p><p>ProductName returns a string containing the name of the product, <i>e.g.</i> <code>"Treo 600"</code>. </p>
+<a name='0035'>
+<h3>ProductRevision</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.ProductRevision</code><br>
+</p><p>ProductRevision returns a string containing a code for the product revision. </p>
+<a name='0036'>
+<h3>Provider</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.Provider</code><br>
+</p><p>Provider returns a string describing the current service provider. </p>
+<p>GSM phones make a distinction between a service provider and an operator on that network.  On CDMA phones, this function returns the same value as OperatorCurrent. </p>
+<h4>Errors:</h4>
+<p></p>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><code>"ERROR: No current provider"</code></td><td>&nbsp; &nbsp; &nbsp;Returned if there is no provider.  This most commonly means the radio is off. </td></tr>
+</table><a name='0037'>
+<h3>ROM</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.ROM</code><br>
+</p><p>ROM returns a string containing the version of the ROM. </p>
+<a name='0038'>
+<h3>Roaming</h3>
+<p><code>NSBTreoLib.Roaming</code><br>
+</p><p>Roaming returns true (-1) if the phone is roaming and false (0) if it is at home. Roaming only works when the phone radio is on and connected to a network. </p>
+<h4>Also see:</h4>
+<p><a href='#0030'> PhoneOn</a></p>
+<a name='0039'>
+<h3>SMSMessage</h3>
+<p><code>NSBTreoLib.SMSMessage(<i>phoneNumber</i>, <i>name</i>, <i>message</i>)</code><br>
+</p><p>SMSMessage sends a message using the Short Message System (SMS). The user can change the fields before sending. </p>
+<p><i>PhoneNumber</i> is a string containing the phone number of the recipient. <i>Name</i> is the name of the recipient.  <i>Message</i> is the text of the message. Any or all of the parameters can contain a string with no characters (<code>""</code>), in which case, the user is expected to fill in the fields. </p>
+<p>SMS messages are normally limited to 160 characters.  Characters within a message are automatically translated from the Palm character set into the SMS character set.  You can include a paragraph break with chr(10). </p>
+<p>You can also use a valid EMail address instead of <i>phoneNumber</i>, in which case the SMS message will be transferred through a gateway and be sent as EMail.  There is no way to set the subject of the message, however. </p>
+<p>After calling SMSMessage, your NSBasic application will exit, and the message  application will appear.  As always, make sure that your application stores any needed state variables in a database before exiting. </p>
+<p>Intercepting incoming messages and sending messages without exiting the application are not practical at this time. </p>
+<a name='0040'>
+<h3>SerialNumber</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.SerialNumber</code><br>
+</p><p>SerialNumber returns a string containing the serial number of the Treo. </p>
+<a name='0041'>
+<h3>SignalQuality</h3>
+<p><code><i>intVar</i> = NSBTreoLib.SignalQuality</code><br>
+</p><p>SignalQuality returns the strength of the radio connection in dbM as an Integer.   If it is not possible to determine the  signal strength, SignalQuality returns 99.  SignalQuality only works if the  phone is on; otherwise it returns 0. </p>
+<h4>Also see:</h4>
+<p><a href='#0030'> PhoneOn</a></p>
+<a name='0042'>
+<h3>Software</h3>
+<p><code><i>stringVar</i> = NSBTreoLib.Software</code><br>
+</p><p>Software returns a description of the version of the software </p>
+<a name='0043'>
+<h3>TCPIPDrop</h3>
+<p><code>NSBTreoLib.TCPIPDrop</code><br>
+</p><p>TCPIPDrop immediately drops the IP connection, which is used for browsing Web pages and E-mail. </p>
+<a name='0044'>
+<h3>Vibrate</h3>
+<p><code>NSBTreoLib.Vibrate(<i>count</i>)</code><br>
+</p><p>Vibrate makes the phone vibrate.  <i>Count</i> is the number of times to vibrate. </p>
+<h4>Also see:</h4>
+<p><a href='#0001'> Blink</a></p>
+</body></html>

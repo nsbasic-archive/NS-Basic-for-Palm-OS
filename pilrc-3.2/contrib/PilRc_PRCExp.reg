@@ -1,0 +1,15 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\.rcp]
+@="PilRc_prcExpl"
+
+[HKEY_CLASSES_ROOT\PilRc_prcExpl]
+@="Palm Resource file"
+
+[HKEY_CLASSES_ROOT\PilRc_prcExpl\Shell]
+
+[HKEY_CLASSES_ROOT\PilRc_prcExpl\Shell\open]
+
+[HKEY_CLASSES_ROOT\PilRc_prcExpl\Shell\open\command]
+@="cmd.exe /C \"C:\\cygwin\\bin\\PilRc_PRCExp.bat %1\""
+

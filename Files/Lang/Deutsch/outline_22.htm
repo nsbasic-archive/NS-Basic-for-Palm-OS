@@ -1,0 +1,149 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Alert </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Alert                                                                                                          Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>ALERT(<i>title</i> as String, <i>msg</i> as
+String, <i>type</i> as Integer, <i>button0</i> as String, <i>button1</i> as String, ... , <i>ButtonN</i>
+as String)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><img width=212 height=96
+src="./outline_22_files/image003.gif" align=left hspace=12><b>Beschreibung</b></p>
+
+<p class=ManualBody>Zeigt eine Palm OS Nachrichtenbox des Typs “<i>type</i>“ an, und wartet darauf, dass der
+Benutzer eine der Schaltflächen aktiviert um die Nummer der aktivierten
+Schaltfläche zurück zu liefern. Die Zählung startet dabei bei 0.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>Type </i>beschreibt
+den formatierten Typ des Nachrichtenfensters. <i>title </i>ist ein String, der als Kopf des Fensters angezeigt wird. </p>
+
+<p class=ManualBody><i>Msg </i>ist ein
+String, der den Inhalt der darzustellenden Nachricht enthält.. <i>Button</i>, <i>button1,</i> usw. sind die Bezeichnungen der einzelnen Schaltflächen,
+die dargestellt werden sollen. Sie können generelle so viele Schaltflächen verwenden
+wie Sie möchten, im Allgemeinen aber werden nur 2 bis 3 Schaltflächen
+verwendet..</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=85 valign=top style='width:63.9pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><i>Type=</i>0</p>
+  </td>
+  <td width=457 valign=top style='width:342.9pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>zeige ein Nachrichtenfenster des Typs ‘Information’ an</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top style='width:63.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+  <td width=457 valign=top style='width:342.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>zeige ein Nachrichtenfenster des Typs ‘Bestätigung’ an</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top style='width:63.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>2</p>
+  </td>
+  <td width=457 valign=top style='width:342.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>zeige ein Nachrichtenfenster des Typs ‘Warnung’ an</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top style='width:63.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>3</p>
+  </td>
+  <td width=457 valign=top style='width:342.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>zeige ein Nachrichtenfenster des Typs ‘Error’ an</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim result as Integer</p>
+
+<p class=Code>Result=Alert(&quot;Get metric decision.......&quot;, &quot;Do you
+want to use meters or feet?&quot;,0,&quot;Meters&quot;,&quot;Feet&quot;)</p>
+
+<p class=Code>If result=0 then</p>
+
+<p class=Code>  ..................</p>
+
+<p class=Code>else</p>
+
+<p class=Code>  ..........................</p>
+
+<p class=Code>end if</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

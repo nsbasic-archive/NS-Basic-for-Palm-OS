@@ -1,0 +1,761 @@
+"mdl"
+8
+"Controls","appl","Test",1023,505,0
+"Sub main()
+
+End Sub
+Sub errIt( who as String, what as String, s as String)
+  MsgBox ~error--incompatible who=~+who+~ what=~+what +~  lenWhat=~+str(len(what))+~  found=~+s+~  len=~+str(len(s))
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100002E"
+""
+"bmpfile"
+1
+"Bmpfile1023"
+1023
+"..\..\bitmaps\cars.bmp"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Screen1004"
+"Screen1004"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","button",1005,4,16,12,40,#TRUE#,0,"?Button",0,0,0
+""
+"lst"
+2
+4
+""
+"obj"
+3
+"lst","list",1006,4,52,24,52,#TRUE#,0,"List1006",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","label",1007,116,16,12,25,#TRUE#,0,"?label",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","field",1008,4,32,12,48,#TRUE#,0,"      ",0,0,0
+""
+"cho"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"cho","choicebox",1010,48,16,12,56,#TRUE#,0,"?choicebox",0,0,0
+""
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","checkbox",1011,56,32,12,68,#TRUE#,0,"?CheckBox",0,0,0
+""
+"shf"
+1
+"obj"
+3
+"shf","shift",1012,144,140,8,8,#TRUE#,0,"Shf1012",0,0,0
+""
+"bmp"
+1
+1023
+"obj"
+3
+"bmp","bitmap",1013,64,76,28,52,#TRUE#,0,"Bmp1013",0,0,0
+""
+"scr"
+2
+0,0,1,1
+"obj"
+3
+"scr","scroll",1014,136,104,32,12,#TRUE#,0,"Scr1014",0,0,0
+""
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","selector",1015,116,32,12,44,#TRUE#,0,"?selector",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","pop",1016,60,44,12,52,#TRUE#,1,"?popup",0,0,0
+""
+"gad"
+1
+"obj"
+3
+"gad","gad",1018,8,80,36,40,#TRUE#,0,"gad",0,0,0
+""
+"rpt"
+1
+#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"rpt","repeater",1019,60,56,12,48,#TRUE#,0,"?repeater",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","DoIt",1020,84,132,12,40,#TRUE#,0,"DoIt",0,0,0
+"'this button tests all operations of the controls.
+
+Sub object1020()
+  Dim n as Integer
+  Dim varName as String
+  Dim s as String
+  Dim x as Double
+  Dim z as Integer
+  list.clear
+
+  s=controls(0).text
+  If (s <> ~Screen1004~) Then
+       MsgBox ~form's title is=~+controls(n).text+~  should be ~+~screen1004~
+  EndIf
+  MsgBox ~Testing button~
+  button.hide
+  button.show
+  button.Redraw
+  button.text=~111~
+  s=button.text
+  If s Not =  ~111~ Then 
+     errIt(~button.text~,button.text,s)
+  EndIf 
+  z=button.Id
+  If z <> 1005 Then 
+     errIt(~button.id~,str(button.Id),str(1005))
+  EndIf
+  varName=~button~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.text=~222~
+  s=varname.text
+  If s Not =  ~222~ Then 
+     errIt(~varname.text~,varname.text,s) 
+  EndIf
+  z=varname.Id
+  If z<> 1005  Then 
+     errIt(~varname.id~,str(varname.Id),str(1005))
+  EndIf
+
+  n=button.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+  controls(n).text=~333~
+  s=controls(n).text
+
+  If s Not = ~333~ Then 
+       errIt(~controls(n).text~,controls(n).text,s)
+   EndIf 
+
+  button.text=~444~
+  s=button.text
+  If s Not = ~444~ Then
+     errIt(~button.text~,button.text,s)
+  EndIf
+  
+  z=controls(n).Id
+  If z<> 1005 Then 
+     errIt(~controls(n).id~,str(controls(n).Id),str(1005))
+  EndIf
+'--------------------------------------------------------------------------------
+MsgBox ~Testing checkbox~
+checkbox.hide
+checkbox.show
+checkbox.Redraw
+checkbox.status=1
+If checkbox.status Not = 1 Then
+   errIt(~checkbox.status~,str(checkbox.status),~~)
+EndIf
+checkbox.status=0
+varname=~checkbox~
+varname.hide
+varname.show
+varname.Redraw
+varname.status=1
+If varname.status Not = 1 Then
+   errIt(~varname.status~,str(varname.status),~~)
+EndIf
+checkbox.status=0
+n=checkbox.index
+controls(n).hide
+controls(n).show
+controls(n).Redraw
+controls(n).status=1
+If controls(n).status Not = 1 Then
+   errIt(~controls(n).status~,str(controls(n).status),~~)
+EndIf
+checkbox.status=0
+checkbox.status=1
+If checkbox.status Not = 1 Then
+  errit(~checkbox.status~,str(checkbox.status),~~)
+EndIf
+
+'-------------------------------------------------------------------------
+MsgBox ~Testing choicebox~
+choicebox.hide
+choicebox.show
+choicebox.Redraw
+choicebox.status=1
+If choicebox.status Not = 1 Then
+   errIt(~choicebox.status~,str(choicebox.status),~~)
+EndIf
+choicebox.status=0
+varname=~choicebox~
+varname.hide
+varname.show
+varname.Redraw
+varname.status=1
+If varname.status Not = 1 Then
+   errIt(~varname.status~,str(varname.status),~~)
+EndIf
+choicebox.status=0
+n=choicebox.index
+controls(n).hide
+controls(n).show
+controls(n).Redraw
+
+controls(n).status=1
+If controls(n).status Not = 1 Then
+   errIt(~controls(n).status~,str(controls(n).status),~~)
+EndIf
+choicebox.status=0
+choicebox.status=1
+If choicebox.status Not = 1 Then
+  errit(~choicebox.status~,str(choicebox.status),~~)
+EndIf
+'---------------------------------------------------------------------------------
+MsgBox ~Testing label~
+
+'---label -- note a label's text is always the length of the originally assigned
+'label text.  It is padded on the right if you assign a shorter value
+'and truncated if you assign a longer value
+
+  label.hide
+  label.show
+  label.Redraw
+  label.text=~111~
+  s=label.text
+
+  If left(s,3) Not =  ~111~ Then 
+     errIt(~label.text~,label.text,s)
+  EndIf 
+
+  varName=~label~
+  varname.Redraw
+
+  varname.hide
+  varname.show
+  varname.text=~222~
+  s=varname.text
+
+  If left(s,3) Not =  ~222~ Then 
+     errIt(~varname.text~,varname.text,s) 
+  EndIf
+
+  n=label.index
+
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+  controls(n).text=~333~
+  s=controls(n).text
+  If left(s,3) Not = ~333~ Then 
+       errIt(~controls(n).text~,controls(n).text,s)
+  EndIf 
+'---------------------------------------------------------------------------
+MsgBox ~Testing selector~
+  selector.hide
+  selector.show
+  selector.Redraw
+  selector.text=~111~
+  s=selector.text
+  If s Not =  ~111~ Then 
+     errIt(~selector.text~,selector.text,s)
+  EndIf 
+
+  varName=~selector~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.text=~222~
+  s=varname.text
+  If s Not =  ~222~ Then 
+     errIt(~varname.text~,varname.text,s) 
+  EndIf
+
+  n=selector.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+
+  controls(n).text=~333~
+  s=controls(n).text
+  If s Not = ~333~ Then 
+       errIt(~controls(n).text~,controls(n).text,s)
+   EndIf 
+'---------------------------------------------------------------------------
+MsgBox ~Testing repeater~
+  repeater.hide
+  repeater.show
+  repeater.Redraw
+  repeater.text=~111~
+
+  s=repeater.text
+  If s Not =  ~111~ Then 
+     errIt(~repeater.text~,repeater.text,s)
+  EndIf 
+
+  varName=~repeater~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.text=~222~
+
+  s=varname.text
+  If s Not =  ~222~ Then 
+     errIt(~varname.text~,varname.text,s) 
+  EndIf
+
+  n=repeater.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+  controls(n).text=~333~
+  s=controls(n).text
+ 
+  If s Not = ~333~ Then 
+       errIt(~controls(n).text~,controls(n).text,s)
+  EndIf 
+'---------------------------------------------------------------------------
+MsgBox ~Testing field~
+ field.text=~111~
+
+  field.hide
+  field.show
+  field.Redraw
+  s=field.text
+  If s Not =  ~111~ Then 
+     errIt(~field.text~,field.text,s)
+  EndIf 
+  field.maxchars=200
+  field.setfocus
+
+  varName=~field~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.text=~222~
+  s=varname.text
+  If s Not =  ~222~ Then 
+     errIt(~varname.text~,varname.text,s) 
+  EndIf
+  varname.maxchars=200
+  varname.setfocus
+   
+  n=field.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+
+  controls(n).text=~333~
+  s=controls(n).text
+  If s Not = ~333~ Then 
+       errIt(~controls(n).text~,controls(n).text,s)
+  EndIf 
+  controls(n).maxchars=200
+  controls(n).setfocus
+  field.text=~444~
+  s=field.text
+  If s Not = ~444~ Then
+     errIt(~field.text~,field.text,s)
+  EndIf
+'-----------------------------------------------------------------------------
+MsgBox ~Testing popup~
+  pop.text=~111~
+  
+  pop.hide
+  pop.show
+  pop.selected= -1
+   pop.Redraw
+  s=pop.text
+  If s Not =  ~~ Then 
+     errIt(~pop.text~,~111~,s)
+  EndIf 
+
+  varName=~pop~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.text=~222~
+  s=varname.text
+  If s Not =  ~222~ Then 
+     errIt(~varname.text~,~222~,s) 
+  EndIf
+
+  n=pop.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+  controls(n).text=~333~
+  s=controls(n).text
+  If s Not = ~333~ Then 
+       errIt(~controls(n).text~,~333~,s)
+  EndIf 
+  
+  pop.text=~444~
+  s=pop.text
+  If s Not = ~444~ Then
+      errIt(~pop.text~,pop.text,s)
+  EndIf
+
+  pop.add ~aaa~,1 
+  pop.clear
+  pop.add ~111~,1
+  pop.add ~222~,2
+  pop.add ~333~,3
+  pop.add ~444~,4
+ 
+ 
+  pop.delete 3
+  pop.selected=2
+  If pop.noitems <> 3 Then
+     MsgBox ~Popup has ~ + str(pop.noitems) + ~  but should have 3~
+  EndIf
+  If pop.selected <> 2 Then
+     MsgBox ~error -- popup selected is ~ + str(pop.selected) + ~  but should be 2~
+  EndIf
+
+
+  If pop.itemtext(3) <> ~444~ Then
+     MsgBox ~pop.ItemText(3) = ~ + pop.itemtext(3) + ~--should be '444'~
+  EndIf
+  If pop.text(3) <> ~444~ Then
+      MsgBox ~pop.ItemText(3) = ~ + pop.itemtext(3) + ~--should be '444'~
+  EndIf
+
+  pop.add ~555~,2
+  pop.add ~666~,NODISPLAY
+  
+  pop.add ~777~,3,NODISPLAY
+  
+  If pop.itemtext(2) <> ~555~ Then
+     MsgBox ~pop.ItemText(2) = ~ + pop.itemtext(2) + ~--should be '555'~
+  EndIf
+
+  If pop.text(2) <> ~555~ Then
+     MsgBox ~pop.ItemText(2) = ~ + pop.itemtext(2) + ~--should be '555'~
+  EndIf
+  If pop.itemtext(6) <> ~666~ Then
+     MsgBox ~pop.ItemText(6) = ~ + pop.itemtext(6) + ~--should be '666'~
+  EndIf
+
+  pop.clear
+  If pop.noItems <> 0 Then
+     MsgBox ~pop.clear failed~
+  EndIf
+  '----------
+  varname=~pop~
+
+  varname.add ~111~,1
+
+  varname.add ~222~,2
+  varname.add ~333~,3
+  varname.add ~444~,4
+  varname.delete 3
+  varname.selected=2
+  If varname.noitems <> 3 Then
+
+     MsgBox ~Popup(varname) has ~ + str(varname.noitems) + ~  but should have 3~
+  EndIf
+  If varname.selected <> 2 Then
+     MsgBox ~error -- popup(varname) selected is ~ + str(varname.selected) + ~  but should be 2~
+  EndIf
+  If varname.itemtext(3) <> ~444~ Then
+     MsgBox ~pop(varname).ItemText(3) = ~ + varname.itemtext(3) + ~--should be '444'~
+  EndIf
+  If varname.text(3) <> ~444~ Then
+     MsgBox ~pop(varname).Text(3) = ~ + varname.text(3) + ~--should be '444'~
+  EndIf
+  varname.add ~555~,2
+  varname.add ~666~,NODISPLAY
+  varname.add ~777~,3,NODISPLAY
+  If varname.itemtext(2) <> ~555~ Then
+     MsgBox ~varname.ItemText(2) = ~ + varname.itemtext(2) + ~--should be '555'~
+  EndIf
+  If varname.itemtext(6) <> ~666~ Then
+     MsgBox ~varname.ItemText(6) = ~ + varname.itemtext(6) + ~--should be '666'~
+  EndIf
+  
+  varname.clear
+  If varname.noItems <> 0 Then
+     MsgBox ~pop(varname).clear failed~
+  EndIf
+  '-----
+  n=pop.index
+  controls(n).hide
+  controls(n).show
+
+  controls(n).add ~111~,1
+ 
+  controls(n).add ~222~,2
+  controls(n).add ~333~,3
+  controls(n).add ~444~,4
+  controls(n).delete 3
+  controls(n).selected=2
+  If controls(n).noitems <> 3 Then
+     MsgBox ~Popup(controls) has ~ + str(controls(n).noitems) + ~  but should have 3~
+  EndIf
+  If controls(n).selected <> 2 Then
+     MsgBox ~error -- popup(controls) selected is ~ + str(controls(n).selected) + ~  but should be 2~
+  EndIf
+  If controls(n).itemtext(3) <> ~444~ Then
+     MsgBox ~pop(controls).ItemText(3) = ~ + controls(n).itemtext(3) + ~--should be '444'~
+  EndIf
+  If controls(n).text(3) <> ~444~ Then
+     MsgBox ~pop(controls).Text(3) = ~ + controls(n).text(3) + ~--should be '444'~
+  EndIf
+  controls(n).add ~555~,2
+  controls(n).add ~666~,NODISPLAY
+  controls(n).add ~777~,3,NODISPLAY
+  If controls(n).itemtext(2) <> ~555~ Then
+     MsgBox ~controls(n).ItemText(2) = ~ + controls(n).itemtext(2) + ~--should be '555'~
+  EndIf
+  If controls(n).text(2) <> ~555~ Then
+     MsgBox ~controls(n).ItemText(2) = ~ + controls(n).itemtext(2) + ~--should be '555'~
+  EndIf
+  If controls(n).itemtext(6) <> ~666~ Then
+     MsgBox ~controls(n).ItemText(6) = ~ + controls(n).itemtext(6) + ~--should be '666'~
+  EndIf
+  
+  controls(n).clear
+  If controls(n).noItems <> 0 Then
+     MsgBox ~pop(controls).clear failed~
+  EndIf
+'-----------------------------------------------------------------------------
+MsgBox ~Testing listbox~
+  n=list.index
+  list.hide
+  list.show
+  list.Redraw
+  listadditem(~list~,~aaa~,1) 
+
+  list.clear
+
+  list.add ~111~,1
+  list.add ~222~,2
+  list.add ~333~,3
+  list.add ~444~,4
+
+  list.delete 3
+  list.selected=2
+  If list.noitems <> 3 Then
+     MsgBox ~list has ~ + str(list.noitems) + ~  but should have 3~
+  EndIf
+  If list.selected <> 2 Then
+     MsgBox ~error -- list selected is ~ + str(list.selected) + ~  but should be 2~
+  EndIf
+
+  If list.itemtext(3) <> ~444~ Then
+     MsgBox ~list.ItemText(3) = ~ + list.itemtext(3) + ~--should be '444'~
+  EndIf
+
+  list.add ~555~,2
+  list.add ~666~,NODISPLAY
+  list.add ~777~,3,NODISPLAY
+
+  If list.itemtext(2) <> ~555~ Then
+     MsgBox ~list.ItemText(2) = ~ + list.itemtext(2) + ~--should be '555'~
+  EndIf
+
+  If list.itemtext(6) <> ~666~ Then
+     MsgBox ~list.ItemText(6) = ~ + list.itemtext(6) + ~--should be '666'~
+  EndIf
+  list.clear
+  If list.noItems <> 0 Then
+     MsgBox ~list.clear failed~
+  EndIf
+  '----------
+  varname=~list~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.add ~111~,1
+
+  varname.add ~222~,2
+  varname.add ~333~,3
+  varname.add ~444~,4
+  varname.delete 3
+  varname.selected=2
+  If varname.noitems <> 3 Then
+     MsgBox ~list(varname) has ~ + str(varname.noitems) + ~  but should have 3~
+  EndIf
+  If varname.selected <> 2 Then
+     MsgBox ~error -- list(varname) selected is ~ + str(varname.selected) + ~  but should be 2~
+  EndIf
+  If varname.itemtext(3) <> ~444~ Then
+     MsgBox ~list(varname).ItemText(3) = ~ + varname.itemtext(3) + ~--should be '444'~
+  EndIf
+
+  varname.add ~555~,2
+  varname.add ~666~,NODISPLAY
+  varname.add ~777~,3,NODISPLAY
+  If varname.itemtext(2) <> ~555~ Then
+     MsgBox ~varname.ItemText(2) = ~ + varname.itemtext(2) + ~--should be '555'~
+  EndIf
+  If varname.itemtext(6) <> ~666~ Then
+     MsgBox ~varname.ItemText(6) = ~ + varname.itemtext(6) + ~--should be '666'~
+  EndIf
+
+
+  varname.clear
+  If varname.noItems <> 0 Then
+     MsgBox ~list(varname).clear failed~
+  EndIf
+  '-----
+  n=list.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+
+  controls(n).add ~111~,1
+ 
+  controls(n).add ~222~,2
+  controls(n).add ~333~,3
+  controls(n).add ~444~,4
+  controls(n).delete 3
+  controls(n).selected=2
+  If controls(n).noitems <> 3 Then
+     MsgBox ~list(controls) has ~ + str(controls(n).noitems) + ~  but should have 3~
+  EndIf
+  If controls(n).selected <> 2 Then
+     MsgBox ~error --list(controls) selected is ~ + str(controls(n).selected) + ~  but should be 2~
+  EndIf
+  If controls(n).itemtext(3) <> ~444~ Then
+     MsgBox ~list(controls).ItemText(3) = ~ + controls(n).itemtext(3) + ~--should be '444'~
+  EndIf
+
+  controls(n).add ~555~,2
+  controls(n).add ~666~,NODISPLAY
+  controls(n).add ~777~,3,NODISPLAY
+  If controls(n).itemtext(2) <> ~555~ Then
+     MsgBox ~controls(n).ItemText(2) = ~ + controls(n).itemtext(2) + ~--should be '555'~
+  EndIf
+  If controls(n).itemtext(6) <> ~666~ Then
+     MsgBox ~controls(n).ItemText(6) = ~ + controls(n).itemtext(6) + ~--should be '666'~
+  EndIf
+
+  controls(n).clear
+  If controls(n).noItems <> 0 Then
+     MsgBox ~list(controls).clear failed~
+  EndIf
+'---------------------------------------------------------------------------
+MsgBox ~Testing scrollbar~
+  scroll.hide
+  scroll.show
+  scroll.Redraw
+  x=scroll.current
+  scroll.current=2
+  scroll.min=0
+  scroll.max=5
+  scroll.pagesize=2
+
+  varName=~scroll~
+  varname.hide
+  varname.show
+  varname.Redraw
+  x=varname.current
+  varname.current=2
+  varname.min=0
+  varname.max=5
+  varname.pagesize=2
+ 
+  n=scroll.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+  controls(n).current=3
+  x=controls(n).current
+
+  controls(n).min=0
+  controls(n).max=5
+  controls(n).pagesize=2
+ 
+'---------------------------------------------------------------------------
+MsgBox ~Testing gadget~  
+  gad.startsignaturecapture
+  s=gad.endsignaturecapture
+  gad.erasesignature
+  gad.displaysignature s
+
+  gad.hide
+  gad.show
+  gad.Redraw
+  gad.erasesignature
+  gad.startsignaturecapture
+  s=gad.endsignaturecapture
+  gad.displaysignature(s)
+
+  varName=~gad~
+  varname.hide
+  varname.show
+  varname.Redraw
+  varname.erasesignature
+  varname.startsignaturecapture
+  s=varname.endsignaturecapture
+  varname.displaysignature(s)
+
+  n=gad.index
+  controls(n).hide
+  controls(n).show
+  controls(n).Redraw
+  controls(n).erasesignature
+  controls(n).startsignaturecapture
+  s=controls(n).endsignaturecapture
+  controls(n).displaysignature(s)
+'-------------------------------------------------------------- 
+MsgBox ~Testing shift indic~
+  shift.hide
+  shift.show
+  varname=~shift~
+  varname.hide
+  varname.show
+  '
+n=shift.index
+If n <> -1 Then
+  controls(n).hide
+  controls(n).show
+EndIf  
+End Sub
+"
+"end"

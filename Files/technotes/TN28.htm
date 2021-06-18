@@ -1,0 +1,277 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 28: PocketPurchase Overview</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+		
+    <TD WIDTH="17%" VALIGN="TOP"> 
+      <P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+    	</TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tech Note 28: PocketPurchase Overview</h2>
+	  <h3>October 16, 2003</h3>
+      		  
+	  <h5>Copyright 2003 PocketPurchase, Inc.
+		</h5>
+	</TD>
+	</TR>
+</TABLE>
+<HR>
+
+
+  <i>PocketPurchase service and API are patent pending.</i><p></p>
+
+<I>An overview of the PocketPurchase service and what you need to do to use it.</I> 
+<h2>Getting in Business</h2>
+<p>So you've got a a great application and now you want to sell it. For most handheld 
+  software vendors, that means &quot;shareware&quot;. To turn your app into cash, 
+  you need to do three things:</p>
+<ol>
+  <li>Add a trial mechanism. Will you allow 10 free days of use or will you let 
+    the user start your application 20 times?</li>
+  <li>You need to find some way to collect money. Where will you sell your application?</li>
+  <li>You need to issue keys to unlock your application for those who have purchased. 
+    Are you going to do these by hand or are you going to automate the process?</li>
+  <li>Keep track of your customers. Will you track them in a database or just 
+    keep them in an Excel spreadsheet.</li>
+</ol>
+<p>PocketPurchase can take care of all four tasks for you. In about 15 minutes, 
+  you can convert an application into a money-making product. Here is all you 
+  need to do:</p>
+<h3>1. Add a trial mechanism</h3>
+<p>You can either spend time writing a trial mechanism or you can just leave it 
+  to PocketPurchase. With a single call from the PocketPurchase library, the user 
+  will be shown a screen describing how much time is left in the trial. They will 
+  be offered the opportunity to keep trying your application if it is not expired, 
+  or to purchase your application immediately.</p>
+<h3>2. Collect the money</h3>
+<p>What better place to sell your product than on the user's handheld? PocketPurchase 
+  allows users to purchase your application directly on their handheld while your 
+  application is running. The PocketPurchase plug-in will collect all necessary 
+  information from the user to complete the purchase. Next time they HotSync, 
+  the transaction will be completed. We handle all credit card or bank account 
+  processing. We can then pay you via check or direct deposit to your US bank 
+  account.</p>
+<p>Besides purchasing directly on the handheld, you might want to offer an option 
+  for customers to purchase directly from your website. PocketPurchase will shortly 
+  roll-out a service to allow you to add a <b><code><font size="+1">Buy</font></code></b> 
+  button directly to your website. We handle the rest.</p>
+<p>You might also wish to sell your application through one of the major online 
+  stores. The two most popular are <a href="http://www.palmgear.com" target="_blank">PalmGear</a> 
+  and <a href="http://www.handango.com" target="_blank">Handango</a>. PocketPurchase 
+  purchase now offers the ability to handle purchases through other stores as 
+  well as described in the next section.</p>
+<h3>3. Issue keys to customers</h3>
+<p>Typically your application will require an unlock code for the customer to 
+  continue using it. Issuing these keys has always been a challenge for developers. 
+  What algorithm will you use to generate the key? How will you send the keys? 
+  Are you going to check your email every day and manually send keys to customers 
+  who purchased your application? Are you going to spend time automating the process?</p>
+<p>PocketPurchase solves this problem, too. The PocketPurchase system includes 
+  support for digitally signed registration codes. These codes use 1024-bit RSA 
+  encryption and are extremely secure. Only the user that purchased your application 
+  will be able to use the key.</p>
+<p>If the user purchases your application through the PocketPurchase service, 
+  the key is automatically installed on their handheld. The user is never sent 
+  any key by email since we have a direct connection to their device.</p>
+<p>If the user purchases through some other store, we still send your customer 
+  a key. We email those customers a small file that they can install on their 
+  device. The next time they run your application, they are registered.</p>
+<p>If you use our automatic trial mechanism, the registration keys are automatically 
+  validated for you. All you need to do is add a few lines of code to your application 
+  and your product is ready for sale!</p>
+<h3>4. Keep track of your customers</h3>
+<p>Whether the sale originated through us or we simply generated the registration 
+  code for you, we keep a complete list of all customers who have purchased your 
+  application. We will shortly be completing the developer area of <a href="http://www.pocketpurchase.com" target="_blank">PocketPurchase.com</a>. 
+  Then you will be able to simply login and see all of your customers, issue refunds, 
+  download a mailing list and more. You will also be able to send coupons and 
+  upgrade offers directly to their handhelds as described later in this document.</p>
+<h2>How does PocketPurchase work?</h2>
+<p>Most handheld software is sold on a &quot;trialware&quot; or shareware basis. 
+  The problem with using this model on a handheld device is that the user will 
+  almost certainly not be in a location where it is possible to purchase your 
+  application when the trial ends. PocketPurchase addresses this issue by providing 
+  a plug-in that you can connect to that will allow the user to purchase and unlock 
+  your application immediately, directly on their handheld.</p>
+<p>Here is the basic flow of events:</p>
+<ol>
+  <li>Your application is running and the user decides to buy. They may have hit 
+    a 'Buy' button on one of your screens or you may have displayed a &quot;This 
+    application expired. Buy now?&quot; message and they hit 'Buy'. If you use 
+    our trial mechanism, this is all done for you.</li>
+  <li>Your application calls the 'Register' function of the PocketPurchase plug-in.</li>
+  <li>Our plug-in takes over the user interface and acquires all necessary information 
+    to complete the purchase. If the user has purchased before, they need only 
+    verify their billing address and sign. If this is their first purchase, they 
+    will also need to enter their credit card details. The credit card data is 
+    encrypted with 1024-bit RSA.</li>
+  <li>Once the user is finished, the plug-in will tell your application that the 
+    purchase is pending. Your application should remain unlocked for 7 days while 
+    the purchase is 'pending'.</li>
+  <li>When the user does a HotSync, the transaction is sent to the PocketPurchase 
+    server, the credit card is processed and a registration code is generated. 
+    The code is sent back to the handheld and installed automatically.</li>
+  <li>Next time your application runs, the plug-in provides the registration code, 
+    which your application validates just as if the customer had entered it manually.</li>
+</ol>
+<h2>Coupons and Upgrade Offers</h2>
+<p>Besides handling on-device purchasing and automating the registration process, 
+  PocketPurchase also allows you to create coupons and upgrade offers. These are 
+  automatically downloaded to the user's device and displayed next time the user 
+  runs your application.</p>
+<p>A coupon is sent to trial users and can be time or device limited. For instance, 
+  you can create a &quot;holiday special&quot; that gives $5 off between Nov. 
+  1st and Dec. 25th.</p>
+<p>An upgrade offer is sent to registered users of a product. It can either be 
+  for the same product or for a different product. For instance, you can offer 
+  $10 off the 'Pro' version of the product that the user already owns. Or you 
+  can offer $5 off a completely independent product. The other product can even 
+  be from another company if that company consents. These upgrade offers will 
+  be displayed the next time the user runs your application and will offer to 
+  download and install the second product for the user.</p>
+<p> Any discounts will automatically be deducted from the purchase price if they 
+  are still valid when the user purchases.</p>
+<h2>Cost</h2>
+<p>There is no cost involved in using our purchase service unless a sale occurs 
+  on the handheld. Our studies to date have shown that these are mostly incremental 
+  sales. We process Visa, MasterCard, American Express, Diners Club, Discover 
+  and JCB. We will shortly be adding the ability for customers to purchase directly 
+  from their US checking or savings account. Our fee is 12.5%, plus a 30 cent 
+  transaction fee.</p>
+<p>If you wish to have PocketPurchase send our registration keys for purchases 
+  through other channels, such as PalmGear or Handhango, we charge only 50 cents 
+  per registration code issued. This covers not only issuing the key, but also 
+  adding them to your personal database and reissuing keys to customers who have 
+  lost their original key for some reason.</p>
+<h2>Revenue Sharing</h2>
+<p>We support four different methods of sharing revenue:</p>
+<ul>
+  <li>Distributor share - A distributor can be any outlet for your application 
+    including device manufacturer websites and bonus CDs (Sony, Palm), online 
+    stores (PDASSI, PalmGear, Handango), download sites (Eurocool, download.com,tucows.com), 
+    magazine and book insert CDs, beaming stations in airports, shareware distribution 
+    CDs in retail, etc. If your application is acquired by a customer through 
+    a distributor, the distributor may be entitled to some of the revenue. You 
+    will need to attach a resource to your main PRC file to indicate the distributor 
+    for your application. We have command-line tools to simplify this, or you 
+    can use our installer builder and automate it completely.</li>
+  <li>Affiliate share - An affiliate is like a distributor except that you can 
+    create a custom affiliate list per application. For instance, you could allow 
+    another developer to distribute your app on their site and specify them as 
+    an affiliate. When a sale comes in, the amount of money you specify is diverted 
+    to your affiliate. Again, this must be specified by attaching an affiliate 
+    resource to your main PRC. This is automated in the same way a the distributor 
+    share.</li>
+  <li>Tool share - Like a distributor share, you may have used a certain tool, 
+    such as a Macintosh installer, and agreed to pay the tool vendor a per-sale 
+    cost rather than a large upfront fee. This is specified by a resource, much 
+    like affiliate and distributor revenue shares.</li>
+  <li>Partner share - Unlike the other 3 revenue sharing mechanisms, the partner 
+    share occurs for every copy of the software sold, regardless of attached resources. 
+    Partner shares are useful for paying royalties for licensed products or splitting 
+    revenues with a co-developer.</li>
+</ul>
+<p>All of these revenue sharing mechanisms may be specified by percentage or fixed 
+  dollar amount. If percentage, the totals are recalculated at each stage. First 
+  the PocketPurchase, credit card and distributor fees are taken from the base 
+  price. Affiliate shares are then based on the remaining money. Tools percentage 
+  are based on what is left after affiliates have been paid. Finally, partners 
+  and the primary developer are paid from the remainder.</p>
+<p>Here is a worst case example. Let's say you have a product that is $20 and 
+  it is distributed through PDASuperStore. If the customer purchases with a Visa 
+  and PDASuperStore charges 10%, then you get:</p>
+<p>$20 * 10% = $2 - PocketPurchase<br>
+  $20 * 10% = $2 - PDASuperStore<br>
+  $20 * 2.37% + $.25 = $.72 - Visa<br>
+  $15.28 remaining</p>
+<p>Now if you also have an affiliate specified (unlikely that you will have a 
+  distributor and an affiliate, but we'll stick with this for our example), and 
+  the affiliate gets 10% then:</p>
+<p>$15.28 * 10% = $1.53 - Your affiliate<br>
+  $13.75 remaining</p>
+<p>If this is the Macintosh version, you may have worked a deal whereby you pay 
+  a portion of the proceeds instead of paying an upfront cost. This would typically 
+  be a fixed amount ($.50, $1) but let's stick with our 10% for this example:</p>
+<p>$13.75 * 10% = $1.38 - Your tool vendor<br>
+  $12.37 remaining</p>
+<p>Finally, let's assume that this is a licensed product and you need to pay 20% 
+  to the licensor. The remaining money would get distributed like this:</p>
+<p>$12.37 * 20% = $2.47 - Your licensor<br>
+  $9.90 - Developer</p>
+<p>Hopefully you will never need to split your revenue this many ways but this 
+  explanation should make it clear how the split will happen at each tier.<br>
+</p>
+<h2>Getting Started</h2>
+<p>To make it easier for you to notify us of updates and new products, we accept 
+  Portable Application Description files (PAD). The files are standard XML documents 
+  in a format specified by the Association of Shareware Professionals. You can 
+  get more information on PAD files <a href="http://www.asp-shareware.org/pad/" target="_blank">here</a>. 
+  The point of PAD files is that you update your product description, company 
+  details, etc. in the PAD file and then either post the PAD file on your site 
+  or upload it directly to the various shareware distribution sites. Hopefully 
+  the large online stores will start taking PAD files as well.</p>
+<p>We have a special PocketPurchase tab for the ASP PADGen tool. The PocketPurchase 
+  tab allows you to specify information such as your vendor number and the email 
+  message sent to customers at the time of a sale. The best way to get the entire 
+  PADGen package with the PocketPurchase tab is to download and install the <a href="http://pocketpurchase.com/tools/PocketPurchaseInstallBuilder.exe">PocketPurchase 
+  Install Builder</a>.</p>
+<p>The <a href="http://pocketpurchase.com/tools/PocketPurchaseInstallBuilder.exe">PocketPurchase 
+  Install Builder</a> contains PADGen, the NullSoft Install System (NSIS), PocketPurchase 
+  and Installer tabs for PADGen, and NSIS plug-ins to make it easy to install 
+  Palm OS applications and conduits. These are all free to use. The NSIS plug-in 
+  will even make sure that all required PocketPurchase components are properly 
+  installed.</p>
+<p>Once you have this installed, you can simply use PADGen to fill out all the 
+  information about your application. If you want to use NSIS to create an installer, 
+  go ahead and fill out the Installer tabs. Using our install system, you can 
+  painlessly create different installers for each distributor.</p>
+<p>After you have entered the info for the PAD file, be sure to export the actual 
+  pad_file.xml. The PocketPurchase developer site is still under development so 
+  for now, send the file to developer&copy; pocketpurchase.com and we will use it to 
+  create or update your company and product info. We will send back a resource 
+  file with your product and company names, signed copies of your product price, 
+  product terms, etc. Let us know if you prefer a .r, .rcp or .prc file for your 
+  resources.</p>
+<p>Once you have those resources, add them into your main project. Now you will 
+  need to modify your application to take advantage of the PocketPurchase plug-in. 
+  To do this, download the <a href="http://pocketpurchase.com/PocketPurchaseSDK.zip">PocketPurchase 
+  SDK</a> and follow the directions in the implementation guide.</p>
+<h2>Registration Code Generation</h2>
+<p>PocketPurchase automatically generates registration codes when a customer purchases 
+  your application. We can handle a number of mechanisms including:</p>
+<ol>
+  <li>Static - This can be any text string.</li>
+  <li>Hash - This is a 32-bit number based on the HotSync user name or the buyer. 
+    The hashing algorithm may be supplied by you. We have a general purpose method 
+    of encoding hashing algorithms in a string that is very flexible but not very 
+    legible. We will be providing a web-based GUI tool for generating these algorithm 
+    strings as part of our developer web site. In the meantime, we can work with 
+    you to generate these formula strings.</li>
+  <li>Pool - This is the most problematic and we don't recommend it since it can 
+    result in a sale failing to occur if we run out of codes. You must provide 
+    us a pool of at least 5000 codes. We will notify you when the pool falls below 
+    2500, or a 30 day supply, whichever is greater.</li>
+</ol>
+<p>On top of these four methods, you can also digitally sign your registration 
+  key. The most useful combination is probably digital signature on top of a static 
+  code. The digital signature will contain your ProductID and the user's HotSync 
+  user name, plus the registration code. The digital signature provides strong 
+  protection against key generators while the static key helps ensure that your 
+  application has not fallen victim to a generic crack. If you use the PocketPurchase 
+  trial mechanism, the digital signature is validated for you automatically.</p>
+<p>You can also have a separate registered version of your application. We will 
+  take care of sending the registered version to your customer after they have 
+  purchased. You should still have your registered version check a registration 
+  code so that pirates cannot simply release your registered version on the Internet.</p>
+<HR>
+<I>&copy; 2003, PocketPurchase, Inc.</I><BR>
+<i>Comments to sdk&copy; pocketpurchase.com.</i> 
+</BODY>
+</html>

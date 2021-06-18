@@ -1,0 +1,717 @@
+"mdl"
+7
+"TreoTest","appl","Test",1108,412,0
+"Sub Project_Startup()
+    LoadLibrary ~NSBTreoLib~
+End Sub"
+0
+0
+""
+""
+""
+"vew"
+3,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Treo Test: Info"
+"Form1003"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1021",1021,4,116,12,80,#TRUE#,0,"OperatorCurName"
+"Sub object1021()
+    Dim s as String
+    s = NSBTreoLib.OperatorCurName()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1023",1023,68,100,12,44,#TRUE#,0,"Provider"
+"Sub object1023()
+    Dim s as String
+    s = NSBTreoLib.Provider()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1024",1024,4,52,12,44,#TRUE#,0,"PhoneOn"
+"Sub object1024()
+    Dim t as Integer
+    t = NSBTreoLib.PhoneOn()
+    MsgBox(str(t))
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1025",1025,4,20,12,32,#TRUE#,0,"Type"
+"Sub object1025()
+    Dim s as String
+    s = NSBTreoLib.PhoneType()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1026",1026,4,84,12,60,#TRUE#,0,"PhoneReady"
+"Sub object1026()
+    Dim k as Integer
+    k = NSBTreoLib.PhoneReady()
+    MsgBox(str(k))
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1027",1027,4,68,12,80,#TRUE#,0,"NetworkAvailable"
+"Sub object1027()
+    Dim k as Integer
+    k = NSBTreoLib.NetworkAvailable()
+    MsgBox(str(k))
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1028",1028,4,100,12,60,#TRUE#,0,"MainNumber"
+"Sub object1028()
+    Dim s as String
+    s = ~Hoo hah~
+    s = NSBTreoLib.MainNumber()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1029",1029,68,84,12,64,#TRUE#,0,"SignalQuality"
+"Sub object1029()
+    Dim k as integer
+    k = NSBTreoLib.SignalQuality()
+    MsgBox(str(k))
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1030",1030,4,147,12,36,#TRUE#,0,"Info"
+"Sub object1030()
+    NextScreen ~Form1003~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1058",1058,44,147,12,36,#TRUE#,0,"Data"
+"Sub object1058()
+   NextScreen ~Form1032~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1059",1059,84,147,12,36,#TRUE#,0,"GSM"
+"Sub object1059()
+    NextScreen ~Form1061~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1080",1080,52,52,12,68,#TRUE#,0,"PhoneTurnOn"
+"Sub object1080()
+    NSBTreoLib.PhoneTurnOn()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1081",1081,88,68,12,60,#TRUE#,0,"TCPIPDrop"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1082",1082,116,100,12,40,#TRUE#,0,"Vibrate"
+"Sub object1082()
+    NSBTreoLib.Vibrate(3)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1083",1083,88,116,12,44,#TRUE#,0,"Roaming"
+"Sub object1083()
+    Dim k as Integer
+    k = NSBTreoLib.Roaming()
+    MsgBox(str(k))
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1084",1084,40,20,12,24,#TRUE#,0,"SW"
+"Sub object1084()
+    Dim s as String
+    s = NSBTreoLib.Software()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1085",1085,68,20,12,24,#TRUE#,0,"HW"
+"Sub object1085()
+    Dim s as String
+    s = NSBTreoLib.Hardware()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1086",1086,96,20,12,32,#TRUE#,0,"Name"
+"Sub object1086()
+    Dim s as String
+    s = NSBTreoLib.ProductName()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1087",1087,132,20,12,24,#TRUE#,0,"SN"
+"Sub object1087()
+    Dim s as String
+    s = NSBTreoLib.SerialNumber()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1088",1088,4,36,12,36,#TRUE#,0,"Carrier"
+"Sub object1088()
+    Dim s as String
+    s = NSBTreoLib.CarrierID()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1089",1089,44,36,12,36,#TRUE#,0,"Product"
+"Sub object1089()
+    Dim s as String
+    s = NSBTreoLib.ProductRevision()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1090",1090,84,36,12,24,#TRUE#,0,"ROM"
+"Sub object1090()
+    Dim s as String
+    s = NSBTreoLib.ROM()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1091",1091,112,36,12,44,#TRUE#,0,"Firmware"
+"Sub object1091()
+    Dim s as String
+    s = NSBTreoLib.Firmware()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1094",1094,124,147,12,36,#TRUE#,0,"HTTP"
+"Sub object1094()
+    NextScreen ~Form1096~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1105",1105,124,52,12,32,#TRUE#,0,"Blink"
+"Sub object1105()
+    NSBTreoLib.Blink(3)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1106",1106,4,132,12,52,#TRUE#,0,"Keyguard"
+"Sub object1106()
+    Dim kgOn as Integer
+    kgOn = NSBTreoLib.KeyboardLocked
+    MsgBox(~Keyguard ~ + str(kgOn))
+    NSBTreoLib.KeyboardLock(-1)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1107",1107,60,132,12,36,#TRUE#,0,"CW On"
+"Sub object1107()
+    Dim cwOn as Integer
+    cwOn = NSBTreoLib.CallWaiting
+    MsgBox(~Call Waiting Before ~ + str(cwOn))
+    NSBTreoLib.CallWaitingSet(-1)
+    cwOn = NSBTreoLib.CallWaiting
+    MsgBox(~Call Waiting After ~ + str(cwOn))
+    If cwOn = 0 Then
+        MsgBox(~This phone does not seem to support call waiting.~)
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1108",1108,100,132,12,40,#TRUE#,0,"CW Off"
+"Sub object1108()
+    Dim cwOn as Integer
+    cwOn = NSBTreoLib.CallWaiting
+    MsgBox(~Call Waiting Before ~ + str(cwOn))
+    NSBTreoLib.CallWaitingSet(0)
+    cwOn = NSBTreoLib.CallWaiting
+    MsgBox(~Call Waiting After ~ + str(cwOn))
+End Sub"
+"vew"
+3,1032,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Treo Test: Data"
+"Form1032"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1034",1034,4,132,12,36,#TRUE#,0,"SMS"
+"Sub object1034()
+    NSBTreoLib.SendSMSMessage(Number.text, Name.text, Message.txt)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1035",1035,43,132,12,36,#TRUE#,0,"EMail"
+"Sub object1035()
+     NSBTreoLib.SendEMail(Name.text, CC.text, Subject.text, Message.text)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1036",1036,82,132,12,36,#TRUE#,0,"Dial"
+"Sub object1036()
+    NSBTreoLib.DialPhone(Number.text)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1037",1037,120,132,12,36,#TRUE#,0,"Browse"
+"Sub object1037()
+    NSBTreoLib.Browse(URL.text)
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1038",1038,4,20,11,35,#TRUE#,0,"Number:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1039",1039,4,32,11,18,#TRUE#,0,"URL:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1040",1040,4,44,11,13,#TRUE#,0,"To:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1041",1041,4,56,11,12,#TRUE#,0,"CC:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1042",1042,4,68,11,33,#TRUE#,0,"Subject:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1044",1044,4,80,11,38,#TRUE#,0,"Message:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,4095,#TRUE#,#TRUE#,#FALSE#
+"obj"
+2
+"fld","Message",1045,44,80,52,108,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Number",1048,40,20,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","URL",1050,40,32,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Name",1052,40,44,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","CC",1054,40,56,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Subject",1056,40,68,12,116,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1062",1062,4,147,12,36,#TRUE#,0,"Info"
+"Sub object1062()
+    NextScreen ~Form1003~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1064",1064,44,147,12,36,#TRUE#,0,"Data"
+"Sub object1064()
+   NextScreen ~Form1032~
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1065",1065,82,147,12,36,#TRUE#,0,"GSM"
+"Sub object1065()
+    NextScreen ~Form1061~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1097",1097,124,147,12,36,#TRUE#,0,"HTTP"
+"Sub object1097()
+    NextScreen ~Form1096~
+End Sub"
+"vew"
+3,1061,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"TreoTest: GSM"
+"Form1061"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1066",1066,84,147,12,36,#TRUE#,0,"GSM"
+"Sub object1066()
+    NextScreen ~Form1061~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1067",1067,44,147,12,36,#TRUE#,0,"Data"
+"Sub object1067()
+   NextScreen ~Form1032~
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1068",1068,4,147,12,36,#TRUE#,0,"Info"
+"Sub object1068()
+    NextScreen ~Form1003~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1069",1069,4,20,12,56,#TRUE#,0,"Book Count"
+"Sub object1069()
+    Dim n as Integer
+    n = NSBTreoLib.BookCount()
+    BookCount.text = str(n)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","BookCount",1070,76,20,12,28,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1072",1072,4,36,12,52,#TRUE#,0,"Last Name"
+"Sub object1072()
+    Dim k as Integer
+    Dim s as String
+    k = val(BookCount.text)
+    s = NSBTreoLib.BookLastName(k)
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1073",1073,60,36,12,52,#TRUE#,0,"First Name"
+"Sub object1073()
+    Dim k as Integer
+    Dim s as String
+    k = val(BookCount.text)
+    s = NSBTreoLib.BookFirstName(k)
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1074",1074,116,36,12,40,#TRUE#,0,"Number"
+"Sub object1074()
+    Dim k as Integer
+    Dim s as String
+    k = val(BookCount.text)
+    s = NSBTreoLib.BookPhoneNumber(k)
+    MsgBox(s)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1075",1075,4,52,12,68,#TRUE#,0,"OperatorCount"
+"Sub object1075()
+    Dim k as Integer
+    Dim s as String
+    k = NSBTreoLib.OperatorCount()
+    s = str(k)
+    OpCount.text = s
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","OpCount",1076,76,52,12,28,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1078",1078,4,68,12,68,#TRUE#,0,"OperatorName"
+"Sub object1078()
+    Dim k as Integer
+    Dim s as String
+    k = val(OpCount.text)
+    s = NSBTreoLib.OperatorName(k)
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1079",1079,4,84,12,68,#TRUE#,0,"OperatorCurID"
+"Sub object1079()
+    Dim s as String
+    s = NSBTreoLib.OperatorCurID()
+    MsgBox(s)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1098",1098,124,147,12,36,#TRUE#,0,"HTTP"
+"Sub object1098()
+    NextScreen ~Form1096~
+End Sub"
+"vew"
+3,1096,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form1"
+"Form1096"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1099",1099,124,147,12,36,#TRUE#,0,"HTTP"
+"Sub object1099()
+    NextScreen ~Form1096~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1100",1100,84,147,12,36,#TRUE#,0,"GSM"
+"Sub object1100()
+    NextScreen ~Form1061~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1101",1101,44,147,12,36,#TRUE#,0,"Data"
+"Sub object1101()
+   NextScreen ~Form1032~
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1102",1102,4,147,12,36,#TRUE#,0,"Info"
+"Sub object1102()
+    NextScreen ~Form1003~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1103",1103,6,25,12,36,#TRUE#,0,"Test"
+"' Note: This example is intended for educational purposes only.
+' Real applications should probably use a more sophisticated implementation,
+' such as a state machine
+
+Sub object1103()
+    Dim result as Integer
+    Dim header as String
+    Dim body as String
+    
+    NSBTreoLib.PhoneTurnOn
+    result = NSBTreoLib.HTTPOpen
+    
+    If result <> 0 Then
+        MsgBox(~Opened~)
+        'GoTo closeIt
+        result = NSBTreoLib.HTTPSendRequest(~http://www.slashdot.org/~, 20000)
+        If result <> 0 Then
+            MsgBox(~Send succeded~)
+            header = NSBTreoLib.HTTPGetHeader(20000)
+            MsgBox(~Header: ~ + header)
+            If ~ERROR~ <> Left(header, 5) Then
+                body = ~init~ 'Set it to something non-null
+                Do While ~~ <> body
+                    body = NSBTreoLib.HTTPRead(250, 20000)
+                    MsgBox(body)
+                Loop
+                MsgBox(~Done reading~)
+                NSBTreoLib.HTTPEnd
+            End If
+        Else
+            MsgBox(~Send failed~)
+        End If
+        closeIt:
+        MsgBox(~Closing~)
+        NSBTreoLib.HTTPClose
+    Else
+        MsgBox(~Couldn't open~)
+    End If
+End Sub"
+"end"

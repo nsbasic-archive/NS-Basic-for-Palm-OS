@@ -1,0 +1,970 @@
+"mdl"
+7
+"ScreenLibTest","appl","SMot",1106,200,0
+"Sub main()
+    LoadLibrary ~ScreenLib~, ~SL~
+    SL.SetTableEntryIndex(22, 108)
+End Sub"
+0
+0
+"ScreenLibTest"
+"1.0"
+""
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#FALSE#
+"WinScreenMode"
+"frmModes"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetSupportedDepths",1005,28,3,12,96,#TRUE#,0,"GetSupportedDepths"
+"Sub object1005()
+    Dim SupportedDepths as Integer
+    Dim SupportedDepthsHex as String
+    
+    SupportedDepths = SL.GetSupportedDepths()
+    
+    txtSupportedDepthsInt.text = Str(SupportedDepths)
+    
+    SupportedDepthsHex = ~00000000~
+    
+    'StrIToH
+    SysTrapSub 203, 2, SupportedDepthsHex, SupportedDepths
+    
+    txtSupportedDepthsHex.text = SupportedDepthsHex
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSupportedDepthsInt",1006,24,18,12,44,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1008",1008,8,18,11,13,#TRUE#,0,"Int:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1009",1009,72,18,11,19,#TRUE#,0,"Hex:"
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSupportedDepthsHex",1010,96,18,12,60,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnDepthSupported",1012,4,34,12,84,#TRUE#,0,"DepthSupported?"
+"Sub object1012()
+    Dim Depth as Integer
+    Dim yesNo as Integer
+    
+    Depth = Val(txtDepth.text)
+    
+    yesNo = SL.DepthSupported(Depth)
+    
+    txtDepthSupported.text = Str(yesNo)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtDepth",1013,92,34,12,24,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtDepthSupported",1016,128,34,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnColorSupported",1018,4,65,12,79,#TRUE#,0,"ColorSupported?"
+"Sub object1018()
+    Dim yesNo as Integer
+    
+    yesNo = SL.ColorSupported()
+    
+    txtColorSupported.text = Str(yesNo)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtColorSupported",1019,128,66,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSaveScreenMode",1021,52,128,12,60,#TRUE#,0,"SaveMode"
+"Sub object1021()
+    SL.SaveScreenMode()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnRestoreScreenMode",1022,52,144,12,60,#TRUE#,0,"RestoreMode"
+"Sub object1022()
+    SL.RestoreScreenMode()
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVersion",1023,116,128,12,40,#TRUE#,0,"Version?"
+"Sub object1023()
+    Dim Version as Double
+    Dim CompileTime as String
+    Dim CompileDate as String
+    
+    Version = SL.Version()
+    
+    MsgBox ~ScrModes Library version = ~ + Str(Version)
+    
+    CompileTime = ~hh:mm:ss~
+    CompileDate = ~mon dd yyyy~
+    
+    SL.CompileInfo CompileDate, CompileTime
+    
+    MsgBox ~ScrModes library compiled :  ~ + CompileDate + ~ ~ + CompileTime
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnCurrentDepth",1025,4,50,12,80,#TRUE#,0,"CurrentDepth?"
+"Sub object1025()
+    Dim Depth as Integer
+    
+    Depth = SL.CurrentDepth()
+    
+    txtDepth.text = Str(Depth)
+    txtDepthSupported.text = ~~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetDepth",1026,90,50,12,60,#TRUE#,0,"SetDepth"
+"Sub object1026()
+    Dim Depth as Integer
+    
+    Depth = Val(txtDepth.text)
+    SL.SetDepth Depth
+    
+    txtDepthSupported.text = ~~
+    Redraw
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtColor",1027,92,66,12,24,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnCurrentColor",1029,4,80,12,80,#TRUE#,0,"CurrentColor?"
+"Sub object1029()
+    Dim Color as Integer
+    
+    Color = SL.CurrentColor()
+    
+    txtColor.text = Str(Color)
+    txtColorSupported.text = ~~
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetColor",1030,88,81,12,60,#TRUE#,0,"SetColor"
+"Sub object1030()
+    Dim Color as Integer
+    
+    Color = Val(txtColor.text)
+    SL.SetColor Color
+    
+    txtColorSupported.text = ~~
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetToDefaults",1031,4,144,12,44,#TRUE#,0,"SetDefs"
+"Sub object1031()
+    SL.SetToDefaults()
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetDefaults",1032,4,128,12,44,#TRUE#,0,"GetDefs"
+"Sub object1032()
+    Dim Depth as Integer
+    Dim Color as Integer
+    Dim Width as Integer
+    Dim Height as Integer
+    
+    Depth = SL.DefaultDepth()
+    
+    txtDepth.text = Str(Depth)
+    txtDepthSupported.text = ~~
+
+    Color = SL.DefaultColor()
+    
+    txtColor.text = Str(Color)
+    txtColorSupported.text = ~~
+
+    Width = SL.DefaultWidth()
+    txtWidth.text = Str(Width)
+    
+    Height = SL.DefaultHeight()
+    txtHeight.text = Str(Height)
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnCurrentHeight",1033,4,96,12,80,#TRUE#,0,"CurrentHeight?"
+"Sub object1033()
+    Dim Height as Integer
+    
+    Height = SL.CurrentHeight()
+    
+    txtHeight.text = Str(Height)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetHeight",1034,88,96,12,30,#TRUE#,0,"Set"
+"Sub object1034()
+    Dim Height as Integer
+    
+    Height = Val(txtHeight.text)
+    
+    SL.SetHeight Height
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnCurrentWidth",1035,4,112,12,79,#TRUE#,0,"CurrentWidth?"
+"Sub object1035()
+    Dim Width as Integer
+    
+    Width = SL.CurrentWidth()
+    
+    txtWidth.text = Str(Width)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetWidth",1036,88,113,12,30,#TRUE#,0,"Set"
+"Sub object1036()
+    Dim Width as Integer
+    
+    Width = Val(txtWidth.text)
+    
+    SL.SetWidth Width
+    Redraw
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtHeight",1037,123,98,10,26,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtWidth",1039,123,114,10,26,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1044",1044,116,144,12,40,#TRUE#,0,"Done"
+"Sub object1044()
+    NextScreen ~frmMain~
+End Sub"
+"vew"
+3,1042,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"ScreenLibTest"
+"frmMain"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1043",1043,16,36,12,84,#TRUE#,0,"Modes"
+"Sub object1043()
+    NextScreen ~frmModes~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1064",1064,16,56,12,84,#TRUE#,0,"Color Tables"
+"Sub object1064()
+    SL.SetTableEntryIndex(22, 162)
+    NextScreen ~frmColorTables~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1074",1074,16,76,12,84,#TRUE#,0,"Color Operations"
+"Sub object1074()
+    NextScreen ~frmColorOperations~
+End Sub"
+"vew"
+3,1046,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"WinColorTables"
+"frmColorTables"
+"Sub Form1046_Before()
+
+End Sub"
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1047",1047,128,144,12,28,#TRUE#,0,"Done"
+"Sub object1047()
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1048",1048,4,20,11,26,#TRUE#,0,"Which:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1049",1049,88,20,11,25,#TRUE#,0,"Index:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtWhich",1050,32,20,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,5,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtIndex",1052,116,20,12,36,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1054",1054,4,32,11,17,#TRUE#,0,"Red:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,3,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtRed",1055,24,32,12,24,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1057",1057,52,32,11,27,#TRUE#,0,"Green:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,3,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtGreen",1058,80,32,12,24,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1060",1060,108,32,11,19,#TRUE#,0,"Blue:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,3,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtBlue",1061,128,32,12,24,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1063",1063,4,48,12,88,#TRUE#,0,"GetTableEntryIndex"
+"Sub object1063()
+    Dim Which as Integer
+    Dim Index as Integer
+    
+    Which = Val(txtWhich.text)
+    Index = SL.GetTableEntryIndex(Which)
+    txtIndex.text = Str(Index)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1065",1065,4,64,12,88,#TRUE#,0,"GetTableEntryRGB"
+"Sub object1065()
+    Dim Which as Integer
+    Dim Index as Integer
+    
+    Which = Val(txtWhich.text)
+    Index = SL.GetTableEntryRGB(Which)
+    txtIndex.text = Str(Index)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1066",1066,96,64,12,60,#TRUE#,0,"GetRGBRed"
+"Sub object1066()
+    Dim Red as Integer
+    
+    Red = SL.GetRGBRed()
+    txtRed.text = Str(Red)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1067",1067,96,80,12,60,#TRUE#,0,"GetRGBGreen"
+"Sub object1067()
+    Dim Green as Integer
+    
+    Green = SL.GetRGBGreen()
+    txtGreen.text = Str(Green)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1068",1068,96,96,12,60,#TRUE#,0,"GetRGBBlue"
+"Sub object1068()
+    Dim Blue as Integer
+    
+    Blue = SL.GetRGBBlue()
+    txtBlue.text = Str(Blue)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1069",1069,96,48,12,60,#TRUE#,0,"GetRGBIndex"
+"Sub object1069()
+    Dim Index as Integer
+    
+    Index = SL.GetRGBIndex()
+    txtIndex.text = Str(Index)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1070",1070,4,96,12,88,#TRUE#,0,"SetTableEntryRGB"
+"Sub object1070()
+    Dim Which as Integer
+    Dim Red as Integer
+    Dim Green as Integer
+    Dim Blue as Integer
+    
+    Which = Val(txtWhich.text)
+    Red = Val(txtRed.text)
+    Green = Val(txtGreen.text)
+    Blue = Val(txtBlue.text)
+    
+    SL.SetTableEntryRGB Which, Red, Green, Blue
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1071",1071,4,112,12,56,#TRUE#,0,"IndexToRGB"
+"Sub object1071()
+    Dim Index as Integer
+    
+    Index = Val(txtIndex.text)
+    SL.IndexToRGB Index
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1072",1072,64,112,12,56,#TRUE#,0,"RGBToIndex"
+"Sub object1072()
+    Dim Red as Integer
+    Dim Green as Integer
+    Dim Blue as Integer
+    Dim Index as Integer
+    
+    Red = Val(txtRed.text)
+    Green = Val(txtGreen.text)
+    Blue = Val(txtBlue.text)
+    
+    Index = SL.RGBToIndex(Red, Green, Blue)
+    txtIndex.text = Str(Index)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1073",1073,120,128,12,36,#TRUE#,0,"Redraw"
+"Sub object1073()
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1102",1102,4,80,12,88,#TRUE#,0,"SetTableEntryIndex"
+"Sub object1102()
+    Dim Which as Integer
+    Dim Index as Integer
+    
+    Which = Val(txtWhich.text)
+    Index = Val(txtIndex.text)
+    
+    SL.SetTableEntryIndex Which, Index
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1103",1103,4,128,12,60,#TRUE#,0,"PickClrIndex"
+"Sub object1103()
+    Dim Index as Integer
+    Dim Red as Integer
+    Dim Green as Integer
+    Dim Blue as Integer
+    Dim Changed as Integer
+    Dim Title as String
+    
+    Index = Val(txtIndex.text)
+    Title = ~Pick a Color (Index)~
+    Changed = SL.PickColorIndex(Index, Title)
+    If Changed = 1 Then
+        Index = SL.GetRGBIndex()
+        Red = SL.GetRGBRed()
+        Green = SL.GetRGBGreen()
+        Blue = SL.GetRGBBlue()
+
+        txtIndex.text = Str(Index)
+        txtRed.text = Str(Red)
+        txtGreen.text = Str(Green)
+        txtBlue.text = Str(Blue)
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1104",1104,4,144,12,48,#TRUE#,0,"Brightness"
+"Sub object1104()
+    SL.BrightnessAdjust()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1105",1105,56,144,12,40,#TRUE#,0,"Contrast"
+"Sub object1105()
+    SL.ContrastAdjust()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1106",1106,68,128,12,48,#TRUE#,0,"PickClrRGB"
+"Sub object1106()
+    Dim Index as Integer
+    Dim Red as Integer
+    Dim Green as Integer
+    Dim Blue as Integer
+    Dim Changed as Integer
+    Dim Title as String
+    
+    Red = Val(txtRed.text)
+    Green = Val(txtGreen.text)
+    Blue = Val(txtBlue.text)
+    Title = ~Pick a Color (RGB)~
+    Changed = SL.PickColorRGB(Red, Green, Blue, Title)
+    If Changed = 1 Then
+        Index = SL.GetRGBIndex()
+        Red = SL.GetRGBRed()
+        Green = SL.GetRGBGreen()
+        Blue = SL.GetRGBBlue()
+
+        txtIndex.text = Str(Index)
+        txtRed.text = Str(Red)
+        txtGreen.text = Str(Green)
+        txtBlue.text = Str(Blue)
+    End If
+End Sub"
+"vew"
+3,1076,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"ColorOperations"
+"frmColorOperations"
+"Sub Form1076_Before()
+End Sub"
+0
+"Sub Form1076_After()
+    Dim NewIndex as Integer
+    Dim OldIndex as Integer
+    
+    NewIndex = 48
+    'OldIndex = SL.SetForeColor(NewIndex)
+    
+    NewIndex = 80
+    'OldIndex = SL.SetTextColor(NewIndex)
+
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1077",1077,116,144,12,36,#TRUE#,0,"Done"
+"Sub object1077()
+    NextScreen ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1078",1078,116,124,12,36,#TRUE#,0,"Redraw"
+"Sub object1078()
+    Redraw
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1079",1079,88,20,11,42,#TRUE#,0,"NewIndex:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,3,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtNewIndex",1080,132,20,12,24,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1082",1082,4,20,12,60,#TRUE#,0,"SetForeColor"
+"Sub object1082()
+    Dim NewIndex as Integer
+    Dim OldIndex as Integer
+    
+    NewIndex = Val(txtNewIndex.text)
+    OldIndex = SL.SetForeColor(NewIndex)
+    
+    txtOldIndex.text = Str(OldIndex)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1083",1083,4,36,12,60,#TRUE#,0,"SetBackColor"
+"Sub object1083()
+    Dim NewIndex as Integer
+    Dim OldIndex as Integer
+    
+    NewIndex = Val(txtNewIndex.text)
+    OldIndex = SL.SetBackColor(NewIndex)
+    
+    txtOldIndex.text = Str(OldIndex)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1084",1084,4,52,12,60,#TRUE#,0,"SetTextColor"
+"Sub object1084()
+    Dim NewIndex as Integer
+    Dim OldIndex as Integer
+    
+    NewIndex = Val(txtNewIndex.text)
+    OldIndex = SL.SetTextColor(NewIndex)
+    
+    txtOldIndex.text = Str(OldIndex)
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1085",1085,88,32,11,39,#TRUE#,0,"OldIndex:"
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,2,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtOldIndex",1086,132,34,12,50,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1088",1088,72,52,12,52,#TRUE#,0,"DrawText"
+"Sub object1088()
+    DrawChars ~Test~, 132, 51, nsbNormal
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1090",1090,4,72,12,44,#TRUE#,0,"DrawLine"
+"Sub object1090()
+    Dim X1 as Integer
+    Dim Y1 as Integer
+    Dim X2 as Integer
+    Dim Y2 as Integer
+    
+    X1 = 6
+    Y1 =107
+    X2 = 154
+    Y2 = 107
+    SL.DrawLine X1, Y1, X2, Y2
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1091",1091,56,72,12,68,#TRUE#,0,"DrawGrayLine"
+"Sub object1091()
+    Dim X1 as Integer
+    Dim Y1 as Integer
+    Dim X2 as Integer
+    Dim Y2 as Integer
+    
+    X1 = 6
+    Y1 =107
+    X2 = 154
+    Y2 = 107
+    SL.DrawGrayLine X1, Y1, X2, Y2
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1092",1092,4,88,12,44,#TRUE#,0,"EraseLine"
+"Sub object1092()
+    Dim X1 as Integer
+    Dim Y1 as Integer
+    Dim X2 as Integer
+    Dim Y2 as Integer
+    
+    X1 = 6
+    Y1 =107
+    X2 = 154
+    Y2 = 107
+    SL.EraseLine X1, Y1, X2, Y2
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1093",1093,56,88,12,68,#TRUE#,0,"InvertLine"
+"Sub object1093()
+    Dim X1 as Integer
+    Dim Y1 as Integer
+    Dim X2 as Integer
+    Dim Y2 as Integer
+    
+    X1 = 6
+    Y1 =107
+    X2 = 154
+    Y2 = 107
+    SL.InvertLine X1, Y1, X2, Y2
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1095",1095,4,112,12,52,#TRUE#,0,"DrawPixel"
+"Sub object1095()
+    Dim X as Integer
+    Dim Y as Integer
+    Dim Success as Integer
+    Dim Mode as Integer
+    
+    Mode = 0
+    Success = SL.ScreenLock(Mode)
+    For X = 63 to 73
+        For Y = 128 to 138
+            SL.DrawPixel X, Y
+        Next
+    Next
+    SL.ScreenUnlock()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1096",1096,60,112,12,48,#TRUE#,0,"ErasePixel"
+"Sub object1096()
+    Dim X as Integer
+    Dim Y as Integer
+    
+    For X = 63 to 73
+        For Y = 128 to 138
+            SL.ErasePixel X, Y
+        Next
+    Next
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1097",1097,4,128,12,52,#TRUE#,0,"InvertPixel"
+"Sub object1097()
+    Dim X as Integer
+    Dim Y as Integer
+    
+    For X = 63 to 73
+        For Y = 128 to 138
+            SL.InvertPixel X, Y
+        Next
+    Next
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1098",1098,4,144,12,52,#TRUE#,0,"GetPixel"
+"Sub object1098()
+    Dim X as Integer
+    Dim Y as Integer
+    Dim Index as Integer
+    
+    X = 63
+    Y = 128
+    Index = SL.GetPixel(X, Y)
+    
+    txtPixelIndex.text = Str(Index)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,3,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtPixelIndex",1099,60,144,12,50,#TRUE#,0,""
+""
+"end"

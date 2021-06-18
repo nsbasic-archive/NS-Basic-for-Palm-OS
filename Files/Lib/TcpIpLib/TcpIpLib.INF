@@ -1,0 +1,22 @@
+[General]
+
+ExtensionName=TcpIpLib
+PrcName=TcpIpLib.prc
+Version=2.1
+Manufacturer=MvDuin
+InfVers=2.0
+
+=HelpStart=
+""
+"Simple TCP/IP library for NSBasic for the Palm"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version=1, func, 0, "Version() as flt8"
+TcpOpen=2, func, 3, "TcpOpen(in hostname as string, in port as int32, in timeout as int32) as int32"
+TcpClose=3, sub, 1, "TcpClose(in fd as int32)"
+TcpRead=4, func, 4, "TcpRead(in fd as int32, in len as int32, in set as string, in timeout as int32) as string"
+TcpWrite=5, func, 2, "TcpWrite(in fd as int32, in data as string) as int32"
+TcpFlush=6, sub, 1, "TcpFlush(in fd as int32)"

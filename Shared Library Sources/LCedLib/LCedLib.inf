@@ -1,0 +1,17 @@
+[General]
+ExtensionName=LCedLib
+PrcName=LCedLib.prc
+Version=1.0
+Manufacturer=MvDuin
+=HelpStart=
+""
+"Utility library for LCedit"
+""
+=HelpEnd=
+[GlobalMethods]
+Version=1, func, 0, "verDbl = Version()"
+TcpOpen=2, func, 3, "fd = TcpOpen(hostname, port, timeout)"
+TcpClose=3, sub, 1, "TcpClose(fd)"
+TcpRead=4, func, 4, "data = TcpRead(fd, bytes, matchset, timeout)"
+TcpWrite=5, func, 2, "bytes = TcpWrite(fd, data)"
+TcpFlush=6, sub, 1, "TcpFlush(fd)"

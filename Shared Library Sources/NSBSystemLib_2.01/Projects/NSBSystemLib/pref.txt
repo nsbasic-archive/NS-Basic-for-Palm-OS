@@ -1,0 +1,97 @@
+// PARAM1  0 = prefVersion
+// PARAM1  1 = prefCountry
+// PARAM1  2 = prefDateFormat
+// PARAM1  3 = prefLongDateFormat
+// PARAM1  4 = prefWeekStartDay
+// PARAM1  5 = prefTimeFormat
+// PARAM1  6 = prefNumberFormat
+// PARAM1  7 = prefAutoOffDuration
+// PARAM1          prefAutoOffDurationSecs is now preferred 
+// PARAM1          (prefAutoOffDuration is in minutes)
+// PARAM1  8 = prefSysSoundLevelV20
+// PARAM1  9 = prefGameSoundLevelV20
+// PARAM1 10 = prefAlarmSoundLevelV20
+// PARAM1 11 = prefHidePrivateRecordsV33
+// PARAM1 12 = prefDeviceLocked
+// PARAM1 13 = prefLocalSyncRequiresPassword
+// PARAM1 14 = prefRemoteSyncRequiresPassword
+// PARAM1 15 = prefSysBatteryKind
+// PARAM1 16 = prefAllowEasterEggs
+// PARAM1 17 = prefMinutesWestOfGMT
+// PARAM1          deprecated old unsigned minutes EAST of GMT
+// PARAM1 18 = prefDaylightSavings
+// PARAM1          deprecated old daylight saving time rule
+// PARAM1 19 = prefRonamaticChar
+// PARAM1 20 = prefHard1CharAppCreator
+// PARAM1          App creator for hard key #1
+// PARAM1 21 = prefHard2CharAppCreator
+// PARAM1 22 = prefHard3CharAppCreator
+// PARAM1 23 = prefHard4CharAppCreator
+// PARAM1 24 = prefCalcCharAppCreator
+// PARAM1 25 = prefHardCradleCharAppCreator
+// PARAM1 26 = prefLauncherAppCreator
+// PARAM1 27 = prefSysPrefFlags
+// PARAM1 28 = prefHardCradle2CharAppCreator
+// PARAM1 29 = prefAnimationLevel
+// PARAM1 
+// PARAM1 Additions for PalmOS 3.0:
+// PARAM1 -------------------------
+// PARAM1 30 = prefSysSoundVolume
+// PARAM1 	actual amplitude - error beeps and other 
+// PARAM1         non-alarm/game sounds
+// PARAM1 31 = prefGameSoundVolume
+// PARAM1 32 = prefAlarmSoundVolume
+// PARAM1 33 = prefBeamReceive
+// PARAM1          not used - use ExgLibControl with ir(Get/Set)
+// PARAM1          ScanningMode instead
+// PARAM1 34 = prefCalibrateDigitizerAtReset
+// PARAM1          True makes the user calibrate at soft reset time
+// PARAM1 35 = prefSystemKeyboardID
+// PARAM1          ID of the preferred keyboard resource
+// PARAM1 36 = prefDefSerialPlugIn
+// PARAM1          creator ID of the default serial plug-in
+// PARAM1 
+// PARAM1 Additions for PalmOS 3.1:
+// PARAM1 -------------------------
+// PARAM1 37 = prefStayOnWhenPluggedIn
+// PARAM1 38 = prefStayLitWhenPluggedIn
+// PARAM1 
+// PARAM1 Additions for PalmOS 3.2:
+// PARAM1 -------------------------
+// PARAM1 39 = prefAntennaCharAppCreator
+// PARAM1          App creator for antenna key
+// PARAM1 
+// PARAM1 Additions for PalmOS 3.3:
+// PARAM1 -------------------------
+// PARAM1 40 = prefMeasurementSystem
+// PARAM1          English, Metric, etc.
+// PARAM1 	
+// PARAM1 Additions for PalmOS 3.5:
+// PARAM1 -------------------------
+// PARAM1 41 = prefShowPrivateRecords
+// PARAM1          returns privateRecordViewEnum
+// PARAM1 42 = prefAutoOffDurationSecs
+// PARAM1 	
+// PARAM1 Additions for PalmOS 4.0:
+// PARAM1 -------------------------
+// PARAM1 43 = prefTimeZone
+// PARAM1          GMT offset in minutes, + for east of GMT, - for west
+// PARAM1 44 = prefDaylightSavingAdjustment
+// PARAM1          current DST adjustment in minutes (typically 0 or 60)
+// PARAM1 45 = prefAutoLockType
+// PARAM1           Never, on poweroff, after preset delay or at preset time.
+// PARAM1 46 = prefAutoLockTime
+// PARAM1           Auto lock preset time or delay.
+// PARAM1 47 = prefAutoLockTimeFlag
+// PARAM1           For Minutes or Hours.
+// PARAM1 48 = prefLanguage
+// PARAM1           Language spoken in country selected via 
+// PARAM1           Setup app/Formats panel
+// PARAM1 49 = prefLocale
+// PARAM1           Locale for country selected via Setup app/Formats panel 
+// PARAM1 50 = prefTimeZoneCountry
+// PARAM1           Country used to specify time zone.
+// PARAM1 51 = prefAttentionFlags
+// PARAM1           User prefs for getting user// PARAM1 s attention
+// PARAM1 52 = prefDefaultAppCreator
+// PARAM1           Default application launched on reset.

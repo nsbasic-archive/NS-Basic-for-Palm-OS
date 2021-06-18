@@ -1,0 +1,36 @@
+<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+    <a href="#Version">Version</a>                   version = Version()
+    <a href="#CompileInfo">CompileInfo</a>               compileDateTime = CompileInfo()
+    <a href="#GPSLibLoaded">GPSLibLoaded</a>              loaded = GPSLibLoaded()
+    <a href="#GPSGetLibAPIVersion">GPSGetLibAPIVersion</a>       version = GPSGetLibAPIVersion()
+    <a href="#GPSClose">GPSClose</a>                  GPSClose()
+    <a href="#GPSOpen">GPSOpen</a>                   status = GPSOpen()
+    <a href="#GPSGetMaxSatellites">GPSGetMaxSatellites</a>       maxSatellites = GPSGetMaxSatellites()
+    <a href="#GPSGetPosition">GPSGetPosition</a>            status = GPSGetPosition(lat, lon, altMSL, altWGS84)
+    <a href="#GPSGetPVT">GPSGetPVT</a>                 status = GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+    <a href="#GPSGetStatus">GPSGetStatus</a>              status = GPSGetStatus(mode, fix, epe, eph, epv)
+    <a href="#GPSGetTime">GPSGetTime</a>                status = GPSGetTime(seconds, fracSeconds)
+    <a href="#GPSGetVelocity">GPSGetVelocity</a>            status = GPSGetVelocity(east, north, up, track, speed)
+    <a href="#GPSGetSatellites">GPSGetSatellites</a>          status = GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)
+    <a href="#GetLatLonSemicircles">GetLatLonSemicircles</a>      GetLatLonSemicircles lat, lon
+    <a href="#GetLatLonDegMin">GetLatLonDegMin</a>           GetLatLonDegMin lat, lon
+    <a href="#GetLatLonDegMinSec">GetLatLonDegMinSec</a>        GetLatLonDegMinSec lat, lon
+    <a href="#GetErrString">GetErrString</a>              errString = GetErrString(status)
+    <a href="#GetModeString">GetModeString</a>             modeString = GetModeString(mode)
+    <a href="#GetFixString">GetFixString</a>              fixString = GetFixString(fix)
+    <a href="#GetSatStatusValues">GetSatStatusValues</a>        GetSatStatusValues statusBits, ephemeris, differential, used, rising
+    <a href="#ConvertDouble">ConvertDouble</a>             convertedValue = ConvertDouble(originalValue, conversionType)
+    <a href="#LatLonToUTM">LatLonToUTM</a>               zone = LatLonToUTM(datumID, lat, lon, easting, northing)
+    <a href="#UTMToLatLon">UTMToLatLon</a>               UTMToLatLon datumID, zone, easting, northing, lat, lon
+    <a href="#UTMDistance">UTMDistance</a>               distance = UTMDistance(zone1, easting1, northing1, zone2, easting2, northing2, ewDir, ewDist, nsDir, nsDist)
+    <a href="#PwrSetLowPowerMode">PwrSetLowPowerMode</a>        status = PwrSetLowPowerMode(creatorID, enabled)
+    <a href="#RegisterNotifyEvents">RegisterNotifyEvents</a>      RegisterNotifyEvents locationChange, statusChange, lostFix, satDataChange, modeChange, displayResized
+    <a href="#WinGetDisplayExtent">WinGetDisplayExtent</a>       WinGetDisplayExtent x, y
+    <a href="#WinSetDisplayExtent">WinSetDisplayExtent</a>       WinSetDisplayExtent size
+    <a href="#FrmGetDIAPolicy">FrmGetDIAPolicy</a>           value = FrmGetDIAPolicy()
+    <a href="#FrmSetDIAPolicy">FrmSetDIAPolicy</a>           FrmSetDIAPolicy value
+    <a href="#PINGetDIAState">PINGetDIAState</a>            value = PINGetDIAState()
+    <a href="#PINSetDIAState">PINSetDIAState</a>            PINSetDIAState value
+    <a href="#PINGetInputTriggerState">PINGetInputTriggerState</a>   value = PINGetInputTriggerState()
+    <a href="#PINSetInputTriggerState">PINSetInputTriggerState</a>   PINSetInputTriggerState value
+</pre>

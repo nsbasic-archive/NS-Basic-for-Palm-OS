@@ -1,0 +1,1658 @@
+"mdl"
+6
+"NSBKyocera_Test","Test","NsBk",1236,111,0
+"Global CurrentAppSet as Integer
+
+Sub main()
+    LoadLibrary ~NSBKyoceraLib~, ~NSBK~
+    CurrentAppSet = 0    
+End Sub"
+""
+""
+"NSBK_Test"
+"1.0"
+"Sub project_termination_9915()
+    Dim Status as Integer
+    
+    Status = NSBK.ProxyCurrentApp(~~)
+
+End Sub"
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"NSBKyocera_Test"
+"frmMain"
+""
+0
+"Sub Form1004_after()
+    Dim Status as Integer
+    Dim Class as Integer
+    Dim Signal as Integer
+    Dim SysTime as Integer
+    
+    If CurrentAppSet = 0 Then
+        Status = NSBK.ProxyCurrentApp(~NsBk~)
+
+        If Status = 1 Then
+            SysTime = NSBK.ProxyEventTime()
+            Class = NSBK.ProxyClass()
+            Signal = NSBK.ProxySignal()
+            MsgBox ~Proxy Started Me: ~ + Str(SysTime) + ~ ~ + Str(Class) + ~ ~ + Str(Signal)
+        End If
+        CurrentAppSet = 1
+    End If
+End Sub"
+"Sub Form1004_events()
+    Dim EventType as Integer
+    Dim Class as Integer
+    Dim Signal as Integer
+    
+    EventType = GetEventType()
+    If EventType = 25678 Then
+        Class = NSBK.ProxyClass()
+        Signal = NSBK.ProxySignal()
+        MsgBox ~Proxy Event: ~ + Str(Class) + ~ ~ + Str(Signal)
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1005",1005,8,20,12,72,#TRUE#,0,"Check Libraries"
+"Sub object1005()
+    NextForm ~frmCheckLibraries~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1030",1030,8,60,12,72,#TRUE#,0,"Phone Module"
+"Sub object1030()
+    NextForm ~frmPhoneModule~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1058",1058,8,80,12,72,#TRUE#,0,"Telephony 1"
+"Sub object1058()
+    NextForm ~frmTelephony1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1104",1104,8,100,12,72,#TRUE#,0,"Telephony 2"
+"Sub object1104()
+    NextForm ~frmTelephony2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1128",1128,8,40,12,72,#TRUE#,0,"Signals"
+"Sub object1128()
+    NextForm ~frmSignals~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1174",1174,8,120,12,72,#TRUE#,0,"Registry 1"
+"Sub object1174()
+    NextForm ~frmRegistry1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1175",1175,8,140,12,72,#TRUE#,0,"Registry 2"
+"Sub object1175()
+    NextForm ~frmRegistry2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1236",1236,112,140,12,40,#TRUE#,0,"Reset"
+"Sub object1236()
+    Dim Status as Integer
+    
+    Status = NSBK.ProxyCurrentApp(~~)
+
+    SysTrapSub 140, 0
+End Sub"
+"vew"
+3,1007,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Check Libraries"
+"frmCheckLibraries"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1008",1008,4,20,12,92,#TRUE#,0,"Libraries Present?"
+"Sub object1008()
+    Dim CorePresent as Integer
+    Dim RegistryPresent as Integer
+    
+    CorePresent = NSBK.CoreLibPresent()
+    RegistryPresent = NSBK.RegistryLibPresent()
+    
+    txtCorePresent.text = Str(CorePresent)
+    txtRegistryPresent.text = Str(RegistryPresent)
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCorePresent",1009,136,21,10,14,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1011",1011,108,20,10,24,#TRUE#,0,"Core:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtRegistryPresent",1012,136,33,10,14,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1014",1014,94,32,10,40,#TRUE#,0,"Registry:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1015",1015,4,48,12,92,#TRUE#,0,"CoreLibVersion?"
+"Sub object1015()
+    Dim CoreLibVersion as Double
+    
+    CoreLibVersion = NSBK.CoreLibGetVersion()
+    
+    txtCoreLibVersion.text = Str(CoreLibVersion)
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCoreLibVersion",1016,116,48,12,36,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1018",1018,4,68,12,92,#TRUE#,0,"RegistryLibVersion?"
+"Sub object1018()
+    Dim RegistryLibVersion as Double
+    
+    RegistryLibVersion = NSBK.RegGetVersion()
+    
+    txtRegistryLibVersion.text = Str(RegistryLibVersion)
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtRegistryLibVersion",1019,116,64,12,36,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1021",1021,4,88,12,92,#TRUE#,0,"NSBKyoceraVersion?"
+"Sub object1021()
+    Dim NSBKyoceraVersion as Double
+    
+    NSBKyoceraVersion = NSBK.Version()
+    
+    txtNSBKyoceraVersion.text = Str(NSBKyoceraVersion)
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtNSBKyoceraVersion",1022,116,88,12,36,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1024",1024,24,104,12,92,#TRUE#,0,"CompileInfo?"
+"Sub object1024()
+    Dim CompileDate as String
+    Dim CompileTime as String
+    
+    CompileDate = ~mon dd yyyy~
+    CompileTime = ~hh:mm:ss~
+    
+    NSBK.CompileInfo CompileDate, CompileTime
+    
+    txtCompileDate.text = CompileDate
+    txtCompileTime.text = CompileTime
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCompileDate",1025,8,120,12,64,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCompileTime",1027,84,120,12,64,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1029",1029,56,144,12,40,#TRUE#,0,"Done"
+"Sub object1029()
+    NextForm ~frmMain~
+End Sub"
+"vew"
+3,1032,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"PhoneModule"
+"frmPhoneModule"
+""
+0
+"Sub Form1032_after()
+    lblPowered.hide
+    lblInCall.hide
+    lblAMPS.hide
+    lblNoService.hide
+    lblHardPaused.hide
+    lblMuted.hide
+    lblLPM.hide
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1033",1033,36,112,12,80,#TRUE#,0,"Phone's Number?"
+"Sub object1033()
+    Dim PhoneNumber as String
+    
+    PhoneNumber = NSBK.ModGetPhoneNumber()
+    
+    txtPhoneNumber.text = PhoneNumber
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtPhoneNumber",1034,12,128,12,132,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1036",1036,56,144,12,40,#TRUE#,0,"Done"
+"Sub object1036()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1037",1037,8,20,12,52,#TRUE#,0,"PowerOn"
+"Sub object1037()
+    NSBK.ModPower 1
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1038",1038,84,20,12,52,#TRUE#,0,"PowerOff"
+"Sub object1038()
+    NSBK.ModPower 0
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1039",1039,8,52,12,52,#TRUE#,0,"GetState"
+"Sub object1039()
+    Dim State as Integer
+    
+    State = NSBK.ModGetState()
+    
+    txtState.text = Str(State)
+    
+    State = NSBK.ModStatePowered()
+    If State = 0 Then
+        lblPowered.hide
+    Else
+        lblPowered.show
+    End If
+
+    State = NSBK.ModStateInCall()
+    If State = 0 Then
+        lblInCall.hide
+    Else
+        lblInCall.show
+    End If
+
+    State = NSBK.ModStateAMPS()
+    If State = 0 Then
+        lblAMPS.hide
+    Else
+        lblAMPS.show
+    End If
+
+    State = NSBK.ModStateNoService()
+    If State = 0 Then
+        lblNoService.hide
+    Else
+        lblNoService.show
+    End If
+
+    State = NSBK.ModStateHardPaused()
+    If State = 0 Then
+        lblHardPaused.hide
+    Else
+        lblHardPaused.show
+    End If
+
+    State = NSBK.ModStateMuted()
+    If State = 0 Then
+        lblMuted.hide
+    Else
+        lblMuted.show
+    End If
+
+    State = NSBK.ModStateLPM()
+    If State = 0 Then
+        lblLPM.hide
+    Else
+        lblLPM.show
+    End If
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtState",1040,84,52,12,52,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1042",1042,8,36,12,52,#TRUE#,0,"Mute"
+"Sub object1042()
+    NSBK.ModMute 1
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1043",1043,84,36,12,52,#TRUE#,0,"UnMute"
+"Sub object1043()
+    NSBK.ModMute 0
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","lblPowered",1044,4,68,12,40,#TRUE#,0,"Powered"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblInCall",1045,4,80,12,32,#TRUE#,0,"In Call"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblAMPS",1046,100,80,12,28,#TRUE#,0,"AMPS"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblNoService",1047,44,80,12,48,#TRUE#,0,"No Service"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblHardPaused",1048,44,68,12,52,#TRUE#,0,"Hard Paused"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblMuted",1049,100,68,12,32,#TRUE#,0,"Muted"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblLPM",1050,132,80,12,24,#TRUE#,0,"LPM"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1051",1051,8,96,12,56,#TRUE#,0,"EarVolume"
+"Sub object1051()
+    Dim Adjust as Integer
+    Dim Volume as Integer
+    
+    Adjust = Val(txtAdjust.text)
+    Volume = NSBK.ModSetEarVolume(Adjust)
+    txtVolume.text = Str(Volume)
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1052",1052,68,96,12,20,#TRUE#,0,"adj:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtAdjust",1053,88,96,12,24,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1055",1055,116,96,12,16,#TRUE#,0,"vol:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtVolume",1056,136,96,12,20,#TRUE#,0,""
+""
+"vew"
+3,1060,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Telephony 2"
+"frmTelephony2"
+""
+0
+""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1061",1061,124,0,12,32,#TRUE#,0,"Status:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtStatus",1062,124,20,12,32,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1070",1070,4,144,12,40,#TRUE#,0,"Done"
+"Sub object1070()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1071",1071,4,20,12,52,#TRUE#,0,"GetCallInfo"
+"Sub object1071()
+    Dim Status as Integer
+    Dim SignalHist as Integer
+    Dim CallFlags as Integer
+    Dim CallerIDStatus as Integer
+    Dim DialingPaused as Integer
+    Dim Number as String
+    Dim FormattedNumber as String
+    Dim TimeOfCall as Integer
+    Dim CallDuration as Integer
+    Dim CallType as Integer
+    Dim BaudRate as Integer
+    Dim Err as Integer
+    Dim StrTimeOfCall as String
+    
+    Status = NSBK.TelGetCallInfo()
+    txtStatus.text = Str(Status)
+    
+    SignalHist = NSBK.TelCISignalHist()
+    txtSignalHist.text = Str(SignalHist)
+    
+    CallFlags = NSBK.TelCICallFlags()
+    txtCallFlags.text = Str(CallFlags)
+    
+    CallerIDStatus = NSBK.TelCICallerIDStatus()
+    txtCallerIDStatus.text = Str(CallerIDStatus)
+    
+    DialingPaused = NSBK.TelCIDialingPaused()
+    txtDialingPaused.text = Str(DialingPaused)
+    
+    Number = NSBK.TelCINumber()
+    FormattedNumber = NSBK.TelFormatNumber(Number, 2)
+    txtNumber.text = FormattedNumber
+    
+    TimeOfCall = NSBK.TelCITimeOfCall()
+    txtTimeOfCall.text = Str(TimeOfCall)
+    
+    StrTimeOfCall = NSBK.StringDateTime(TimeOfCall, 1, 1, 0)
+    txtStrTimeOfCall.text = StrTimeOfCall
+    
+    CallDuration = NSBK.TelCICallDuration()
+    txtCallDuration.text = Str(CallDuration)
+    
+    CallType = NSBK.TelCICallType()
+    txtCallType.text = Str(CallType)
+    
+    BaudRate = NSBK.TelCIBaudRate()
+    txtBaudRate.text = Str(BaudRate)
+    
+    Err = NSBK.TelCIErr()
+    txtErr.text = Str(Err)
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1072",1072,4,36,12,48,#TRUE#,0,"SignalHist:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSignalHist",1073,4,48,12,36,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1075",1075,52,36,12,40,#TRUE#,0,"CallFlags:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCallFlags",1076,48,48,12,52,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1078",1078,96,36,12,60,#TRUE#,0,"CallerIDStatus:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCallerIDStatus",1079,104,48,12,52,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1081",1081,4,60,12,48,#TRUE#,0,"DialPaused:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtDialingPaused",1082,4,72,12,52,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1084",1084,4,84,12,40,#TRUE#,0,"Number:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtNumber",1085,48,84,12,108,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1087",1087,4,96,12,24,#TRUE#,0,"Time:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtTimeOfCall",1088,36,96,12,44,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1090",1090,84,96,12,40,#TRUE#,0,"Duration:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCallDuration",1091,128,96,12,28,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtStrTimeOfCall",1106,36,108,12,120,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1108",1108,4,120,12,36,#TRUE#,0,"Waiting:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtWaiting",1109,48,120,12,108,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1111",1111,4,132,12,32,#TRUE#,0,"Ext:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtExt",1112,48,132,12,108,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1114",1114,56,60,12,40,#TRUE#,0,"CallType:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1115",1115,104,60,12,48,#TRUE#,0,"BaudRate:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtCallType",1116,60,72,12,36,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtBaudRate",1118,104,72,12,48,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1120",1120,56,144,12,32,#TRUE#,0,"Err:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtErr",1121,80,144,12,48,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1235",1235,60,20,12,56,#TRUE#,0,"ProxyGetCI"
+"Sub object1235()
+    Dim Status as Integer
+    Dim SignalHist as Integer
+    Dim CallFlags as Integer
+    Dim CallerIDStatus as Integer
+    Dim DialingPaused as Integer
+    Dim Number as String
+    Dim FormattedNumber as String
+    Dim TimeOfCall as Integer
+    Dim CallDuration as Integer
+    Dim CallType as Integer
+    Dim BaudRate as Integer
+    Dim Err as Integer
+    Dim StrTimeOfCall as String
+    
+    Status = NSBK.ProxyGetCallInfo()
+    txtStatus.text = Str(Status)
+    
+    SignalHist = NSBK.TelCISignalHist()
+    txtSignalHist.text = Str(SignalHist)
+    
+    CallFlags = NSBK.TelCICallFlags()
+    txtCallFlags.text = Str(CallFlags)
+    
+    CallerIDStatus = NSBK.TelCICallerIDStatus()
+    txtCallerIDStatus.text = Str(CallerIDStatus)
+    
+    DialingPaused = NSBK.TelCIDialingPaused()
+    txtDialingPaused.text = Str(DialingPaused)
+    
+    Number = NSBK.TelCINumber()
+    FormattedNumber = NSBK.TelFormatNumber(Number, 2)
+    txtNumber.text = FormattedNumber
+    
+    TimeOfCall = NSBK.TelCITimeOfCall()
+    txtTimeOfCall.text = Str(TimeOfCall)
+
+    StrTimeOfCall = NSBK.StringDateTime(TimeOfCall, 1, 1, 0)
+    txtStrTimeOfCall.text = StrTimeOfCall
+    
+    CallDuration = NSBK.TelCICallDuration()
+    txtCallDuration.text = Str(CallDuration)
+    
+    CallType = NSBK.TelCICallType()
+    txtCallType.text = Str(CallType)
+    
+    BaudRate = NSBK.TelCIBaudRate()
+    txtBaudRate.text = Str(BaudRate)
+    
+    Err = NSBK.TelCIErr()
+    txtErr.text = Str(Err)
+End Sub"
+"vew"
+3,1094,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Telephony1"
+"frmTelephony1"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1095",1095,8,40,12,48,#TRUE#,0,"MakeCall"
+"Sub object1095()
+    Dim Status as Integer
+    Dim DialNumber as String
+    
+    DialNumber = txtDialNumber.text
+    Status = NSBK.TelMakeCall(DialNumber)
+    
+    txtResult.text = Str(Status)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1096",1096,8,56,12,48,#TRUE#,0,"EndCall"
+"Sub object1096()
+    Dim Status as Integer
+    
+    Status = NSBK.TelEndCall()
+    
+    txtResult.text = Str(Status)
+
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1097",1097,88,56,12,56,#TRUE#,0,"AnswerCall"
+"Sub object1097()
+    Dim Status as Integer
+    
+    Status = NSBK.TelAnswerCall()
+    
+    txtResult.text = Str(Status)
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1098",1098,8,20,12,32,#TRUE#,0,"Status:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtResult",1099,48,20,12,52,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1101",1101,64,40,12,12,#TRUE#,0,"#:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtDialNumber",1102,80,40,12,76,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1105",1105,60,144,12,40,#TRUE#,0,"Done"
+"Sub object1105()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1123",1123,4,76,12,72,#TRUE#,0,"ResumeDialing"
+"Sub object1123()
+    NSBK.TelResumeDialing()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1124",1124,84,76,12,72,#TRUE#,0,"CancelPause"
+"Sub object1124()
+    NSBK.TelCancelPause()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1125",1125,4,96,12,72,#TRUE#,0,"GenerateDTMF"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Fld1126",1126,84,96,12,72,#TRUE#,0,""
+""
+"vew"
+3,1130,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Signals"
+"frmSignals"
+""
+0
+"Sub Form1130_after()
+    txtSigEnumNumber.text = ~0~
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1131",1131,112,144,12,40,#TRUE#,0,"Done"
+"Sub object1131()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1132",1132,4,84,12,64,#TRUE#,0,"SigEnumerate"
+"Sub object1132()
+    Dim Number as Integer
+    Dim inClass as Integer
+    Dim outClass as Integer
+    Dim Mask as Integer
+    Dim Priority as Integer
+    Dim Name as String
+    Dim CreatorType as Integer
+    Dim Creator as String
+    
+    Number = Val(txtSigEnumNumber.text) + 1
+    txtSigEnumNumber.text = Str(Number)
+    
+    inClass = Val(txtSigClass.text)
+    Mask = Val(txtSigMask.text)
+    Priority = Val(txtSigPriority.text)
+    Name = txtSigClassName.text
+    
+    outClass = NSBK.SigEnumerate(Number, inClass, Mask, Name)
+    txtSigEnumClass.text = Str(outClass)
+    
+    Mask = NSBK.SigMask()
+    txtSigEnumMask.text = Str(Mask)
+    
+    Priority = NSBK.SigPriority()
+    txtSigEnumPriority.text = Str(Priority)
+    
+    Creator = NSBK.SigCreator()
+    txtSigEnumCreator.text = Creator
+    
+    CreatorType = NSBK.SigType()
+    txtSigEnumType.text = Str(CreatorType)
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1133",1133,84,80,12,16,#TRUE#,0,"#:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigEnumNumber",1134,100,80,12,28,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1136",1136,4,100,12,32,#TRUE#,0,"Class:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1137",1137,4,112,12,32,#TRUE#,0,"Mask:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1138",1138,4,124,12,36,#TRUE#,0,"Priority:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigEnumClass",1139,40,100,12,32,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigEnumMask",1141,40,112,12,32,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigEnumPriority",1143,40,124,12,32,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1145",1145,4,136,12,36,#TRUE#,0,"Creator:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1146",1146,4,148,12,32,#TRUE#,0,"Type:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigEnumCreator",1147,40,136,12,32,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigEnumType",1149,40,148,12,32,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1151",1151,4,20,12,64,#TRUE#,0,"SigRegister"
+"Sub object1151()
+    Dim Class as Integer
+    Dim Mask as Integer
+    Dim Priority as Integer
+    Dim Creator as String
+    Dim Status as Integer
+    
+    Class = Val(txtSigClass.text)
+    Mask = Val(txtSigMask.text)
+    Priority = Val(txtSigPriority.text)
+    Creator = txtSigCreator.text
+    
+    Status = NSBK.SigRegister(Class, Mask, Priority, Creator)
+    
+    txtSigStatus.text = Str(Status)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1152",1152,4,36,12,64,#TRUE#,0,"SigUnregister"
+"Sub object1152()
+    Dim Class as Integer
+    Dim Mask as Integer
+    Dim Creator as String
+    Dim Status as Integer
+    
+    Class = Val(txtSigClass.text)
+    Mask = Val(txtSigMask.text)
+    Creator = txtSigCreator.text
+    
+    Status = NSBK.SigUnRegister(Class, Mask, Creator)
+    
+    txtSigStatus.text = Str(Status)
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1153",1153,76,32,12,24,#TRUE#,0,"Class:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1154",1154,76,56,12,40,#TRUE#,0,"Priority:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1155",1155,76,44,12,32,#TRUE#,0,"Mask:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1156",1156,8,56,12,36,#TRUE#,0,"Creator:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1158",1158,8,68,12,32,#TRUE#,0,"Name:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigClass",1159,116,32,12,40,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigMask",1161,116,44,12,40,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigPriority",1163,116,56,12,40,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigCreator",1167,44,56,12,28,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigClassName",1169,44,68,12,112,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1171",1171,76,20,12,32,#TRUE#,0,"Status:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSigStatus",1172,116,20,12,40,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1231",1231,76,96,12,80,#TRUE#,0,"ProxyRegister"
+"Sub object1231()
+    Dim Class as Integer
+    Dim Mask as Integer
+    Dim Priority as Integer
+    Dim Creator as String
+    Dim Status as Integer
+    
+    Class = Val(txtSigClass.text)
+    Mask = Val(txtSigMask.text)
+    Priority = Val(txtSigPriority.text)
+    Creator = txtSigCreator.text
+    
+    Status = NSBK.ProxyRegister(Class, Mask, Priority, Creator)
+    
+    txtSigStatus.text = Str(Status)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1232",1232,76,112,12,80,#TRUE#,0,"ProxyUnregister"
+"Sub object1232()
+    Dim Class as Integer
+    Dim Mask as Integer
+    Dim Status as Integer
+    
+    Class = Val(txtSigClass.text)
+    Mask = Val(txtSigMask.text)
+    
+    Status = NSBK.ProxyUnRegister(Class, Mask)
+    
+    txtSigStatus.text = Str(Status)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1233",1233,76,128,12,80,#TRUE#,0,"ProxyUnregstrAll"
+"Sub object1233()
+    NSBK.ProxyUnregisterAll()
+End Sub"
+"vew"
+3,1177,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Registry 1"
+"frmRegistry1"
+""
+0
+"Sub Form1177_after()
+    txtSchemeNumber.text = ~0~
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1178",1178,128,144,12,28,#TRUE#,0,"Done"
+"Sub object1178()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1182",1182,4,20,12,72,#TRUE#,0,"AddScheme"
+"Sub object1182()
+    Dim Status as Integer
+    Dim Scheme as String
+    Dim Creator as String
+    Dim CapFlags as Integer
+    
+    Scheme = txtScheme.text
+    Creator = txtSchemeCreator.text
+    CapFlags = Val(txtSchemeCapFlags.text)
+    
+    Status = NSBK.RegAddScheme(Scheme, Creator, CapFlags)
+    
+    txtSchemeStatus.text = Str(Status)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1183",1183,80,20,12,72,#TRUE#,0,"RemoveScheme"
+"Sub object1183()
+    Dim Status as Integer
+    Dim Scheme as String
+    Dim Creator as String
+    
+    Scheme = txtScheme.text
+    Creator = txtSchemeCreator.text
+    
+    Status = NSBK.RegRemoveScheme(Scheme, Creator)
+    
+    txtSchemeStatus.text = Str(Status)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1184",1184,4,36,12,72,#TRUE#,0,"EnableScheme"
+"Sub object1184()
+    Dim Status as Integer
+    Dim Scheme as String
+    Dim Creator as String
+    
+    Scheme = txtScheme.text
+    Creator = txtSchemeCreator.text
+    
+    Status = NSBK.RegEnableScheme(Scheme, Creator, 1)
+    
+    txtSchemeStatus.text = Str(Status)
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1185",1185,4,96,12,36,#TRUE#,0,"Scheme:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1186",1186,80,68,12,72,#TRUE#,0,"EnumSchemes"
+"Sub object1186()
+    Dim Number as Integer
+    Dim Scheme as String
+    Dim Name as String
+    Dim ShortName as String
+    Dim Creator as String
+    Dim CapFlags as Integer
+    Dim Enabled as Integer
+    
+    Number = Val(txtSchemeNumber.text) + 1
+    txtSchemeNumber.text = Str(Number)
+
+    Scheme = NSBK.RegEnumSchemes(Number)
+    txtScheme.text = Scheme
+    
+    Name = NSBK.RegSchemeName()
+    txtSchemeName.text = Name
+    
+    ShortName = NSBK.RegSchemeShortName()
+    txtSchemeShortName.text = ShortName
+    
+    Creator = NSBK.RegSchemeCreator()
+    txtSchemeCreator.text = Creator
+    
+    CapFlags = NSBK.RegSchemeFlags()
+    txtSchemeCapFlags.text = Str(CapFlags)
+    
+    Enabled = NSBK.RegSchemeEnabled()
+    txtSchemeEnabled.text = Str(Enabled)
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1187",1187,92,84,12,12,#TRUE#,0,"#:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeNumber",1188,108,84,12,48,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtScheme",1190,56,96,12,100,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1192",1192,4,132,12,36,#TRUE#,0,"Creator:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeCreator",1193,4,144,12,40,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1195",1195,44,132,12,40,#TRUE#,0,"CapFlags:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeCapFlags",1196,48,144,12,40,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1198",1198,4,80,12,32,#TRUE#,0,"Status:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeStatus",1199,44,84,12,44,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1201",1201,88,132,12,36,#TRUE#,0,"Enabled:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1202",1202,4,108,12,32,#TRUE#,0,"Name:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeName",1203,56,108,12,100,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1205",1205,4,120,12,52,#TRUE#,0,"ShortName:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeEnabled",1206,92,144,12,24,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSchemeShortName",1208,56,120,12,100,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1210",1210,80,36,12,72,#TRUE#,0,"DisableScheme"
+"Sub object1210()
+    Dim Status as Integer
+    Dim Scheme as String
+    Dim Creator as String
+    
+    Scheme = txtScheme.text
+    Creator = txtSchemeCreator.text
+    
+    Status = NSBK.RegEnableScheme(Scheme, Creator, 0)
+    
+    txtSchemeStatus.text = Str(Status)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1211",1211,4,52,12,72,#TRUE#,0,"GetHandler"
+"Sub object1211()
+    Dim Scheme as String
+    Dim Creator as String
+    
+    Scheme = txtScheme.text
+    Creator = txtSchemeCreator.text
+    
+    Creator = NSBK.RegGetHandler(Scheme)
+    
+    txtSchemeCreator.text = Creator
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1212",1212,80,52,12,72,#TRUE#,0,"SetHandler"
+"Sub object1212()
+    Dim Status as Integer
+    Dim Scheme as String
+    Dim Name as String
+    Dim ShortName as String
+    
+    Scheme = txtScheme.text
+    Name = txtSchemeName.text
+    ShortName = txtSchemeShortName.text
+    
+    Status = NSBK.RegSetHandlerName(Scheme, Name, ShortName)
+    
+    txtSchemeStatus.text = Str(Status)
+
+End Sub"
+"vew"
+3,1180,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Registry 2"
+"frmRegistry2"
+""
+0
+"Sub Form1180_after()
+    txtMacroNumber.text = ~0~
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1181",1181,56,144,12,40,#TRUE#,0,"Done"
+"Sub object1181()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1213",1213,8,20,12,64,#TRUE#,0,"AddMacro"
+"Sub object1213()
+    Dim URL as String
+    Dim ShortName as String
+    Dim Desc as String
+    
+    URL = txtMacroURL.text
+    ShortName = txtMacroShortName.text
+    Desc = txtMacroDesc.text
+    
+    NSBK.RegAddMacro URL, ShortName, Desc
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1214",1214,80,20,12,72,#TRUE#,0,"RemoveMacro"
+"Sub object1214()
+    Dim URL as String
+    
+    URL = txtMacroURL.text
+    
+    NSBK.RegRemoveMacro URL
+    
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1215",1215,8,36,12,64,#TRUE#,0,"EnumMacros"
+"Sub object1215()
+    Dim Number as Integer
+    Dim URL as String
+    Dim ShortName as String
+    Dim Desc as String
+    
+    Number = Val(txtMacroNumber.text) + 1
+    txtMacroNumber.text = Str(Number)
+    
+    URL = NSBK.RegEnumMacros(Number)
+    txtMacroURL.text = URL
+    
+    ShortName = NSBK.RegMacroShortName()
+    txtMacroShortName.text = ShortName
+    
+    Desc = NSBK.RegMacroDesc()
+    txtMacroDesc.text = Desc
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1216",1216,84,36,12,16,#TRUE#,0,"#:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMacroNumber",1217,100,36,12,36,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1219",1219,4,64,12,32,#TRUE#,0,"URL:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMacroURL",1220,56,64,12,96,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1222",1222,4,76,12,52,#TRUE#,0,"ShortName:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMacroShortName",1223,56,76,12,96,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1225",1225,4,88,12,32,#TRUE#,0,"Desc:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMacroDesc",1226,56,88,12,96,#TRUE#,0,""
+""
+"end"

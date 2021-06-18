@@ -1,0 +1,2166 @@
+"mdl"
+7
+"NSBiQueGPS_Test","appl","Nigt",1313,420,0
+"Global zone1 as String
+Global easting1 as Double
+Global northing1 as Double
+
+Global zone2 as String
+Global easting2 as Double
+Global northing2 as Double
+
+Sub Project_Startup()
+    LoadLibrary ~NSBiQueGPS~, ~NQG~
+End Sub"
+0
+0
+"NSBiQueGPS_Test"
+""
+""
+"vew"
+3,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBiQueGPS_Test"
+"frmMain"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1004",1004,4,18,12,68,#TRUE#,0,"THIS Version?"
+"Sub object1004()
+	Dim version as Double
+	
+	version = NQG.Version()
+    MsgBox Str(version)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1005",1005,80,18,12,76,#TRUE#,0,"THIS Compiled?"
+"Sub object1005()
+	Dim compileDateTime as String
+	
+	compileDateTime = NQG.CompileInfo()
+    MsgBox CompileDateTime
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1006",1006,4,34,12,68,#TRUE#,0,"API Loaded?"
+"Sub object1006()
+	Dim loaded as Integer
+	
+	loaded = NQG.GPSLibLoaded()
+    MsgBox Str(loaded)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1007",1007,80,34,12,76,#TRUE#,0,"API Version?"
+"Sub object1007()
+	Dim version as Integer
+	
+	version = NQG.GPSGetLibAPIVersion()
+    MsgBox Str(version)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1008",1008,4,50,12,68,#TRUE#,0,"API Lib Open"
+"Sub object1008()
+	Dim errString as String
+	Dim status as Integer
+	
+	status = NQG.GPSOpen()
+	errString = NQG.GetErrString(status)
+	MsgBox errString    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1009",1009,80,50,12,76,#TRUE#,0,"API Lib Close"
+"Sub object1009()
+	NQG.GPSClose()
+	MsgBox ~API Lib closed.~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1010",1010,4,66,12,68,#TRUE#,0,"MaxSatellites"
+"Sub object1010()
+	Dim maxSatellites as Integer
+	
+	maxSatellites = NQG.GPSGetMaxSatellites()
+    MsgBox Str(maxSatellites)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1011",1011,4,82,12,68,#TRUE#,0,"GetPosition"
+"Sub object1011()
+    NextForm ~frmGetPos~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1040",1040,80,66,12,76,#TRUE#,0,"GetStatus"
+"Sub object1040()
+    NextForm ~frmGetStatus~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1041",1041,4,98,12,68,#TRUE#,0,"GetTime"
+"Sub object1041()
+    NextForm ~frmGetTime~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1042",1042,80,82,12,76,#TRUE#,0,"GetVelocity"
+"Sub object1042()
+    NextForm ~frmGetVelocity~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1043",1043,4,114,12,68,#TRUE#,0,"Get Satellites"
+"Sub object1043()
+    NextForm ~frmGetSatellites~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1154",1154,80,98,12,76,#TRUE#,0,"ConvertDouble"
+"Sub object1154()
+    NextForm ~frmConvertDouble~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1155",1155,80,114,12,76,#TRUE#,0,"LatLonToUTM"
+"Sub object1155()
+    NextForm ~frmLatLonToUTM~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1201",1201,80,130,12,76,#TRUE#,0,"UTMToLatLon"
+"Sub object1201()
+    NextForm ~frmUTMToLatLon~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1221",1221,4,130,12,68,#TRUE#,0,"Pen Input Mgr"
+"Sub object1221()
+    NextForm ~frmPenInMgr~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1237",1237,4,146,12,68,#TRUE#,0,"Notify Events"
+"Sub object1237()
+    NextForm ~frmNotifyEvents~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1313",1313,80,146,12,76,#TRUE#,0,"LowPowerMode"
+"Sub object1313()
+    Dim enabled as Integer
+    Dim status as Integer
+    
+    enabled = Alert(~Low Power Mode~,~~,1,~Disable~, ~Enable~, ~Stay Enabled~)
+    status = NQG.PwrSetLowPowerMode(~Nigt~, enabled)
+    If status <> 1 Then
+        MsgBox ~PwrSetLowPowerMode returned: ~ + str(status)
+    End If
+End Sub"
+"vew"
+3,1013,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"GetPosition"
+"frmGetPos"
+""
+0
+""
+"Sub Form1013_Event()
+	Dim status as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim errString as String
+	Dim latDegMin as String
+	Dim lonDegMin as String
+	Dim latDegMinSec as String
+	Dim lonDegMinSec as String
+	Dim LatSemi as Integer
+	Dim LonSemi as Integer
+	Dim zone as String
+	Dim easting as Double
+	Dim northing as Double
+	Dim event as Integer
+	
+	event = GetEventType()
+	
+	If event = 30000 Then
+    	status = NQG.GPSGetPosition(lat, lon, altMSL, altWGS84)
+    	If status = 0 Then
+    	    fldPosCount.text = Str(val(fldPosCount.text) + 1)
+    	    NQG.GetLatLonSemicircles LatSemi, LonSemi
+    	    NQG.GetLatLonDegMin latDegMin, LonDegMin
+    	    NQG.GetLatLonDegMinSec latDegMinSec, LonDegMinSec
+    	    fldLatDegMinSec.text = latDegMinSec
+    	    fldLonDegMinSec.text = lonDegMinSec
+    	    fldLatDegrees.text = Str(lat)
+    	    fldLatDegMin.text = latDegMin
+    	    fldLatSemi.text = Str(latSemi)
+    	    fldLonDegrees.text = Str(lon)
+    	    fldLonDegMin.text = lonDegMin
+    	    fldLonSemi.text = Str(lonSemi)
+    	    fldAltMSL.text = str(altMSL)
+    	    fldAltWGS84.text = str(altWGS84)
+    	    zone = NQG.LatLonToUTM(0, lat, lon, easting, northing)
+    	    fldUTM.text = zone + ~  ~ + str(trunc(easting, 3)) + ~  ~ + str(trunc(northing, 3))
+    	End If
+    End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1014",1014,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1014()
+    NextForm ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1015",1015,4,16,11,16,#TRUE#,0,"Lat:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLatDegrees",1016,28,16,12,124,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLatDegMin",1018,8,28,12,84,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLatSemi",1020,96,28,12,56,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1025",1025,4,52,11,17,#TRUE#,0,"Lon:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLonDegrees",1026,28,52,12,124,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLonDegMin",1028,8,64,12,80,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLonSemi",1030,96,64,12,56,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1032",1032,4,100,11,31,#TRUE#,0,"AltMSL:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldAltMSL",1033,52,100,12,100,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1035",1035,4,112,11,42,#TRUE#,0,"AltWGS84:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldAltWGS84",1036,52,112,12,100,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetPosition",1038,4,128,12,72,#TRUE#,0,"GPSGetPosition"
+"Sub object1038()
+	Dim status as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim errString as String
+	Dim latDegMin as String
+	Dim lonDegMin as String
+	Dim latDegMinSec as String
+	Dim lonDegMinSec as String
+	Dim LatSemi as Integer
+	Dim LonSemi as Integer
+	Dim zone as String
+	Dim easting as Double
+	Dim northing as Double
+	
+	status = NQG.GPSGetPosition(lat, lon, altMSL, altWGS84)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPosition error = ~ + errString
+	Else
+	    NQG.GetLatLonSemicircles LatSemi, LonSemi
+	    NQG.GetLatLonDegMin latDegMin, LonDegMin
+	    NQG.GetLatLonDegMinSec latDegMinSec, LonDegMinSec
+	    fldLatDegMinSec.text = latDegMinSec
+	    fldLonDegMinSec.text = lonDegMinSec
+	    fldLatDegrees.text = Str(lat)
+	    fldLatDegMin.text = latDegMin
+	    fldLatSemi.text = Str(latSemi)
+	    fldLonDegrees.text = Str(lon)
+	    fldLonDegMin.text = lonDegMin
+	    fldLonSemi.text = Str(lonSemi)
+	    fldAltMSL.text = str(altMSL)
+	    fldAltWGS84.text = str(altWGS84)
+	    zone = NQG.LatLonToUTM(0, lat, lon, easting, northing)
+	    fldUTM.text = zone + ~  ~ + str(trunc(easting, 3)) + ~  ~ + str(trunc(northing, 3))
+	End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1107",1107,4,144,12,72,#TRUE#,0,"GPSGetPVT"
+"Sub object1107()
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	Dim latDegMin as String
+	Dim lonDegMin as String
+	Dim LatSemi as Integer
+	Dim LonSemi as Integer
+	
+	status = NQG.GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPVT error = ~ + errString
+	Else
+	    NQG.GetLatLonSemicircles LatSemi, LonSemi
+	    NQG.GetLatLonDegMin latDegMin, LonDegMin
+	    fldLatDegrees.text = Str(lat)
+	    fldLatDegMin.text = latDegMin
+	    fldLatSemi.text = Str(latSemi)
+	    fldLonDegrees.text = Str(lon)
+	    fldLonDegMin.text = lonDegMin
+	    fldLonSemi.text = Str(lonSemi)
+	    fldAltMSL.text = str(altMSL)
+	    fldAltWGS84.text = str(altWGS84)
+	End If
+
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1147",1147,4,88,11,22,#TRUE#,0,"UTM:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldUTM",1148,28,88,12,128,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLonDegMinSec",1150,8,76,12,144,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLatDegMinSec",1152,8,40,12,144,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1301",1301,80,128,12,36,#TRUE#,0,"Start"
+"Sub object1301()
+    NQG.RegisterNotifyEvents 30000, 0, 0, 0, 0, 0
+    fldPosCount.text = ~0~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1302",1302,120,128,12,36,#TRUE#,0,"Stop"
+"Sub object1302()
+    NQG.RegisterNotifyEvents 0, 0, 0, 0, 0, 0
+    fldPosCount.text = ~~
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#FALSE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldPosCount",1303,102,0,12,50,#TRUE#,0,""
+""
+"vew"
+3,1048,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"GetStatus"
+"frmGetStatus"
+""
+0
+"Sub Form1048_After()
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim errString as String
+	Dim fixString as String
+	Dim modeString as String
+	Dim ephFt as Double
+	Dim event as Integer
+	
+	event = GetEventType()
+	If Event = 30000 Then
+    	status = NQG.GPSGetStatus(mode, fix, epe, eph, epv)
+    	If status = 0 Then
+            fldStatusCount.text = str(val(fldStatusCount.text) + 1)
+    	    fldMode.text = str(mode)
+    	    modeString = NQG.GetModeString(mode)
+    	    fldModeString.text = modeString
+    	    fldFix.text = str(fix)
+    	    fixString = NQG.GetFixString(fix)
+    	    fldFixString.text = fixString
+    	    fldEPE.text = str(epe)
+    	    fldEPH.text = str(eph)
+    	    fldEPV.text = str(epv)
+    	    ephFt = NQG.ConvertDouble(eph, 2)
+    	    fldEPHFeet.text = str(ephFt)
+    	End If
+    End If
+
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1049",1049,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1049()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGPSGetStatus",1060,4,128,12,68,#TRUE#,0,"GPSGetStatus"
+"Sub object1060()
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim errString as String
+	Dim fixString as String
+	Dim modeString as String
+	Dim ephFt as Double
+	
+	status = NQG.GPSGetStatus(mode, fix, epe, eph, epv)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetStatus error = ~ + errString
+	Else
+	    fldMode.text = str(mode)
+	    modeString = NQG.GetModeString(mode)
+	    fldModeString.text = modeString
+	    fldFix.text = str(fix)
+	    fixString = NQG.GetFixString(fix)
+	    fldFixString.text = fixString
+	    fldEPE.text = str(epe)
+	    fldEPH.text = str(eph)
+	    fldEPV.text = str(epv)
+	    ephFt = NQG.ConvertDouble(eph, 2)
+	    fldEPHFeet.text = str(ephFt)
+	End If
+
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1061",1061,8,28,11,25,#TRUE#,0,"Mode:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1062",1062,8,44,11,14,#TRUE#,0,"Fix:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1063",1063,8,60,11,15,#TRUE#,0,"EPE:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1064",1064,8,76,11,17,#TRUE#,0,"EPH:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1065",1065,8,108,11,17,#TRUE#,0,"EPV:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldMode",1066,40,28,12,40,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldModeString",1069,88,28,12,68,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldFix",1071,40,44,12,44,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldFixString",1073,88,44,12,68,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldEPE",1075,40,60,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldEPH",1077,40,76,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldEPV",1079,40,108,12,116,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1106",1106,4,144,12,68,#TRUE#,0,"GPSGetPVT"
+"Sub object1106()
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	Dim fixString as String
+	Dim modeString as String
+	Dim ephFt as Double
+	
+	status = NQG.GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPVT error = ~ + errString
+	Else
+	    fldMode.text = str(mode)
+	    modeString = NQG.GetModeString(mode)
+	    fldModeString.text = modeString
+	    fldFix.text = str(fix)
+	    fixString = NQG.GetFixString(fix)
+	    fldFixString.text = fixString
+	    fldEPE.text = str(epe)
+	    fldEPH.text = str(eph)
+	    fldEPV.text = str(epv)
+	    ephFt = NQG.ConvertDouble(eph, 1)
+	    fldEPHFeet.text = str(ephFt)
+	End If
+
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldEPHFeet",1140,40,92,12,96,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1142",1142,140,92,11,8,#TRUE#,0,"ft"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1305",1305,78,128,12,36,#TRUE#,0,"Start"
+"Sub object1305()
+    NQG.RegisterNotifyEvents 0, 30000, 30000, 0, 30000, 0
+    fldStatusCount.text = ~0~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1306",1306,118,128,12,36,#TRUE#,0,"Stop"
+"Sub object1306()
+    NQG.RegisterNotifyEvents 0, 0, 0, 0, 0, 0
+    fldStatusCount.text = ~~
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#FALSE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldStatusCount",1307,106,0,12,50,#TRUE#,0,""
+""
+"vew"
+3,1051,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"GetTime"
+"frmGetTime"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1052",1052,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1052()
+    NextForm ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1081",1081,6,28,11,35,#TRUE#,0,"Seconds:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1082",1082,4,44,11,52,#TRUE#,0,"FracSeconds:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldSeconds",1083,60,28,12,96,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldFracSeconds",1085,60,44,12,96,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetTime",1087,4,128,12,60,#TRUE#,0,"GPSGetTime"
+"Sub object1087()
+	Dim status as Integer
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	
+	status = NQG.GPSGetTime(seconds, fracSeconds)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetTime error = ~ + errString
+	Else
+	    fldSeconds.text = str(seconds)
+	    fldFracSeconds.text = Str(fracSeconds)
+	End If
+
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1105",1105,4,144,12,60,#TRUE#,0,"GPSGetPVT"
+"Sub object1105()
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	
+	status = NQG.GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPVT error = ~ + errString
+	Else
+		fldSeconds.text = str(seconds)
+	    fldFracSeconds.text = Str(fracSeconds)
+	End If
+
+
+End Sub"
+"vew"
+3,1054,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"GetVelocity"
+"frmGetVelocity"
+""
+0
+""
+"Sub Form1054_Event()
+	Dim status as Integer
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim errString as String
+	Dim mph as Double
+    Dim event as Integer
+    
+    event = GetEventType()
+    If event = 30000 Then	
+    	status = NQG.GPSGetVelocity(east, north, up, track, speed)
+    	If status = 0 Then
+            fldVelocityCount.text = str(val(fldVelocityCount.text) + 1)
+    	    fldEast.text = str(east)
+    	    fldNorth.text = str(north)
+    	    fldUp.text = str(up)
+    	    fldTrack.text = str(track)
+    	    fldSpeed.text = str(speed)
+    	    mph = NQG.ConvertDouble(speed, 5)
+    	    fldMPH.text = str(mph)
+        End If
+	End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1055",1055,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1055()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1088",1088,4,128,12,72,#TRUE#,0,"GPSGetVelocity"
+"Sub object1088()
+	Dim status as Integer
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim errString as String
+	Dim mph as Double
+	
+	status = NQG.GPSGetVelocity(east, north, up, track, speed)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetVelocity error = ~ + errString
+	Else
+	    fldEast.text = str(east)
+	    fldNorth.text = str(north)
+	    fldUp.text = str(up)
+	    fldTrack.text = str(track)
+	    fldSpeed.text = str(speed)
+	    mph = NQG.ConvertDouble(speed, 5)
+	    fldMPH.text = str(mph)
+	End If
+
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1089",1089,8,24,11,19,#TRUE#,0,"East:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1090",1090,8,40,11,26,#TRUE#,0,"North:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1091",1091,8,56,11,13,#TRUE#,0,"Up:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1092",1092,8,72,11,26,#TRUE#,0,"Track:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1093",1093,8,88,11,27,#TRUE#,0,"Speed:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldEast",1094,40,24,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldNorth",1096,40,40,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldUp",1098,40,56,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldTrack",1100,40,72,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldSpeed",1102,40,88,12,112,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1104",1104,4,144,12,72,#TRUE#,0,"GPSGetPVT"
+"Sub object1104()
+	Dim status as Integer
+	Dim mode as Integer
+	Dim fix as Integer
+	Dim epe as Double
+	Dim eph as Double
+	Dim epv as Double
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim east as Double
+	Dim north as Double
+	Dim up as Double
+	Dim track as Double
+	Dim speed as Double
+	Dim seconds as Integer
+	Dim fracSeconds as Integer
+	Dim errString as String
+	Dim mph as Double
+	
+	status = NQG.GPSGetPVT(mode, fix, epe, eph, epv, lat, lon, altMSL, altWGS84, east, north, up, track, speed, seconds, fracSeconds)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPVT error = ~ + errString
+	Else
+		fldEast.text = str(east)
+	    fldNorth.text = str(north)
+	    fldUp.text = str(up)
+	    fldTrack.text = str(track)
+	    fldSpeed.text = str(speed)
+	    mph = NQG.ConvertDouble(speed, 5)
+	    fldMPH.text = str(mph)
+	End If
+
+
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldMPH",1143,40,104,12,92,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1145",1145,136,104,11,18,#TRUE#,0,"mph"
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#FALSE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldVelocityCount",1309,103,1,12,50,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1311",1311,81,129,12,36,#TRUE#,0,"Start"
+"Sub object1311()
+    NQG.RegisterNotifyEvents 30000, 0, 0, 0, 0, 0
+    fldPosCount.text = ~0~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1312",1312,120,128,12,36,#TRUE#,0,"Stop"
+"Sub object1312()
+    NQG.RegisterNotifyEvents 0, 0, 0, 0, 0, 0
+    fldPosCount.text = ~~
+End Sub"
+"vew"
+3,1057,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"GetSatellites"
+"frmGetSatellites"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1058",1058,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1058()
+    NextForm ~frmMain~
+End Sub"
+"lst"
+2
+4
+""
+"obj"
+2
+"lst","lstSatellites",1108,44,20,24,24,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1109",1109,4,20,11,36,#TRUE#,0,"Satellite:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1110",1110,72,16,12,84,#TRUE#,0,"Get Valid Satellites"
+"Sub object1110()
+	Dim status as Integer
+	Dim satellite as Integer
+	Dim svid as Integer
+	Dim statusBits as Integer
+	Dim snr as Integer
+	Dim azimuth as Double
+	Dim elevation as Double
+	Dim errString as String
+	Dim maxSatellites as Integer
+	Dim i as Integer
+	
+	lstSatellites.clear
+	maxSatellites = NQG.GPSGetMaxSatellites()
+	If maxSatellites > 0 Then
+	    For i = 1 to maxSatellites
+	        satellite = i
+	        status = NQG.GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)
+	        If status <> 0 Then
+	            errString = NQG.GetErrString(status)
+	            MsgBox ~GPSGetSatellites error = ~ + errString
+	        Else
+	            If svid < 255 Then
+    	            lstSatellites.add str(satellite)
+    	        End If
+	        End If
+	    Next
+	End If
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1111",1111,8,48,11,21,#TRUE#,0,"SVID:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldSVID",1112,32,48,12,28,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1114",1114,68,48,11,46,#TRUE#,0,"Status Bits:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldStatusBits",1115,120,48,12,36,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1117",1117,8,64,11,44,#TRUE#,0,"Ephemeris:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1118",1118,64,65,11,18,#TRUE#,0,"Diff:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1119",1119,92,65,11,22,#TRUE#,0,"Used:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1120",1120,124,65,11,25,#TRUE#,0,"Rising:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldEphemeris",1121,20,77,12,12,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDifferential",1123,64,77,12,12,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldUsed",1125,96,77,12,12,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldRising",1127,128,77,12,12,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1129",1129,8,93,11,18,#TRUE#,0,"SNR:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1130",1130,8,112,11,35,#TRUE#,0,"Azimuth:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1131",1131,8,125,11,39,#TRUE#,0,"Elevation:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldSNR",1133,48,92,12,108,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldAzimuth",1135,48,108,12,108,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldElevation",1137,48,124,12,108,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1139",1139,8,144,12,80,#TRUE#,0,"GPSGetSatellites"
+"Sub object1139()
+	Dim status as Integer
+	Dim satellite as Integer
+	Dim svid as Integer
+	Dim statusBits as Integer
+	Dim snr as Integer
+	Dim azimuth as Double
+	Dim elevation as Double
+	Dim errString as String
+	Dim eph as Integer
+	Dim dif as Integer
+	Dim used as Integer
+	Dim rising as Integer
+	
+	If lstSatellites.selected <> 0 Then
+	    satellite = val(lstSatellites.text(lstSatellites.selected))
+	    status = NQG.GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)
+	    If status <> 0 Then
+    	    errString = NQG.GetErrString(status)
+	        MsgBox ~GPSGetSatellites error = ~ + errString
+	    Else
+	        fldSVID.text = str(svid)
+	        fldStatusBits.text = str(statusBits)
+	        NQG.GetSatStatusValues statusBits, eph, dif, used, rising
+	        fldEphemeris.text = str(eph)
+	        fldDifferential.text = str(dif)
+	        fldUsed.text = str(used)
+	        fldRising.text = str(rising)
+	        fldSNR.text = str(snr)
+	        fldAzimuth.text = str(azimuth)
+	        fldElevation.text = str(elevation)
+	    End If
+	Else
+	    MsgBox ~No satellite has been selected.~
+    End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1146",1146,72,32,12,84,#TRUE#,0,"GetUsed Satellites"
+"Sub object1146()
+	Dim status as Integer
+	Dim satellite as Integer
+	Dim svid as Integer
+	Dim statusBits as Integer
+	Dim snr as Integer
+	Dim azimuth as Double
+	Dim elevation as Double
+	Dim errString as String
+	Dim maxSatellites as Integer
+	Dim i as Integer
+	Dim eph as Integer
+	Dim dif as Integer
+	Dim used as Integer
+	Dim rising as Integer
+	
+	lstSatellites.clear
+	maxSatellites = NQG.GPSGetMaxSatellites()
+	If maxSatellites > 0 Then
+	    For i = 1 to maxSatellites
+	        satellite = i
+	        status = NQG.GPSGetSatellites(satellite, svid, statusBits, snr, azimuth, elevation)
+	        If status <> 0 Then
+	            errString = NQG.GetErrString(status)
+	            MsgBox ~GPSGetSatellites error = ~ + errString
+	        Else
+	            If svid < 255 Then
+	                NQG.GetSatStatusValues statusBits, eph, dif, used, rising
+	                If used = 1 Then
+    	                lstSatellites.add str(satellite)
+    	            End If
+    	        End If
+	        End If
+	    Next
+	End If
+End Sub"
+"vew"
+3,1157,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"ConvertDouble"
+"frmConvertDouble"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1158",1158,116,144,12,36,#TRUE#,0,"Done"
+"Sub object1158()
+    NextForm ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1192",1192,4,24,11,25,#TRUE#,0,"Value:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldOrigValue",1193,36,24,12,120,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1195",1195,6,39,11,70,#TRUE#,0,"Converted Value:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldConvertedValue",1196,4,56,12,152,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1198",1198,4,72,11,47,#TRUE#,0,"Conversion:"
+""
+"lst"
+2
+4
+"1 - meters to inches	2 - meters to feet	3 - meters to miles	4 - kilometers to miles	5 - meters/sec to miles/hour	6 - meters/sec to kilometers/hour	7 - inches to meters	8 - feet to meters	9 - miles to meters	10 - miles to kilometers	11 - miles/hour to meters/sec	12 - kilometers/hour to meters/sec"
+"obj"
+2
+"lst","lstConversion",1199,4,84,44,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1200",1200,4,144,12,72,#TRUE#,0,"ConvertDouble"
+"Sub object1200()
+    Dim conversionID as Integer
+    Dim origValue as Double
+    Dim convertedValue as Double
+    
+    conversionID = lstConversion.selected
+    If conversionID > 0 Then
+        origValue = val(fldOrigValue.text)
+        convertedValue = NQG.ConvertDouble(origValue, conversionID)
+        fldConvertedValue.text = str(convertedValue)
+    Else
+        MsgBox ~No Conversion type selected.~
+    End If
+End Sub"
+"vew"
+3,1160,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"LatLonToUTM"
+"frmLatLonToUTM"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1161",1161,116,144,12,36,#TRUE#,0,"Done"
+"Sub object1161()
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1162",1162,4,144,12,36,#TRUE#,0,"Get 1st"
+"Sub object1162()
+	Dim status as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim errString as String
+	Dim zone as String
+	Dim easting as Double
+	Dim northing as Double
+	
+	status = NQG.GPSGetPosition(lat, lon, altMSL, altWGS84)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPosition error = ~ + errString
+	Else
+	    zone = NQG.LatLonToUTM(0, lat, lon, easting, northing)
+	    zone1 = zone
+	    easting1 = easting
+	    northing1 = northing
+	    fldUTM1.text = zone1 + ~ ~ + str(trunc(easting1, 3)) + ~ ~ + str(trunc(northing1, 3))
+	End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1163",1163,48,144,12,36,#TRUE#,0,"Get 2nd"
+"Sub object1163()
+	Dim status as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim errString as String
+	Dim zone as String
+	Dim easting as Double
+	Dim northing as Double
+	
+	Dim ewDir as String
+	Dim nsdir as String
+	Dim ewDist as Double
+	Dim nsDist as Double
+	Dim dist as Double
+	Dim distFt as Double
+	Dim ewDistFt as Double
+	Dim nsDistFt as Double
+	
+	status = NQG.GPSGetPosition(lat, lon, altMSL, altWGS84)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPosition error = ~ + errString
+	Else
+	    zone = NQG.LatLonToUTM(0, lat, lon, easting, northing)
+	    zone2 = zone
+	    easting2 = easting
+	    northing2 = northing
+	    fldUTM2.text = zone2 + ~ ~ + str(trunc(easting2, 3)) + ~ ~ + str(trunc(northing2, 3))
+	    dist = NQG.UTMDistance(zone1, easting1, northing1, zone2, easting2, northing2, ewDir, ewDist, nsDir, nsDist)
+	    fldewDir.text = ewDir
+	    fldewDist.text = str(ewDist)
+	    fldnsDir.text = nsDir
+	    fldnsDist.text = str(nsDist)
+	    flddist.text = str(dist)
+	    distFt = NQG.ConvertDouble(dist, 2)
+	    fldDistFt.text = str(distFt)
+	    ewDistFt = NQG.ConvertDouble(ewDist, 2)
+	    fldewDistFt.text = str(ewDistFt)
+	    nsDistFt = NQG.ConvertDouble(nsDist, 2)
+	    fldnsDistFt.text = str(nsDistFt)
+	End If
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1164",1164,4,16,11,27,#TRUE#,0,"UTM1:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldUTM1",1165,32,16,12,124,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1167",1167,4,28,11,27,#TRUE#,0,"UTM2:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldUTM2",1168,32,28,12,124,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1170",1170,4,40,11,25,#TRUE#,0,"ewDir:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1171",1171,4,52,11,29,#TRUE#,0,"ewDist:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1172",1172,4,80,11,23,#TRUE#,0,"nsDir:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1173",1173,4,92,11,27,#TRUE#,0,"nsDist:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldewDir",1175,36,40,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldewDist",1177,36,52,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldnsDir",1179,36,80,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldnsDist",1181,36,92,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDist",1183,36,116,12,116,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1185",1185,4,116,11,17,#TRUE#,0,"dist:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDistFt",1186,36,128,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldnsDistFt",1188,36,104,12,116,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldewDistFt",1190,36,64,12,116,#TRUE#,0,""
+""
+"vew"
+3,1203,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"UTMToLatLon"
+"frmUTMToLatLon"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1204",1204,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1204()
+    NextForm ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1205",1205,4,24,11,36,#TRUE#,0,"Orig Lat:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1206",1206,4,40,11,37,#TRUE#,0,"Orig Lon:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1207",1207,4,56,11,22,#TRUE#,0,"UTM:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1208",1208,4,72,11,16,#TRUE#,0,"Lat:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1209",1209,4,88,11,17,#TRUE#,0,"Lon:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldOrigLat",1210,44,24,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldOrigLon",1212,44,40,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldUTMx",1214,44,56,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldNewLat",1216,44,72,12,112,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldNewLon",1218,44,88,12,112,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1220",1220,4,144,12,68,#TRUE#,0,"UTMToLatLon"
+"Sub object1220()
+	Dim status as Integer
+	Dim lat as Double
+	Dim lon as Double
+	Dim altMSL as Double
+	Dim altWGS84 as Double
+	Dim errString as String
+	Dim zone as String
+	Dim easting as Double
+	Dim northing as Double
+	
+	status = NQG.GPSGetPosition(lat, lon, altMSL, altWGS84)
+	If status <> 0 Then
+	    errString = NQG.GetErrString(status)
+	    MsgBox ~GPSGetPosition error = ~ + errString
+	Else
+	    fldOrigLat.text = str(lat)
+	    fldOrigLon.text = str(lon)
+	    zone = NQG.LatLonToUTM(0, lat, lon, easting, northing)
+	    fldUTMx.text = zone + ~ ~ + str(trunc(easting, 3)) + ~ ~ + str(trunc(northing, 3))
+	    lat = 0
+	    lon = 0
+	    NQG.UTMToLatLon 0, zone, easting, northing, lat, lon
+	    fldNewLat.text = str(lat)
+	    fldNewLon.text = str(lon)
+	End If
+
+End Sub"
+"vew"
+3,1223,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,225,0,#FALSE#,#TRUE#
+"Pen Input Manager"
+"frmPenInMgr"
+"Sub Form1223_Before()
+    NQG.WinSetDisplayExtent 1
+End Sub"
+0
+"Sub Form1223_After()
+    NQG.RegisterNotifyEvents 0, 0, 0, 0, 0, 30000
+End Sub"
+"Sub Form1223_Event()
+    Dim event as Integer
+    Dim value as Integer
+     
+    event = GetEventType()
+    If event = 30000 Then
+    	value = NQG.PINGetDIAState()
+    	If value > 0 Then
+    	    Redraw
+    	End If
+    End If
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1224",1224,120,144,12,36,#TRUE#,0,"Done"
+"Sub object1224()
+    NQG.WinSetDisplayExtent 0
+    NextForm ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1235",1235,120,210,12,36,#TRUE#,0,"Test"
+"Sub object1235()
+    MsgBox ~Hello~
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldMaxX",1261,14,20,12,18,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1263",1263,34,20,11,8,#TRUE#,0,"Y:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldMaxY",1264,44,20,12,18,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1266",1266,52,210,12,50,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1268",1268,4,210,11,44,#TRUE#,0,"Test Input:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1271",1271,108,20,12,22,#TRUE#,0,"Get"
+"Sub object1271()
+    Dim maxX as Integer
+    Dim maxY as Integer
+    
+    NQG.WinGetDisplayExtent maxX, maxY
+    fldMaxX.text = str(maxX)
+    fldMaxY.text = str(maxY)
+    If maxY > 160 Then
+        chkLarge.status = nsbChecked
+    Else
+        chkLarge.status = nsbUnchecked
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1272",1272,134,20,12,22,#TRUE#,0,"Set"
+"Sub object1272()
+    Dim size as Integer
+    If chkLarge.status = nsbChecked Then
+        size = 1
+    Else
+        size = 0
+    End If
+    NQG.WinSetDisplayExtent size
+End Sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","chkLarge",1273,64,20,12,42,#TRUE#,0,"Large"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1274",1274,108,50,12,22,#TRUE#,0,"Get"
+"Sub object1274()
+    Dim value as Integer
+
+	value = NQG.FrmGetDIAPolicy()
+	fldDiaPolicy.text = str(value)
+	If value = 1 Then
+        chkCustom.status = nsbChecked
+    Else
+        chkCustom.status = nsbUnchecked
+    End If
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDiaPolicy",1275,32,50,12,18,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1277",1277,134,50,12,22,#TRUE#,0,"Set"
+"Sub object1277()
+    Dim value as Integer
+
+    If chkCustom.status = nsbChecked Then
+        value = 1
+    Else
+        value = 0
+    End If
+	NQG.FrmSetDIAPolicy value
+
+End Sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","chkCustom",1278,52,50,12,50,#TRUE#,0,"Custom"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1279",1279,108,66,12,22,#TRUE#,0,"Get"
+"Sub object1279()
+    Dim value as Integer
+
+	value = NQG.PINGetDIAState()
+    fldDIAState.text = str(value)
+    lstDIAState.selected = value + 1
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDIAState",1280,32,66,12,18,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1283",1283,4,20,11,8,#TRUE#,0,"X:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1284",1284,4,50,11,26,#TRUE#,0,"Policy:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1285",1285,4,66,11,25,#TRUE#,0,"State:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1286",1286,134,66,12,22,#TRUE#,0,"Set"
+"Sub object1286()
+	Dim value as Integer
+   
+    If lstDIAState.selected = 0 Then
+        lstDIAState.selected = 1
+    End If
+    value = lstDIAState.selected - 1
+	NQG.PINSetDIAState value
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1287",1287,18,36,11,103,#TRUE#,0,"Dynamic Input Area (DIA)"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1291",1291,18,106,11,54,#TRUE#,0,"Input Trigger"
+""
+"lst"
+2
+3
+"Open	Closed	None"
+"obj"
+2
+"lst","lstDIAState",1292,54,66,33,50,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1293",1293,4,120,11,25,#TRUE#,0,"State:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldTriggerState",1294,32,120,12,18,#TRUE#,0,""
+""
+"lst"
+2
+3
+"Enabled	Disabled	None"
+"obj"
+2
+"lst","lstTriggerState",1296,54,120,33,50,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1297",1297,108,120,12,22,#TRUE#,0,"Get"
+"Sub object1297()
+	Dim value as Integer
+
+	value = NQG.PINGetInputTriggerState()
+    fldTriggerState.text = str(value)
+    lstTriggerState.selected = value + 1
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1298",1298,134,120,12,22,#TRUE#,0,"Set"
+"Sub object1298()
+	Dim value as Integer
+   
+    If lstTriggerState.selected = 0 Then
+        lstTriggerState.selected = 1
+    End If
+    value = lstTriggerState.selected - 1
+	NQG.PINSetInputTriggerState value
+
+End Sub"
+"vew"
+3,1239,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Notify Events"
+"frmNotifyEvents"
+""
+0
+"Sub Form1239_After()
+    fldLocationChange.text = ~0~
+    fldStatusChange.text = ~0~
+    fldLostFix.text = ~0~
+    fldSatDataChange.text = ~0~
+    fldModeChange.text = ~0~
+    fldDisplayResized.text = ~0~
+    NQG.RegisterNotifyEvents 30001, 30002, 30003, 30004, 30005, 30006
+End Sub"
+"Sub Form1239_Event()
+    Dim event as Integer
+    
+    event = GetEventType()
+    Select Case event
+        Case 30001
+            fldLocationChange.text = str(val(fldLocationChange.text) + 1)
+        Case 30002
+            fldStatusChange.text = str(val(fldStatusChange.text) + 1)
+        Case 30003
+            fldLostFix.text = str(val(fldLostFix.text) + 1)
+        Case 30004
+            fldSatDataChange.text = str(val(fldSatDataChange.text) + 1)
+        Case 30005
+            fldModeChange.text = str(val(fldModeChange.text) + 1)
+        Case 30006
+            fldDisplayResized.text = str(val(fldDisplayResized.text) + 1)
+    End Select
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1240",1240,5,22,11,69,#TRUE#,0,"Location Change:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1241",1241,5,38,11,61,#TRUE#,0,"Status Change:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1242",1242,5,56,11,34,#TRUE#,0,"Lost Fix:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1243",1243,5,72,11,70,#TRUE#,0,"Sat Data Change:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1244",1244,5,88,11,57,#TRUE#,0,"Mode Change:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1245",1245,5,104,11,64,#TRUE#,0,"Display Resized:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLocationChange",1246,88,21,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldStatusChange",1248,88,37,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldLostFix",1250,88,55,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldSatDataChange",1252,88,71,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldModeChange",1254,88,88,12,50,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDisplayResized",1256,88,104,12,50,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1258",1258,121,146,12,36,#TRUE#,0,"Done"
+"Sub object1258()
+    NextForm ~frmMain~
+End Sub"
+"end"

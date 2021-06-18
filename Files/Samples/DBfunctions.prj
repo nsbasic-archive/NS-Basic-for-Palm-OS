@@ -1,0 +1,89 @@
+"mdl"
+6
+"DBTest","Test","Test",1009,1,0
+"sub main()
+dim dbtestfile as database
+end sub
+"
+""
+""
+""
+""
+""
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Screen1004"
+"Screen1004"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1005",1005,40,36,12,40,#TRUE#,0,"Create"
+"sub object1005()
+dim result as integer
+result=dbcreate(dbtestfile, ~DbTestFile~, 0, ~WGPH~)
+msgbox str(result)
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1006",1006,40,52,12,40,#TRUE#,0,"Open"
+"sub object1006()
+dim result as integer
+result=dbopen(dbtestfile, ~DbTestFile~, 0)
+msgbox str(result)
+
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1007",1007,40,84,12,40,#TRUE#,0,"Close"
+"sub object1007()
+dim result as integer
+result=dbclose(dbtestfile)
+msgbox str(result)
+
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1008",1008,40,100,12,40,#TRUE#,0,"Erase"
+"sub object1008()
+dim result as integer
+result=dberase(dbtestfile)
+msgbox str(result)
+
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1009",1009,32,68,12,56,#TRUE#,0,"Insert 3 recs"
+"sub object1009()
+dim result as integer
+result=dbInsert(dbtestfile, 1,~This is record 1~)
+msgbox ~Inserting record 1: ~ + str(result)
+result=dbInsert(dbtestfile, 2,~This is record 2~)
+msgbox ~Inserting record 2: ~ + str(result)
+result=dbInsert(dbtestfile, 3,~This is record 3~)
+msgbox ~Inserting record 3: ~ + str(result)
+
+end sub
+"
+"end"

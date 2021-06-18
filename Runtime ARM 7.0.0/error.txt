@@ -1,0 +1,23 @@
+basc.c line 1607, 3506:
+
+  Removal of verb_start_new_parag breaks backward compatibility?
+
+basc.c line 2636:
+
+  Remove debug message
+
+basc.c line 8313:
+
+ case 67:  //max
+
+  should be
+
+ case 6:  //max
+
+basc.c line 8472...:
+
+  fix text of errors
+
+code.c line 3384...:
+
+  changes in indices break backward compatibility

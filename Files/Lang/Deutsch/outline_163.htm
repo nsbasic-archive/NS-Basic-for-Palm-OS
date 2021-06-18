@@ -1,0 +1,124 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SerialReceiveWithEvent</title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>SerialReceiveWithEvent                                                                      Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SERIALRECEIVEWITHEVENT()</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Diese Funktion
+bringt den PDA dazu, auf eingehende Daten der seriellen Schnittstelle zu warten.
+Sobald Zeichen empfangen werden, wird ein NsbSerialEvent ausgelöst und Sie
+können die Daten durch Ihre Eventcode Routine auswerten lassen. Die Funktion
+benötigt keine Parameter. Die Ergebnis Codes sind unter SerialOpen beschrieben.
+Erfordert Palm OS 3.5 oder höher und wird nicht von allen Versionen von Palm OS
+5 unterstützt. Als Workaround für Geräte, die diese Funktion nicht
+unterstützen, empfiehlt es sich, einen Timer zum regelmäßigen Kontrollieren des
+Serial Ports zu verwenden.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>'anywhere in your program after serial port is opened</p>
+
+<p class=Code>Global err as integer</p>
+
+<p class=Code>err=SerialReceiveWithEvent()</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>'in your form's Event Script</p>
+
+<p class=Code>    </p>
+
+<p class=Code>    Dim received as String</p>
+
+<p class=Code>    If
+getEventType()=nsbSerialIn Then</p>
+
+<p class=Code>        MsgBox
+&quot;Serial In Event&quot;</p>
+
+<p class=Code>       
+err=serialReceive(received, 10, 0)</p>
+
+<p class=Code>      If Err &gt; 0 Then</p>
+
+<p class=Code>        Beep</p>
+
+<p class=Code>       
+error.text=str(err) </p>
+
+<p class=Code>       
+data.text=data.text+&quot;.&quot;+Received</p>
+
+<p class=Code>      Else </p>
+
+<p class=Code>       
+error.text=&quot;&quot;</p>
+
+<p class=Code>       
+data.text=data.text+received</p>
+
+<p class=Code>      End If </p>
+
+<p class=Code>    End If </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

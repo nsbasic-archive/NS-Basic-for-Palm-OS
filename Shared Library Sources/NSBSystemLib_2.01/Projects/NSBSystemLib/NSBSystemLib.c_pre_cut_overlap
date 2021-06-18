@@ -1,0 +1,4772 @@
+//
+//    NSBSystemLib.c
+//
+
+#define VERSION 1.0
+// MANUFACTURER GlowkaWare
+// INFHELP ""
+// INFHELP "NSBSystemLib Shared Library"
+// INFHELP ""
+// INFHELP "This library provides support for calling system/PalmOS"
+// INFHELP "API functions from NSBasic."
+// INFHELP ""
+// INFHELP "Written by Ron Glowka, August 2001"
+// INFHELP ""
+
+#include <PalmOS.h>			// Includes all Palm OS headers
+#include <DLServer.h>
+
+#define BUILDING_THIS_LIB	// Defined in this file only...
+#include "NSBSystemLib.h"		// Library public definitions
+
+#if defined(__GNUC__)
+    #include "NSBSystemLibDispatch.c"
+#endif
+
+
+#define THIS_REQUIRES_GLOBALS
+#ifdef THIS_REQUIRES_GLOBALS
+    #include "NSBSystemLibGlobals.h"
+#else
+    #define THIS_ALLOCATE_GLOBALS
+    #define THIS_FREE_GLOBALS
+    #define THIS_ATTACH_GLOBALS
+    #define THIS_DETACH_GLOBALS
+#endif
+
+#define bitDepthMask(depth)    (1L << (depth - 1))
+#define bitMask(bit)           (1L << bit)
+
+/********************************************************************
+ *                    S y s V e r s i o n
+ ********************************************************************/
+static Boolean SysVersion(THIS_LibGlobalsPtr gP, UInt32 verMajor, UInt32 verMinor)
+{
+	UInt32 major;
+	UInt32 minor;
+	UInt32 ver;
+
+	if (gP == NULL) {
+        FtrGet(sysFtrCreator, sysFtrNumROMVersion, &ver);
+    	major = sysGetROMVerMajor(ver);
+	    minor = sysGetROMVerMinor(ver);
+	}
+	else {
+	    major = gP->major;
+	    minor = gP->minor;
+	}
+	if (major > verMajor)
+	    return true;
+	if (major == verMajor && minor >= verMinor)
+	    return true;
+	    
+	return false;
+}
+
+
+/********************************************************************
+ *      P r o g r e s s C a l l b a c k F u n c t i o n
+ ********************************************************************/
+Boolean ProgressCallbackFunction(PrgCallbackDataPtr cbP) 
+{
+    if (cbP->canceled)
+        StrCopy(cbP->textP, "Cancelling...");
+    else
+        StrNCopy(cbP->textP, cbP->message, cbP->textLen);
+    return true;
+}
+
+/********************************************************************
+ *                  C o n t r o l P o i n t e r
+ ********************************************************************/
+ControlType *ControlPointer(Int32 objID) {
+    FormPtr   formPtr;
+    UInt16    controlIndex;
+    
+    formPtr = FrmGetActiveForm();
+    if (formPtr != NULL) {
+        if (objID != 0)
+            controlIndex = FrmGetObjectIndex(formPtr, (UInt16 ) objID);
+        else
+            controlIndex = FrmGetFocus(formPtr);
+        if (controlIndex != noFocus)
+            return FrmGetObjectPtr(formPtr, controlIndex);
+        else
+            return NULL;
+    }
+    else
+        return NULL;
+}
+
+/********************************************************************
+ *                     F i e l d P o i n t e r
+ ********************************************************************/
+FieldType *FieldPointer(Int32 objID) {
+    FormPtr   formPtr;
+    UInt16    fieldIndex;
+    
+    formPtr = FrmGetActiveForm();
+    if (formPtr != NULL) {
+        if (objID != 0)
+            fieldIndex = FrmGetObjectIndex(formPtr, (UInt16 ) objID);
+        else
+            fieldIndex = FrmGetFocus(formPtr);
+        if (fieldIndex != noFocus)
+            return FrmGetObjectPtr(formPtr, fieldIndex);
+        else
+            return NULL;
+    }
+    else
+        return NULL;
+}
+
+/********************************************************************
+ *                    O b j e c t I n d e x
+ ********************************************************************/
+UInt16 ObjectIndex(Int32 objID, FormPtr *formPtr) {
+    
+    *formPtr = FrmGetActiveForm();
+    if (*formPtr != NULL)
+        if (objID != 0)
+            return FrmGetObjectIndex(*formPtr, (UInt16 ) objID);
+        else
+            return FrmGetFocus(*formPtr);
+    else
+        return noFocus;
+}
+
+/********************************************************************
+ *                      F i n d P r o g r a m
+ ********************************************************************/
+Int32 FindProgram(char *pgmName, UInt32 *creatorID, UInt16 *cardNo, LocalID *pgmID, UInt16 refNum) {
+    UInt16  i;
+    LocalID dbID;
+    THIS_ATTACH_GLOBALS
+
+    if (StrCompare(pgmName, gP->pgmName) == 0) {
+        if (creatorID != NULL)
+            *creatorID = gP->pgmCreatorID;
+        if (cardNo != NULL)
+            *cardNo = gP->pgmCardNo;
+        if (pgmID != NULL)
+            *pgmID = gP->pgmID;
+        THIS_DETACH_GLOBALS
+        return 0;
+    }
+    else {
+        for (i = 0; i < MemNumCards(); i++)
+            if ((dbID = DmFindDatabase(i, pgmName)) != 0)
+                break;
+        if (dbID != 0) {
+            if (DmDatabaseInfo(i, dbID, NULL, NULL, NULL, 
+                               NULL, NULL, NULL, NULL, NULL, 
+                               NULL, NULL, &gP->pgmCreatorID) == errNone) {
+                StrCopy(gP->pgmName, pgmName);
+                gP->pgmID = dbID;
+                gP->pgmCardNo = i;
+                if (pgmID != NULL)
+                    *pgmID = dbID;
+                if (cardNo != NULL)
+                    *cardNo = i;
+                if (creatorID != NULL)
+                    *creatorID = gP->pgmCreatorID;
+                THIS_DETACH_GLOBALS
+                return 0;
+            }
+        }
+    }
+    
+    StrCopy(gP->pgmName, "");
+    THIS_DETACH_GLOBALS
+    return -1;      // Program not found
+}
+
+// SECTION Version Information:
+// DESC The version information functions provide information about
+// DESC the version of the NSBSystemLib Shared Library and about the 
+// DESC user's PalmOS System.
+
+/********************************************************************
+ *                     T H I S _ V e r s i o n
+ ********************************************************************/
+Err THIS_Version(UInt16 refNum, double *version) 
+// DESC Returns the version number of the NSBSystemLib Shared Library.
+{	
+
+    *version = VERSION;
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ C o m p i l e I n f o
+ ********************************************************************/
+Err THIS_CompileInfo(UInt16 refNum, char *compileDateTime) 
+// DESC Returns the date and time that the NSBSystemLib was compiled.
+{	
+    char dateTime[21];
+	
+    StrCopy(dateTime, __DATE__);
+    StrCat(dateTime, " ");
+    StrCat(dateTime, __TIME__);
+    StrCopy(compileDateTime, dateTime);
+
+    return 0;
+}
+
+/********************************************************************
+ *                   S y s t e m V e r s i o n
+ ********************************************************************/
+Err THIS_SystemVersion(UInt16 refNum, double *version) 
+// DESC Returns the version number of the PalmOS system.
+// NOTES See also:  GlobalVersionMajor(), GlobalVersionMinor()
+{
+	Int32 major;
+	Int32 minor;
+	char  majorStr[16];
+	char  minorStr[16];
+	char  verStr[32];
+	FlpCompDouble uDbl;
+	UInt32 ver;
+	
+    FtrGet(sysFtrCreator, sysFtrNumROMVersion, &ver);
+	major = sysGetROMVerMajor(ver);
+	minor = sysGetROMVerMinor(ver);
+    StrIToA(majorStr, major);
+    StrIToA(minorStr, minor);
+    StrCopy(verStr, majorStr);
+    StrCat(verStr, ".");
+    StrCat(verStr, minorStr);
+    uDbl.fd = FlpAToF(verStr);
+    
+	*version = uDbl.d;
+	return 0;
+}
+
+// SECTION Access To Shared Library Global Variables:
+// DESC Currently, shared libraries may return only one numeric
+// DESC value from a function call.  A number of functions in
+// DESC this library, however, have multiple numeric values that
+// DESC they retrieve.  In order to make these values available,
+// DESC they are stored as a library global variable.  The 
+// DESC following functions return the values of these global
+// DESC variables.
+// DESC  
+// DESC In general, the global access functions are used after
+// DESC making a specific function call.
+
+/********************************************************************
+ *           T H I S _ G l o b a l V e r s i o n M a j o r
+ ********************************************************************/
+Err THIS_GlobalVersionMajor(UInt16 refNum, Int32 *gblMajor)
+// DESC Returns the major version number portion of the PalmOS version.
+// DESC This value is stored as a library global variable at library
+// DESC load time. 
+// NOTES See also:  SystemVersion()
+{
+    THIS_ATTACH_GLOBALS
+    *gblMajor = gP->major;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ G l o b a l V e r s i o n M i n o r
+ ********************************************************************/
+Err THIS_GlobalVersionMinor(UInt16 refNum, Int32 *gblMinor)
+// DESC Returns the minor version number portion of the PalmOS version.
+// DESC This value is stored as a library global variable at library
+// DESC load time. 
+// NOTES See also:  SystemVersion()
+{
+    THIS_ATTACH_GLOBALS
+    *gblMinor = gP->minor;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ G l o b a l X
+ ********************************************************************/
+Err THIS_GlobalX(UInt16 refNum, Int32 *x)
+// DESC Returns the value of the global variable "x" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *x = gP->screenX;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ G l o b a l Y
+ ********************************************************************/
+Err THIS_GlobalY(UInt16 refNum, Int32 *y)
+// DESC Returns the value of the global variable "y" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *y = gP->screenY;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+    
+/********************************************************************
+ *              T H I S _ G l o b a l S t a r t X
+ ********************************************************************/
+Err THIS_GlobalStartX(UInt16 refNum, Int32 *startX)
+// DESC Returns the value of the global variable "startX" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *startX = gP->startX;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ G l o b a l S t a r t Y
+ ********************************************************************/
+Err THIS_GlobalStartY(UInt16 refNum, Int32 *startY)
+// DESC Returns the value of the global variable "startY" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *startY = gP->startY;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ G l o b a l E n d X
+ ********************************************************************/
+Err THIS_GlobalEndX(UInt16 refNum, Int32 *endX)
+// DESC Returns the value of the global variable "endX" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *endX = gP->endX;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ G l o b a l E n d Y
+ ********************************************************************/
+Err THIS_GlobalEndY(UInt16 refNum, Int32 *endY)
+// DESC Returns the value of the global variable "endY" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *endY = gP->endY;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ G l o b a l S t a r t P o s
+ ********************************************************************/
+Err THIS_GlobalStartPos(UInt16 refNum, Int32 *startPos)
+// DESC Returns the value of the global variable "startPos" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *startPos = gP->startPos;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ G l o b a l E n d P o s
+ ********************************************************************/
+Err THIS_GlobalEndPos(UInt16 refNum, Int32 *endPos)
+// DESC Returns the value of the global variable "endPos" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *endPos = gP->endPos;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ G l o b a l W i d t h
+ ********************************************************************/
+Err THIS_GlobalWidth(UInt16 refNum, Int32 *width)
+// DESC Returns the value of the global variable "width" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *width = gP->width;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ G l o b a l H e i g h t
+ ********************************************************************/
+Err THIS_GlobalHeight(UInt16 refNum, Int32 *height)
+// DESC Returns the value of the global variable "height" in the
+// DESC NSBSystemLib Shared Library.
+{
+    THIS_ATTACH_GLOBALS
+    *height = gP->height;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ G l o b a l H o u r
+ ********************************************************************/
+Err THIS_GlobalHour(UInt16 refNum, Int32 *gblHour)
+// DESC Returns the value of the global variable "hour" in the
+// DESC NSBSystemLib Shared Library.
+// NOTES See also:  SelectOneTime()
+{
+    THIS_ATTACH_GLOBALS
+    *gblHour = gP->hour;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ G l o b a l M i n u t e
+ ********************************************************************/
+Err THIS_GlobalMinute(UInt16 refNum, Int32 *gblMinute)
+// DESC Returns the value of the global variable "minute" in the
+// DESC NSBSystemLib Shared Library.
+// NOTES See also:  SelectOneTime()
+{
+    THIS_ATTACH_GLOBALS
+    *gblMinute = gP->minute;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+// SECTION Bit and String Manipulations:
+
+/********************************************************************
+ *                    S t r i n g 4 T o I n t
+ ********************************************************************/
+Err THIS_String4ToInt(UInt16 refNum, char *fourByteString, UInt32 *intValue) 
+// DESC Returns the integer value of a 4 byte string.  This function
+// DESC is useful for calculating the integer value of Creator IDs,
+// DESC Application Types, Resource Types, etc.
+// BEFORE
+// BEFORE fourByteString = "libr"
+// NOTES See also:  IntToString4()
+{
+    if (StrLen(fourByteString) != 4)
+        *intValue = 0;
+    else
+        *intValue = ((fourByteString[0] * 16777216)
+                   + (fourByteString[1] * 65536)
+                   + (fourByteString[2] * 256)
+                   +  fourByteString[3]);
+    return 0;
+}
+
+/********************************************************************
+ *                    I n t T o S t r i n g 4
+ ********************************************************************/
+Err THIS_IntToString4(UInt16 refNum, UInt32 intValue, char *fourByteString) 
+// DESC Returns a 4 byte string from an integer value.  This function
+// DESC is useful for retrieving the string value of integer 
+// DESC Creator IDs, Application Types, Resource Types, etc.
+// BEFORE
+// BEFORE intValue = 1818845810  '"libr"
+// NOTES See also:  String4ToInt()
+{
+    union {
+        UInt32 iVal;
+        char   cVal[4];
+    } x;
+    char returnString[5];
+    char i;
+    
+    x.iVal = intValue;
+    for (i = 0; i < 4; i++)
+        returnString[i] = x.cVal[i];
+    returnString[4] = 0;
+    StrCopy(fourByteString, returnString);
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ A N D I n t
+ ********************************************************************/
+Err THIS_ANDInt(UInt16 refNum, Int32 int1, Int32 int2, Int32 *result)
+// DESC Returns a bitwise AND on the int1 and int2 parameters.
+{
+    *result = int1 & int2;
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ O R I n t
+ ********************************************************************/
+Err THIS_ORInt(UInt16 refNum, Int32 int1, Int32 int2, Int32 *result)
+// DESC Returns a bitwise OR on the int1 and int2 parameters.
+{
+    *result = int1 | int2;
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ X O R I n t
+ ********************************************************************/
+Err THIS_XORInt(UInt16 refNum, Int32 int1, Int32 int2, Int32 *result)
+// DESC Returns a bitwise XOR on the int1 and int2 parameters.
+{
+    *result = int1 ^ int2;
+    
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ O n e s C o m p l e m e n t
+ ********************************************************************/
+Err THIS_OnesComplement(UInt16 refNum, Int32 intValue, Int32 *result)
+// DESC Returns the "one's complement" of the intValue parameter.
+// DESC This essentially turns all 1 bits to 0 and all 0 bits to 1.
+{
+    *result = ~intValue;
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ B i t V a l u e
+ ********************************************************************/
+Err THIS_BitValue(UInt16 refNum, Int32 intValue, Int32 bitNumber, Int32 *result)
+// DESC Returns 1 if the specified bit number is 1, otherwise it
+// DESC returns 0.
+// PARAM2 Bits are numbered from right to left from 0 to 31.
+{
+    if (bitNumber < 0)
+        bitNumber = 0;
+    if (bitNumber > 31)
+        bitNumber = 31;
+    if (intValue & bitMask(bitNumber))
+        *result = 1;
+    else
+        *result = 0;
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ B i t s V a l u e
+ ********************************************************************/
+Err THIS_BitsValue(UInt16 refNum, Int32 intValue, Int32 bitNumber, Int32 numberOfBits, Int32 *result)
+// DESC Returns the integer value of the specified bits.  The bits
+// DESC retrieved are the bits to the right of the specified bit
+// DESC number.  Therefore, BitsValue(intValue, 7, 3) returns the
+// DESC value of bits 7, 6, and 5.
+// PARAM2 Bits are numbered from right to left from 0 to 31.
+{
+    if (bitNumber < 0)
+        bitNumber = 0;
+    if (bitNumber > 31)
+        bitNumber = 31;
+    if ((bitNumber - numberOfBits) < 0)
+        numberOfBits = bitNumber + 1;
+    if (numberOfBits <= 0) {
+        *result = 0;
+    }
+    *result = (intValue >> (bitNumber + 1 - numberOfBits)) & ~(~0 << numberOfBits);
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ S e t B i t V a l u e
+ ********************************************************************/
+Err THIS_SetBitValue(UInt16 refNum, Int32 intValue, Int32 bitNumber, 
+                  Int32 bitValue, Int32 *result)
+// DESC Sets the bit specified by bitNumber to the specified
+// DESC bit value.
+// PARAM2 Bits are numbered from right to left from 0 to 31.
+{
+    if (bitNumber < 0)
+        bitNumber = 0;
+    if (bitNumber > 31)
+        bitNumber = 31;
+    if (bitValue)
+        *result = (intValue | bitMask(bitNumber));
+    else
+        *result = (intValue & ~(bitMask(bitNumber)));
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ S e t B i t s V a l u e
+ ********************************************************************/
+Err THIS_SetBitsValue(UInt16 refNum, Int32 intValue, Int32 bitsValue, 
+                      Int32 bitNumber, Int32 numberOfBits, Int32 *result)
+// DESC Sets the specified bits to the integer value of the 
+// DESC specified bits.  The bits set are the bits to the right of the 
+// DESC specified bit number.  Therefore, 
+// DESC SetBitsValue(intValue, 7, 3) sets the value of bits 7, 6, 
+// DESC and 5.
+// PARAM2 Bits are numbered from right to left from 0 to 31.
+{
+    Int8 i;
+    Int8 n;
+    
+    if (bitNumber < 0)
+        bitNumber = 0;
+    if (bitNumber > 31)
+        bitNumber = 31;
+    if ((bitNumber - numberOfBits) < 0)
+        numberOfBits = bitNumber + 1;
+    if (numberOfBits <= 0) {
+        *result = intValue;
+        return 0;
+    }
+    *result = intValue;
+    n = numberOfBits - 1;
+    for (i = bitNumber; i > (bitNumber - numberOfBits); i--)
+        if (bitsValue & bitMask(n--))
+            *result = (*result | bitMask(i));
+        else
+            *result = (*result & ~(bitMask(i)));
+                
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ I n t T o H e x
+ ********************************************************************/
+Err THIS_IntToHex(UInt16 refNum, Int32 intValue, Int32 trimLeading, char *hexValue)
+// DESC Convert the specified integer value to a hexadecimal string.
+// PARAM2 0 = do not trim leading zeros from result string
+// PARAM2 1 = trim leading zeros from result string.
+{
+    char hexV[9];
+    char *s;
+    
+    StrIToH(hexV, (UInt32) intValue);
+    if (trimLeading) {
+        s = hexV;
+        while (*s == '0')
+            s++;
+        if (StrLen(s) == 0)
+            StrCopy(hexValue, "0");
+        else
+            StrCopy(hexValue, s);
+    }
+    else
+        StrCopy(hexValue, hexV);    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ H e x T o I n t
+ ********************************************************************/
+Err THIS_HexToInt(UInt16 refNum, char *hexValue, Int32 *intValue)
+// DESC Convert the specified hexadecimal string to an integer value.
+{
+    char   hexV[10];
+    Int8   i;
+    UInt32 multiplier = 1;
+    char   *s;
+    UInt16 len;
+    
+    len = StrLen(hexValue);
+    if ((s = StrChr(hexValue, ' ')) != NULL)
+        len = (UInt16) (s - hexValue);
+    hexV[0] = 0;
+    for (i = 0; i < 8 - len; i++)
+        hexV[i] = '0';
+    hexV[i] = 0;
+    StrNCat(hexV, hexValue, 9);
+    hexV[8] = 0;
+    
+    for (i = 0; i < 8; i++)
+        if (hexV[i] >= '0' && hexV[i] <= '9')
+            hexV[i] = hexV[i] - '0';
+        else
+            if (hexV[i] >= 'a' && hexV[i] <= 'f')
+                hexV[i] = (hexV[i] - 'a') + 10;
+            else
+                if (hexV[i] >= 'A' && hexV[i] <= 'F')
+                    hexV[i] = (hexV[i] - 'A') + 10;
+                else {
+                    *intValue = 0;
+                    return 0;
+                }
+                
+    *intValue = 0;
+    for (i = 7; i >= 0; i--) {
+        *intValue = *intValue + (hexV[i] * multiplier);
+        multiplier = multiplier * 16;
+    }
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ I n t T o B i n
+ ********************************************************************/
+Err THIS_IntToBin(UInt16 refNum, Int32 intValue, Int32 trimLeading, char *binValue)
+// DESC Convert the specified integer value to a binary string.
+// PARAM2 0 = do not trim leading zeros from result string
+// PARAM2 1 = trim leading zeros from result string.
+{
+    Int8 i;
+    Int8 n = 0;
+    char binV[33];
+    
+    for (i = 31; i >= 0; i--)
+        if ((UInt32) intValue & bitMask(i)) {
+            binV[n++] = '1';
+            trimLeading = 0;
+        }
+        else
+            if (trimLeading == 0)
+                binV[n++] = '0';
+    binV[n] = 0;
+    StrCopy(binValue, binV);
+    
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ B i n T o I n t
+ ********************************************************************/
+Err THIS_BinToInt(UInt16 refNum, char *binValue, Int32 *intValue)
+// DESC Convert the specified binary string to an integer value.
+{
+    char   binV[34];
+    Int8   i;
+    UInt32 multiplier = 1;
+    char   *s;
+    UInt32 intV;
+    UInt16 len;
+    
+    len = StrLen(binValue);
+    if ((s = StrChr(binValue, ' ')) != NULL)
+        len = (UInt16) (s - binValue);
+    binV[0] = 0;
+    for (i = 0; i < 32 - len; i++)
+        binV[i] = '0';
+    binV[i] = 0;
+    StrNCat(binV, binValue, 33);
+    binV[32] = 0;
+
+    intV = 0;   
+    for (i = 31; i >= 0; i--)
+        if (binV[(0 - i) + 31] != '0')
+            intV = (intV | bitMask(i));
+
+    *intValue = (Int32) intV;
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ D e l i m i t e d I t e m
+ ********************************************************************/
+Err THIS_DelimitedItem(UInt16 refNum, 
+                       char *inputStr, char *delimiter, Int16 nbr,
+                       char *item) 
+// DESC Returns a particular substring item from a string that
+// DESC contains multiple items separated by a particular delimiter.
+// PARAM1 A string containing delimited items.
+// PARAM2 A string containing the delimiter character or characters.
+// PARAM3 The item number to return.  Item numbers begin with 1.
+// RETURNS The delimiter string will be returned if the requested
+// RETURNS item is not present.
+// NOTES The input string can not be longer than 250 characters.
+// BEFORE
+// BEFORE inputStr = "Joe;Mary;Jane"
+// BEFORE delimiter = ";"
+// BEFORE nbr = 2
+// BEFORE 'Returns the string "Mary"
+{
+	char    *s;
+	char    *e;
+	Int16   i;
+	Int16   len;
+	
+	len = StrLen(delimiter);
+	s = inputStr;
+	for (i = 1; i <= nbr; i++) {
+	    if ((e = StrStr(s, delimiter)) == NULL) {
+	        e = StrChr(s, '\0');
+	        break;
+	    }
+	    if (i < nbr)
+	        s = e + len;
+	}
+	if (i < nbr)
+	    StrCopy(item, delimiter);
+	else {
+	    len = e - s;
+    	StrNCopy(item, s, len);
+	    item[len] = '\0';
+	}
+	return 0;
+}
+
+// SECTION Localization Functions:
+
+/********************************************************************
+ *                T H I S _ L o c a l i z e N u m b e r
+ ********************************************************************/
+Err THIS_LocalizeNumber(UInt16 refNum, char *stdNbrStr, char *localNbrStr)
+// DESC Convert a number string in standard/US format to a 
+// DESC localized format as determined by system preferences.
+// PARAM2 Number string in standard/US format - example  4,123.56
+// BEFORE
+// BEFORE stdNbrStr = "4,123.56"
+{
+    UInt32 nbrFormat;
+    char   thousandsSep[8];
+    char   decimalSep[8];
+    
+    nbrFormat = PrefGetPreference(prefNumberFormat);
+
+    LocGetNumberSeparators((NumberFormatType) nbrFormat, thousandsSep, decimalSep);
+    StrCopy(localNbrStr, StrLocalizeNumber(stdNbrStr, *thousandsSep, *decimalSep));
+
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ D e l o c a l i z e N u m b e r
+ ********************************************************************/
+Err THIS_DelocalizeNumber(UInt16 refNum, char *localNbrStr, char *stdNbrStr)
+// DESC Convert a number string in a localized format to a
+// DESC standard/US format as determined by system preferences.
+// PARAM2 Number string in localized format - example  4.123,56
+// BEFORE
+// BEFORE locNbrStr = "4.123,56"
+{ 
+
+    UInt32 nbrFormat;
+    char   thousandsSep[8];
+    char   decimalSep[8];
+    
+    nbrFormat = PrefGetPreference(prefNumberFormat);
+
+    LocGetNumberSeparators((NumberFormatType) nbrFormat, thousandsSep, decimalSep);
+    StrCopy(stdNbrStr, StrDelocalizeNumber(localNbrStr, *thousandsSep, *decimalSep));
+
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ L o c a l i z e D a t e
+ ********************************************************************/
+Err THIS_LocalizeDate(UInt16 refNum, char *stdDateStr, Int32 ToDateFormat,
+                          Int32 longDateFormat, char *localDateStr)
+// DESC Convert a date string in standard/US format to a localized
+// DESC date format as determined by system preferences.
+// PARAM1 The date string may also contain the time.  Time values
+// PARAM1 will be ignored.
+// PARAM2 0 = stdDateStr format is "MM/DD/YY[YY]"
+// PARAM2 1 = stdDateStr format is "[YY]YY/MM/DD"
+// PARAM3 0 = use short date format preference
+// PARAM3 1 = user long date format preference
+// BEFORE
+// BEFORE stdDateStr = DateMMDDYY(Today())
+// BEFORE ToDateFormat = 0
+// BEFORE longDateFormat = 0
+{
+    UInt32   dateFormat;
+    UInt32   sysTime;
+    DateType dateT;
+    char     dateStr[longDateStrLength + 1];
+    
+    THIS_SystemTime(refNum, stdDateStr, "", 0, ToDateFormat, &sysTime);
+    DateSecondsToDate(sysTime, &dateT);
+
+    if (longDateFormat)
+        dateFormat = PrefGetPreference(prefLongDateFormat);
+    else
+        dateFormat = PrefGetPreference(prefDateFormat);
+
+    DateToAscii((UInt8) dateT.month, (UInt8) dateT.day, (UInt16) (dateT.year + 1904), 
+                (DateFormatType) dateFormat, dateStr);
+    StrCopy(localDateStr, dateStr);
+    
+    return 0; 
+}
+
+// SECTION HotSync Data:
+
+/********************************************************************
+ *                T H I S _ S y n c U s e r N a m e
+ ********************************************************************/
+Err THIS_SyncUserName(UInt16 refNum, char *userName)
+// DESC Returns the HotSync user name.
+{
+    char uName[dlkUserNameBufSize];
+    
+    uName[0] = 0;
+    DlkGetSyncInfo(NULL, NULL, NULL, uName, NULL, NULL);
+    StrCopy(userName, uName);
+    
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ S u c c e s s f u l S y n c
+ ********************************************************************/
+Err THIS_SuccessfulSync(UInt16 refNum, Int32 *syncDate)
+// DESC Returns the date, in system format, of the last successful
+// DESC HotSync operation.  System format dates are expressed as
+// DESC the number of seconds since January 1st, 1904.  Use the
+// DESC StringDateTime(), StringDate(), or StringTime() functions
+// DESC to retrieve a string representation of a system format date.
+{
+    UInt32 sDate;
+
+    DlkGetSyncInfo(&sDate, NULL, NULL, NULL, NULL, NULL);
+    *syncDate = (Int32) sDate;
+    
+    return 0;
+}
+
+/********************************************************************
+ *                     T H I S _ L a s t S y n c
+ ********************************************************************/
+Err THIS_LastSync(UInt16 refNum, Int32 *syncDate)
+// DESC Returns the date, in system format, of the last successful
+// DESC or unsuccessful HotSync operation.  System format dates are
+// DESC expressed as the number of seconds since January 1st, 1904.  
+// DESC Use the StringDateTime(), StringDate(), or StringTime() 
+// DESC functions to retrieve a string representation of a system 
+// DESC format date.
+{
+    UInt32 sDate;
+
+    DlkGetSyncInfo(NULL, &sDate, NULL, NULL, NULL, NULL);
+    *syncDate = (Int32) sDate;
+    
+    return 0;
+}
+
+// SECTION Alarm Functions:
+
+/********************************************************************
+ *               T H I S _ S e t A l a r m R e s e t
+ ********************************************************************/
+Err THIS_SetAlarmReset(UInt16 refNum, UInt32 resetTime, Int32 resetLimit) 
+// DESC Establishes an automatic alarm reset interval for the next 
+// DESC alarm that is set.
+// PARAM1 Reset interval in seconds
+// PARAM1   0 = do not automatically reset alarm
+// PARAM2 Limit to the number of automatic resets that can occur.
+// PARAM2  -1 = resets are not limited - CancelAlarm() must be
+// PARAM2       used to stop automatic resets.
+// PARAM2   0 = do not automatically reset alarm
+// NOTES  If this feature is to be used, it must be called before
+// NOTES  each SetAlarm() function.
+// BEFORE
+// BEFORE resetTime = 10
+// BEFORE resetLimit = -1
+{
+    THIS_ATTACH_GLOBALS
+    
+    gP->resetTime = resetTime;
+    gP->resetLimit = resetLimit;
+    
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ S e t A l a r m
+ ********************************************************************/
+Err THIS_SetAlarm(UInt16 refNum, char *alarmPgm,
+                  UInt32 alarmTime, Int32 alarmCmd,
+                  char *alarmMsg, Int32 *status)
+// DESC Sets an alarm for the specified program.  The alarm features
+// DESC in this library are mostly intended to be used with only the
+// DESC NSBAlarmProxy programs.  
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// PARAM2 Absolute alarm time in system time format or a time
+// PARAM2 increment in seconds from the current time.  This time
+// PARAM2 is considered as an absolute time if its value is greater
+// PARAM2 or equal to the value of the current system time minus 5 
+// PARAM2 minutes.
+// PARAM3 Alarm Command explanations:
+// PARAM3   -32767 to -30001 = "Timer" commands
+// PARAM3      These commands have the least amount of overhead
+// PARAM3      associated with them.  They do not write to the
+// PARAM3      alarm log information.  In addition, they automat-
+// PARAM3      ically reset the alarm.  As such, they must be
+// PARAM3      specifically cancelled using the CancelAlarm()
+// PARAM3      function.
+// PARAM3
+// PARAM3      These commands queue an event which is the
+// PARAM3      absolute (positive) value of the command.
+// PARAM3
+// PARAM3      The reset interval (seconds) used is calculated as:
+// PARAM3           abs(cmd) - 30000
+// PARAM3           example:  -30005 has a reset interval of 5
+// PARAM3                            seconds and queues an event
+// PARAM3                            with an event type of 30005.
+// PARAM3   0 = enqueue a "nilEvent" - can be used to just simply
+// PARAM3       wake up or turn on a PalmOS device
+// PARAM3   1 = sound a system alarm sound only
+// PARAM3   2 = sound a system alarm sound and produce an Alert
+// PARAM3       with the message specified in the alarmMsg parameter.
+// PARAM3   3 = start the program with the name specified in the
+// PARAM3       alarmMsg parameter.  The alarmMsg parameter, in this
+// PARAM3       case, is a coded string with the following format:
+// PARAM3           <programName>[,<launcherWaitTime>][;<userInfo>]
+// PARAM3           examples:  "Address"
+// PARAM3                      "Address;started by MyProg"
+// PARAM3                      "Address,6;started by MyProg"
+// PARAM3           notes:  The launcherWaitTime is the time, in
+// PARAM3                   in seconds to wait for the current program
+// PARAM3                   to terminate - the default is 2 seconds.
+// PARAM3                   The userInfo, as well as the entire string,
+// PARAM3                   is written to the alarmLog.  It can be used
+// PARAM3                   for any purpose you like.
+// PARAM3    4 to 255 = enqueue a Key Event with a value equal to 
+// PARAM3               the specified alarmCmd
+// PARAM3    24832 to 30000 = enqueue a generic event with an event
+// PARAM3                     type equal to the specified alarmCmd.
+// PARAM4  A string of 80 characters or less that is used as the
+// PARAM4  message for alarmCmd 2 or the program code for alarmCmd 3.
+// PARAM4  It is also written to the alarm log to provide any info.
+// PARAM4  that may be useful.
+// RETURNS  0 = no error
+// RETURNS -1 = specified alarm program is not installed
+// RETURNS -2 = almErrorMemory - insufficient memory
+// RETURNS -3 = almErrorFull - alarm queue is full
+// RETURNS -4 = unexpected/unrecognized error
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+// BEFORE alarmTime = 3600    ' 1 hour from now
+// BEFORE alarmCmd = 3
+// BEFORE alarmMsg = "Hey Wake UP!"
+// NOTES See also:  SystemTime()
+{
+    UInt32  creatorId;
+    LocalID alarmId;
+    UInt32  curTime;
+    UInt16  cardNo;
+    AlarmLog alarmLog;
+    UInt16  logSize;
+	THIS_ATTACH_GLOBALS
+	
+
+	if ((*status = FindProgram(alarmPgm, &creatorId, &cardNo, &alarmId, refNum)) != 0) {
+	    THIS_DETACH_GLOBALS
+	    return 0;
+	}
+	    
+	alarmLog.alarmTime = alarmTime;
+	alarmLog.resetTime = gP->resetTime;
+	alarmLog.resetLimit = gP->resetLimit;
+	alarmLog.resetCount = 0;
+	alarmLog.cmd = alarmCmd;
+	gP->resetTime = 0;
+	gP->resetLimit = 0;
+	StrCopy(alarmLog.msg, alarmMsg);
+    PrefSetAppPreferences(creatorId, alarmSetPrefID, alarmVersionNum, 
+                          &alarmLog, sizeof(alarmLog), 0);
+
+	logSize = sizeof(alarmLog);
+    PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                          &alarmLog, &logSize, false);
+    alarmLog.resetCount = 0;
+    PrefSetAppPreferences(creatorId, alarmLogPrefID, alarmVersionNum, 
+                          &alarmLog, sizeof(alarmLog), 0);
+
+	curTime = TimGetSeconds();
+    if (alarmTime < (curTime - 300))
+        alarmTime = curTime + alarmTime;                          
+    *status = AlmSetAlarm(cardNo, alarmId, alarmCmd, alarmTime, 0);                          
+    switch (*status) {
+        case 0:
+            break;
+        case almErrMemory:
+            *status = -2;
+            break;
+        case almErrFull:
+            *status = -3;
+            break;
+        default:
+            *status = -4;
+            break;
+    }
+
+    THIS_DETACH_GLOBALS
+	return 0;
+}
+
+/********************************************************************
+ *              T H I S _ C a n c e l A l a r m
+ ********************************************************************/
+Err THIS_CancelAlarm(UInt16 refNum, char *alarmPgm, Int32 *status)
+// DESC Cancel an alarm set, if any, for the specified program.  
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS  0 = no error
+// RETURNS -1 = specified alarm program is not installed
+// RETURNS -2 = almErrorMemory - insufficient memory
+// RETURNS -3 = almErrorFull - alarm queue is full
+// RETURNS -4 = unexpected/unrecognized error
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32  creatorId;
+    LocalID alarmId;
+    UInt16  cardNo;
+    AlarmLog alarmLog;
+	
+	if ((*status = FindProgram(alarmPgm, &creatorId, &cardNo, &alarmId, refNum)) != 0)
+	    return 0;
+
+	alarmLog.alarmTime = 0;
+	alarmLog.resetTime = 0;
+	alarmLog.resetLimit = 0;
+	alarmLog.resetCount = 0;
+	alarmLog.cmd = 0;
+	alarmLog.msg[0] = 0;
+    PrefSetAppPreferences(creatorId, alarmSetPrefID, alarmVersionNum, 
+                          &alarmLog, sizeof(alarmLog), 0);
+	               
+    *status = AlmSetAlarm(cardNo, alarmId, 0, 0, 0);
+    switch (*status) {
+        case 0:
+            break;
+        case almErrMemory:
+            *status = -2;
+            break;
+        case almErrFull:
+            *status = -3;
+            break;
+        default:
+            *status = -4;
+            break;
+    }
+
+	return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ G e t A l a r m
+ ********************************************************************/
+Err THIS_GetAlarm(UInt16 refNum, char *alarmPgm,
+                  char *alarmCmd, char *alarmMsg,
+                  UInt32 *alarmTime) 
+// DESC Retrieves information about a currently set alarm.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// PARAM2 AlarmCmd as a string.  This value is returned and
+// PARAM2 must be initialized to a maximum length before calling
+// PARAM2 the function.  This value should never be more than
+// PARAM2 6 characters in length.
+// PARAM3 Alarm message as a string.  This value is returned and
+// PARAM3 must be initialized to a maximum length before calling
+// PARAM3 the function.  This value should never be more than
+// PARAM3 80 characters in length.
+// RETURNS Alarm time in system time format.  This value is expressed
+// RETURNS as the number of seconds since January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+// BEFORE alarmCmd = "123456"
+// BEFORE alarmMsg = "1234567890123456789012345678901234567890" _
+// BEFORE          + "1234567890123456789012345678901234567890"
+{
+    UInt32  creatorId;
+    LocalID alarmId;
+    UInt16  cardNo;
+    Int32  alarmCommand;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+
+	if (FindProgram(alarmPgm, &creatorId, &cardNo, &alarmId, refNum) != 0) {
+	    StrIToA(alarmCmd, -1);
+	    StrCopy(alarmMsg, "");
+	    *alarmTime = 0;
+	    return 0;
+	}
+              
+    *alarmTime = AlmGetAlarm(cardNo, alarmId, (UInt32 *) &alarmCommand);
+    if (*alarmTime == 0)
+        StrIToA(alarmCmd, -1);
+    else
+        StrIToA(alarmCmd, alarmCommand);
+        
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmSetPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.msg[0] = 0;
+    StrCopy(alarmMsg, alarmLog.msg);
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ G e t A l a r m T i m e
+ ********************************************************************/
+Err THIS_GetAlarmTime(UInt16 refNum, char *alarmPgm,
+                      UInt32 *alarmTime) 
+// DESC Retrieves information about a currently set alarm.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm time in system time format.  This value is expressed
+// RETURNS as the number of seconds since January 1st, 1904.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+{
+    LocalID alarmId;
+    UInt16  cardNo;
+    Int32  alarmCommand;
+	
+
+	if (FindProgram(alarmPgm, NULL, &cardNo, &alarmId, refNum) != 0) {
+	    *alarmTime = 0;
+	    return 0;
+	}
+              
+    *alarmTime = AlmGetAlarm(cardNo, alarmId, (UInt32 *) &alarmCommand);
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ G e t A l a r m R e s e t T i m e
+ ********************************************************************/
+Err THIS_GetAlarmResetTime(UInt16 refNum, char *alarmPgm,
+                           UInt32 *resetTime) 
+// DESC Retrieves information about a currently set alarm.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm reset time in seconds.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32  creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *resetTime = 0;
+	    return 0;
+	}
+                      
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmSetPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        *resetTime = 0;
+    else
+        *resetTime = alarmLog.resetTime;
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ G e t A l a r m R e s e t L i m i t
+ ********************************************************************/
+Err THIS_GetAlarmResetLimit(UInt16 refNum, char *alarmPgm,
+                            Int32 *resetLimit) 
+// DESC Retrieves information about a currently set alarm.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm reset limit.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32  creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *resetLimit = 0;
+	    return 0;
+	}
+                      
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmSetPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        *resetLimit = 0;
+    else
+        *resetLimit = alarmLog.resetLimit;
+    return 0;
+}
+
+
+/********************************************************************
+ *            T H I S _ G e t A l a r m C o m m a n d
+ ********************************************************************/
+Err THIS_GetAlarmCommand(UInt16 refNum, char *alarmPgm,
+                         Int32 *alarmCmd) 
+// DESC Retrieves information about a currently set alarm.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm command.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    LocalID alarmId;
+    UInt16  cardNo;
+    UInt32  alarmTime;
+	
+
+	if (FindProgram(alarmPgm, NULL, &cardNo, &alarmId, refNum) != 0) {
+	    *alarmCmd = -1;
+	    return 0;
+	}
+              
+    alarmTime = AlmGetAlarm(cardNo, alarmId, (UInt32 *) alarmCmd);
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ G e t A l a r m M e s s a g e
+ ********************************************************************/
+Err THIS_GetAlarmMessage(UInt16 refNum, char *alarmPgm,
+                         char *alarmMsg) 
+// DESC Retrieves information about a currently set alarm.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm message.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32  creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    StrCopy(alarmMsg, "");
+	    return 0;
+	}
+                      
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmSetPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.msg[0] = 0;
+    StrCopy(alarmMsg, alarmLog.msg);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ A l a r m L o g
+ ********************************************************************/
+Err THIS_AlarmLog(UInt16 refNum, char *alarmPgm,
+                  char *alarmCmd, char *alarmMsg,
+                  UInt32 *alarmTime) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// PARAM2 AlarmCmd as a string.  This value is returned and
+// PARAM2 must be initialized to a maximum length before calling
+// PARAM2 the function.  This value should never be more than
+// PARAM2 6 characters in length.
+// PARAM3 Alarm message as a string.  This value is returned and
+// PARAM3 must be initialized to a maximum length before calling
+// PARAM3 the function.  This value should never be more than
+// PARAM3 80 characters in length.
+// RETURNS Alarm time in system time format.  This value is expressed
+// RETURNS as the number of seconds since January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+// BEFORE alarmCmd = "123456"
+// BEFORE alarmMsg = "1234567890123456789012345678901234567890" _
+// BEFORE          + "1234567890123456789012345678901234567890"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *alarmTime = 0;    // Unrecognized AlarmProxy program
+	    StrCopy(alarmMsg, "");
+	    StrCopy(alarmCmd, "0");
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0) {
+        alarmLog.alarmTime = 0;
+        alarmLog.resetTime = 0;
+        alarmLog.resetCount = 0;
+        alarmLog.cmd = -1;
+        alarmLog.msg[0] = 0;
+    }
+    
+    StrIToA(alarmCmd, alarmLog.cmd);
+    StrCopy(alarmMsg, alarmLog.msg);
+    *alarmTime = alarmLog.alarmTime;
+	return 0;
+}
+
+/********************************************************************
+ *       T H I S _ A l a r m L o g A l a r m T i m e
+ ********************************************************************/
+Err THIS_AlarmLogAlarmTime(UInt16 refNum, char *alarmPgm,
+                           UInt32 *alarmTime) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm time in system time format.  This value is expressed
+// RETURNS as the number of seconds since January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *alarmTime = 0;    // Unrecognized AlarmProxy program
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.alarmTime = 0;
+    
+    *alarmTime = alarmLog.alarmTime;
+	return 0;
+}
+
+/********************************************************************
+ *       T H I S _ A l a r m L o g R e s e t T i m e
+ ********************************************************************/
+Err THIS_AlarmLogResetTime(UInt16 refNum, char *alarmPgm,
+                           UInt32 *resetTime) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm time reset time in seconds.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *resetTime = 0;    // Unrecognized AlarmProxy program
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.resetTime = 0;
+    
+    *resetTime = alarmLog.resetTime;
+	return 0;
+}
+
+/********************************************************************
+ *       T H I S _ A l a r m L o g R e s e t L i m i t
+ ********************************************************************/
+Err THIS_AlarmLogResetLimit(UInt16 refNum, char *alarmPgm,
+                            Int32 *resetLimit) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm time reset limit.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *resetLimit = 0;    // Unrecognized AlarmProxy program
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.resetLimit = 0;
+    
+    *resetLimit = alarmLog.resetLimit;
+	return 0;
+}
+
+/********************************************************************
+ *       T H I S _ A l a r m L o g R e s e t C o u n t
+ ********************************************************************/
+Err THIS_AlarmLogResetCount(UInt16 refNum, char *alarmPgm,
+                            Int32 *resetCount) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS The number of times the alarm as been automatically reset.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *resetCount = 0;    // Unrecognized AlarmProxy program
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.resetCount = 0;
+    
+    *resetCount = alarmLog.resetCount;
+	return 0;
+}
+
+/********************************************************************
+ *            T H I S _ A l a r m L o g C o m m a n d
+ ********************************************************************/
+Err THIS_AlarmLogCommand(UInt16 refNum, char *alarmPgm,
+                         Int32 *alarmCmd) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm command.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    *alarmCmd = -1;     // Unrecognized AlarmProxy program
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.cmd = -1;
+    
+    *alarmCmd = alarmLog.cmd;
+	return 0;
+}
+
+/********************************************************************
+ *           T H I S _ A l a r m L o g M e s s a g e
+ ********************************************************************/
+Err THIS_AlarmLogMessage(UInt16 refNum, char *alarmPgm,
+                         char *alarmMsg) 
+// DESC Retrieves information about an alarm that has already been
+// DESC processed.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// RETURNS Alarm message.
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+    UInt16   logSize;
+
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0) {
+	    StrCopy(alarmMsg, "");     // Unrecognized AlarmProxy program
+	    return 0;
+	}
+	   
+	logSize = sizeof(alarmLog);
+    if (PrefGetAppPreferences(creatorId, alarmLogPrefID, 
+                              &alarmLog, &logSize, false) != 0)
+        alarmLog.msg[0] = 0;
+    
+    StrCopy(alarmMsg, alarmLog.msg);
+	return 0;
+}
+
+/********************************************************************
+ *               T H I S _ C l e a r A l a r m L o g
+ ********************************************************************/
+Err THIS_ClearAlarmLog(UInt16 refNum, char *alarmPgm) 
+// DESC Clears the alarm log data for a specified alarm program.
+// PARAM1 Alarm program.  Example:  "NSBAlarmProxy1"
+// BEFORE
+// BEFORE alarmPgm = "NSBAlarmProxy1"
+{
+    UInt32   creatorId;
+    AlarmLog alarmLog;
+	
+	if (FindProgram(alarmPgm, &creatorId, NULL, NULL, refNum) != 0)
+	    return 0;
+	
+	alarmLog.alarmTime = 0;
+	alarmLog.resetTime = 0;
+	alarmLog.cmd = -1;
+	alarmLog.msg[0] = 0;   
+    PrefSetAppPreferences(creatorId, alarmLogPrefID, alarmVersionNum, 
+                          &alarmLog, sizeof(alarmLog), 0);
+    
+	return 0;
+}
+
+// SECTION Database Functions:
+
+/********************************************************************
+ *                 T H I S _ F i n d D a t a b a s e
+ ********************************************************************/
+Err THIS_FindDatabase(UInt16 refNum, Int32 cardNo, char *dbName, Int32 *dbLocalID)
+// DESC Returns the LocalID of the named database.
+// PARAM1 This value will most likely be 0.
+// PARAM2 Database name.
+// RETURNS LocalID if the named database is found.
+// RETURNS 0 if the named database is not found.
+// BEFORE
+// BEFORE cardNo = 0
+// BEFORE dbName = "NSBRuntime"
+{
+        
+    *dbLocalID = (Int32) DmFindDatabase((UInt16) cardNo, dbName); 
+    
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ D a t a b a s e I n f o
+ ********************************************************************/
+Err THIS_DatabaseInfo(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, char *dbName)
+// DESC Returns the database name for the specified card number and
+// DESC database LocalID.  It also retrieves many other fields of
+// DESC database information.  See the example and notes for
+// DESC for more information on how to access this data.
+// NOTES  See also:  DatabaseName(), DatabaseAttributes(), 
+// NOTES             DatabaseVersion(), DatabaseCreationDate(),
+// NOTES             DatabaseModificationDate(), DatabaseBackupDate(),
+// NOTES             DatabaseModificationNumber(), DatabaseType(),
+// NOTES             DatabaseCreatorID()
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim dbName as String
+// EXAMPLE Dim dbVersion as Integer
+// EXAMPLE Dim dbCreationDate as Integer
+// EXAMPLE Dim dbModificationDate as Integer
+// EXAMPLE Dim dbBackupDate as Integer
+// EXAMPLE Dim dbModificationNumber as Integer
+// EXAMPLE Dim dbAppInfoID as Integer
+// EXAMPLE Dim dbSortInfoID as Integer
+// EXAMPLE Dim dbType as Integer
+// EXAMPLE Dim dbCreatorID as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBRuntime"
+// EXAMPLE dbLocalID = NSBNSL.FindDatabase(cardNo, dbName)
+// EXAMPLE If dbLocalID <> 0 Then
+// EXAMPLE     dbName = NSL.DatabaseInfo(cardNo, dbLocalID)
+// EXAMPLE     If dbName <> "" Then
+// EXAMPLE         dbVersion = NSL.DatabaseVersion()
+// EXAMPLE         dbCreationDate = NSL.DatabaseCreationDate()
+// EXAMPLE         dbModificationDate = NSL.DatabaseModificationDate()
+// EXAMPLE         dbBackupDate = NSL.DatabaseBackupDate()
+// EXAMPLE         dbModificationNumber = NSL.DatabaseModificationNumber()
+// EXAMPLE         dbAppInfoID = NSL.DatabaseAppInfoID()
+// EXAMPLE         dbSortInfoID = NSL.DatabaseSortInfoID()
+// EXAMPLE         dbType = NSL.DatabaseType()
+// EXAMPLE         dbCreatorID = NSL.DatabaseCreatorID()
+// EXAMPLE     EndIf
+// EXAMPLE EndIf
+{
+    THIS_ATTACH_GLOBALS
+        
+    if (DmDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID, 
+                       gP->dbName, &gP->dbAttributes, &gP->dbVersion, 
+                       &gP->dbCreationDate, &gP->dbModificationDate, &gP->dbBackupDate, 
+                       &gP->dbModificationNumber,
+                       &gP->dbAppInfoID, &gP->dbSortInfoID, 
+                       &gP->dbType, &gP->dbCreatorID) == errNone)
+        StrCopy(dbName, gP->dbName);
+    else
+        StrCopy(dbName, "");
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ D a t a b a s e N a m e
+ ********************************************************************/
+Err THIS_DatabaseName(UInt16 refNum, char *dbName) 
+// DESC Returns a database name that was previously retrieved by
+// DESC a call to DatabaseInfo().
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    StrCopy(dbName, gP->dbName);
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ D a t a b a s e A t t r i b u t e s
+ ********************************************************************/
+Err THIS_DatabaseAttributes(UInt16 refNum, Int32 *dbAttributes) 
+// DESC Returns database attributes that were previously retrieved by
+// DESC a call to DatabaseInfo().
+// RETURNS The attributes value is a bitmapped value.  The following
+// RETURNS list contains the bit mask values available:
+// RETURNS     Bit  0  (0x0001) - dmHdrAttrResDB
+// RETURNS     Bit  1  (0x0002) - dmHdrAttrReadOnly
+// RETURNS     Bit  2  (0x0004) - dmHdrAttrAppInfoDirty
+// RETURNS     Bit  3  (0x0008) - dmHdrAttrBackup
+// RETURNS     Bit  4  (0x0010) - dmhdrAttrOKToInstallNewer
+// RETURNS     Bit  5  (0x0020) - dmHdrAttrResetAfterInstall
+// RETURNS     Bit  6  (0x0040) - dmHdrAttrCopyPrevention
+// RETURNS     Bit  7  (0x0080) - dmHdrAttrStream
+// RETURNS     Bit  8  (0x0100) - dmHdrAttrHidden
+// RETURNS     Bit  9  (0x0200) - hmHdrAttrLaunchableData
+// RETURNS     Bit 15  (0x8000) - dmHdrAttrOpen
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbAttributes = (Int32) gP->dbAttributes;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ D a t a b a s e V e r s i o n
+ ********************************************************************/
+Err THIS_DatabaseVersion(UInt16 refNum, Int32 *dbVersion) 
+// DESC Returns the database version that was previously retrieved by
+// DESC a call to DatabaseInfo().
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbVersion = (Int32) gP->dbVersion;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ D a t a b a s e C r e a t i o n D a t e
+ ********************************************************************/
+Err THIS_DatabaseCreationDate(UInt16 refNum, Int32 *dbCreationDate) 
+// DESC Returns the database creation date that was previously 
+// DESC retrieved by a call to DatabaseInfo().  This date is in
+// DESC system time format.  It is expressed as the number of seconds
+// DESC since January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbCreationDate = (Int32) gP->dbCreationDate;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *    T H I S _ D a t a b a s e M o d i f i c a t i o n D a t e
+ ********************************************************************/
+Err THIS_DatabaseModificationDate(UInt16 refNum, Int32 *dbModificationDate) 
+// DESC Returns the database modification date that was previously 
+// DESC retrieved by a call to DatabaseInfo().  This date is in
+// DESC system time format.  It is expressed as the number of seconds
+// DESC since January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbModificationDate = (Int32) gP->dbModificationDate;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ D a t a b a s e B a c k u p D a t e
+ ********************************************************************/
+Err THIS_DatabaseBackupDate(UInt16 refNum, Int32 *dbBackupDate) 
+// DESC Returns the database backup date that was previously 
+// DESC retrieved by a call to DatabaseInfo().  This date is in
+// DESC system time format.  It is expressed as the number of seconds
+// DESC since January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), StringTime()
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbBackupDate = (Int32) gP->dbBackupDate;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *   T H I S _ D a t a b a s e M o d i f i c a t i o n N u m b e r
+ ********************************************************************/
+Err THIS_DatabaseModificationNumber(UInt16 refNum, Int32 *dbModificationNumber) 
+// DESC Returns the database modification number that was previously 
+// DESC retrieved by a call to DatabaseInfo().  This number is
+// DESC incremented every time that a record is added, modified, or
+// DESC deleted.
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbModificationNumber = (Int32) gP->dbModificationNumber;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e A p p I n f o I D
+ ********************************************************************/
+Err THIS_DatabaseAppInfoID(UInt16 refNum, Int32 *dbAppInfoID) 
+// DESC Returns the LocalID of the database Application Info block
+// DESC that was previously retrieved by a call to DatabaseInfo().  
+// RETURNS 0 if this optional block is not available.
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbAppInfoID = (Int32) gP->dbAppInfoID;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e S o r t I n f o I D
+ ********************************************************************/
+Err THIS_DatabaseSortInfoID(UInt16 refNum, Int32 *dbSortInfoID) 
+// DESC Returns the LocalID of the database's sort table
+// DESC that was previously retrieved by a call to DatabaseInfo().  
+// RETURNS 0 if this optional sort table is not available.
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbSortInfoID = (Int32) gP->dbSortInfoID;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e T y p e
+ ********************************************************************/
+Err THIS_DatabaseType(UInt16 refNum, Int32 *dbType) 
+// DESC Returns the database type that was previously retrieved 
+// DESC by a call to DatabaseInfo().  
+// NOTES See also:  IntToString4()
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbType = (Int32) gP->dbType;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e C r e a t o r I D
+ ********************************************************************/
+Err THIS_DatabaseCreatorID(UInt16 refNum, Int32 *dbCreatorID) 
+// DESC Returns the database Creator ID that was previously retrieved
+// DESC by a call to DatabaseInfo().  
+// NOTES See also:  IntToString4()
+// EXAMPLE See the example provided with the DatabaseInfo() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbCreatorID = (Int32) gP->dbCreatorID;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ D a t a b a s e T o t a l S i z e
+ ********************************************************************/
+Err THIS_DatabaseTotalSize(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, Int32 *dbTotalSize)
+// DESC Returns the total database size, including overhead, for 
+// DESC the specified card number and database LocalID.  It also 
+// DESC retrieves the number of records and the size of just the
+// DESC data in the database.  See the example and notes for
+// DESC for more information on how to access this data.
+// NOTES  See also:  DatabaseNumRecords(), DatabaseDataSize()
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim dbTotalSize as Integer
+// EXAMPLE Dim dbNumRecords as Integer
+// EXAMPLE Dim dbDataSize as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBRuntime"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE If dbLocalID <> 0 Then
+// EXAMPLE     dbTotalSize = NSL.DatabaseSize(cardNo, dbLocalID)
+// EXAMPLE     dbNumRecords = NSL.DatabaseNumRecords()
+// EXAMPLE     dbDataSize = NSL.DatabaseDataSize()
+// EXAMPLE EndIf
+{
+    THIS_ATTACH_GLOBALS
+        
+    if (DmDatabaseSize((UInt16) cardNo, (LocalID) dbLocalID, 
+                       &gP->dbNumRecords, (UInt32 *) dbTotalSize, &gP->dbDataSize) != errNone)
+        *dbTotalSize = -1;
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e N u m R e c o r d s
+ ********************************************************************/
+Err THIS_DatabaseNumRecords(UInt16 refNum, Int32 *dbNumRecords) 
+// DESC Returns the number of database records that was previously 
+// DESC retrieved by a call to DatabaseTotalSize().  
+// EXAMPLE See the example provided with the DatabaseTotalSize() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbNumRecords = (Int32) gP->dbNumRecords;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e D a t a S i z e
+ ********************************************************************/
+Err THIS_DatabaseDataSize(UInt16 refNum, Int32 *dbDataSize) 
+// DESC Returns the database data size (minus overhead) that was 
+// DESC previously retrieved by a call to DatabaseTotalSize().  
+// EXAMPLE See the example provided with the DatabaseTotalSize() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbDataSize = (Int32) gP->dbDataSize;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ D e l e t e D a t a b a s e
+ ********************************************************************/
+Err THIS_DeleteDatabase(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, Int32 *status)
+// DESC Deletes the specified database. 
+// NOTES  See also:  FindDatabase() 
+// RETURNS 0 = successful
+// RETURNS 257 = memErrChunkLocked
+// RETURNS 258 = memErrNotEnoughSpace
+// RETURNS 259 = memErrInvalidParam
+// RETURNS 517 = dmErrDatabaseOpen
+// RETURNS 518 = dmErrCantOpen
+// RETURNS 519 = dmErrCantFind
+// RETURNS 526 = dmErrROMBased
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim status as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE If dbLocalID <> 0 Then
+// EXAMPLE     status = NSL.DeleteDatabase(cardNo, dbLocalID)
+// EXAMPLE EndIf
+{
+    THIS_ATTACH_GLOBALS
+        
+    *status = (Int32) DmDeleteDatabase((UInt16) cardNo, (LocalID) dbLocalID);
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ * T H I S _ G e t N e x t D a t a b a s e B y T y p e C r e a t o r
+ ********************************************************************/
+Err THIS_GetNextDatabaseByTypeCreator(UInt16 refNum, Int32 newSearch,
+                        Int32 dbType, Int32 dbCreatorID, 
+                        Int32 onlyLatestVersion, Int32 *dbLocalID)
+// DESC This function is used to retrieve a list of all the specified
+// DESC databases on the device.
+// PARAM1 0 = continue searching for databases
+// PARAM1 1 = start a new search
+// PARAM2 Integer database type.
+// PARAM2 0 = wildcard search.
+// PARAM3 Integer Creator ID.
+// PARAM3 0 = wildcard search.
+// PARAM4 0 = return all versions.
+// PARAM4 1 = return only the latest database version for
+// PARAM4     supplied type and Creator ID.
+// RETURNS LocalID of the database.
+// NOTES See Also:  DatabaseCardNo(), DatabaseInfo()
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim newSearch as Integer
+// EXAMPLE Dim dbType as Integer
+// EXAMPLE Dim dbCreatorID as Integer
+// EXAMPLE Dim onlyLatestVersion as Integer
+// EXAMPLE Dim dbCardNo as Integer
+// EXAMPLE Dim dbName as String
+// EXAMPLE
+// EXAMPLE onlyLatestVersion = 0
+// EXAMPLE dbType = NSL.String4ToInt("libr")
+// EXAMPLE dbCreatorID = 0
+// EXAMPLE newSearch = 1
+// EXAMPLE dbLocalID = 1
+// EXAMPLE Do While dbLocalID <> 0
+// EXAMPLE     dbLocalID = NSL.GetNextDatabaseByTypeCreator(newSearch, _
+// EXAMPLE                           dbType, dbCreatorID, onlyLatestVersion)
+// EXAMPLE     If dbLocalID <> 0 Then
+// EXAMPLE         dbCardNo = NSL.DatabaseCardNo()
+// EXAMPLE         dbName = NSL.DatabaseInfo(dbCardNo, dbLocalID)
+// EXAMPLE     End If
+// EXAMPLE     newSearch = 0
+// EXAMPLE Loop
+{
+    LocalID dbID;
+    THIS_ATTACH_GLOBALS
+    
+    if (DmGetNextDatabaseByTypeCreator((Boolean) newSearch, &gP->dbStateInfo, 
+                                       (UInt32) dbType, (UInt32) dbCreatorID,
+                                       (Boolean) onlyLatestVersion, 
+                                       &gP->dbCardNo, &dbID) == errNone)
+        *dbLocalID = (Int32) dbID;
+    else
+        *dbLocalID = 0;
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ D a t a b a s e C a r d N o
+ ********************************************************************/
+Err THIS_DatabaseCardNo(UInt16 refNum, Int32 *dbCardNo) 
+// DESC Returns the database card number that was previously 
+// DESC retrieved by a call to GetNextDatabaseByTypeCreator().  
+// EXAMPLE See the example provided with the 
+// EXAMPLE GetNextDatabaseByTypeCreator() function.
+{
+    THIS_ATTACH_GLOBALS
+    *dbCardNo = (Int32) gP->dbCardNo;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ N u m D a t a b a s e s
+ ********************************************************************/
+Err THIS_NumDatabases(UInt16 refNum, Int32 cardNo, Int32 *nbr)
+// DESC This function is used to retrieve the number of databases
+// DESC on the specified card number.
+// NOTES This routine is helpful for getting a directory of all 
+// NOTES databases on a card. The function GetDatabase() accepts
+// NOTES an index from 0 to (NumDatabases -1) and returns a database
+// NOTES ID by index. 
+// NOTES See also: GetDatabase()
+// BEFORE
+// BEFORE cardNo = 0
+{
+    
+    *nbr = (Int32) DmNumDatabases((UInt16) cardNo);
+
+    return 0;
+}
+
+/********************************************************************
+ *                    T H I S _ N u m C a r d s
+ ********************************************************************/
+Err THIS_NumCards(UInt16 refNum, Int32 *nbr)
+// DESC This function returns the number of memory card slots in 
+// DESC the system. Not all slots need to be populated. 
+{
+    
+    *nbr = (Int32) MemNumCards();
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ G e t D a t a b a s e
+ ********************************************************************/
+Err THIS_GetDatabase(UInt16 refNum, Int32 cardNo, Int32 index, Int32 *dbLocalID)
+// DESC This function is used to retrieve a database ID for the 
+// DESC supplied card number and index.
+// NOTES See also: NumDatabases()
+// RETURNS 0 = Invalid index
+// EXAMPLE Dim nbr as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim index as Integer
+// EXAMPLE Dim dbName as String
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE nbr = NSL.NumDatabases(cardNo)
+// EXAMPLE index = 0
+// EXAMPLE Do While index < nbr
+// EXAMPLE     dbLocalID = NSL.GetDatabase(cardNo, index)
+// EXAMPLE     If dbLocalID <> 0 Then
+// EXAMPLE         dbName = NSL.DatabaseInfo(cardNo, dbLocalID)
+// EXAMPLE     End If
+// EXAMPLE     index = index + 1
+// EXAMPLE Loop
+{
+    
+    *dbLocalID = (Int32) DmGetDatabase((UInt16) cardNo, (UInt16) index);
+
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ S e t D a t a b a s e N a m e
+ ********************************************************************/
+Err THIS_SetDatabaseName(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, char *dbName, Int32 *status)
+// DESC This function is used to change the name of the specified
+// DESC database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbName as String
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbName = "oldNSBAlarmProxy5"
+// EXAMPLE status = NSL.SetDatabaseName(cardNo, dbLocalID, dbName)
+{
+    
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          dbName, NULL, NULL, NULL, NULL, NULL, NULL, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ S e t D a t a b a s e A t t r i b u t e s
+ ********************************************************************/
+Err THIS_SetDatabaseAttributes(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, Int32 dbAttributes, Int32 *status)
+// DESC This function is used to change the attributes of the specified
+// DESC database.
+// PARAM3 The attributes value is a bitmapped value.  The following
+// PARAM3 list contains the bit mask values available:
+// PARAM3     Bit  0  (0x0001) - dmHdrAttrResDB
+// PARAM3     Bit  1  (0x0002) - dmHdrAttrReadOnly
+// PARAM3     Bit  2  (0x0004) - dmHdrAttrAppInfoDirty
+// PARAM3     Bit  3  (0x0008) - dmHdrAttrBackup
+// PARAM3     Bit  4  (0x0010) - dmhdrAttrOKToInstallNewer
+// PARAM3     Bit  5  (0x0020) - dmHdrAttrResetAfterInstall
+// PARAM3     Bit  6  (0x0040) - dmHdrAttrCopyPrevention
+// PARAM3     Bit  7  (0x0080) - dmHdrAttrStream
+// PARAM3     Bit  8  (0x0100) - dmHdrAttrHidden
+// PARAM3     Bit  9  (0x0200) - hmHdrAttrLaunchableData
+// PARAM3     Bit 15  (0x8000) - dmHdrAttrOpen
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbAttributes as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbAttributes = 2
+// EXAMPLE status = NSL.SetDatabaseAttributes(cardNo, dbLocalID, dbAttributes)
+{
+    UInt16 dbAttr;
+    
+    dbAttr = (UInt16) dbAttributes;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, &dbAttr, NULL, NULL, NULL, NULL, NULL, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *            T H I S _ S e t D a t a b a s e V e r s i o n
+ ********************************************************************/
+Err THIS_SetDatabaseVersion(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, Int32 dbVersion, Int32 *status)
+// DESC This function is used to change the version number of the
+// DESC specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbVersion as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbVersion = 6
+// EXAMPLE status = NSL.SetDatabaseVersion(cardNo, dbLocalID, dbVersion)
+{
+    UInt16 dbVer;
+    
+    dbVer = (UInt16) dbVersion;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, &dbVer, NULL, NULL, NULL, NULL, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *       T H I S _ S e t D a t a b a s e C r e a t i o n D a t e
+ ********************************************************************/
+Err THIS_SetDatabaseCreationDate(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                                 Int32 dbCreationDate, Int32 *status)
+// DESC This function is used to change the creation date of the
+// DESC specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbCreationDate as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbCreationDate = NSL.SystemTime("", "", 0, 0)
+// EXAMPLE status = NSL.SetDatabaseCreationDate(cardNo, dbLocalID, _
+// EXAMPLE                                     dbCreationDate)
+{
+    UInt32 dbDate;
+    
+    dbDate = (UInt32) dbCreationDate;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, &dbDate, NULL, NULL, NULL, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *  T H I S _ S e t D a t a b a s e M o d i f i c a t i o n D a t e
+ ********************************************************************/
+Err THIS_SetDatabaseModificationDate(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                                 Int32 dbModificationDate, Int32 *status)
+// DESC This function is used to change the modification date of the
+// DESC specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbModificationDate as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbModificationDate = NSL.SystemTime("", "", 0, 0)
+// EXAMPLE status = NSL.SetDatabaseModificationDate(cardNo, dbLocalID, _
+// EXAMPLE                                         dbModificationDate)
+{
+    UInt32 dbDate;
+    
+    dbDate = (UInt32) dbModificationDate;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, &dbDate, NULL, NULL, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ S e t D a t a b a s e B a c k u p D a t e
+ ********************************************************************/
+Err THIS_SetDatabaseBackupDate(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                                 Int32 dbBackupDate, Int32 *status)
+// DESC This function is used to change the backup date of the
+// DESC specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbBackupDate as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbBackupDate = NSL.SystemTime("", "", 0, 0)
+// EXAMPLE status = NSL.SetDatabaseModificationDate(cardNo, dbLocalID, _
+// EXAMPLE                                         dbBackupDate)
+{
+    UInt32 dbDate;
+    
+    dbDate = (UInt32) dbBackupDate;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, NULL, &dbDate, NULL, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ * T H I S _ S e t D a t a b a s e M o d i f i c a t i o n N u m b e r
+ ********************************************************************/
+Err THIS_SetDatabaseModificationNumber(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                                 Int32 dbModificationNumber, Int32 *status)
+// DESC This function is used to change the modification number of 
+// DESC the specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbModificationNumber as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbModificationNumber = 0
+// EXAMPLE status = NSL.SetDatabaseModificationNumber(cardNo, dbLocalID, _
+// EXAMPLE                                           dbModificationNumber)
+{
+    UInt32 dbModNbr;
+    
+    dbModNbr = (UInt32) dbModificationNumber;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, NULL, NULL, &dbModNbr, 
+                          NULL, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *       T H I S _ S e t D a t a b a s e A p p I n f o I D
+ ********************************************************************/
+Err THIS_SetDatabaseAppInfoID(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                              Int32 dbAppInfoID, Int32 *status)
+// DESC This function is used to change the Application Information
+// DESC LocalID of the specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbAppInfoID as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbAppInfoID = 0
+// EXAMPLE status = NSL.SetDatabaseAppInfoID(cardNo, dbLocalID, _
+// EXAMPLE                                  dbAppInfoID)
+{
+    LocalID dbID;
+    
+    dbID = (LocalID) dbAppInfoID;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+                          &dbID, NULL, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *      T H I S _ S e t D a t a b a s e S o r t I n f o I D
+ ********************************************************************/
+Err THIS_SetDatabaseSortInfoID(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                              Int32 dbSortInfoID, Int32 *status)
+// DESC This function is used to change the Sort Table LocalID of 
+// DESC the specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbSortInfoID as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbSortInfoID = 0
+// EXAMPLE status = NSL.SetDatabaseSortInfoID(cardNo, dbLocalID, _
+// EXAMPLE                                  dbSortInfoID)
+{
+    LocalID dbID;
+    
+    dbID = (LocalID) dbSortInfoID;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+                          NULL, &dbID, NULL, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ S e t D a t a b a s e T y p e
+ ********************************************************************/
+Err THIS_SetDatabaseType(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                              Int32 dbType, Int32 *status)
+// DESC This function is used to change the database type of the
+// DESC specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbType as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbType = String4ToInt("appl")
+// EXAMPLE status = NSL.SetDatabaseType(cardNo, dbLocalID, dbType);
+{
+    UInt32 dbInt;
+    
+    dbInt = (UInt32) dbType;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+                          NULL, NULL, &dbInt, NULL); 
+
+    return 0;
+}
+
+/********************************************************************
+ *         T H I S _ S e t D a t a b a s e C r e a t o r I D
+ ********************************************************************/
+Err THIS_SetDatabaseCreatorID(UInt16 refNum, Int32 cardNo, Int32 dbLocalID, 
+                              Int32 dbCreatorID, Int32 *status)
+// DESC This function is used to change the Creator ID of the
+// DESC specified database.
+// RETURNS 0 = success
+// RETURNS 515 = dmErrInvalidParam
+// RETURNS 537 = dmErrAlreadyExists
+// RETURNS 538 = InvalidDatabaseName
+// EXAMPLE Dim status as Integer
+// EXAMPLE Dim dbLocalID as Integer
+// EXAMPLE Dim cardNo as Integer
+// EXAMPLE Dim dbCreatorID as Integer
+// EXAMPLE
+// EXAMPLE cardNo = 0
+// EXAMPLE dbName = "NSBAlarmProxy5"
+// EXAMPLE dbLocalID = NSL.FindDatabase(cardNo, dbName)
+// EXAMPLE dbCreatorID = String4ToInt("TEST")
+// EXAMPLE status = NSL.SetDatabaseCreatorID(cardNo, dbLocalID, dbCreatorID);
+{
+    UInt32 dbInt;
+    
+    dbInt = (UInt32) dbCreatorID;
+    *status = (Int32) DmSetDatabaseInfo((UInt16) cardNo, (LocalID) dbLocalID,
+                          NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+                          NULL, NULL, NULL, &dbInt); 
+
+    return 0;
+}
+
+// SECTION Event Functions:
+
+/********************************************************************
+ *                  T H I S _ G e t E v e n t
+ ********************************************************************/
+Err THIS_GetEvent(UInt16 refNum, Int32 timeoutTicks, 
+                  Int32 consumePenEvents, Int32 returnVirtualEvents,
+                  Int32 *eventType)
+// DESC Returns an system event type, if one is available.  The
+// DESC timeoutTicks parameter is used to provide a "non-blocking"
+// DESC delay.  If an event occurs before the timeout period expires
+// DESC the function will return immediately.  This can be useful
+// DESC for use with animation or game programming.
+// NOTES If this function is used as part of a button's event code,
+// NOTES you may want to flush pending key and pen events before
+// NOTES calling this function.  This is because the "pen up" event
+// NOTES resulting from the button push will cause this function to
+// NOTES to return immediately.  See the example and FlushEvents()
+// NOTES function.
+// NOTES
+// PARAM1 The number of system ticks to wait before 
+// PARAM1 		returning.
+// PARAM2 0 = do not consume pen events
+// PARAM2 1 = consume pen events
+// PARAM2   This function calls the PalmOS EvtGetEvent function.
+// PARAM2   EvtGetEvent removes events from the events queue.  In
+// PARAM2   order for these events to still be available for other
+// PARAM2   processing, this shared library function requeues the
+// PARAM2   events that it detects.  This may not be desired if 
+// PARAM2   this function is used for capturing pen events for
+// PARAM2   drawing.  When consumePenEvents is set to 1, the pen 
+// PARAM2   events are not requeued but the pen data is still 
+// PARAM2   available.
+// PARAM3 0 = do not return with virtual key events
+// PARAM3 1 = return with virtual key events
+// PARAM3   Virtual key events are events generated by the PalmOS
+// PARAM3   system or other third party system level features.
+// PARAM3   These events include things like low battery warning,
+// PARAM3   backlight change of state, etc.  For the most part,
+// PARAM3   virtual key events should not be returned.  If they 
+// PARAM3   are returned, it is probably wise to let the system
+// PARAM3   handle them by calling this library's SysHandleEvent()
+// PARAM3   function.
+// RETURNS -1 if no event was available within the 
+// RETURNS 		timeout specified.
+// RETURNS 0 = nilEvent
+// RETURNS 1 = penDownEvent
+// RETURNS       Retrieve pen coordintates with:
+// RETURNS           GlobalX(), and GlobalY()
+// RETURNS 2 = penUpEvent
+// RETURNS       Retrieve pen coordintates with:
+// RETURNS           GlobalX(), GlobalY()
+// RETURNS       Retrieve pen stroke coordinates with:
+// RETURNS           GlobalStartX(), GlobalStartY(),
+// RETURNS           GlobalEndX(), and GlobalEndY()
+// RETURNS 3 = penMoveEvent
+// RETURNS       Retrieve pen coordintates with:
+// RETURNS           GlobalX(), and GlobalY()
+// RETURNS 4 = keyDownEvent
+// RETURNS       Retrieve key data with:
+// RETURNS           KeyEventChr(), KeyEventKeyCode(),
+// RETURNS           and KeyEventModifiers()
+// RETURNS 5 = winEnterEvent
+// RETURNS 6 = winExitEvent
+// RETURNS 7 = ctlEnterEvent
+// RETURNS 8 = ctlExitEvent
+// RETURNS 9 = ctlSelectEvent
+// RETURNS 10 = ctlRepeatEvent
+// RETURNS 11 = lstEnterEvent
+// RETURNS 12 = lstSelectEvent
+// RETURNS 13 = lstExitEvent
+// RETURNS 14 = popSelectEvent
+// RETURNS 15 = fldEnterEvent
+// RETURNS 16 = fldHeightChangedEvent
+// RETURNS 17 = fldChangedEvent
+// RETURNS 18 = tblEnterEvent
+// RETURNS 19 = tblSelectEvent
+// RETURNS 20 = daySelectEvent
+// RETURNS 21 = menuEvent
+// RETURNS 22 = appStopEvent
+// RETURNS 21 = frmOpenEvent
+// RETURNS 22 = frmGotoEvent
+// RETURNS 23 = frmUpdateEvent
+// RETURNS 24 = frmSaveEvent
+// RETURNS 25 = frmCloseEvent
+// RETURNS 26 = frmTitleEnterEvent
+// RETURNS 27 = frmTitleSelectEvent
+// RETURNS 28 = tblExitEvent
+// RETURNS 29 = sclEnterEvent
+// RETURNS 30 = sclExitEvent
+// RETURNS 31 = sclRepeatEvent
+// RETURNS 35 = tsmConfirmEvent
+// RETURNS 36 = tsmFepButtonEvent
+// RETURNS 37 = tsmFepModeEvent
+// RETURNS	
+// RETURNS 2048 = menuCmdBarOpenEvent
+// RETURNS 2049 = menuOpenEvent
+// RETURNS 2050 = menuCloseEvent
+// RETURNS 2051 = frmGadgetEnterEvent
+// RETURNS 2052 = frmGadgetMiscEvent
+// RETURNS
+// RETURNS 4096 = firstINetLibEvent
+// RETURNS 4352 = firstWebLibEvent
+// RETURNS	
+// RETURNS 24576 = firstUserEvent
+// EXAMPLE Dim eventType as Integer
+// EXAMPLE Dim timeoutTicks as Integer
+// EXAMPLE
+// EXAMPLE NSL.FlushEvents()
+// EXAMPLE eventType = 0
+// EXAMPLE Do While eventType <= 0
+// EXAMPLE     'do something
+// EXAMPLE     eventType = NSL.GetEvent(timeoutTicks, 0, 0)
+// EXAMPLE Loop
+{
+    Int32      saveType;
+    UInt32     startTicks;
+    eventsEnum requeueEvents;
+    THIS_ATTACH_GLOBALS
+    
+    if (consumePenEvents)
+        requeueEvents = 3;
+    else
+        requeueEvents = 0;
+    if (timeoutTicks <= 0)
+        timeoutTicks = 1;
+    saveType = -1;
+    startTicks = TimGetTicks();
+    EvtGetEvent(&gP->event, timeoutTicks);
+    if ((TimGetTicks() - startTicks) < timeoutTicks) {
+        saveType = gP->event.eType;
+        if ((returnVirtualEvents == 0) &&
+            (saveType == keyDownEvent) &&
+            (gP->event.data.keyDown.chr > 255) &&
+            (gP->event.data.keyDown.modifiers & commandKeyMask)) {
+                SysHandleEvent(&gP->event);
+                saveType = 0;
+        }
+        else
+            if (saveType > requeueEvents) {
+                gP->event.eType = 0xffff;
+	            EvtAddEventToQueue(&gP->event);
+                gP->event.eType = (eventsEnum) saveType;
+                while (gP->event.eType != 0xffff) {
+    	            EvtAddEventToQueue(&gP->event);
+                    EvtGetEvent(&gP->event, 0);
+                }
+            }
+            else
+                SysHandleEvent(&gP->event);
+    }
+
+    *eventType = saveType;
+    switch (*eventType) {
+        case keyDownEvent:
+            gP->chr = gP->event.data.keyDown.chr;
+            gP->keyCode = gP->event.data.keyDown.keyCode;
+            gP->modifiers = gP->event.data.keyDown.modifiers;
+            break;
+        case sysEventPenUpEvent:
+            gP->startX = gP->event.data.penUp.start.x;
+            gP->startY = gP->event.data.penUp.start.y;
+            gP->endX = gP->event.data.penUp.end.x;
+            gP->endY = gP->event.data.penUp.end.y;
+        case sysEventPenDownEvent:
+	    case sysEventPenMoveEvent:
+	        gP->screenX = gP->event.screenX;
+	        gP->screenY = gP->event.screenY;
+	        break;
+    }
+        
+    THIS_DETACH_GLOBALS
+	return 0 ;
+}
+
+/********************************************************************
+ *            T H I S _ S y s H a n d l e E v e n t
+ ********************************************************************/
+Err THIS_SysHandleEvent(UInt16 refNum) 
+// DESC Consume and handle the event most recently returned
+// DESC by the GetEvent() function.  It does this by calling
+// DESC EvtGetEvent() and then SysHandleEvent();
+{
+    EventType event;
+    
+    EvtGetEvent(&event, 0);
+    SysHandleEvent(&event);
+    
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F l u s h E v e n t s
+ ********************************************************************/
+Err THIS_FlushEvents(UInt16 refNum) 
+// DESC Flushes all pending key and pen events.  It does this by
+// DESC calling the PalmOS EvtFlushKeyQueue() and 
+// DESC EvtFlushPenQueue() functions.  It then empties and handles
+// DESC all remaing events by calling EvtGetEvent() and
+// DESC SysHandleEvent().
+{
+    Err       err;
+    EventType event;
+    
+    err = EvtFlushKeyQueue();
+    err = EvtFlushPenQueue();
+    while (EvtEventAvail()) {
+        EvtGetEvent(&event, 0);
+        SysHandleEvent(&event);
+    }
+    
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ K e y E v e n t C h r
+ ********************************************************************/
+Err THIS_KeyEventChr(UInt16 refNum, Int32 *keyChr) 
+// DESC Returns the "chr" data member of of a key event.  The
+// DESC GetEvent() function must have returned an event type of
+// DESC 4 (keyDownEvent) for this value to be valid.
+{
+    THIS_ATTACH_GLOBALS
+    *keyChr = (Int32) gP->chr;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *            T H I S _ K e y E v e n t K e y C o d e
+ ********************************************************************/
+Err THIS_KeyEventKeyCode(UInt16 refNum, Int32 *keyCode) 
+// DESC Returns the "keyCode" data member of of a key event.  The
+// DESC GetEvent() function must have returned an event type of
+// DESC 4 (keyDownEvent) for this value to be valid.
+{
+    THIS_ATTACH_GLOBALS
+    *keyCode = (Int32) gP->keyCode;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ K e y E v e n t M o d i f i e r s
+ ********************************************************************/
+Err THIS_KeyEventModifiers(UInt16 refNum, Int32 *modifiers) 
+// DESC Returns the "modifiers" data member of of a key event.  The
+// DESC GetEvent() function must have returned an event type of
+// DESC 4 (keyDownEvent) for this value to be valid.
+{
+    THIS_ATTACH_GLOBALS
+    *modifiers = (Int32) gP->modifiers;
+    THIS_DETACH_GLOBALS
+    
+    return 0;
+}
+
+// SECTION Field and Form Functions:
+
+/********************************************************************
+ *           T H I S _ C o n t r o l H i t C o n t r o l
+ ********************************************************************/
+Err THIS_ControlHitControl(UInt16 refNum, Int32 objID)
+// DESC Simulate tapping a control. This function adds a 
+// DESC ctlSelectEvent to the event queue. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+{
+    ControlType *controlPtr;
+    
+    controlPtr = ControlPointer(objID);
+    if (controlPtr != NULL)
+        CtlHitControl(controlPtr);
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F i e l d C o p y
+ ********************************************************************/
+Err THIS_FieldCopy(UInt16 refNum, Int32 objID)
+// DESC Copy the current selection to the text clipboard. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldCopy(fieldPtr);
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F i e l d C u t
+ ********************************************************************/
+Err THIS_FieldCut(UInt16 refNum, Int32 objID)
+// DESC Copy the current selection to the text clipboard, delete 
+// DESC the selection from the field, and redraw the field. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldCut(fieldPtr);
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F i e l d I n s e r t
+ ********************************************************************/
+Err THIS_FieldInsert(UInt16 refNum, Int32 objID, char* insString)
+// DESC Replace the current selection if any with the specified 
+// DESC string and redraw the field. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+// BEFORE insString = "Insert This!"
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldInsert(fieldPtr, insString, StrLen(insString));
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F i e l d P a s t e
+ ********************************************************************/
+Err THIS_FieldPaste(UInt16 refNum, Int32 objID)
+// DESC Replace the current selection in the field, if any, with the
+// DESC contents of the text clipboard. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldPaste(fieldPtr);
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F i e l d U n d o
+ ********************************************************************/
+Err THIS_FieldUndo(UInt16 refNum, Int32 objID)
+// DESC Undo the last change made to the field object, if any. 
+// DESC Changes include paste and cut. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldUndo(fieldPtr);
+
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ F i e l d G e t I n s P t P o s i t i o n
+ ********************************************************************/
+Err THIS_FieldGetInsPtPosition(UInt16 refNum, Int32 objID, Int32 *pos)
+// DESC Returns the insertion point position within the string. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+// NOTES The insertion point is to the left of the byte offset that
+// NOTES this function returns. That is, if this function returns 0,
+// NOTES the insertion point is to the left of the first character 
+// NOTES in the string. In multiline fields, line feeds are counted
+// NOTES as a single character in the string, and the byte offset 
+// NOTES after the line feed character is the beginning of the next
+// NOTES line. 
+// NOTES See also: FieldSetInsertionPoint() and FieldSetInsPtPosition()
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        *pos = (Int32) FldGetInsPtPosition(fieldPtr);
+    else
+        *pos = -1;
+
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ F i e l d G e t S e l e c t i o n
+ ********************************************************************/
+Err THIS_FieldGetSelection(UInt16 refNum, Int32 objID, Int32 *startPos)
+// DESC Retrieves the start and end position of a field's selected
+// DESC text.  It only returns the start position.  To get the end
+// DESC position, use the GlobalEndPos() funtion.
+// PARAM1 0 = use field that currently has focus
+// BEFORE Dim endPos as Integer
+// BEFORE
+// BEFORE objID = 1008
+// AFTER endPos = NSL.GlobalEndPos()
+{
+    FieldType *fieldPtr;
+    THIS_ATTACH_GLOBALS
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL) {
+        FldGetSelection(fieldPtr, &gP->startPos, &gP->endPos);
+        *startPos = (Int32) gP->startPos;
+    }
+    else
+        *startPos = (Int32) -1;
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ F i e l d A n y D i r t y
+ ********************************************************************/
+Err THIS_FieldAnyDirty(UInt16 refNum, Int32 *dirty)
+// DESC Returns 1 if one or more of the active form's field values
+// DESC have changed since the last time that they were set.
+{
+    FormPtr formPtr;
+    FieldType *fieldPtr;
+    UInt16 n;
+    UInt16 index;
+    FormObjectKind type;
+    
+    *dirty = 0;
+    formPtr = FrmGetActiveForm();
+    if (formPtr != NULL) {
+        n = FrmGetNumberOfObjects(formPtr);
+        for (index = 0; index < n; index++) {
+            type = FrmGetObjectType(formPtr, index);
+            if (type == frmFieldObj) {
+                fieldPtr = FrmGetObjectPtr(formPtr, index);
+                if (FldDirty(fieldPtr)) {
+                    *dirty = 1;
+                    break;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ F i e l d D i r t y
+ ********************************************************************/
+Err THIS_FieldDirty(UInt16 refNum, Int32 objID, Int32 *dirty)
+// DESC Returns 1 if the field's value has changed since the last
+// DESC time that it was set.
+// PARAM1 0 = check field that currently has focus
+// BEFORE
+// BEFORE objID = 1008 
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        *dirty = (Int32) FldDirty(fieldPtr);
+    else
+        *dirty = 0;
+
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ F i e l d S e t D i r t y
+ ********************************************************************/
+Err THIS_FieldSetDirty(UInt16 refNum, Int32 objID, Int32 dirty)
+// DESC Sets a field's "dirty" property.  A field is considered as
+// DESC dirty if its value has changed since the last time it was
+// DESC set.
+// PARAM1 0 = use field that currently has focus
+// PARAM2 0 = not dirty
+// PARAM2 1 = dirty
+// BEFORE
+// BEFORE objID = 1008
+// BEFORE dirty = 1
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldSetDirty(fieldPtr, (Boolean) dirty);
+
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ F i e l d S e t A l l D i r t y
+ ********************************************************************/
+Err THIS_FieldSetAllDirty(UInt16 refNum, Int32 dirty)
+// DESC Sets the "dirty" property of all of the active form's field
+// DESC values.
+// PARAM1 0 = not dirty
+// PARAM1 1 = dirty
+{
+    FormPtr formPtr;
+    FieldType *fieldPtr;
+    UInt16 n;
+    UInt16 index;
+    FormObjectKind type;
+    
+    formPtr = FrmGetActiveForm();
+    if (formPtr != NULL) {
+        n = FrmGetNumberOfObjects(formPtr);
+        for (index = 0; index < n; index++) {
+            type = FrmGetObjectType(formPtr, index);
+            if (type == frmFieldObj) {
+                fieldPtr = FrmGetObjectPtr(formPtr, index);
+                FldSetDirty(fieldPtr, (Boolean) dirty);
+            }
+        }
+    }
+
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ F i e l d S e t S e l e c t i o n
+ ********************************************************************/
+Err THIS_FieldSetSelection(UInt16 refNum, Int32 objID, Int32 startPos, Int32 endPos)
+// DESC Set the current selection in a field and highlight the 
+// DESC selection if the field is visible. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldSetSelection(fieldPtr, (UInt16) startPos, (UInt16) endPos);
+
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ F i e l d S e t I n s e r t i o n P o i n t
+ ********************************************************************/
+Err THIS_FieldSetInsertionPoint(UInt16 refNum, Int32 objID, Int32 pos)
+// DESC Set the location of the insertion point based on a 
+// DESC specified string position. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+// NOTES This routine differs from FieldldSetInsPtPosition in
+// NOTES that it doesn't make the character position visible. 
+// NOTES FieldSetInsertionPoint also doesn't make the field the 
+// NOTES current focus of input if it was not already. 
+// NOTES See Also:  FieldSetInsPtPosition() and FieldGetInsPtPosition()
+
+{
+    FieldType *fieldPtr;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL)
+        FldSetInsertionPoint(fieldPtr, (UInt16) pos);
+
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ F i e l d S e t I n s P t P o s i t i o n
+ ********************************************************************/
+Err THIS_FieldSetInsPtPosition(UInt16 refNum, Int32 objID, Int32 pos)
+// DESC Set the location of the insertion point based on a 
+// DESC specified string position. 
+// PARAM1 0 = use field that currently has focus
+// BEFORE
+// BEFORE objID = 1008
+// NOTES If the position is beyond the visible text, the field is
+// NOTES scrolled until the position is visible. 
+// NOTES See also:  FieldSetInsertionPoint() and FieldGetInsPtPosition()
+
+{
+    FieldType *fieldPtr;
+    FormPtr   formPtr;
+    UInt16    fieldIndex;
+    
+    fieldPtr = FieldPointer(objID);
+    if (fieldPtr != NULL) {
+        fieldIndex = ObjectIndex(objID, &formPtr);
+        FrmSetFocus(formPtr, fieldIndex);
+        FldSetInsPtPosition(fieldPtr, (UInt16) pos);
+    }
+    
+    return 0;
+}
+
+/********************************************************************
+ *        T H I S _ F o r m G e t N u m b e r O f O b j e c t s
+ ********************************************************************/
+Err THIS_FormGetNumberOfObjects(UInt16 refNum, Int32 *nbr)
+// DESC Retrieves the number of objects on the active form.
+// RETURNS -1 if no form is active
+{
+    FormPtr formPtr;
+
+    formPtr = FrmGetActiveForm();
+    if (formPtr != NULL)
+        *nbr = (Int32) FrmGetNumberOfObjects(formPtr);
+    else
+        *nbr = -1;    
+
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ F o r m G e t O b j e c t B o u n d s
+ ********************************************************************/
+Err THIS_FormGetObjectBounds(UInt16 refNum, Int32 objID, Int32 *x)
+// DESC Retrieves the x, y, width, and height values of a form
+// DESC object.
+// PARAM1 0 = use object that currently has focus
+// RETURNS -1 if the object is invalid or no object has focus
+// BEFORE Dim y as Integer
+// BEFORE Dim width as Integer
+// BEFORE Dim height as Integer
+// BEFORE
+// BEFORE objID = 1008 
+// AFTER y = NSL.GlobalY()
+// AFTER width = NSL.GlobalWidth()
+// AFTER height = NSL.GlobalHeight()
+// NOTES This function only returns the x position.  Use
+// NOTES the GlobalY(), GlobalWidth(), and GlobalHeight() functions
+// NOTES to retrieve the other values.
+{
+    UInt16 objectIndex;
+    RectangleType rect;
+    FormPtr formPtr;
+    THIS_ATTACH_GLOBALS
+    
+    objectIndex = ObjectIndex(objID, &formPtr);
+    if (objectIndex != noFocus) {
+        FrmGetObjectBounds(formPtr, objectIndex, &rect);
+        gP->screenX = rect.topLeft.x;
+        gP->screenY = rect.topLeft.y;
+        gP->width = rect.extent.x;
+        gP->height = rect.extent.y;
+        *x = gP->screenX;
+    }
+    else
+        *x = -1;
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ F o r m G e t O b j e c t P o s i t i o n
+ ********************************************************************/
+Err THIS_FormGetObjectPosition(UInt16 refNum, Int32 objID, Int32 *x)
+// DESC Retrieves the starting X and Y position values of a form
+// DESC object.
+// PARAM1 0 = use object that currently has focus
+// RETURNS -1 if the object is invalid or no object has focus
+// BEFORE Dim y as Integer
+// BEFORE
+// BEFORE objID = 1008 
+// AFTER y = NSL.GlobalY
+// NOTES This function only returns the X position.  Use the
+// NOTES GlobalY(), function to retrieve the Y position.
+{
+    UInt16 objectIndex;
+    FormPtr formPtr;
+    THIS_ATTACH_GLOBALS
+    
+    objectIndex = ObjectIndex(objID, &formPtr);
+    if (objectIndex != noFocus) {
+        FrmGetObjectPosition(formPtr, objectIndex, &gP->screenX, &gP->screenY);
+        *x = gP->screenX;
+    }
+    else
+        *x = -1;
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ F o r m G e t O b j e c t T y p e
+ ********************************************************************/
+Err THIS_FormGetObjectType(UInt16 refNum, Int32 objID, Int32 *type)
+// DESC Retrieves the object type of the specified object.
+// PARAM1 0 = use object that currently has focus
+// RETURNS -1 if the object is invalid or no object has focus
+// RETURNS  0 = frmFieldObj
+// RETURNS  1 = frmControlObj
+// RETURNS  2 = frmListObj
+// RETURNS  3 = frmTableObj
+// RETURNS  4 = frmBitmapObj
+// RETURNS  5 = frmLineObj
+// RETURNS  6 = frmFrameObj
+// RETURNS  7 = frmRectangleObj
+// RETURNS  8 = frmLabelObj
+// RETURNS  9 = frmTitleObj
+// RETURNS 10 = frmPopupObj
+// RETURNS 11 = frmGraffitiStateObj
+// RETURNS 12 = frmGadgetObj
+// RETURNS 13 = frmScrollbarObj
+// BEFORE objID = 1008 
+{
+    UInt16 objectIndex;
+    FormPtr formPtr;
+    
+    objectIndex = ObjectIndex(objID, &formPtr);
+    if (objectIndex != noFocus) 
+        *type = (Int32) FrmGetObjectType(formPtr, objectIndex);
+    else
+        *type = -1;
+
+    return 0;
+}
+
+
+/********************************************************************
+ *          T H I S _ F o r m S e t O b j e c t P o s i t i o n
+ ********************************************************************/
+Err THIS_FormSetObjectPosition(UInt16 refNum, Int32 objID, Int32 x, Int32 y)
+// DESC Changes an object's current position.
+// PARAM1 0 = use object that currently has focus
+// RETURNS -1 if the object is invalid or no object has focus
+// BEFORE
+// BEFORE objID = 1008 
+// BEFORE x = 120
+// BEFORE y = 40
+{
+    UInt16 objectIndex;
+    FormPtr formPtr;
+    
+    objectIndex = ObjectIndex(objID, &formPtr);
+    if (objectIndex != noFocus) {
+        FrmHideObject(formPtr, objectIndex);
+        FrmSetObjectPosition(formPtr, objectIndex, (Coord) x, (Coord) y);
+        FrmShowObject(formPtr, objectIndex);
+    }
+
+    return 0;
+}
+
+// SECTION Preference Functions:
+
+/********************************************************************
+ *          T H I S _ G e t A p p P r e f e r e n c e s
+ ********************************************************************/
+Err THIS_GetAppPreferences(UInt16 refNum, char *pgmName, 
+                           Int32 prefId, Int32 saved, char *data)
+// DESC Get an application preference string.
+// PARAM1 Program Name - This is case sensitive
+// PARAM2 Preference ID
+// PARAM3 0 = preference does not get restored after a hard reset
+// PARAM3 1 = preference does get restored after a hard reset
+// NOTES Currently preference strings are limited to 250 bytes or
+// NOTES less.
+// BEFORE
+// BEFORE pgmName = "SysLibTest"
+// BEFORE prefId = 1
+// BEFORE saved = 0
+{
+    UInt32  creatorId;
+    UInt16  prefSize;
+    Err     status;
+    char    d[256];
+
+	if ((status = FindProgram(pgmName, &creatorId, NULL, NULL, refNum)) != 0) {
+	    StrCopy(data, "");
+	    return 0;
+	}
+	
+    prefSize = sizeof(d) - 1;
+    PrefGetAppPreferences(creatorId, (UInt16) prefId, 
+                          d, &prefSize, (Boolean) saved);
+    if (prefSize < (sizeof(d) - 1)) {
+        PrefGetAppPreferences(creatorId, (UInt16) prefId, 
+                              d, &prefSize, (Boolean) saved);
+        StrCopy(data, d);
+    }
+    else
+        StrCopy(data, "");
+    
+	
+	return 0;
+}
+	    
+/********************************************************************
+ *          T H I S _ S e t A p p P r e f e r e n c e s
+ ********************************************************************/
+Err THIS_SetAppPreferences(UInt16 refNum, char *pgmName, 
+                           Int32 prefId, char *data, Int32 saved, Int32 *status)
+// DESC Set an application preference string.
+// PARAM1 Program Name - This is case sensitive
+// PARAM2 Preference ID
+// PARAM3 0 = preference does not get restored after a hard reset
+// PARAM3 1 = preference does get restored after a hard reset
+// NOTES Currently preference strings are limited to 250 bytes or
+// NOTES less.
+// BEFORE
+// BEFORE pgmName = "SysLibTest"
+// BEFORE prefId = 1
+// BEFORE data = "anything I want!"
+// BEFORE saved = 0
+{
+    UInt32  creatorId;
+    UInt16  prefSize;
+    Err     err;
+
+	if ((err = FindProgram(pgmName, &creatorId, NULL, NULL, refNum)) != 0) {
+	    *status = -1;
+	    return 0;
+	}
+	
+    prefSize = StrLen(data) + 1;
+    PrefSetAppPreferences(creatorId, (UInt16) prefId, 0, 
+                          data, prefSize, (Boolean) saved);
+    *status = 0;
+	return 0;
+}
+
+/********************************************************************
+ *          T H I S _ G e t S y s P r e f e r e n c e
+ ********************************************************************/
+Err THIS_GetSysPreference(UInt16 refNum, Int32 prefID, Int32 *data)
+// DESC Get the value of a system preference.
+// PARAM1 Preference ID - see SystemPreferencesChoice enum in
+// PARAM1                 Preferences.h
+// BEFORE 
+// BEFORE prefID = 7   'prefAutoOffDuration - in seconds
+{
+    *data = (Int32) PrefGetPreference((SystemPreferencesChoice) prefID);
+    
+    return 0;
+}
+ 
+/********************************************************************
+ *          T H I S _ S e t S y s P r e f e r e n c e
+ ********************************************************************/
+Err THIS_SetSysPreference(UInt16 refNum, Int32 prefID, Int32 data)
+// DESC Set the value of a system preference.
+// PARAM1 Preference ID - see SystemPreferencesChoice enum in
+// PARAM1                 Preferences.h
+// BEFORE 
+// BEFORE prefID = 7   'prefAutoOffDuration - in seconds
+// BEFORE data = 300   '5 minutes
+{
+    PrefSetPreference((SystemPreferencesChoice) prefID, (UInt32) data);
+    
+    return 0;
+}
+
+// SECTION Progress Manager Functions:
+
+/********************************************************************
+ *          T H I S _ P r o g r e s s S t a r t D i a l o g
+ ********************************************************************/
+Err THIS_ProgressStartDialog(UInt16 refNum, char* title)
+// DESC Start a Progress Dialog.  The Progress Dialog functions are
+// DESC used to display a special type of alert that informs the user
+// DESC of the progress being made during operations that take a long
+// DESC time.
+// PARAM1 must be 20 characters or less.
+// NOTES:  See also:  ProgressStopDialog(), ProgressUpdateDialog()
+//                    ProgressUserCancel(), ProgressPercent(),
+//                    ProgressPercentString()
+// EXAMPLE Dim title as String
+// EXAMPLE Dim message as String
+// EXAMPLE Dim stage as Integer
+// EXAMPLE Dim error as Integer
+// EXAMPLE Dim force as Integer
+// EXAMPLE Dim canceled as Integer
+// EXAMPLE Dim strValue as String
+// EXAMPLE Dim resolution as Integer
+// EXAMPLE Dim completeChar as String
+// EXAMPLE Dim incompleteChar as String
+// EXAMPLE Dim percent as Integer
+// EXAMPLE Dim count as Integer
+// EXAMPLE    
+// EXAMPLE completeChar = "|"
+// EXAMPLE incompleteChar = "."
+// EXAMPLE resolution = 5
+// EXAMPLE count = 100
+// EXAMPLE
+// EXAMPLE title = "Progress Test..."
+// EXAMPLE NSL.ProgressStartDialog title
+// EXAMPLE Delay 1
+// EXAMPLE error = 0
+// EXAMPLE stage = 1
+// EXAMPLE Do While stage <= count
+// EXAMPLE     canceled = NSL.ProgressUserCancel()
+// EXAMPLE     If canceled = 1 Then
+// EXAMPLE         Exit Do
+// EXAMPLE     End If
+// EXAMPLE     percent = NSL.ProgressPercent(stage, count)
+// EXAMPLE     strValue = NSL.ProgressPercentString(percent, resolution, _
+// EXAMPLE                                          completeChar, incompleteChar)
+// EXAMPLE     Message = strValue + Chr(10) + Str(percent) _
+// EXAMPLE             + "% complete" + Chr(10) _
+// EXAMPLE             + "stage = " + Str(stage)
+// EXAMPLE     NSL.ProgressUpdateDialog error, message
+// EXAMPLE     stage = stage + 1
+// EXAMPLE     Delay 0.25
+// EXAMPLE Loop
+// EXAMPLE    
+// EXAMPLE force = 0
+// EXAMPLE Delay 1
+// EXAMPLE NSL.ProgressStopDialog(force)
+{
+    THIS_ATTACH_GLOBALS
+    
+    if (StrLen(title) > progressMaxTitle)
+       title[progressMaxTitle] = 0;
+    if (gP->progressPtr != NULL)
+        PrgStopDialog(gP->progressPtr, true);
+    gP->progressPtr = PrgStartDialogV31(title, ProgressCallbackFunction);
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *          T H I S _ P r o g r e s s S t o p D i a l o g
+ ********************************************************************/
+Err THIS_ProgressStopDialog(UInt16 refNum, Int32 force)
+// DESC Stops a Progress Dialog.  This function must be called to
+// DESC make the dialog disappear.
+// PARAM1 0 = do not force an immediate exit of the dialog
+// PARAM1 1 = force an immediate exit of the dialog
+// PARAM1     This parameter only has meaning if the dialog is
+// PARAM1     in the process of displaying an error message.  If
+// PARAM1     "force" is set to 0, then the user must press the
+// PARAM1     "OK" button on the dialog before the dialog disappears.
+// EXAMPLE See the example provided with ProgressStartDialog()
+{
+    THIS_ATTACH_GLOBALS
+    
+    if (gP->progressPtr != NULL)
+        PrgStopDialog(gP->progressPtr, (Boolean) force);
+    gP->progressPtr = NULL;
+
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *       T H I S _ P r o g r e s s U p d a t e D i a l o g
+ ********************************************************************/
+Err THIS_ProgressUpdateDialog(UInt16 refNum, Int32 error, char* message)
+// DESC Update the message that is displayed in the Progress Dialog.
+// PARAM1 0 = no error
+// PARAM1 1 = use error processing
+// PARAM1     if "error" is set to 1, the dialog will display the
+// PARAM1     specified message and only present one button - "OK".
+// PARAM2 Message string to display.  This string must be less than
+// PARAM2 128 characters in length.
+// EXAMPLE See the example provided with ProgressStartDialog().
+{
+    THIS_ATTACH_GLOBALS
+
+    if (gP->progressPtr != NULL) {
+        if (StrLen(message) > progressMaxMessage)
+            message[progressMaxMessage] = 0;
+        PrgUpdateDialog(gP->progressPtr, (UInt16) error, (UInt16) 0, message, true);
+    }
+    
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *       T H I S _ P r o g r e s s U s e r C a n c e l
+ ********************************************************************/
+Err THIS_ProgressUserCancel(UInt16 refNum, Int32 *canceled)
+// DESC Returns 1 if the user pressed the "Cancel" button on the
+// DESC Progress dialog.  If you have an operation that should not
+// DESC or can not be canceled, then do not call this function.
+// DESC The "Cancel" button will still be present, but it will not
+// DESC do anything.  Currently, with PalmOS, this button can not
+// DESC be made invisible or grayed out.
+// EXAMPLE See the example provided with ProgressStartDialog().
+{
+    EventType event;
+    THIS_ATTACH_GLOBALS
+    
+    if (gP->progressPtr != NULL) {
+        *canceled = 0;
+        while (EvtEventAvail()) {
+            EvtGetEvent(&event, 0);
+            PrgHandleEvent(gP->progressPtr, &event);
+        }
+        *canceled = (Int32) PrgUserCancel(gP->progressPtr);
+    }
+    else
+        *canceled = 1;
+        
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ P r o g r e s s P e r c e nt
+ ********************************************************************/
+Err THIS_ProgressPercent(UInt16 refNum, Int32 current, Int32 count, Int32 *percent)
+// DESC Calculates a percentage complete number based on the 
+// DESC input values.  This function is not really part of the
+// DESC Progress Manager API.  It is just provided as a convenient
+// DESC way to calculate a percentage complete value that can be
+// DESC included in your Progress Dialog message.
+// PARAM1 Current iteration number of your process loop.
+// PARAM2 Number of iterations required to be 100 percent complete.
+// EXAMPLE See the example provided with ProgressStartDialog().
+{
+    *percent = (current * 100) / count;
+    
+    return 0;
+}
+
+/********************************************************************
+ *       T H I S _ P r o g r e s s P e r c e n t S t r i n g
+ ********************************************************************/
+Err THIS_ProgressPercentString(UInt16 refNum, Int32 percent, Int32 resolution, 
+                               char *completeChar, char *incompleteChar, char *strValue)
+// DESC Constructs a string with characters representing the 
+// DESC percentage complete and incomplete for your process loop.
+// DESC This function is not really part of the Progress Manager 
+// DESC API.  It is just provided as a convenient way to display
+// DESC a crude "graphic" representation of your loop's progress. 
+// DESC This string can be included as part of your Progress Dialog
+// DESC message.
+// PARAM1 Percent complete - see also ProgressPercent().
+// PARAM2 The resolution size of the percent string.
+// PARAM2   A resolution of 1 means that there will be 100
+// PARAM2   characters in the percent string.  Every 1% change
+// PARAM2   will be reflected in the percent string.  A 
+// PARAM2   resolution of 5 means that there will be 20 
+// PARAM2   characters in the percent string.  Every 5% change
+// PARAM2   will be reflected in the percent string.
+// PARAM2   As you can see, the total length of the percent
+// PARAM2   string is calculated as (100 / resolution).  As such,
+// PARAM2   resolution values should be one of the following:
+// PARAM2       1, 2, 4, 5, 10, 20, 25, or 50
+// PARAM3 The character to display for the percent completed.
+// PARAM3     "|" is recommended.
+// PARAM4 The character to display for the percent incomplete.
+// PARAM4     "." is recommended.
+// PARAM4   The "completeChar" and "incompleteChar" characters
+// PARAM4   should probably be characters with the exact same
+// PARAM4   pixel width.  Otherwise, the percent string display
+// PARAM4   width will vary as the percentage complete changes.
+// EXAMPLE See the example provided with ProgressStartDialog().
+{
+    char s[101];
+    Int32 complete;
+    UInt8 i;
+    
+    if (resolution == 0)
+        resolution = 10;
+    complete = percent / resolution;
+    for (i = 0; i < complete; i++)
+        s[i] = *completeChar;
+    for (i = complete; i < (100 / resolution); i++)
+        s[i] = *incompleteChar;
+    s[(100 / resolution)] = 0;
+    StrCopy(strValue, s);
+            
+    return 0;
+}
+
+// SECTION System Time Functions:
+
+/********************************************************************
+ *             T H I S _ S e l e c t O n e T i m e
+ ********************************************************************/
+Err THIS_SelectOneTime(UInt16 refNum, Int32 defHour, Int32 defMinute,
+                       char *title, Int32 *newTimeSelected)
+// DESC Calls the SelectOneTime() PalmOS function to display a dialog
+// DESC that allows a user to select 1 time value.  This function
+// DESC returns 1 if a newTime was selected, otherwise it returns 0.
+// DESC use the GlobalHour() and GlobalMinute() functions to retrieve
+// DESC selected time values.
+// PARAM1 Default hour for selection
+// PARAM2 Default minute for selection
+// BEFORE
+// BEFORE defHour = 10
+// BEFORE defMinute = 30
+// BEFORE title = "Some Title"
+// AFTER If newTimeSelected = 1 Then
+// AFTER     defHour = NSL.GlobalHour()
+// AFTER     defMinute = NSL.GlobalMinute()
+// AFTER End If
+{
+    Int16 hr;
+    Int16 mn;
+    THIS_ATTACH_GLOBALS
+    
+    hr = (Int16) defHour;
+    mn = (Int16) defMinute;
+    *newTimeSelected = (Int32) SelectOneTime(&hr, &mn, title);
+    gP->hour = hr;
+    gP->minute = mn;
+    
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+
+/********************************************************************
+ *         T H I S _ I n c r e m e n t S y s t e m T i m e
+ ********************************************************************/
+Err THIS_IncrementSystemTime(UInt16 refNum, UInt32 oldSysTime,
+                            Int32 hours, Int32 minutes, Int32 seconds,
+                            UInt32 *newSysTime) 
+// DESC Returns a system time value that is incremented by the 
+// DESC specified number of hours, minutes, and seconds.  A system
+// DESC time value is an integer that is expressed as the number of
+// DESC seconds since January 1st, 1904.
+// PARAM1 0 = use current system time.
+// BEFORE
+// BEFORE oldSysTime = 0
+// BEFORE hours = 0
+// BEFORE minutes = 30
+// BEFORE seconds = 0
+// BEFORE 'Add 30 minutes
+{
+
+    if (oldSysTime == 0)
+        *newSysTime = TimGetSeconds();
+    else
+        *newSysTime = oldSysTime;
+    *newSysTime = *newSysTime + (hours * 3600) + (minutes * 60) + seconds;
+    
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ S y s t e m T i m e
+ ********************************************************************/
+Err THIS_SystemTime(UInt16 refNum, 
+                   char *strDate, char *strTime, Int32 seconds, 
+                   Int32 ToDateFormat,
+                   UInt32 *sysTime) 
+// DESC Returns a "System Time" value.  This value is expressed as
+// DESC the number of seconds since January 1st, 1904.  The time to
+// DESC return is supplied as strings in the strDate and strTime
+// DESC parameters.  The strDate parameter may contain only a date
+// DESC value or both a date and a time value.  If the strTime 
+// DESC parameter is blank (""), the time, if specified, in the 
+// DESC strDate parameter will be used.  If both the strDate and the
+// DESC strTime parameters are blank, the current system time will
+// DESC be used. The additional seconds parameter is used to provide
+// DESC an easy way to increment or decrement the returned system time.
+// DESC For example:
+// DESC     systemTime = NSL.SystemTime("", "", 5, 0)
+// DESC returns the current time plus 5 seconds.
+// PARAM1 See the ToDateFormat parameter for date string formats.
+// PARAM2 The time string is specified as: "HH[:MM[:SS]][AM|PM|am|pm]"
+// PARAM2 (actually, if the character 'P' or 'p' is present, the time
+// PARAM2  will be interpreted as AM/PM format and the hour will be
+// PARAM2  appropriately adjusted).
+// PARAM3 Increment (or decrement, if negative) the returned systemTime
+// PARAM3 by the specified number of seconds.
+// PARAM4 0 = strDate string is in MM/DD/YYYY or MM/DD/YY format.
+// PARAM4 1 = strDate string is in YYYY/MM/DD or YY/MM/DD format.
+// RETURNS Integer time as expressed as the number of seconds since
+// RETURNS January 1st, 1904.
+// NOTES See also:  StringDateTime(), StringDate(), and StringTime()
+// BEFORE
+// BEFORE strDate = ""
+// BEFORE strTime = ""
+// BEFORE Seconds = 5
+// BEFORE ToDateFormat = 0
+{
+
+    DateTimeType dt;
+    char         tStr[32];
+    char         *s;
+    
+    *sysTime = TimGetSeconds();
+    TimSecondsToDateTime(*sysTime, &dt);
+    
+    if (StrLen(strDate) > 0) {
+        if (ToDateFormat) {
+	        THIS_DelimitedItem(refNum, strDate, "/", 1, tStr);
+	        dt.year = StrAToI(tStr);
+	        if (dt.year < 49)
+	            dt.year = dt.year + 2000;
+	        else
+	            if (dt.year < 100)
+	                dt.year = dt.year + 1900;
+	        THIS_DelimitedItem(refNum, strDate, "/", 2, tStr);
+	        dt.month = StrAToI(tStr);
+	        THIS_DelimitedItem(refNum, strDate, "/", 3, tStr);
+	        dt.day = StrAToI(tStr);
+        }
+        else {
+	        THIS_DelimitedItem(refNum, strDate, "/", 1, tStr);
+	        dt.month = StrAToI(tStr);
+	        THIS_DelimitedItem(refNum, strDate, "/", 2, tStr);
+	        dt.day = StrAToI(tStr);
+	        THIS_DelimitedItem(refNum, strDate, "/", 3, tStr);
+	        dt.year = StrAToI(tStr);
+	        if (dt.year < 49)
+	            dt.year = dt.year + 2000;
+	        else
+	            if (dt.year < 100)
+	                dt.year = dt.year + 1900;
+	    }
+    }
+        
+    if (StrLen(strTime) == 0 && StrLen(strDate) > 0) {
+        if ((s = StrChr(strDate, ' ')) != NULL)
+            strTime = ++s;
+    }
+    
+    if (StrLen(strTime) > 0) {
+        if (!StrCompare(strTime, " ")) {
+            dt.hour = 0;
+            dt.minute = 0;
+            dt.second = 0;
+        }
+        else {
+	        THIS_DelimitedItem(refNum, strTime, ":", 1, tStr);
+  	        dt.hour = StrAToI(tStr);
+	        if (StrChr(strTime, 'p') || StrChr(strTime, 'P'))
+               if (dt.hour > 12)
+                   dt.hour = dt.hour + 12;
+	        THIS_DelimitedItem(refNum, strTime, ":", 2, tStr);
+	        dt.minute = StrAToI(tStr);
+	        dt.second = 0;
+    	    THIS_DelimitedItem(refNum, strTime, ":", 3, tStr);
+	        if (tStr[0] != ':')
+	            dt.second = StrAToI(tStr);
+	    }
+    }
+    
+    *sysTime = TimDateTimeToSeconds(&dt) + seconds;
+    return 0;
+}
+
+/********************************************************************
+ *            T H I S _ S t r i n g D a t e T i m e
+ ********************************************************************/
+Err THIS_StringDateTime(UInt16 refNum, 
+                        UInt32 sysTime,
+                        Int32 ToDateFormat,
+                        Int32 ToTimeFormat,
+                        Int32 AMPMFormat,
+                        char *strDateTime) 
+// DESC Returns a string representation of the supplied "System Time"
+// DESC value.  The sysTime value is an integer value expressed 
+// DESC as the number of seconds since January 1st, 1904.  The
+// DESC returned value is a string containing both the date and time.
+// DESC If the sysTime parameter is specified as 0, the current system 
+// DESC date and time will be returned.
+// PARAM1 Integer time as expressed as the number of seconds since
+// PARAM1 January 1st, 1904.
+// PARAM2 0 = the date string will be in MM/DD/YYYY or MM/DD/YY format.
+// PARAM2 1 = the date string will be in YYYY/MM/DD or YY/MM/DD format.
+// PARAM3 0 = the time string will be in HH:MM format.
+// PARAM3 1 = the time string will be in HH:MM:SS format.
+// PARAM4 0 = no AM/PM indicators will be added.
+// PARAM4 1 = " AM" or " PM" indicator will be added and the hour will
+// PARAM4     will be adjusted appropriately.
+// NOTES See also:  SystemTime(), StringDate(), and StringTime()
+// BEFORE
+// BEFORE sysTime = SystemTime("", "", 0, 0) 
+{
+    char         dtStr[32];
+    char         tStr[32];
+    
+    dtStr[0] = 0;
+    if (sysTime == 0)
+        sysTime = TimGetSeconds();
+    THIS_StringDate(refNum, sysTime, ToDateFormat, dtStr);
+    THIS_StringTime(refNum, sysTime, ToTimeFormat, AMPMFormat, tStr);
+    StrCat(dtStr, " ");
+    StrCat(dtStr, tStr);
+
+    StrCopy(strDateTime, dtStr);
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ S t r i n g D a t e
+ ********************************************************************/
+Err THIS_StringDate(UInt16 refNum, 
+                    UInt32 sysTime,
+                    Int32 ToDateFormat,
+                    char *strDate) 
+// DESC Returns a string representation of the supplied "System Time"
+// DESC value.  The sysTime value is an integer value expressed 
+// DESC as the number of seconds since January 1st, 1904.  The
+// DESC returned value is a string containing only the date.
+// DESC If the sysTime parameter is specified as 0, the current system 
+// DESC date will be returned.
+// PARAM1 Integer time as expressed as the number of seconds since
+// PARAM1 January 1st, 1904.
+// PARAM2 0 = the date string will be in MM/DD/YYYY or MM/DD/YY format.
+// PARAM2 1 = the date string will be in YYYY/MM/DD or YY/MM/DD format.
+// NOTES See also:  SystemTime(), StringDateTime(), and StringTime()
+// BEFORE
+// BEFORE sysTime = SystemTime("", "", 0, 0) 
+{
+    DateTimeType dt;
+    char         dtStr[32];
+    char         tStr[32];
+    
+    dtStr[0] = 0;
+    if (sysTime == 0)
+        sysTime = TimGetSeconds();
+    TimSecondsToDateTime(sysTime, &dt);
+    if (ToDateFormat) {
+        StrIToA(tStr, dt.year);
+        StrCat(dtStr, tStr);
+        StrCat(dtStr, "/");
+        StrIToA(tStr, dt.month);
+        if (dt.month < 10)
+            StrCat(dtStr, "0");
+        StrCat(dtStr, tStr);
+        StrCat(dtStr, "/");
+        StrIToA(tStr, dt.day);
+        if (dt.day < 10)
+            StrCat(dtStr, "0");
+        StrCat(dtStr, tStr);
+    }
+    else {
+        StrIToA(tStr, dt.month);
+        if (dt.month < 10)
+            StrCat(dtStr, "0");
+        StrCat(dtStr, tStr);
+        StrCat(dtStr, "/");
+        StrIToA(tStr, dt.day);
+        if (dt.day < 10)
+            StrCat(dtStr, "0");
+        StrCat(dtStr, tStr);
+        StrCat(dtStr, "/");
+        if (dt.year > 1999)
+            dt.year = dt.year - 2000;
+        else
+            dt.year = dt.year - 1900;
+        StrIToA(tStr, dt.year);
+        if (dt.year < 10)
+            StrCat(dtStr, "0");
+        StrCat(dtStr, tStr);
+    }
+            
+    StrCopy(strDate, dtStr);
+    return 0;
+}
+
+/********************************************************************
+ *                T H I S _ S t r i n g T i m e
+ ********************************************************************/
+Err THIS_StringTime(UInt16 refNum, 
+                    UInt32 sysTime,
+                    Int32 ToTimeFormat,
+                    Int32 AMPMFormat,
+                    char *strTime) 
+// DESC Returns a string representation of the supplied "System Time"
+// DESC value.  The sysTime value is an integer value expressed 
+// DESC as the number of seconds since January 1st, 1904.  The
+// DESC returned value is a string containing only the time.
+// DESC If the sysTime parameter is specified as 0, the current system 
+// DESC time will be returned.
+// PARAM1 Integer time as expressed as the number of seconds since
+// PARAM1 January 1st, 1904.
+// PARAM2 0 = the time string will be in HH:MM format.
+// PARAM2 1 = the time string will be in HH:MM:SS format.
+// PARAM3 0 = no AM/PM indicators will be added.
+// PARAM3 1 = " AM" or " PM" indicator will be added and the hour will
+// PARAM3     will be adjusted appropriately.
+// NOTES See also:  SystemTime(), StringDateTime(), and StringDate()
+// BEFORE
+// BEFORE sysTime = SystemTime("", "", 0, 0) 
+{
+    DateTimeType dt;
+    char         dtStr[32];
+    char         tStr[32];
+    
+    dtStr[0] = 0;
+    if (sysTime == 0)
+        sysTime = TimGetSeconds();
+    TimSecondsToDateTime(sysTime, &dt);
+    if (AMPMFormat) {
+        if (dt.hour > 12)
+            StrIToA(tStr, dt.hour - 12);
+        else
+            StrIToA(tStr, dt.hour);
+    }
+    else
+        StrIToA(tStr, dt.hour);
+    if (dt.hour < 10)
+        StrCat(dtStr, "0");
+    StrCat(dtStr, tStr);
+    StrCat(dtStr, ":");
+    StrIToA(tStr, dt.minute);
+    if (dt.minute < 10)
+        StrCat(dtStr, "0");
+    StrCat(dtStr, tStr);
+    if (ToTimeFormat) {
+        StrCat(dtStr, ":");
+        StrIToA(tStr, dt.second);
+        if (dt.second < 10)
+            StrCat(dtStr, "0");
+        StrCat(dtStr, tStr);
+    }
+    if (AMPMFormat)
+        if (dt.hour > 12)
+            StrCat(dtStr, " PM");
+        else
+            StrCat(dtStr, " AM");
+            
+    StrCopy(strTime, dtStr);
+    return 0;
+}
+
+// SECTION Screen and Color Functions:
+
+/********************************************************************
+ *          T H I S _ G e t S u p p o r t e d D e p t h s
+ ********************************************************************/
+Err THIS_GetSupportedDepths(UInt16 refNum, Int32 *depths)
+// DESC	Returns a bitmapped integer with each bit indicating a
+// DESC	bitmap depth supported by the PalmOS device.
+// NOTE	The bit manipulation functions in this library or the 
+// NOTE NS Basic Shared Library "BitsNBytes" probably provide
+// NOTE	the best suited functions for evaluating the returned value
+// NOTE	from this function.
+{
+    Err err;
+    UInt32 supportedDepthMap;
+    
+    err = WinScreenMode(winScreenModeGetSupportedDepths, 
+                        NULL, NULL, &supportedDepthMap, NULL);
+    *depths = (Int32) supportedDepthMap;
+    
+	return 0 ;
+}
+
+/********************************************************************
+ *             T H I S _ D e p t h S u p p o r t e d
+ ********************************************************************/
+Err THIS_DepthSupported(UInt16 refNum, Int32 depth, Int32 *boolean)
+// DESC	Returns 1 if the specified depth is supported by the
+// DESC	PalmOS device.  Otherwise, it returns 0.
+// BEFORE
+// BEFORE depth = 4
+{
+    Err err;
+    UInt32 supportedDepthMap;
+    
+    err = WinScreenMode(winScreenModeGetSupportedDepths, 
+                        NULL, NULL, &supportedDepthMap, NULL);
+    if (supportedDepthMap & bitDepthMask(depth))
+        *boolean = 1;
+    else
+    	*boolean = 0;
+    	
+	return 0;
+}
+
+/********************************************************************
+ *               T H I S _ C o l o r S u p p o r t e d
+ ********************************************************************/
+Err THIS_ColorSupported(UInt16 refNum, Int32 *boolean) 
+// DESC	Returns 1 if the PalmOS device has color capabilities.
+// DESC	Otherwise, it returns 0.
+{
+    Err err;
+    Boolean supportsColor;
+    
+    err = WinScreenMode(winScreenModeGetSupportsColor, 
+                        NULL, NULL, NULL, &supportsColor);
+    *boolean = (Int32) supportsColor;
+	return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ S e t D e p t h
+ ********************************************************************/
+Err THIS_SetDepth(UInt16 refNum, Int32 depth) 
+// DESC	Sets the screen mode to support the specified bitmap 
+// DESC	bit depth.
+// BEFORE
+// BEFORE depth = 4
+{
+    Err    err;
+    UInt32 requestedDepth;
+    
+    requestedDepth = (UInt32) depth;
+    err = WinScreenMode(winScreenModeSet, 
+                        NULL, NULL, &requestedDepth, NULL);
+	return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ S e t C o l o r
+ ********************************************************************/
+Err THIS_SetColor(UInt16 refNum, Int32 boolean) 
+// DESC	Sets the screen mode to support color bitmaps.
+// PARAM1 1 = support color
+// PARAM1 0 = do not support color
+// BEFORE
+// BEFORE boolean = 1
+{
+    Err     err;
+    Boolean setColor;
+    
+    setColor = (Boolean) boolean;
+    err = WinScreenMode(winScreenModeSet, 
+                        NULL, NULL, NULL, &setColor);
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ S a v e S c r e e n M o d e
+ ********************************************************************/
+Err THIS_SaveScreenMode(UInt16 refNum) 
+// DESC	Saves the current screen mode parameters.  These parameters
+// DESC	can later be restored by calling "RestoreScreenMode".  It is
+// DESC	suggested that the current screen mode parameters be saved before
+// DESC	any changes are requested and that these saved parameters
+// DESC	are restored when the program exits.
+{
+    Err err;
+    THIS_ATTACH_GLOBALS
+        
+    err = WinScreenMode(winScreenModeGet, 
+                        NULL, NULL, &gP->depth, &gP->color);
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ R e s t o r e S c r e e n M o d e
+ ********************************************************************/
+Err THIS_RestoreScreenMode(UInt16 refNum) 
+// DESC	Restores saved screen mode parameters.  These parameters
+// DESC	must have been saved by calling "SaveScreenMode".  It is
+// DESC	suggested that the current screen mode parameters be saved before
+// DESC	any changes are requested and that these saved parameters
+// DESC	are restored when the program exits.
+{
+    Err err;
+    THIS_ATTACH_GLOBALS
+        
+    err = WinScreenMode(winScreenModeSet, 
+                        NULL, NULL, &gP->depth, &gP->color);
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ C u r r e n t D e p t h
+ ********************************************************************/
+Err THIS_CurrentDepth(UInt16 refNum, Int32 *depth) 
+// DESC	Returns the current bitmap depth.
+{
+    Err err;
+        
+    err = WinScreenMode(winScreenModeGet, 
+                        NULL, NULL, (UInt32 *) depth, NULL);
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ C u r r e n t C o l o r
+ ********************************************************************/
+Err THIS_CurrentColor(UInt16 refNum, Int32 *boolean) 
+// DESC	Returns 1 if the PalmOS Device's screen mode is currently
+// DESC	set to support color.   Otherwise, it returns 0.
+{
+    Err err;
+    Boolean color;
+        
+    err = WinScreenMode(winScreenModeGet, 
+                        NULL, NULL, NULL, &color);
+    *boolean = (Int32) color;
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ S e t T o D e f a u l t s
+ ********************************************************************/
+Err THIS_SetToDefaults(UInt16 refNum) 
+// DESC	Sets all screen mode parameters to their default values.
+{
+    Err err;
+        
+    err = WinScreenMode(winScreenModeSetToDefaults, 
+                        NULL, NULL, NULL, NULL);
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ D e f a u l t D e p t h
+ ********************************************************************/
+Err THIS_DefaultDepth(UInt16 refNum, Int32 *depth) 
+// DESC	Returns the default bitmap depth.
+{
+    Err err;
+        
+    err = WinScreenMode(winScreenModeGetDefaults, 
+                        NULL, NULL, (UInt32 *) depth, NULL);
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ D e f a u l t C o l o r
+ ********************************************************************/
+Err THIS_DefaultColor(UInt16 refNum, Int32 *boolean) 
+// DESC	Returns 1 if the PalmOS Device's screen mode default is
+// DESC	set to support color.   Otherwise, it returns 0.
+{
+    Err err;
+    Boolean color;
+        
+    err = WinScreenMode(winScreenModeGetDefaults, 
+                        NULL, NULL, NULL, &color);
+    *boolean = (Int32) color;
+    return 0;
+}
+
+/********************************************************************
+ *         T H I S _ G e t T a b l e E n t r y I n d e x
+ ********************************************************************/
+Err THIS_GetTableEntryIndex(UInt16 refNum, Int32 which, Int32 *index) 
+// DESC	This function calls the PalmOS UIColorGetTableEntryIndex
+// DESC	function.  It returns the index value for a UI color for the 
+// DESC	current system palette.
+// PARAM1 UIObjectFrame = 0,
+// PARAM1 UIObjectFill = 1
+// PARAM1 UIObjectForeground = 2
+// PARAM1 UIObjectSelectedFill = 3
+// PARAM1 UIObjectSelectedForeground = 4
+// PARAM1
+// PARAM1 UIMenuFrame = 5
+// PARAM1 UIMenuFill = 6
+// PARAM1 UIMenuForeground = 7
+// PARAM1 UIMenuSelectedFill = 8
+// PARAM1 UIMenuSelectedForeground = 9
+// PARAM1
+// PARAM1 UIFieldBackground = 10
+// PARAM1 UIFieldText = 11
+// PARAM1 UIFieldTextLines = 12
+// PARAM1 UIFieldCaret = 13
+// PARAM1 UIFieldTextHighlightBackground = 14
+// PARAM1 UIFieldTextHighlightForeground = 15
+// PARAM1 UIFieldFepRawText = 16
+// PARAM1 UIFieldFepRawBackground = 17
+// PARAM1 UIFieldFepConvertedText = 18
+// PARAM1 UIFieldFepConvertedBackground = 19
+// PARAM1 UIFieldFepUnderline = 20
+// PARAM1
+// PARAM1 UIFormFrame = 21
+// PARAM1 UIFormFill = 22
+// PARAM1
+// PARAM1 UIDialogFrame = 23
+// PARAM1 UIDialogFill = 24
+// PARAM1
+// PARAM1 UIAlertFrame = 25
+// PARAM1 UIAlertFill = 26
+// PARAM1
+// PARAM1 UIOK = 27
+// PARAM1 UICaution = 28
+// PARAM1 UIWarning = 29
+// RETURNS -1 = PalmOS version is less than 3.5
+// BEFORE
+// BEFORE which = 11   'UIFieldText
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+        
+    if (SysVersion(NULL, 3, 5)) 
+        *index = (Int32) UIColorGetTableEntryIndex((UIColorTableEntries) which);
+    else
+        *index = -1;
+        
+    return 0;
+}
+
+/********************************************************************
+ *            T H I S _ G e t T a b l e E n t r y R G B
+ ********************************************************************/
+Err THIS_GetTableEntryRGB(UInt16 refNum, Int32 which, Int32 *index) 
+// DESC	This function calls the PalmOS UIColorGetTableEntryRGB function.
+// DESC	It retrieves the RGB values for the UI Color.  RGB Values are
+// DESC	returned in a structure called "RGBColorType".  It contains the 
+// DESC	following fields:
+// DESC		index, red, green, blue.
+// DESC	This function retrieves all these values, but only returns
+// DESC	the index.  To get the red, green, and blue values, call this
+// DESC	function first and then call GetRGBRed, GetRGBGreen, and 
+// DESC	GetRGBBlue.  See the example for more information.
+// PARAM1 (see the GetTableEntryIndex function for
+// PARAM1  a list of valid "Which" values")
+// RETURNS -1 = PalmOS version is less than 3.5
+// BEFORE Dim red as Integer
+// BEFORE Dim green as Integer
+// BEFORE Dim blue as Integer
+// BEFORE
+// BEFORE which = 11   'UIFieldText
+// AFTER red = SL.GetRGBRed()
+// AFTER green = SL.GetRGBGreen()
+// AFTER blue = SL.GetRGBBlue()
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+    THIS_ATTACH_GLOBALS
+
+    if (SysVersion(gP, 3, 5)) {       
+        UIColorGetTableEntryRGB((UIColorTableEntries) which, &gP->RGB);
+        *index = (Int32) WinRGBToIndex(&gP->RGB);
+        gP->RGB.index = (UInt8) *index;
+    }
+    else
+        *index = -1;
+        
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                 T H I S _ G e t R G B I n d e x
+ ********************************************************************/
+Err THIS_GetRGBIndex(UInt16 refNum, Int32 *index) 
+// DESC	RGB Values are returned in a structure called "RGBColorType".  
+// DESC	It contains the following fields:
+// DESC		index, red, green, blue.
+// DESC
+// DESC	This function returns the index value that was previously
+// DESC	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+{
+    THIS_ATTACH_GLOBALS
+        
+    *index = (Int32) gP->RGB.index;
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                     T H I S _ G e t R G B R e d
+ ********************************************************************/
+Err THIS_GetRGBRed(UInt16 refNum, Int32 *red) 
+// DESC	RGB Values are returned in a structure called "RGBColorType".  
+// DESC	It contains the following fields:
+// DESC		index, red, green, blue.
+// DESC
+// DESC	This function returns the red value that was previously
+// DESC	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+// EXAMPLE See the example provided with either the GetTableEntryRGB or 
+// EXAMPLE IndexToRGB functions.
+{
+    THIS_ATTACH_GLOBALS
+        
+    *red = (Int32) gP->RGB.r;
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ G e t R G B G r e e n
+ ********************************************************************/
+Err THIS_GetRGBGreen(UInt16 refNum, Int32 *green) 
+// DESC	RGB Values are returned in a structure called "RGBColorType".  
+// DESC	It contains the following fields:
+// DESC		index, red, green, blue.
+// DESC
+// DESC	This function returns the green value that was previously
+// DESC	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+// EXAMPLE See the example provided with either the GetTableEntryRGB or 
+// EXAMPLE IndexToRGB functions.
+{
+    THIS_ATTACH_GLOBALS
+        
+    *green = (Int32) gP->RGB.g;
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ G e t R G B B l u e
+ ********************************************************************/
+Err THIS_GetRGBBlue(UInt16 refNum, Int32 *blue) 
+// DESC	RGB Values are returned in a structure called "RGBColorType".  
+// DESC	It contains the following fields:
+// DESC		index, red, green, blue.
+// DESC
+// DESC	This function returns the blue value that was previously
+// DESC	retrieved by either the GetTableEntryRGB or IndexToRGB functions.
+// EXAMPLE See the example provided with either the GetTableEntryRGB or 
+// EXAMPLE IndexToRGB functions.
+{
+    THIS_ATTACH_GLOBALS
+        
+    *blue = (Int32) gP->RGB.b;
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ S e t T a b l e E n t r y I n d e x
+ ********************************************************************/
+Err THIS_SetTableEntryIndex(UInt16 refNum, Int32 which, Int32 index) 
+// DESC	This subroutine calls the PalmOS IndexToRGB function and then 
+// DESC it calls UIColorSetTableEntry.	It changes a value in the UI 
+// DESC Color list.
+// NOTE	Some changes aren't reflected until the object or form is
+// NOTE	redrawn with the "Redraw" statement.  Even then, some changes
+// NOTE	like the form background (UIFormFill - 22) aren't reflected
+// NOTE	until until you change forms with a "NextScreen" statement.
+// NOTE	You might want to set some table entries in either the
+// NOTE	programs "Startup" code or just before you use the "NextScreen"
+// NOTE	statement.
+// NOTE
+// NOTE This function requires PalmOS version 3.5 or greater.
+// PARAM1 (see the GetTableEntryIndex function for
+// PARAM1  a list of valid "Which" values")
+{ 
+    Err err;
+    RGBColorType RGB;
+
+    if (SysVersion(NULL, 3, 5)) {
+        WinIndexToRGB((IndexedColorType) index, &RGB);    
+        err = UIColorSetTableEntry((UIColorTableEntries) which, &RGB);
+    }
+
+    return 0;
+}
+
+/********************************************************************
+ *             T H I S _ S e t T a b l e E n t r y R G B
+ ********************************************************************/
+Err THIS_SetTableEntryRGB(UInt16 refNum, Int32 which, 
+                       Int32 red, Int32 green, Int32 blue) 
+// DESC	This subroutine calls the PalmOS UIColorSetTableEntry function.
+// DESC	It changes a value in the UI Color list.
+// NOTE	Some changes aren't reflected until the object or form is
+// NOTE	redrawn with the "Redraw" statement.  Even then, some changes
+// NOTE	like the form background (UIFormFill - 22) aren't reflected
+// NOTE	until until you change forms with a "NextScreen" statement.
+// NOTE	You might want to set some table entries in either the
+// NOTE	programs "Startup" code or just before you use the "NextScreen"
+// NOTE	statement.
+// NOTE
+// NOTE This function requires PalmOS version 3.5 or greater.
+// PARAM1 (see the GetTableEntryIndex function for
+// PARAM1  a list of valid "Which" values")
+// PARAM4 Red, Green, Blue valid values are 0 to 255
+{
+    Err err;
+    RGBColorType RGB;
+        
+    RGB.r = (UInt8) red;
+    RGB.g = (UInt8) green;
+    RGB.b = (UInt8) blue;
+
+    if (SysVersion(NULL, 3, 5)) {    
+        err = UIColorSetTableEntry((UIColorTableEntries) which, &RGB);
+    }
+    return 0;
+}
+
+/********************************************************************
+ *           T H I S _ B r i g h t n e s s A d j u s t
+ ********************************************************************/
+Err THIS_BrightnessAdjust(UInt16 refNum) 
+// DESC	This subroutine calls the PalmOS UIBrightnessAdjust function.  
+// DESC	It displays the "Brightness Adjust" dialog.
+// NOTES This function requires PalmOS version 3.5 or greater.
+{ 
+    if (SysVersion(NULL, 3, 5))
+        UIBrightnessAdjust();
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ C o n t r a s t A d j u s t
+ ********************************************************************/
+Err THIS_ContrastAdjust(UInt16 refNum) 
+// DESC	This subroutine calls the PalmOS UIContrastAdjust function.  
+// DESC	It displays the "Contrast Adjust" dialog.
+// NOTE	The PalmOS documentation states that this function only works
+// NOTE	on the "Palm V Connected Organizer".
+// NOTE
+// NOTE This function requires PalmOS version 3.5 or greater.
+{
+    if (SysVersion(NULL, 3, 5))
+        UIContrastAdjust();
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ P i c k C o l o r I n d e x
+ ********************************************************************/
+Err THIS_PickColorIndex(UInt16 refNum, Int32 index, Char *title, Int32 *changed) 
+// DESC	This function calls the PalmOS UIPickColor function.  It
+// DESC	displays a Palette dialog to allow a user to select a
+// DESC	color.  The selected index and RGB values can be retrieved
+// DESC	by calling the GetRGBIndex, GetRGBRed, GetRGBGreen and 
+// DESC	GetRGBBlue functions.
+// PARAM1 Suggested index
+// PARAM2 Title to display on dialog
+// RETURNS -1 = PalmOS version is less than v3.5
+// RETURNS  0 = User cancelled or chose suggested index
+// RETURNS  1 = User chose a new index
+// NOTES This function requires PalmOS version of 3.5 or greater.
+{
+    IndexedColorType idx;
+    THIS_ATTACH_GLOBALS
+
+    if (SysVersion(gP, 3, 5)) {
+        idx = (IndexedColorType) index;
+        *changed = (Int32) UIPickColor(&idx, &gP->RGB, UIPickColorStartPalette, title, "");
+        gP->RGB.index = idx;
+    }
+    else
+        *changed = -1;
+        
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *              T H I S _ P i c k C o l o r R G B
+ ********************************************************************/
+Err THIS_PickColorRGB(UInt16 refNum, Int32 red, Int32 green, Int32 blue, Char *title, Int32 *changed) 
+// DESC	This function calls the PalmOS UIPickColor function.  It
+// DESC	displays an RGB dialog to allow a user to select a
+// DESC	color.  The selected index and RGB values can be retrieved
+// DESC	by calling the GetRGBIndex, GetRGBRed, GetRGBGreen and 
+// DESC	GetRGBBlue functions.
+// PARAM3 Suggested Red, Green, Blue values (0 to 255)
+// PARAM4 Title to display on dialog
+// RETURNS -1 = PalmOS version is less than 3.5
+// RETURNS  0 = User cancelled or chose suggested colors
+// RETURNS  1 = User chose a new index
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+    IndexedColorType idx;
+    THIS_ATTACH_GLOBALS
+        
+    if (SysVersion(gP, 3, 5)) {
+        gP->RGB.r = (UInt8) red;
+        gP->RGB.g = (UInt8) green;
+        gP->RGB.b = (UInt8) blue;
+        *changed = (Int32) UIPickColor(&idx, &gP->RGB, UIPickColorStartRGB, title, "");
+        gP->RGB.index = idx;
+    }
+    else
+        *changed = -1;
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ I n d e x T o R G B
+ ********************************************************************/
+Err THIS_IndexToRGB(UInt16 refNum, Int32 index) 
+// DESC	This subroutine calls the PalmOS WinIndexToRGB function.  It
+// DESC	converts an index in the currently active color table to an
+// DESC	RGB value.  RGB Values are returned in a structure called 
+// DESC	"RGBColorType".  It contains the following fields:
+// DESC		index, red, green, blue.
+// DESC	To get the actual index, red, green, and blue values, call this
+// DESC	function first and then call GetRGBIndex, GetRGBRed, GetRGBGreen,
+// DESC	and GetRGBBlue.  See the example for more information.
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+    THIS_ATTACH_GLOBALS
+
+    if (SysVersion(gP, 3, 5))
+        WinIndexToRGB((IndexedColorType) index, &gP->RGB);
+    THIS_DETACH_GLOBALS
+    return 0;
+}
+
+/********************************************************************
+ *               T H I S _ R G B T o I n d e x
+ ********************************************************************/
+Err THIS_RGBToIndex(UInt16 refNum, Int32 red, Int32 green, Int32 blue,
+                    Int32 *index) 
+// DESC	This function calls the PalmOS WinRGBToIndex function.  It 
+// DESC	converts RGB values to the index of the closest color in the
+// DESC	currently active color lookup table (CLUT).
+// PARAM3 Red, Green, Blue valid values are 0 to 255
+// RETURNS -1 = PalmOS version is less than 3.5
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+    RGBColorType RGB;
+        
+    RGB.r = (UInt8) red;
+    RGB.g = (UInt8) green;
+    RGB.b = (UInt8) blue;
+    
+    if (SysVersion(NULL, 3, 5))
+        *index = (Int32) WinRGBToIndex(&RGB);
+    else
+        *index = -1;
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ S e t F o r e C o l o r
+ ********************************************************************/
+Err THIS_SetForeColor(UInt16 refNum, Int32 newIndex, Int32 *oldIndex) 
+// DESC	This function calls the PalmOS WinSetForeColor function.  It
+// DESC	sets the foreground color to use in subsequent draw operations.
+// NOTE	Colors set with this function appear to be reset to default
+// NOTE	values when switching between forms or when a form is redrawn.
+// NOTE	It is probably best to call this function in the form's
+// NOTE	"After" code section.
+// NOTE
+// NOTE This function requires PalmOS version 3.5 or greater.
+// RETURNS Previous foreground index
+// RETURNS -1 = PalmOS version is less than 3.5
+{
+        
+    if (SysVersion(NULL, 3, 5)) 
+        *oldIndex = (Int32) WinSetForeColor((IndexedColorType) newIndex);
+    else
+        *oldIndex = -1;
+        
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ S e t B a c k C o l o r
+ ********************************************************************/
+Err THIS_SetBackColor(UInt16 refNum, Int32 newIndex, Int32 *oldIndex) 
+// DESC	This function calls the PalmOS WinSetBackColor function.  It
+// DESC	sets the background color to use in subsequent draw operations.
+// NOTE	Colors set with this function appear to be reset to default
+// NOTE	values when switching between forms or when a form is redrawn.
+// NOTE	It is probably best to call this function in the form's
+// NOTE	"After" code section.
+// NOTE
+// NOTE This function requires PalmOS version 3.5 or greater.
+// RETURNS Previous background index
+// RETURNS -1 = PalmOS version is less than 3.5
+{
+
+    if (SysVersion(NULL, 3, 5))
+        *oldIndex = (Int32) WinSetBackColor((IndexedColorType) newIndex);
+    else
+        *oldIndex = -1;
+    return 0;
+}
+
+/********************************************************************
+ *                   T H I S _ S e t T e x t C o l o r
+ ********************************************************************/
+Err THIS_SetTextColor(UInt16 refNum, Int32 newIndex, Int32 *oldIndex) 
+// DESC	This function calls the PalmOS WinSetTextColor function.  It
+// DESC	sets the color to use for drawing characters in subsequent draw 
+// DESC	operations.
+// NOTE	Colors set with this function appear to be reset to default
+// NOTE	values when switching between forms or when a form is redrawn.
+// NOTE	It is probably best to call this function in the form's
+// NOTE	"After" code section.
+// NOTE
+// NOTE This function requires PalmOS version 3.5 or greater.
+// RETURNS Previous text color index
+// RETURNS -1 = PalmOS version is less than 3.5
+{
+        
+    if (SysVersion(NULL, 3, 5))        
+        *oldIndex = (Int32) WinSetTextColor((IndexedColorType) newIndex);
+    else
+        *oldIndex = -1;
+        
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ D r a w L i n e
+ ********************************************************************/
+Err THIS_DrawLine(UInt16 refNum, Int32 x1, Int32 y1, Int32 x2, Int32 y2) 
+// DESC	This soubroutine calls the PalmOS WinDrawLine function.  It 
+// DESC	draws a line in the draw window using the current foreground 
+// DESC	color.
+// NOTE	This function was provided for completeness only.  The
+// NOTE	built-in DrawLine NSBasic statement produces the same result.
+{
+        
+    WinDrawLine((Coord) x1, (Coord) y1, (Coord) x2, (Coord) y2);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ D r a w G r a y L i n e
+ ********************************************************************/
+Err THIS_DrawGrayLine(UInt16 refNum, Int32 x1, Int32 y1, Int32 x2, Int32 y2) 
+// DESC	This subroutine calls the PalmOS WinDrawGrayLine function.  It
+// DESC	does not draw in a gray color, but rather draws with
+// DESC	alternating foreground and background colors.
+{
+        
+    WinDrawGrayLine((Coord) x1, (Coord) y1, (Coord) x2, (Coord) y2);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ E r a s e L i n e
+ ********************************************************************/
+Err THIS_EraseLine(UInt16 refNum, Int32 x1, Int32 y1, Int32 x2, Int32 y2) 
+// DESC	This subroutine calls the PalmOS WinEraseLine function.  It
+// DESC	draws a line in the draw window using the current background
+// DESC	color.
+{
+        
+    WinEraseLine((Coord) x1, (Coord) y1, (Coord) x2, (Coord) y2);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ I n v e r t L i n e
+ ********************************************************************/
+Err THIS_InvertLine(UInt16 refNum, Int32 x1, Int32 y1, Int32 x2, Int32 y2) 
+// DESC	This subroutine calls the PalmOS WinInvertLine function.  It
+// DESC	draws an inverted line in the draw window.
+{
+        
+    WinInvertLine((Coord) x1, (Coord) y1, (Coord) x2, (Coord) y2);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ D r a w P i x e l
+ ********************************************************************/
+Err THIS_DrawPixel(UInt16 refNum, Int32 x, Int32 y) 
+// DESC	This subroutine calls the PalmOS WinDrawPixel function.  It
+// DESC	draws a pixel in the draw window using the current foreground
+// DESC	color.
+{
+        
+    WinDrawPixel((Coord) x, (Coord) y);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ E r a s e P i x e l
+ ********************************************************************/
+Err THIS_ErasePixel(UInt16 refNum, Int32 x, Int32 y) 
+// DESC	This subroutine calls the PalmOS WinErasePixel function.  It
+// DESC	draws a pixel in the draw window using the current background
+// DESC	color.
+{
+        
+    WinErasePixel((Coord) x, (Coord) y);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ I n v e r t P i x e l
+ ********************************************************************/
+Err THIS_InvertPixel(UInt16 refNum, Int32 x, Int32 y) 
+// DESC	This subroutine calls the PalmOS WinInvertPixel function.  It
+// DESC	draws an inverted pixel in the draw window.
+{
+        
+    WinInvertPixel((Coord) x, (Coord) y);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ G e t P i x e l
+ ********************************************************************/
+Err THIS_GetPixel(UInt16 refNum, Int32 x, Int32 y, Int32 *index) 
+// DESC	This function calls the PalmOS WinGetPixel function.  It
+// DESC	returns the color of the specified a pixel in the draw window.
+{
+        
+    *index = (Int32) WinGetPixel((Coord) x, (Coord) y);
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ S c r e e n L o c k
+ ********************************************************************/
+Err THIS_ScreenLock(UInt16 refNum, Int32 mode, Int32 *success) 
+// DESC	This function calls the PalmOS WinScreenLock function.  It 
+// DESC	"locks" the current screen by switching the UI concept of the 
+// DESC	screen base address to an area that is not reflected on the
+// DESC	display.  This routine can be used to "freeze" the display 
+// DESC	while doing lengthy drawing operations to avoid a flickering
+// DESC	effect.  Call ScreenUnlock to unlock the display and cause
+// DESC	it to be updated with any changes.  The screen must be unlocked
+// DESC	as many times as it is locked to actually update the display.
+// PARAM1 winLockCopy = 0 - copy old screen to new
+// PARAM1 winLockErase = 1 - erase new screen to white
+// PARAM1 winLockDontCare = 2 - don't do anything
+// RETURNS -1 = PalmOS version is less than 3.5
+// RETURNS  1 = success
+// RETURNS  0 = failure
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+    UInt8 *baseAddress;
+    
+    if (SysVersion(NULL, 3, 5)) {
+        baseAddress = WinScreenLock((WinLockInitType) mode);
+        if (baseAddress == NULL)
+            *success = 0;
+        else
+            *success = 1;
+    }
+    else
+        *success = -1;
+        
+    return 0;
+}
+
+/********************************************************************
+ *                  T H I S _ S c r e e n U n l o c k
+ ********************************************************************/
+Err THIS_ScreenUnlock(UInt16 refNum) 
+// DESC	This subroutine calls the PalmOS WinScreenUnlock function.  Call 
+// DESC	ScreenUnlock to unlock the display and cause it to be updated 
+// DESC	with any changes.  The screen, which was locked by calling
+// DESC	ScreenLock, must be unlocked as many times as it is locked to 
+// DESC	actually update the display.
+// NOTES This function requires PalmOS version 3.5 or greater.
+{
+    
+    if (SysVersion(NULL, 3, 5))
+        WinScreenUnlock();
+    
+    return 0;
+}
+
+/*###################################################################
+ #       S t a n d a r d ,  R E Q U I R E D    F u n c t i o n s
+ #*/
+
+Err THIS_LibOpen(UInt16 refNum) {
+    Err err = 0;
+    THIS_ALLOCATE_GLOBALS	// Define local variables before this
+	
+    return err;
+}
+
+Err THIS_LibClose(UInt16 refNum) {
+    Err err = 0;
+    THIS_FREE_GLOBALS	// Define local variables before this
+
+    return err;
+}
+
+Err THIS_LibSleep(UInt16 refNum) {
+    return 0;
+}
+
+Err THIS_LibWake(UInt16 refNum) {
+    return 0;
+}
+
+/*###################################################################*/

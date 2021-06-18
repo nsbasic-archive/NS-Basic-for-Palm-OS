@@ -1,0 +1,9333 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 06: Using Operating System APIs (SysTraps)</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 06: Using Operating System APIs (SysTraps)</h2>
+	  <h3>March 13, 2007</h3>
+	  <h5>&copy; 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+
+</TR>
+
+</TABLE>
+
+<HR><BR>
+NS&nbsp;Basic/Palm can call most Palm OS System API functions.
+
+Operating System APIs, or SysTraps, can be included in an NS&nbsp;Basic/Palm
+
+project using SysTrapSub and SysTrapFunc, two NS&nbsp;Basic/Palm
+
+keywords. SysTrapSub is used to call system procedures that do
+
+not return a value to Basic, and SysTrapFunc is used to call
+
+system procedures that return a single value to Basic.  It is an error to use
+SysTrapFunc without assigning the return value to a variable.  This will compile
+but will not work properly.  It is, however, legitimate to use a SysTrapSub for an
+API function that normally returns a value if you do not care about the return value.
+
+
+<pre>   Syntax:
+      SysTrapSub trapnum, numargs[, arg1[, arg2[, ...]]]
+      foo = SysTrapFunc(trapnum, numargs[, arg1[, arg2[, ...]]])
+
+   Description:
+      Trapnum is a constant, defined in CoreTraps.h, that determines which system
+      routine is being called.  System traps begin with 0xA000, so this value is
+      added to trapnum at runtime.  Numargs is the number of arguments that are
+      passed to the system procedure.  Additional arguments that are included will
+      vary, depending on which system procedure is called.  Special attention must
+      be paid to the types of arguments and return values that a system procedure
+      uses.  
+      
+      NS&nbsp;Basic/Palm only supports calling OS Traps that have arguments and return 
+      values of type char*, int, or double.
+      
+      SysTrapSub has a limit of 6 parameters, while SysTrapFunc has a limit of 5 parameters.
+      
+   Examples: (NS Basic/Palm IDE)
+      SysTrapSub 564, 1, 3*256            'Calls trap 0xA234 (SndPlaySystemSound)
+      SysTrapSub 531, 4, 80, 0, 80, 160   'Calls trap 0xA213 (WinDrawLine)
+</pre>
+
+
+
+<hr>
+
+
+<p>Some common SysTrap functions are in the
+
+NSBSystemLib shared library.  They are much more easily used from
+
+that library. </p>
+
+
+
+<p>When calling routines in shared libraries, it is important to
+
+use the correct variable types. The calling routine uses the
+
+variable type to place the values on the stack to be
+
+passed to the shared library. A shared library will expect each
+
+argument passed to it to be the proper type. </p>
+
+
+
+<p>If you use literals, NS Basic/Palm will
+
+assume you mean certain data types. These are: </p>
+
+
+
+<table border="1">
+
+<TBODY>    <tr>
+
+        <td>Numbers without a decimal point</td>
+
+        <td>63</td>
+
+        <td>Int32</td>
+
+    </tr>
+
+    <tr>
+
+        <td>Numbers with a decimal point</td>
+
+        <td>1.5</td>
+
+        <td>double</td>
+
+    </tr>
+
+    <tr>
+
+        <td>Strings</td>
+
+        <td>&quot;Hello&quot;</td>
+
+        <td>Char *</td>
+
+    </tr>
+
+    <tr>
+
+        <td>Calculations</td>
+
+        <td>(1/2)</td>
+
+        <td>float (except when the result is 0)</td>
+
+    </tr>
+
+</TBODY></table>
+
+<p>It is much safer, however, only to use variables defined by Dim statements when
+passing parameters to SysTrapFunc and SysTrapSub.  For scalar values, the following 
+data types will be used:</p> 
+
+<table border="1">
+
+<TBODY>    <tr>
+
+        <td>Short</td>
+
+        <td>Int16</td>
+
+    </tr>
+
+    <tr>
+	<td>Integer</td>
+	<td>Int32</td>
+    </tr>
+    <tr>
+	<td>Float</td>
+	<td>float (4-byte IEEE floating point)</td>
+    </tr>
+    <tr>
+	<td>Double</td>
+	<td>double (8-byte IEEE floating point)</td>
+    </tr>
+    <tr>
+	<td>String</td>
+	<td>Char * (null-terminated)</td>
+    </tr>
+    <tr>
+	<td>Byte</td>
+	<td>unsigned char * (single-byte)</td>
+    </tr>
+    <tr>
+	<td>Variant</td>
+	<td>void *</td>
+    </tr>
+	
+</TBODY></table>
+
+<p>If an API function requires a char or Char parameter, you can pass it as a single
+Short.</p>
+
+<p>Scalar types are normally passed by value, with the exception of strings and bytes,
+which are always passed by reference/pointer.  You can also pass entire arrays of Byte,
+Short, Integer, Float, or Double.  This allows you to use the API functions that fill
+arrays and even structures.  You will have to interpret structures in your NSBasic program,
+of course.  All structures filled by the Palm API functions are big-endian, meaning that the
+most significant bytes and words come first.</p>
+
+<p>The array mechanism also allows you to pass single parameters by reference/pointer.  Declare
+an array using the Dim statement containing two or more elements of the desired data type.  Use the first
+element as the value.  (It is necessary to declare two or more elements because, at runtime, a
+single-element array is indistinguishable from a scalar.)</p>
+<p><b>Example:</b></p>
+<p>The following code shows how to display the current day and month using API calls:</p>
+
+<pre>
+Dim dt(7) as Short
+Dim s as Integer
+
+s = SysTrapFunc(245, 0)     ' TimGetSeconds
+SysTrapSub 252, 2, s, dt    ' TimSecondsToDateTime
+MsgBox str(dt(4))
+MsgBox str(dt(5))
+</pre>
+
+<p><b>Rationale:</b></p> <p>The TimGetSeconds and TimSecondsToDateTime functions are described in the Palm OS
+Reference as follows:</p>
+
+<pre>
+UInt32 TimGetSeconds (void)
+void TimSecondsToDateTime (UInt32 seconds, DateTimePtr dateTimeP)
+</pre>
+
+<p>TimGetSeconds is a function that returns a 32-bit integer, hence an Integer.
+TimSecondsToDateTime returns void, which means it should be used as a subroutine.
+It takes a 32-bit integer and a DateTimePtr as parameters and fills the DateTimeType
+structure pointed to by the DateTimePtr with information about the current date.  The
+DateTimeType structure is described in the Palm OS reference as follows:</p>
+
+<pre>
+typedef struct{
+    Int16 second;
+    Int16 minute;
+    Int16 hour;
+    Int16 day;
+    Int16 month;
+    Int16 year;
+    Int16 weekDay;
+} DateTimeType;
+
+typedef DateTimeType *DateTimePtr;
+</pre>
+
+<p>This is a straighforward structure containing seven elements, all of which are
+16-bit integers, so we can use a seven-element Short array.  The day is element
+4, and the month is element 5.  The trap numbers are given in the Palm OS headers
+as follows:</p>
+
+<pre>
+#define sysTrapTimGetSeconds							0xA0F5
+#define sysTrapTimSecondsToDateTime						0xA0FC
+</pre>
+
+<p>When the A is removed, these are 0F5 and 0FC, which convert to decimal 245 and 252,
+respectively.</p>
+
+
+<hr>
+
+
+
+<p>Palm has documention on the API calls on its website:<br>
+
+<a href="http://www.palmos.com/dev/tech/docs/">http://www.palmos.com/dev/tech/docs/</a>
+
+</p>
+
+<p>For more information on SysTraps, visit the Web Board at <a
+
+href="http://groups.yahoo.com/group/nsbasic-palmAPI">http://groups.yahoo.com/group/nsbasic-palmAPI</a>
+
+</p>
+
+
+<hr>
+
+
+
+<h3>Table of Operating System APIs (SysTraps)</h3>
+
+
+
+<p>A trapnum greater than 882 is Palm OS 3.5 or newer. <br>
+
+A trapnum greater than 1000 is Palm OS 4.0 or newer.<br>
+
+A trapnum greater than 1115 is Palm OS 5.0 or newer.<br>
+
+Palm has Palm OS 5.0 Simulator on its website:<br>
+
+<a href="http://www.palmos.com/dev/tools/simulator/">http://www.palmos.com/dev/tools/simulator/</a><br>
+
+<br>
+
+<col width="218" style="mso-width-source:userset;mso-width-alt:7972;width:164pt"></p>
+
+<col width="46" style="mso-width-source:userset;mso-width-alt:1682;width:35pt">
+
+<table border="0">
+
+    <tr>
+
+        <td width="218" height="17"
+
+        style="height:12.75pt;width:164pt">AbtShowAbout</td>
+
+        <td align="right" width="46" style="width:35pt" x:num>687</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AccessorDispatch</td>
+
+        <td align="right" x:num>1012</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmAlarmCallback</td>
+
+        <td align="right" x:num>567</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmCancelAll</td>
+
+        <td align="right" x:num>566</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmDisplayAlarm</td>
+
+        <td align="right" x:num>570</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmEnableNotification</td>
+
+        <td align="right" x:num>571</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmGetAlarm</td>
+
+        <td align="right" x:num>569</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmInit</td>
+
+        <td align="right" x:num>565</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmSetAlarm</td>
+
+        <td align="right" x:num>568</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AlmTimeChange</td>
+
+        <td align="right" x:num>868</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnAllowClose</td>
+
+        <td align="right" x:num>1072</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnDoEmergencySpecialEffects</td>
+
+        <td align="right" x:num>1071</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnDoSpecialEffects</td>
+
+        <td align="right" x:num>1070</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnEffectOfEvent</td>
+
+        <td align="right" x:num>1068</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnEnableNotification</td>
+
+        <td align="right" x:num>1074</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnForgetIt</td>
+
+        <td align="right" x:num>1064</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnGetAttention</td>
+
+        <td align="right" x:num>1062</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnGetCounts</td>
+
+        <td align="right" x:num>1065</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnHandleEvent</td>
+
+        <td align="right" x:num>1067</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorAllow</td>
+
+        <td align="right" x:num>1053</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorAllowed</td>
+
+        <td align="right" x:num>1054</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorCheckBlink</td>
+
+        <td align="right" x:num>1060</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorEnable</td>
+
+        <td align="right" x:num>1055</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorEnabled</td>
+
+        <td align="right" x:num>1056</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorGetBlinkPattern</td>
+
+        <td align="right" x:num>1058</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorSetBlinkPattern</td>
+
+        <td align="right" x:num>1057</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIndicatorTicksTillNextBlink</td>
+
+        <td align="right" x:num>1059</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnInitialize</td>
+
+        <td align="right" x:num>1061</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnIterate</td>
+
+        <td align="right" x:num>1069</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnListOpen</td>
+
+        <td align="right" x:num>1066</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnReopen</td>
+
+        <td align="right" x:num>1073</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">AttnUpdate</td>
+
+        <td align="right" x:num>1063</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltCopyRectangle</td>
+
+        <td align="right" x:num>887</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltDrawChars</td>
+
+        <td align="right" x:num>888</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltFindIndexes</td>
+
+        <td align="right" x:num>885</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltGetPixel</td>
+
+        <td align="right" x:num>1013</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltLineRoutine</td>
+
+        <td align="right" x:num>889</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltPaintPixel</td>
+
+        <td align="right" x:num>1014</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltPaintPixels</td>
+
+        <td align="right" x:num>1111</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltRectangleRoutine</td>
+
+        <td align="right" x:num>890</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltRoundedRectangle</td>
+
+        <td align="right" x:num>1045</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BltRoundedRectangleFill</td>
+
+        <td align="right" x:num>1046</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpBitsSize</td>
+
+        <td align="right" x:num>994</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpColortableSize</td>
+
+        <td align="right" x:num>995</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpCompress</td>
+
+        <td align="right" x:num>991</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpCreate</td>
+
+        <td align="right" x:num>989</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpDelete</td>
+
+        <td align="right" x:num>990</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpGetBitDepth</td>
+
+        <td align="right" x:num>1103</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpGetBits</td>
+
+        <td align="right" x:num>886</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpGetColortable</td>
+
+        <td align="right" x:num>992</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpGetDimensions</td>
+
+        <td align="right" x:num>1102</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpGetNextBitmap</td>
+
+        <td align="right" x:num>1104</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpGetSizes</td>
+
+        <td align="right" x:num>1109</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">BmpSize</td>
+
+        <td align="right" x:num>993</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryCreateList</td>
+
+        <td align="right" x:num>707</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryCreateListV10</td>
+
+        <td align="right" x:num>257</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryEdit</td>
+
+        <td align="right" x:num>802</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryEditV10</td>
+
+        <td align="right" x:num>261</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryEditV20</td>
+
+        <td align="right" x:num>709</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryFind</td>
+
+        <td align="right" x:num>259</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryFreeList</td>
+
+        <td align="right" x:num>708</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryFreeListV10</td>
+
+        <td align="right" x:num>258</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryGetName</td>
+
+        <td align="right" x:num>260</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryGetNext</td>
+
+        <td align="right" x:num>263</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryInitialize</td>
+
+        <td align="right" x:num>764</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategorySelect</td>
+
+        <td align="right" x:num>710</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategorySelectV10</td>
+
+        <td align="right" x:num>262</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategorySetName</td>
+
+        <td align="right" x:num>769</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategorySetTriggerLabel</td>
+
+        <td align="right" x:num>264</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CategoryTruncateName</td>
+
+        <td align="right" x:num>265</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ClipboardAddItem</td>
+
+        <td align="right" x:num>266</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ClipboardAppendItem</td>
+
+        <td align="right" x:num>880</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ClipboardCheckIfItemExist</td>
+
+        <td align="right" x:num>267</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ClipboardGetItem</td>
+
+        <td align="right" x:num>268</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CncAddProfile</td>
+
+        <td align="right" x:num>876</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CncDeleteProfile</td>
+
+        <td align="right" x:num>877</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CncGetProfileInfo</td>
+
+        <td align="right" x:num>875</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CncGetProfileList</td>
+
+        <td align="right" x:num>874</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CncMgrDispatch</td>
+
+        <td align="right" x:num>1008</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ConGetS</td>
+
+        <td align="right" x:num>222</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ConPutS</td>
+
+        <td align="right" x:num>221</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">Crc16CalcBlock</td>
+
+        <td align="right" x:num>601</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlDrawControl</td>
+
+        <td align="right" x:num>269</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlEnabled</td>
+
+        <td align="right" x:num>281</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlEraseControl</td>
+
+        <td align="right" x:num>270</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlGetLabel</td>
+
+        <td align="right" x:num>275</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlGetSliderValues</td>
+
+        <td align="right" x:num>986</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlGetValue</td>
+
+        <td align="right" x:num>273</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlHandleEvent</td>
+
+        <td align="right" x:num>277</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlHideControl</td>
+
+        <td align="right" x:num>271</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlHitControl</td>
+
+        <td align="right" x:num>278</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlNewControl</td>
+
+        <td align="right" x:num>812</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlNewGraphicControl</td>
+
+        <td align="right" x:num>937</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlNewSliderControl</td>
+
+        <td align="right" x:num>988</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlSetEnabled</td>
+
+        <td align="right" x:num>279</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlSetGraphics</td>
+
+        <td align="right" x:num>985</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlSetLabel</td>
+
+        <td align="right" x:num>276</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlSetSliderValues</td>
+
+        <td align="right" x:num>987</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlSetUsable</td>
+
+        <td align="right" x:num>280</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlSetValue</td>
+
+        <td align="right" x:num>274</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlShowControl</td>
+
+        <td align="right" x:num>272</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">CtlValidatePointer</td>
+
+        <td align="right" x:num>808</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateAdjust</td>
+
+        <td align="right" x:num>612</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateDaysToDate</td>
+
+        <td align="right" x:num>610</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateSecondsToDate</td>
+
+        <td align="right" x:num>613</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateTemplateToAscii</td>
+
+        <td align="right" x:num>973</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateToAscii</td>
+
+        <td align="right" x:num>614</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateToDays</td>
+
+        <td align="right" x:num>611</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DateToDOWDMFormat</td>
+
+        <td align="right" x:num>615</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DayDrawDays</td>
+
+        <td align="right" x:num>606</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DayDrawDaySelector</td>
+
+        <td align="right" x:num>604</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DayHandleEvent</td>
+
+        <td align="right" x:num>605</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DayOfMonth</td>
+
+        <td align="right" x:num>609</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DayOfWeek</td>
+
+        <td align="right" x:num>607</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DaysInMonth</td>
+
+        <td align="right" x:num>608</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgCommSettings</td>
+
+        <td align="right" x:num>131</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgControl</td>
+
+        <td align="right" x:num>833</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgGetMessage</td>
+
+        <td align="right" x:num>130</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgMessage</td>
+
+        <td align="right" x:num>129</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSerDrvClose</td>
+
+        <td align="right" x:num>952</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSerDrvControl</td>
+
+        <td align="right" x:num>953</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSerDrvOpen</td>
+
+        <td align="right" x:num>951</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSerDrvReadChar</td>
+
+        <td align="right" x:num>956</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSerDrvStatus</td>
+
+        <td align="right" x:num>954</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSerDrvWriteChar</td>
+
+        <td align="right" x:num>955</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DbgSrcMessage</td>
+
+        <td align="right" x:num>128</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DlkControl</td>
+
+        <td align="right" x:num>679</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DlkDispatchRequest</td>
+
+        <td align="right" x:num>733</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DlkGetSyncInfo</td>
+
+        <td align="right" x:num>681</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DlkSetLogEntry</td>
+
+        <td align="right" x:num>682</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DlkStartServer</td>
+
+        <td align="right" x:num>680</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmArchiveRecord</td>
+
+        <td align="right" x:num>88</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmAttachRecord</td>
+
+        <td align="right" x:num>82</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmAttachResource</td>
+
+        <td align="right" x:num>106</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmCloseDatabase</td>
+
+        <td align="right" x:num>74</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmCreateDatabase</td>
+
+        <td align="right" x:num>65</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmCreateDatabaseFromImage</td>
+
+        <td align="right" x:num>127</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDatabaseInfo</td>
+
+        <td align="right" x:num>70</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDatabaseProtect</td>
+
+        <td align="right" x:num>747</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDatabaseSize</td>
+
+        <td align="right" x:num>72</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDeleteCategory</td>
+
+        <td align="right" x:num>711</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDeleteDatabase</td>
+
+        <td align="right" x:num>66</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDeleteRecord</td>
+
+        <td align="right" x:num>87</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDetachRecord</td>
+
+        <td align="right" x:num>83</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmDetachResource</td>
+
+        <td align="right" x:num>107</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindDatabase</td>
+
+        <td align="right" x:num>69</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindDatabaseWithTypeCreator</td>
+
+        <td align="right" x:num>1037</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindRecordByID</td>
+
+        <td align="right" x:num>123</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindResource</td>
+
+        <td align="right" x:num>101</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindResourceType</td>
+
+        <td align="right" x:num>100</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindSortPosition</td>
+
+        <td align="right" x:num>754</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmFindSortPositionV10</td>
+
+        <td align="right" x:num>125</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGet1Resource</td>
+
+        <td align="right" x:num>96</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetAppInfoID</td>
+
+        <td align="right" x:num>124</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetDatabase</td>
+
+        <td align="right" x:num>68</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetDatabaseLockState</td>
+
+        <td align="right" x:num>873</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetLastErr</td>
+
+        <td align="right" x:num>78</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetNextDatabaseByTypeCreator</td>
+
+        <td align="right" x:num>120</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetRecord</td>
+
+        <td align="right" x:num>92</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetResource</td>
+
+        <td align="right" x:num>95</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmGetResourceIndex</td>
+
+        <td align="right" x:num>110</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmInit</td>
+
+        <td align="right" x:num>64</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmInsertionSort</td>
+
+        <td align="right" x:num>692</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmMoveCategory</td>
+
+        <td align="right" x:num>116</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmMoveOpenDBContext</td>
+
+        <td align="right" x:num>122</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmMoveRecord</td>
+
+        <td align="right" x:num>84</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNewHandle</td>
+
+        <td align="right" x:num>89</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNewRecord</td>
+
+        <td align="right" x:num>85</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNewResource</td>
+
+        <td align="right" x:num>108</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNextOpenDatabase</td>
+
+        <td align="right" x:num>75</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNextOpenResDatabase</td>
+
+        <td align="right" x:num>99</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNumDatabases</td>
+
+        <td align="right" x:num>67</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNumRecords</td>
+
+        <td align="right" x:num>79</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNumRecordsInCategory</td>
+
+        <td align="right" x:num>113</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmNumResources</td>
+
+        <td align="right" x:num>103</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmOpenDatabase</td>
+
+        <td align="right" x:num>73</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmOpenDatabaseByTypeCreator</td>
+
+        <td align="right" x:num>117</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmOpenDatabaseInfo</td>
+
+        <td align="right" x:num>76</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmOpenDBNoOverlay</td>
+
+        <td align="right" x:num>944</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmOpenDBWithLocale</td>
+
+        <td align="right" x:num>945</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmPositionInCategory</td>
+
+        <td align="right" x:num>114</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmQueryNextInCategory</td>
+
+        <td align="right" x:num>112</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmQueryRecord</td>
+
+        <td align="right" x:num>91</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmQuickSort</td>
+
+        <td align="right" x:num>111</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmRecordInfo</td>
+
+        <td align="right" x:num>80</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmReleaseRecord</td>
+
+        <td align="right" x:num>94</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmReleaseResource</td>
+
+        <td align="right" x:num>97</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmRemoveRecord</td>
+
+        <td align="right" x:num>86</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmRemoveResource</td>
+
+        <td align="right" x:num>109</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmRemoveSecretRecords</td>
+
+        <td align="right" x:num>90</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmResetRecordStates</td>
+
+        <td align="right" x:num>77</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmResizeRecord</td>
+
+        <td align="right" x:num>93</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmResizeResource</td>
+
+        <td align="right" x:num>98</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmResourceInfo</td>
+
+        <td align="right" x:num>104</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSearchRecord</td>
+
+        <td align="right" x:num>690</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSearchResource</td>
+
+        <td align="right" x:num>102</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSeekRecordInCategory</td>
+
+        <td align="right" x:num>115</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSet</td>
+
+        <td align="right" x:num>126</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSetDatabaseInfo</td>
+
+        <td align="right" x:num>71</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSetRecordInfo</td>
+
+        <td align="right" x:num>81</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmSetResourceInfo</td>
+
+        <td align="right" x:num>105</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmStrCopy</td>
+
+        <td align="right" x:num>119</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmWrite</td>
+
+        <td align="right" x:num>118</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">DmWriteCheck</td>
+
+        <td align="right" x:num>121</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EncDES</td>
+
+        <td align="right" x:num>766</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EncDigestMD4</td>
+
+        <td align="right" x:num>765</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EncDigestMD5</td>
+
+        <td align="right" x:num>753</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ErrAlertCustom</td>
+
+        <td align="right" x:num>869</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ErrDisplayFileLineMsg</td>
+
+        <td align="right" x:num>132</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ErrExceptionList</td>
+
+        <td align="right" x:num>136</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ErrLongJump</td>
+
+        <td align="right" x:num>134</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ErrSetJump</td>
+
+        <td align="right" x:num>133</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ErrThrow</td>
+
+        <td align="right" x:num>135</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtAddEventToQueue</td>
+
+        <td align="right" x:num>283</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtAddUniqueEventToQueue</td>
+
+        <td align="right" x:num>758</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtCopyEvent</td>
+
+        <td align="right" x:num>284</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtDequeueKeyEvent</td>
+
+        <td align="right" x:num>302</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtDequeuePenPoint</td>
+
+        <td align="right" x:num>296</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtDequeuePenStrokeInfo</td>
+
+        <td align="right" x:num>295</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtEnableGraffiti</td>
+
+        <td align="right" x:num>306</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtEnqueueKey</td>
+
+        <td align="right" x:num>301</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtEnqueuePenPoint</td>
+
+        <td align="right" x:num>294</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtEventAvail</td>
+
+        <td align="right" x:num>716</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtFlushKeyQueue</td>
+
+        <td align="right" x:num>300</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtFlushNextPenStroke</td>
+
+        <td align="right" x:num>297</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtFlushPenQueue</td>
+
+        <td align="right" x:num>293</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtGetEvent</td>
+
+        <td align="right" x:num>285</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtGetPen</td>
+
+        <td align="right" x:num>286</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtGetPenBtnList</td>
+
+        <td align="right" x:num>290</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtGetSilkscreenAreaList</td>
+
+        <td align="right" x:num>971</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtGetSysEvent</td>
+
+        <td align="right" x:num>288</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtInitialize</td>
+
+        <td align="right" x:num>282</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtKeyQueueEmpty</td>
+
+        <td align="right" x:num>305</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtKeyQueueSize</td>
+
+        <td align="right" x:num>299</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtPenQueueSize</td>
+
+        <td align="right" x:num>292</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtProcessSoftKeyStroke</td>
+
+        <td align="right" x:num>289</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtResetAutoOffTimer</td>
+
+        <td align="right" x:num>304</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtSetAutoOffTimer</td>
+
+        <td align="right" x:num>941</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtSetKeyQueuePtr</td>
+
+        <td align="right" x:num>298</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtSetNullEventTick</td>
+
+        <td align="right" x:num>997</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtSetPenQueuePtr</td>
+
+        <td align="right" x:num>291</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtSysEventAvail</td>
+
+        <td align="right" x:num>717</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtSysInit</td>
+
+        <td align="right" x:num>287</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtWakeup</td>
+
+        <td align="right" x:num>303</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">EvtWakeupWithoutNilEvent</td>
+
+        <td align="right" x:num>1010</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgAccept</td>
+
+        <td align="right" x:num>779</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgConnect</td>
+
+        <td align="right" x:num>776</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgControl</td>
+
+        <td align="right" x:num>1033</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgDBRead</td>
+
+        <td align="right" x:num>834</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgDBWrite</td>
+
+        <td align="right" x:num>835</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgDisconnect</td>
+
+        <td align="right" x:num>780</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgDoDialog</td>
+
+        <td align="right" x:num>998</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgGet</td>
+
+        <td align="right" x:num>778</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgGetDefaultApplication</td>
+
+        <td align="right" x:num>1028</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgGetRegisteredApplications</td>
+
+        <td align="right" x:num>1030</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgGetRegisteredTypes</td>
+
+        <td align="right" x:num>1031</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgGetTargetApplication</td>
+
+        <td align="right" x:num>1029</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgInit</td>
+
+        <td align="right" x:num>775</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgNotifyGoto</td>
+
+        <td align="right" x:num>1025</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgNotifyPreview</td>
+
+        <td align="right" x:num>1032</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgNotifyReceive</td>
+
+        <td align="right" x:num>1024</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgNotifyReceiveV35</td>
+
+        <td align="right" x:num>784</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgPut</td>
+
+        <td align="right" x:num>777</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgReceive</td>
+
+        <td align="right" x:num>782</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgRegisterData</td>
+
+        <td align="right" x:num>783</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgRegisterDatatype</td>
+
+        <td align="right" x:num>1023</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgRequest</td>
+
+        <td align="right" x:num>1026</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgSend</td>
+
+        <td align="right" x:num>781</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExgSetDefaultApplication</td>
+
+        <td align="right" x:num>1027</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ExpansionDispatch</td>
+
+        <td align="right" x:num>839</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileClose</td>
+
+        <td align="right" x:num>819</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileControl</td>
+
+        <td align="right" x:num>826</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileDelete</td>
+
+        <td align="right" x:num>820</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileOpen</td>
+
+        <td align="right" x:num>818</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileReadLow</td>
+
+        <td align="right" x:num>821</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileSeek</td>
+
+        <td align="right" x:num>823</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileSystemDispatch</td>
+
+        <td align="right" x:num>840</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileTell</td>
+
+        <td align="right" x:num>824</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileTruncate</td>
+
+        <td align="right" x:num>825</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FileWrite</td>
+
+        <td align="right" x:num>822</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">Find</td>
+
+        <td align="right" x:num>617</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FindDrawHeader</td>
+
+        <td align="right" x:num>621</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FindGetLineBounds</td>
+
+        <td align="right" x:num>620</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FindSaveMatch</td>
+
+        <td align="right" x:num>619</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FindStrInStr</td>
+
+        <td align="right" x:num>618</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FlashCompress</td>
+
+        <td align="right" x:num>865</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FlashErase</td>
+
+        <td align="right" x:num>866</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FlashInit</td>
+
+        <td align="right" x:num>864</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FlashProgram</td>
+
+        <td align="right" x:num>867</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldCalcFieldHeight</td>
+
+        <td align="right" x:num>338</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldCompactText</td>
+
+        <td align="right" x:num>340</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldCopy</td>
+
+        <td align="right" x:num>307</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldCut</td>
+
+        <td align="right" x:num>308</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldDelete</td>
+
+        <td align="right" x:num>350</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldDirty</td>
+
+        <td align="right" x:num>341</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldDrawField</td>
+
+        <td align="right" x:num>309</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldEraseField</td>
+
+        <td align="right" x:num>310</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldFreeMemory</td>
+
+        <td align="right" x:num>311</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetAttributes</td>
+
+        <td align="right" x:num>335</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetBounds</td>
+
+        <td align="right" x:num>312</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetFont</td>
+
+        <td align="right" x:num>320</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetInsPtPosition</td>
+
+        <td align="right" x:num>325</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetMaxChars</td>
+
+        <td align="right" x:num>346</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetNumberOfBlankLines</td>
+
+        <td align="right" x:num>744</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetScrollPosition</td>
+
+        <td align="right" x:num>328</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetScrollValues</td>
+
+        <td align="right" x:num>730</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetSelection</td>
+
+        <td align="right" x:num>314</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetTextAllocatedSize</td>
+
+        <td align="right" x:num>330</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetTextHandle</td>
+
+        <td align="right" x:num>339</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetTextHeight</td>
+
+        <td align="right" x:num>329</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetTextLength</td>
+
+        <td align="right" x:num>331</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetTextPtr</td>
+
+        <td align="right" x:num>313</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGetVisibleLines</td>
+
+        <td align="right" x:num>334</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldGrabFocus</td>
+
+        <td align="right" x:num>323</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldHandleEvent</td>
+
+        <td align="right" x:num>315</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldInsert</td>
+
+        <td align="right" x:num>349</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldMakeFullyVisible</td>
+
+        <td align="right" x:num>354</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldNewField</td>
+
+        <td align="right" x:num>813</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldPaste</td>
+
+        <td align="right" x:num>316</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldRecalculateField</td>
+
+        <td align="right" x:num>317</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldReleaseFocus</td>
+
+        <td align="right" x:num>324</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldScrollable</td>
+
+        <td align="right" x:num>333</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldScrollField</td>
+
+        <td align="right" x:num>332</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSendChangeNotification</td>
+
+        <td align="right" x:num>337</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSendHeightChangeNotification</td>
+
+        <td align="right" x:num>353</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetAttributes</td>
+
+        <td align="right" x:num>336</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetBounds</td>
+
+        <td align="right" x:num>318</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetDirty</td>
+
+        <td align="right" x:num>352</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetFont</td>
+
+        <td align="right" x:num>321</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetInsertionPoint</td>
+
+        <td align="right" x:num>770</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetInsPtPosition</td>
+
+        <td align="right" x:num>326</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetMaxChars</td>
+
+        <td align="right" x:num>347</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetMaxVisibleLines</td>
+
+        <td align="right" x:num>1112</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetScrollPosition</td>
+
+        <td align="right" x:num>327</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetSelection</td>
+
+        <td align="right" x:num>322</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetText</td>
+
+        <td align="right" x:num>319</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetTextAllocatedSize</td>
+
+        <td align="right" x:num>343</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetTextHandle</td>
+
+        <td align="right" x:num>344</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetTextPtr</td>
+
+        <td align="right" x:num>345</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldSetUsable</td>
+
+        <td align="right" x:num>348</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldUndo</td>
+
+        <td align="right" x:num>351</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FldWordWrap</td>
+
+        <td align="right" x:num>342</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FlpDispatch</td>
+
+        <td align="right" x:num>773</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FlpEmDispatch</td>
+
+        <td align="right" x:num>774</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntAverageCharWidth</td>
+
+        <td align="right" x:num>361</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntBaseLine</td>
+
+        <td align="right" x:num>358</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntCharHeight</td>
+
+        <td align="right" x:num>359</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntCharsInWidth</td>
+
+        <td align="right" x:num>365</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntCharsWidth</td>
+
+        <td align="right" x:num>363</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntCharWidth</td>
+
+        <td align="right" x:num>362</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntDefineFont</td>
+
+        <td align="right" x:num>801</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntDescenderHeight</td>
+
+        <td align="right" x:num>364</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntGetFont</td>
+
+        <td align="right" x:num>355</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntGetFontPtr</td>
+
+        <td align="right" x:num>357</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntGetScrollValues</td>
+
+        <td align="right" x:num>740</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntLineHeight</td>
+
+        <td align="right" x:num>360</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntLineWidth</td>
+
+        <td align="right" x:num>366</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntPrvGetFontList</td>
+
+        <td align="right" x:num>1022</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntSetFont</td>
+
+        <td align="right" x:num>356</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntWCharWidth</td>
+
+        <td align="right" x:num>1036</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntWidthToOffset</td>
+
+        <td align="right" x:num>846</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntWordWrap</td>
+
+        <td align="right" x:num>729</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FntWordWrapReverseNLines</td>
+
+        <td align="right" x:num>739</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FontSelect</td>
+
+        <td align="right" x:num>800</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplAdd</td>
+
+        <td align="right" x:num>232</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplAToF</td>
+
+        <td align="right" x:num>226</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplBase10Info</td>
+
+        <td align="right" x:num>227</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplDiv</td>
+
+        <td align="right" x:num>234</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplFloatToLong</td>
+
+        <td align="right" x:num>229</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplFloatToULong</td>
+
+        <td align="right" x:num>230</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplFree</td>
+
+        <td align="right" x:num>224</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplFToA</td>
+
+        <td align="right" x:num>225</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplInit</td>
+
+        <td align="right" x:num>223</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplLongToFloat</td>
+
+        <td align="right" x:num>228</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplMul</td>
+
+        <td align="right" x:num>231</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FplSub</td>
+
+        <td align="right" x:num>233</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmActiveState</td>
+
+        <td align="right" x:num>827</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmAddSpaceForObject</td>
+
+        <td align="right" x:num>810</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmAlert</td>
+
+        <td align="right" x:num>402</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmCloseAllForms</td>
+
+        <td align="right" x:num>417</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmCopyLabel</td>
+
+        <td align="right" x:num>396</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmCopyTitle</td>
+
+        <td align="right" x:num>410</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmCustomAlert</td>
+
+        <td align="right" x:num>404</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmCustomResponseAlert</td>
+
+        <td align="right" x:num>979</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmDeleteForm</td>
+
+        <td align="right" x:num>368</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmDispatchEvent</td>
+
+        <td align="right" x:num>416</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmDoDialog</td>
+
+        <td align="right" x:num>403</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmDrawForm</td>
+
+        <td align="right" x:num>369</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmEraseForm</td>
+
+        <td align="right" x:num>370</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetActiveField</td>
+
+        <td align="right" x:num>1093</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetActiveForm</td>
+
+        <td align="right" x:num>371</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetActiveFormID</td>
+
+        <td align="right" x:num>373</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetControlGroupSelection</td>
+
+        <td align="right" x:num>394</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetControlValue</td>
+
+        <td align="right" x:num>392</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetFirstForm</td>
+
+        <td align="right" x:num>407</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetFocus</td>
+
+        <td align="right" x:num>376</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetFormBounds</td>
+
+        <td align="right" x:num>379</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetFormId</td>
+
+        <td align="right" x:num>381</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetFormPtr</td>
+
+        <td align="right" x:num>382</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetGadgetData</td>
+
+        <td align="right" x:num>419</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetLabel</td>
+
+        <td align="right" x:num>398</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetNumberOfObjects</td>
+
+        <td align="right" x:num>383</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectBounds</td>
+
+        <td align="right" x:num>409</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectId</td>
+
+        <td align="right" x:num>385</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectIndex</td>
+
+        <td align="right" x:num>384</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectIndexFromPtr</td>
+
+        <td align="right" x:num>1108</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectPosition</td>
+
+        <td align="right" x:num>390</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectPtr</td>
+
+        <td align="right" x:num>387</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetObjectType</td>
+
+        <td align="right" x:num>386</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetTitle</td>
+
+        <td align="right" x:num>400</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetUserModifiedState</td>
+
+        <td align="right" x:num>374</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGetWindowHandle</td>
+
+        <td align="right" x:num>380</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmGotoForm</td>
+
+        <td align="right" x:num>411</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmHandleEvent</td>
+
+        <td align="right" x:num>378</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmHelp</td>
+
+        <td align="right" x:num>405</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmHideObject</td>
+
+        <td align="right" x:num>388</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmInitForm</td>
+
+        <td align="right" x:num>367</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmNewBitmap</td>
+
+        <td align="right" x:num>816</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmNewForm</td>
+
+        <td align="right" x:num>811</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmNewGadget</td>
+
+        <td align="right" x:num>817</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmNewGsi</td>
+
+        <td align="right" x:num>980</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmNewLabel</td>
+
+        <td align="right" x:num>815</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmPointInTitle</td>
+
+        <td align="right" x:num>725</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmPopupForm</td>
+
+        <td align="right" x:num>412</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmRemoveObject</td>
+
+        <td align="right" x:num>837</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmReturnToForm</td>
+
+        <td align="right" x:num>414</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSaveAllForms</td>
+
+        <td align="right" x:num>418</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetActiveForm</td>
+
+        <td align="right" x:num>372</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetCategoryLabel</td>
+
+        <td align="right" x:num>399</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetCategoryTrigger</td>
+
+        <td align="right" x:num>421</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetControlGroupSelection</td>
+
+        <td align="right" x:num>395</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetControlValue</td>
+
+        <td align="right" x:num>393</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetEventHandler</td>
+
+        <td align="right" x:num>415</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetFocus</td>
+
+        <td align="right" x:num>377</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetGadgetData</td>
+
+        <td align="right" x:num>420</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetGadgetHandler</td>
+
+        <td align="right" x:num>984</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetLabel</td>
+
+        <td align="right" x:num>397</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetMenu</td>
+
+        <td align="right" x:num>752</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetNotUserModified</td>
+
+        <td align="right" x:num>375</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetObjectBounds</td>
+
+        <td align="right" x:num>771</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetObjectPosition</td>
+
+        <td align="right" x:num>391</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmSetTitle</td>
+
+        <td align="right" x:num>401</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmShowObject</td>
+
+        <td align="right" x:num>389</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmUpdateForm</td>
+
+        <td align="right" x:num>413</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmUpdateScrollers</td>
+
+        <td align="right" x:num>406</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmValidatePtr</td>
+
+        <td align="right" x:num>807</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FrmVisible</td>
+
+        <td align="right" x:num>408</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrGet</td>
+
+        <td align="right" x:num>635</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrGetByIndex</td>
+
+        <td align="right" x:num>637</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrInit</td>
+
+        <td align="right" x:num>633</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrPtrFree</td>
+
+        <td align="right" x:num>859</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrPtrNew</td>
+
+        <td align="right" x:num>858</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrPtrResize</td>
+
+        <td align="right" x:num>860</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrSet</td>
+
+        <td align="right" x:num>636</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">FtrUnregister</td>
+
+        <td align="right" x:num>634</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GetCharAttr</td>
+
+        <td align="right" x:num>661</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GetCharCaselessValue</td>
+
+        <td align="right" x:num>662</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GetCharSortValue</td>
+
+        <td align="right" x:num>660</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfAddMacro</td>
+
+        <td align="right" x:num>656</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfAddPoint</td>
+
+        <td align="right" x:num>643</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfCleanState</td>
+
+        <td align="right" x:num>645</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfDeleteMacro</td>
+
+        <td align="right" x:num>655</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfFieldChange</td>
+
+        <td align="right" x:num>659</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfFilterPoints</td>
+
+        <td align="right" x:num>648</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfFindBranch</td>
+
+        <td align="right" x:num>651</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfFlushPoints</td>
+
+        <td align="right" x:num>642</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfFree</td>
+
+        <td align="right" x:num>639</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetAndExpandMacro</td>
+
+        <td align="right" x:num>657</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetGlyphMapping</td>
+
+        <td align="right" x:num>653</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetMacro</td>
+
+        <td align="right" x:num>647</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetMacroName</td>
+
+        <td align="right" x:num>654</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetNumPoints</td>
+
+        <td align="right" x:num>649</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetPoint</td>
+
+        <td align="right" x:num>650</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfGetState</td>
+
+        <td align="right" x:num>640</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfInit</td>
+
+        <td align="right" x:num>638</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfInitState</td>
+
+        <td align="right" x:num>644</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfMatch</td>
+
+        <td align="right" x:num>646</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfMatchGlyph</td>
+
+        <td align="right" x:num>652</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfProcessStroke</td>
+
+        <td align="right" x:num>658</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GrfSetState</td>
+
+        <td align="right" x:num>641</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GsiEnable</td>
+
+        <td align="right" x:num>669</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GsiEnabled</td>
+
+        <td align="right" x:num>670</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GsiInitialize</td>
+
+        <td align="right" x:num>667</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GsiSetLocation</td>
+
+        <td align="right" x:num>668</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">GsiSetShiftState</td>
+
+        <td align="right" x:num>671</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HostControl</td>
+
+        <td align="right" x:num>836</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrBacklightV33</td>
+
+        <td align="right" x:num>746</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrBattery</td>
+
+        <td align="right" x:num>872</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrBatteryLevel</td>
+
+        <td align="right" x:num>584</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrCalcDynamicHeapSize</td>
+
+        <td align="right" x:num>1048</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrCursorV33</td>
+
+        <td align="right" x:num>583</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrCustom</td>
+
+        <td align="right" x:num>1092</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDebuggerEnter</td>
+
+        <td align="right" x:num>1049</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDebuggerExit</td>
+
+        <td align="right" x:num>1050</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDebugSelect</td>
+
+        <td align="right" x:num>1044</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDelay</td>
+
+        <td align="right" x:num>585</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisableDataWrites</td>
+
+        <td align="right" x:num>587</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplayAttributes</td>
+
+        <td align="right" x:num>882</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplayDoze</td>
+
+        <td align="right" x:num>883</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplayDrawBootScreen</td>
+
+        <td align="right" x:num>589</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplayInit</td>
+
+        <td align="right" x:num>580</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplayPalette</td>
+
+        <td align="right" x:num>884</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplaySleep</td>
+
+        <td align="right" x:num>581</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDisplayWake</td>
+
+        <td align="right" x:num>592</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDockSignals</td>
+
+        <td align="right" x:num>599</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDockStatus</td>
+
+        <td align="right" x:num>845</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrDoze</td>
+
+        <td align="right" x:num>575</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrEnableDataWrites</td>
+
+        <td align="right" x:num>586</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrFlashWrite</td>
+
+        <td align="right" x:num>1079</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrGetRAMMapping</td>
+
+        <td align="right" x:num>572</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrGetROMToken</td>
+
+        <td align="right" x:num>832</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrGetSilkscreenID</td>
+
+        <td align="right" x:num>970</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIdentifyFeatures</td>
+
+        <td align="right" x:num>958</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrInterruptsInit</td>
+
+        <td align="right" x:num>961</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIRQ1Handler</td>
+
+        <td align="right" x:num>593</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIRQ2Handler</td>
+
+        <td align="right" x:num>594</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIRQ3Handler</td>
+
+        <td align="right" x:num>595</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIRQ4Handler</td>
+
+        <td align="right" x:num>596</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIRQ5Handler</td>
+
+        <td align="right" x:num>597</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrIRQ6Handler</td>
+
+        <td align="right" x:num>598</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrLCDBaseAddrV33</td>
+
+        <td align="right" x:num>588</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrLCDContrastV33</td>
+
+        <td align="right" x:num>842</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrLCDGetDepthV33</td>
+
+        <td align="right" x:num>831</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrLEDAttributes</td>
+
+        <td align="right" x:num>1075</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrMemReadable</td>
+
+        <td align="right" x:num>574</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrMemWritable</td>
+
+        <td align="right" x:num>573</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrModelInitStage2</td>
+
+        <td align="right" x:num>960</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrModelInitStage3</td>
+
+        <td align="right" x:num>1052</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrModelSpecificInit</td>
+
+        <td align="right" x:num>959</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrNVPrefGet</td>
+
+        <td align="right" x:num>863</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrNVPrefSet</td>
+
+        <td align="right" x:num>862</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrPluggedIn</td>
+
+        <td align="right" x:num>600</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrPostDebugInit</td>
+
+        <td align="right" x:num>957</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrPreDebugInit</td>
+
+        <td align="right" x:num>947</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrResetNMI</td>
+
+        <td align="right" x:num>948</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrResetPWM</td>
+
+        <td align="right" x:num>949</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrSetCPUDutyCycle</td>
+
+        <td align="right" x:num>579</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrSetSystemClock</td>
+
+        <td align="right" x:num>578</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrSleep</td>
+
+        <td align="right" x:num>576</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrSoundOff</td>
+
+        <td align="right" x:num>963</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrSoundOn</td>
+
+        <td align="right" x:num>962</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrTimerInit</td>
+
+        <td align="right" x:num>582</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrTimerSleep</td>
+
+        <td align="right" x:num>590</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrTimerWake</td>
+
+        <td align="right" x:num>591</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrVibrateAttributes</td>
+
+        <td align="right" x:num>1076</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">HwrWake</td>
+
+        <td align="right" x:num>577</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcReadFieldNoSemicolon</td>
+
+        <td align="right" x:num>790</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcReadFieldQuotablePrintable</td>
+
+        <td align="right" x:num>791</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcReadPropertyParameter</td>
+
+        <td align="right" x:num>792</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcReadWhiteSpace</td>
+
+        <td align="right" x:num>794</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcSkipAllPropertyParameters</td>
+
+        <td align="right" x:num>793</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcStringIsAscii</td>
+
+        <td align="right" x:num>797</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcWriteNoSemicolon</td>
+
+        <td align="right" x:num>796</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ImcWriteQuotedPrintable</td>
+
+        <td align="right" x:num>795</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtCheckBlink</td>
+
+        <td align="right" x:num>431</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtEnable</td>
+
+        <td align="right" x:num>427</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtEnabled</td>
+
+        <td align="right" x:num>428</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtGetHeight</td>
+
+        <td align="right" x:num>430</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtGetLocation</td>
+
+        <td align="right" x:num>426</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtInitialize</td>
+
+        <td align="right" x:num>424</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtSetHeight</td>
+
+        <td align="right" x:num>429</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">InsPtSetLocation</td>
+
+        <td align="right" x:num>425</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">IntlDispatch</td>
+
+        <td align="right" x:num>683</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdDraw</td>
+
+        <td align="right" x:num>1088</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdErase</td>
+
+        <td align="right" x:num>1089</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdGetLayout</td>
+
+        <td align="right" x:num>1083</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdGetPosition</td>
+
+        <td align="right" x:num>1085</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdGetShiftState</td>
+
+        <td align="right" x:num>1087</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdHandleEvent</td>
+
+        <td align="right" x:num>1090</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdSetLayout</td>
+
+        <td align="right" x:num>1082</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdSetPosition</td>
+
+        <td align="right" x:num>1084</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KbdSetShiftState</td>
+
+        <td align="right" x:num>1086</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyboardStatusFree</td>
+
+        <td align="right" x:num>1081</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyboardStatusNew</td>
+
+        <td align="right" x:num>1080</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyBootKeys</td>
+
+        <td align="right" x:num>950</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyCurrentState</td>
+
+        <td align="right" x:num>674</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyHandleInterrupt</td>
+
+        <td align="right" x:num>673</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyInit</td>
+
+        <td align="right" x:num>672</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyRates</td>
+
+        <td align="right" x:num>676</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyResetDoubleTap</td>
+
+        <td align="right" x:num>675</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeySetMask</td>
+
+        <td align="right" x:num>719</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeySleep</td>
+
+        <td align="right" x:num>677</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">KeyWake</td>
+
+        <td align="right" x:num>678</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LastTrapNumber</td>
+
+        <td align="right" x:num>1126</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LmDispatch</td>
+
+        <td align="right" x:num>1034</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LocGetNumberSeparators</td>
+
+        <td align="right" x:num>761</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstDrawList</td>
+
+        <td align="right" x:num>433</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstEraseList</td>
+
+        <td align="right" x:num>434</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstGetNumberOfItems</td>
+
+        <td align="right" x:num>442</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstGetSelection</td>
+
+        <td align="right" x:num>435</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstGetSelectionText</td>
+
+        <td align="right" x:num>436</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstGetTopItem</td>
+
+        <td align="right" x:num>1051</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstGetVisibleItems</td>
+
+        <td align="right" x:num>767</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstHandleEvent</td>
+
+        <td align="right" x:num>437</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstMakeItemVisible</td>
+
+        <td align="right" x:num>441</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstNewList</td>
+
+        <td align="right" x:num>814</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstPopupList</td>
+
+        <td align="right" x:num>443</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstScrollList</td>
+
+        <td align="right" x:num>763</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstSetDrawFunction</td>
+
+        <td align="right" x:num>432</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstSetHeight</td>
+
+        <td align="right" x:num>438</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstSetListChoices</td>
+
+        <td align="right" x:num>440</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstSetPosition</td>
+
+        <td align="right" x:num>444</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstSetSelection</td>
+
+        <td align="right" x:num>439</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">LstSetTopItem</td>
+
+        <td align="right" x:num>693</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MdmDial</td>
+
+        <td align="right" x:num>688</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MdmHangUp</td>
+
+        <td align="right" x:num>689</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemCardFormat</td>
+
+        <td align="right" x:num>3</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemCardInfo</td>
+
+        <td align="right" x:num>4</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemChunkFree</td>
+
+        <td align="right" x:num>18</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemChunkNew</td>
+
+        <td align="right" x:num>17</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemCmp</td>
+
+        <td align="right" x:num>727</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemDebugMode</td>
+
+        <td align="right" x:num>59</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemGetRomNVParams</td>
+
+        <td align="right" x:num>1035</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleCardNo</td>
+
+        <td align="right" x:num>49</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleDataStorage</td>
+
+        <td align="right" x:num>48</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleFlags</td>
+
+        <td align="right" x:num>44</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleFree</td>
+
+        <td align="right" x:num>43</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleHeapID</td>
+
+        <td align="right" x:num>47</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleLock</td>
+
+        <td align="right" x:num>33</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleLockCount</td>
+
+        <td align="right" x:num>31</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleNew</td>
+
+        <td align="right" x:num>30</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleOwner</td>
+
+        <td align="right" x:num>46</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleResetLock</td>
+
+        <td align="right" x:num>52</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleResize</td>
+
+        <td align="right" x:num>51</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleSetOwner</td>
+
+        <td align="right" x:num>50</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleSize</td>
+
+        <td align="right" x:num>45</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleToLocalID</td>
+
+        <td align="right" x:num>32</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHandleUnlock</td>
+
+        <td align="right" x:num>34</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapCheck</td>
+
+        <td align="right" x:num>57</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapCompact</td>
+
+        <td align="right" x:num>14</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapDynamic</td>
+
+        <td align="right" x:num>62</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapFlags</td>
+
+        <td align="right" x:num>13</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapFreeByOwnerID</td>
+
+        <td align="right" x:num>16</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapFreeBytes</td>
+
+        <td align="right" x:num>11</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapID</td>
+
+        <td align="right" x:num>9</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapInit</td>
+
+        <td align="right" x:num>15</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapPtr</td>
+
+        <td align="right" x:num>10</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapScramble</td>
+
+        <td align="right" x:num>56</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemHeapSize</td>
+
+        <td align="right" x:num>12</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemInit</td>
+
+        <td align="right" x:num>0</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemInitHeapTable</td>
+
+        <td align="right" x:num>1</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemKernelInit</td>
+
+        <td align="right" x:num>42</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemLocalIDKind</td>
+
+        <td align="right" x:num>36</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemLocalIDToGlobal</td>
+
+        <td align="right" x:num>35</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemLocalIDToLockedPtr</td>
+
+        <td align="right" x:num>54</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemLocalIDToPtr</td>
+
+        <td align="right" x:num>37</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemMove</td>
+
+        <td align="right" x:num>38</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemNumCards</td>
+
+        <td align="right" x:num>58</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemNumHeaps</td>
+
+        <td align="right" x:num>7</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemNumRAMHeaps</td>
+
+        <td align="right" x:num>8</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemNVParams</td>
+
+        <td align="right" x:num>63</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrCardNo</td>
+
+        <td align="right" x:num>25</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrDataStorage</td>
+
+        <td align="right" x:num>879</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrFlags</td>
+
+        <td align="right" x:num>21</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrHeapID</td>
+
+        <td align="right" x:num>24</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrNew</td>
+
+        <td align="right" x:num>19</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrOwner</td>
+
+        <td align="right" x:num>23</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrRecoverHandle</td>
+
+        <td align="right" x:num>20</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrResetLock</td>
+
+        <td align="right" x:num>29</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrResize</td>
+
+        <td align="right" x:num>28</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrSetOwner</td>
+
+        <td align="right" x:num>27</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrSize</td>
+
+        <td align="right" x:num>22</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrToLocalID</td>
+
+        <td align="right" x:num>26</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemPtrUnlock</td>
+
+        <td align="right" x:num>53</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemSemaphoreRelease</td>
+
+        <td align="right" x:num>61</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemSemaphoreReserve</td>
+
+        <td align="right" x:num>60</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemSet</td>
+
+        <td align="right" x:num>39</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemSetDebugMode</td>
+
+        <td align="right" x:num>55</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemStoreInfo</td>
+
+        <td align="right" x:num>5</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemStoreInit</td>
+
+        <td align="right" x:num>2</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemStoreSearch</td>
+
+        <td align="right" x:num>40</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MemStoreSetInfo</td>
+
+        <td align="right" x:num>6</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuAddItem</td>
+
+        <td align="right" x:num>983</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuCmdBarAddButton</td>
+
+        <td align="right" x:num>967</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuCmdBarDisplay</td>
+
+        <td align="right" x:num>969</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuCmdBarGetButtonData</td>
+
+        <td align="right" x:num>968</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuDispose</td>
+
+        <td align="right" x:num>446</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuDrawMenu</td>
+
+        <td align="right" x:num>448</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuEraseMenu</td>
+
+        <td align="right" x:num>965</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuEraseStatus</td>
+
+        <td align="right" x:num>449</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuGetActiveMenu</td>
+
+        <td align="right" x:num>450</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuHandleEvent</td>
+
+        <td align="right" x:num>447</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuHideItem</td>
+
+        <td align="right" x:num>982</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuInit</td>
+
+        <td align="right" x:num>445</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuSetActiveMenu</td>
+
+        <td align="right" x:num>451</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuSetActiveMenuRscID</td>
+
+        <td align="right" x:num>762</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MenuShowItem</td>
+
+        <td align="right" x:num>981</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">MultimediaDispatch</td>
+
+        <td align="right" x:num>1125</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">OEMDispatch</td>
+
+        <td align="right" x:num>841</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">OEMDispatch2</td>
+
+        <td align="right" x:num>1091</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">OmDispatch</td>
+
+        <td align="right" x:num>943</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PalmPrivate1</td>
+
+        <td align="right" x:num>1098</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PalmPrivate2</td>
+
+        <td align="right" x:num>1099</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PalmPrivate3</td>
+
+        <td align="right" x:num>1100</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PalmPrivate4</td>
+
+        <td align="right" x:num>1101</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PceNativeCall</td>
+
+        <td align="right" x:num>1114</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenCalibrate</td>
+
+        <td align="right" x:num>625</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenClose</td>
+
+        <td align="right" x:num>623</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenGetRawPen</td>
+
+        <td align="right" x:num>624</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenOpen</td>
+
+        <td align="right" x:num>622</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenRawToScreen</td>
+
+        <td align="right" x:num>626</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenResetCalibration</td>
+
+        <td align="right" x:num>628</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenScreenToRaw</td>
+
+        <td align="right" x:num>627</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenSleep</td>
+
+        <td align="right" x:num>629</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PenWake</td>
+
+        <td align="right" x:num>630</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PhoneNumberLookup</td>
+
+        <td align="right" x:num>751</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PhoneNumberLookupCustom</td>
+
+        <td align="right" x:num>1043</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefGetAppPreferences</td>
+
+        <td align="right" x:num>723</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefGetAppPreferencesV10</td>
+
+        <td align="right" x:num>558</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefGetPreference</td>
+
+        <td align="right" x:num>721</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefGetPreferences</td>
+
+        <td align="right" x:num>556</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefOpenPreferenceDB</td>
+
+        <td align="right" x:num>736</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefOpenPreferenceDBV10</td>
+
+        <td align="right" x:num>555</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefSetAppPreferences</td>
+
+        <td align="right" x:num>724</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefSetAppPreferencesV10</td>
+
+        <td align="right" x:num>559</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefSetPreference</td>
+
+        <td align="right" x:num>722</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrefSetPreferences</td>
+
+        <td align="right" x:num>557</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrgHandleEvent</td>
+
+        <td align="right" x:num>789</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrgStartDialog</td>
+
+        <td align="right" x:num>870</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrgStartDialogV31</td>
+
+        <td align="right" x:num>786</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrgStopDialog</td>
+
+        <td align="right" x:num>787</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PrgUpdateDialog</td>
+
+        <td align="right" x:num>788</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PwdExists</td>
+
+        <td align="right" x:num>663</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PwdRemove</td>
+
+        <td align="right" x:num>666</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PwdSet</td>
+
+        <td align="right" x:num>665</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">PwdVerify</td>
+
+        <td align="right" x:num>664</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">RctCopyRectangle</td>
+
+        <td align="right" x:num>453</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">RctGetIntersection</td>
+
+        <td align="right" x:num>457</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">RctInsetRectangle</td>
+
+        <td align="right" x:num>454</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">RctOffsetRectangle</td>
+
+        <td align="right" x:num>455</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">RctPtInRectangle</td>
+
+        <td align="right" x:num>456</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">RctSetRectangle</td>
+
+        <td align="right" x:num>452</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ResLoadConstant</td>
+
+        <td align="right" x:num>946</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ResLoadForm</td>
+
+        <td align="right" x:num>631</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ResLoadMenu</td>
+
+        <td align="right" x:num>632</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SclDrawScrollBar</td>
+
+        <td align="right" x:num>695</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SclGetScrollBar</td>
+
+        <td align="right" x:num>743</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SclHandleEvent</td>
+
+        <td align="right" x:num>696</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SclSetScrollBar</td>
+
+        <td align="right" x:num>694</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrCompress</td>
+
+        <td align="right" x:num>891</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrCompressScanLine</td>
+
+        <td align="right" x:num>243</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrCopyRectangle</td>
+
+        <td align="right" x:num>236</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrDecompress</td>
+
+        <td align="right" x:num>892</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrDeCompressScanLine</td>
+
+        <td align="right" x:num>244</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrDefaultPaletteState</td>
+
+        <td align="right" x:num>1113</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrDrawChars</td>
+
+        <td align="right" x:num>237</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrDrawNotify</td>
+
+        <td align="right" x:num>241</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrGetColortable</td>
+
+        <td align="right" x:num>1018</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrGetGrayPat</td>
+
+        <td align="right" x:num>1019</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrLineRoutine</td>
+
+        <td align="right" x:num>238</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrPalette</td>
+
+        <td align="right" x:num>1017</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrRectangleRoutine</td>
+
+        <td align="right" x:num>239</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrScreenInfo</td>
+
+        <td align="right" x:num>240</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrScreenInit</td>
+
+        <td align="right" x:num>1015</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrScreenLock</td>
+
+        <td align="right" x:num>1020</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrScreenUnlock</td>
+
+        <td align="right" x:num>1021</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrSendUpdateArea</td>
+
+        <td align="right" x:num>242</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">ScrUpdateScreenBitmap</td>
+
+        <td align="right" x:num>1016</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SecGetPwdHint</td>
+
+        <td align="right" x:num>1077</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SecSelectViewStatus</td>
+
+        <td align="right" x:num>975</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SecSetPwdHint</td>
+
+        <td align="right" x:num>1078</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SecVerifyPW</td>
+
+        <td align="right" x:num>974</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SelectDay</td>
+
+        <td align="right" x:num>720</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SelectDayV10</td>
+
+        <td align="right" x:num>602</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SelectOneTime</td>
+
+        <td align="right" x:num>847</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SelectTime</td>
+
+        <td align="right" x:num>966</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SelectTimeV33</td>
+
+        <td align="right" x:num>603</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SelectTimeZone</td>
+
+        <td align="right" x:num>1038</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SerialDispatch</td>
+
+        <td align="right" x:num>871</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SerReceiveISP</td>
+
+        <td align="right" x:num>208</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkClose</td>
+
+        <td align="right" x:num>210</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkCloseSocket</td>
+
+        <td align="right" x:num>212</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkFlushSocket</td>
+
+        <td align="right" x:num>215</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkOpen</td>
+
+        <td align="right" x:num>209</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkOpenSocket</td>
+
+        <td align="right" x:num>211</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkProcessRPC</td>
+
+        <td align="right" x:num>220</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkReceivePacket</td>
+
+        <td align="right" x:num>218</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkSendPacket</td>
+
+        <td align="right" x:num>217</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkSetSocketListener</td>
+
+        <td align="right" x:num>216</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkSocketRefNum</td>
+
+        <td align="right" x:num>213</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkSocketSetTimeout</td>
+
+        <td align="right" x:num>214</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SlkSysPktDefaultResponse</td>
+
+        <td align="right" x:num>219</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndCreateMidiList</td>
+
+        <td align="right" x:num>686</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndDoCmd</td>
+
+        <td align="right" x:num>563</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndGetDefaultVolume</td>
+
+        <td align="right" x:num>562</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndInit</td>
+
+        <td align="right" x:num>560</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndInterruptSmfIrregardless</td>
+
+        <td align="right" x:num>1096</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndPlayResource</td>
+
+        <td align="right" x:num>1122</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndPlaySmf</td>
+
+        <td align="right" x:num>685</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndPlaySmfIrregardless</td>
+
+        <td align="right" x:num>1094</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndPlaySmfResource</td>
+
+        <td align="right" x:num>878</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndPlaySmfResourceIrregardless</td>
+
+        <td align="right" x:num>1095</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndPlaySystemSound</td>
+
+        <td align="right" x:num>564</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndSetDefaultVolume</td>
+
+        <td align="right" x:num>561</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamCreate</td>
+
+        <td align="right" x:num>1115</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamDelete</td>
+
+        <td align="right" x:num>1116</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamGetPan</td>
+
+        <td align="right" x:num>1124</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamGetVolume</td>
+
+        <td align="right" x:num>1121</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamPause</td>
+
+        <td align="right" x:num>1118</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamSetPan</td>
+
+        <td align="right" x:num>1123</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamSetVolume</td>
+
+        <td align="right" x:num>1120</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamStart</td>
+
+        <td align="right" x:num>1117</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SndStreamStop</td>
+
+        <td align="right" x:num>1119</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrAToI</td>
+
+        <td align="right" x:num>206</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrCaselessCompare</td>
+
+        <td align="right" x:num>202</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrCat</td>
+
+        <td align="right" x:num>198</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrChr</td>
+
+        <td align="right" x:num>204</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrCompare</td>
+
+        <td align="right" x:num>200</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrCompareAscii</td>
+
+        <td align="right" x:num>1011</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrCopy</td>
+
+        <td align="right" x:num>197</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrDelocalizeNumber</td>
+
+        <td align="right" x:num>760</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrIToA</td>
+
+        <td align="right" x:num>201</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrIToH</td>
+
+        <td align="right" x:num>203</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrLen</td>
+
+        <td align="right" x:num>199</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrLocalizeNumber</td>
+
+        <td align="right" x:num>759</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrNCaselessCompare</td>
+
+        <td align="right" x:num>750</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrNCat</td>
+
+        <td align="right" x:num>726</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrNCompare</td>
+
+        <td align="right" x:num>749</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrNCompareAscii</td>
+
+        <td align="right" x:num>1040</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrNCopy</td>
+
+        <td align="right" x:num>718</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrPrintF</td>
+
+        <td align="right" x:num>734</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrStr</td>
+
+        <td align="right" x:num>205</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrToLower</td>
+
+        <td align="right" x:num>207</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">StrVPrintF</td>
+
+        <td align="right" x:num>735</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysAppExit</td>
+
+        <td align="right" x:num>144</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysAppLaunch</td>
+
+        <td align="right" x:num>142</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysAppLauncherDialog</td>
+
+        <td align="right" x:num>180</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysAppStartup</td>
+
+        <td align="right" x:num>143</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysBatteryDialog</td>
+
+        <td align="right" x:num>187</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysBatteryInfo</td>
+
+        <td align="right" x:num>804</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysBatteryInfoV20</td>
+
+        <td align="right" x:num>182</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysBinarySearch</td>
+
+        <td align="right" x:num>755</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysBroadcastActionCode</td>
+
+        <td align="right" x:num>137</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysColdBoot</td>
+
+        <td align="right" x:num>139</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysCopyStringResource</td>
+
+        <td align="right" x:num>188</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysCreateDataBaseList</td>
+
+        <td align="right" x:num>731</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysCreatePanelList</td>
+
+        <td align="right" x:num>732</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysCurAppDatabase</td>
+
+        <td align="right" x:num>172</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysCurAppInfoPV20</td>
+
+        <td align="right" x:num>168</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysDisableInts</td>
+
+        <td align="right" x:num>165</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysDoze</td>
+
+        <td align="right" x:num>141</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysErrString</td>
+
+        <td align="right" x:num>756</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysEvGroupCreate</td>
+
+        <td align="right" x:num>712</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysEvGroupRead</td>
+
+        <td align="right" x:num>714</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysEvGroupSignal</td>
+
+        <td align="right" x:num>713</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysEvGroupWait</td>
+
+        <td align="right" x:num>715</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysFatalAlert</td>
+
+        <td align="right" x:num>173</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysFatalAlertInit</td>
+
+        <td align="right" x:num>972</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysFormPointerArrayToStrings</td>
+
+        <td align="right" x:num>193</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysGetAppInfo</td>
+
+        <td align="right" x:num>828</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysGetOSVersionString</td>
+
+        <td align="right" x:num>803</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysGetStackInfo</td>
+
+        <td align="right" x:num>829</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysGetTrapAddress</td>
+
+        <td align="right" x:num>147</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysGraffitiReferenceDialog</td>
+
+        <td align="right" x:num>737</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysHandleEvent</td>
+
+        <td align="right" x:num>169</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysHighDensitySelector</td>
+
+        <td align="right" x:num>1004</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysInit</td>
+
+        <td align="right" x:num>170</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysInsertionSort</td>
+
+        <td align="right" x:num>691</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysKernelClockTick</td>
+
+        <td align="right" x:num>964</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysKernelInfo</td>
+
+        <td align="right" x:num>189</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysKeyboardDialog</td>
+
+        <td align="right" x:num>738</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysKeyboardDialogV10</td>
+
+        <td align="right" x:num>179</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLaunchConsole</td>
+
+        <td align="right" x:num>190</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLCDBrightness</td>
+
+        <td align="right" x:num>893</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLCDContrast</td>
+
+        <td align="right" x:num>843</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLibFind</td>
+
+        <td align="right" x:num>186</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLibInstall</td>
+
+        <td align="right" x:num>183</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLibLoad</td>
+
+        <td align="right" x:num>684</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLibRemove</td>
+
+        <td align="right" x:num>184</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysLibTblEntry</td>
+
+        <td align="right" x:num>185</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysMailboxCreate</td>
+
+        <td align="right" x:num>697</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysMailboxDelete</td>
+
+        <td align="right" x:num>698</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysMailboxFlush</td>
+
+        <td align="right" x:num>699</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysMailboxSend</td>
+
+        <td align="right" x:num>700</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysMailboxWait</td>
+
+        <td align="right" x:num>701</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNewOwnerID</td>
+
+        <td align="right" x:num>163</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyBroadcast</td>
+
+        <td align="right" x:num>853</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyBroadcastDeferred</td>
+
+        <td align="right" x:num>854</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyBroadcastFromInterrupt</td>
+
+        <td align="right" x:num>1009</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyDatabaseAdded</td>
+
+        <td align="right" x:num>855</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyDatabaseRemoved</td>
+
+        <td align="right" x:num>856</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyInit</td>
+
+        <td align="right" x:num>850</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyRegister</td>
+
+        <td align="right" x:num>851</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysNotifyUnregister</td>
+
+        <td align="right" x:num>852</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysQSort</td>
+
+        <td align="right" x:num>171</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysRandom</td>
+
+        <td align="right" x:num>194</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved10Trap1</td>
+
+        <td align="right" x:num>41</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved30Trap1</td>
+
+        <td align="right" x:num>838</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt"
+
+        x:str="SysReserved30Trap2 ">SysReserved30Trap2 </td>
+
+        <td align="right" x:num>785</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved31Trap1</td>
+
+        <td align="right" x:num>861</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved40Trap1</td>
+
+        <td align="right" x:num>1004</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved40Trap2</td>
+
+        <td align="right" x:num>1005</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved40Trap3</td>
+
+        <td align="right" x:num>1006</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReserved40Trap4</td>
+
+        <td align="right" x:num>1007</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysReset</td>
+
+        <td align="right" x:num>140</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysResSemaphoreCreate</td>
+
+        <td align="right" x:num>174</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysResSemaphoreDelete</td>
+
+        <td align="right" x:num>175</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysResSemaphoreRelease</td>
+
+        <td align="right" x:num>177</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysResSemaphoreReserve</td>
+
+        <td align="right" x:num>176</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysRestoreStatus</td>
+
+        <td align="right" x:num>166</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSemaphoreCreate</td>
+
+        <td align="right" x:num>149</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSemaphoreDelete</td>
+
+        <td align="right" x:num>150</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSemaphoreSet</td>
+
+        <td align="right" x:num>164</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSemaphoreSignal</td>
+
+        <td align="right" x:num>152</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSemaphoreWait</td>
+
+        <td align="right" x:num>151</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSetA5</td>
+
+        <td align="right" x:num>145</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSetAutoOffTime</td>
+
+        <td align="right" x:num>192</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSetPerformance</td>
+
+        <td align="right" x:num>181</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSetTrapAddress</td>
+
+        <td align="right" x:num>146</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysSleep</td>
+
+        <td align="right" x:num>178</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysStringByIndex</td>
+
+        <td align="right" x:num>757</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskCreate</td>
+
+        <td align="right" x:num>155</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskDelay</td>
+
+        <td align="right" x:num>160</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskDelete</td>
+
+        <td align="right" x:num>156</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskID</td>
+
+        <td align="right" x:num>158</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskResume</td>
+
+        <td align="right" x:num>706</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskSetTermProc</td>
+
+        <td align="right" x:num>161</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskSuspend</td>
+
+        <td align="right" x:num>705</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskSwitching</td>
+
+        <td align="right" x:num>195</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskTrigger</td>
+
+        <td align="right" x:num>157</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskUserInfoPtr</td>
+
+        <td align="right" x:num>159</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskWait</td>
+
+        <td align="right" x:num>702</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskWaitClr</td>
+
+        <td align="right" x:num>704</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTaskWake</td>
+
+        <td align="right" x:num>703</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTicksPerSecond</td>
+
+        <td align="right" x:num>745</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTimerCreate</td>
+
+        <td align="right" x:num>153</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTimerDelete</td>
+
+        <td align="right" x:num>191</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTimerRead</td>
+
+        <td align="right" x:num>196</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTimerWrite</td>
+
+        <td align="right" x:num>154</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysTranslateKernelErr</td>
+
+        <td align="right" x:num>148</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysUIAppSwitch</td>
+
+        <td align="right" x:num>167</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysUIBusy</td>
+
+        <td align="right" x:num>805</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysUICleanup</td>
+
+        <td align="right" x:num>999</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysUILaunch</td>
+
+        <td align="right" x:num>162</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysUnimplemented</td>
+
+        <td align="right" x:num>138</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">SysWantEvent</td>
+
+        <td align="right" x:num>857</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblDrawTable</td>
+
+        <td align="right" x:num>458</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblEditing</td>
+
+        <td align="right" x:num>488</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblEraseTable</td>
+
+        <td align="right" x:num>459</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblFindRowData</td>
+
+        <td align="right" x:num>498</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblFindRowID</td>
+
+        <td align="right" x:num>495</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetBounds</td>
+
+        <td align="right" x:num>474</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetColumnSpacing</td>
+
+        <td align="right" x:num>497</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetColumnWidth</td>
+
+        <td align="right" x:num>476</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetCurrentField</td>
+
+        <td align="right" x:num>489</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetItemBounds</td>
+
+        <td align="right" x:num>461</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetItemFont</td>
+
+        <td align="right" x:num>798</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetItemInt</td>
+
+        <td align="right" x:num>463</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetItemPtr</td>
+
+        <td align="right" x:num>938</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetLastUsableRow</td>
+
+        <td align="right" x:num>496</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetNumberOfColumns</td>
+
+        <td align="right" x:num>1105</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetNumberOfRows</td>
+
+        <td align="right" x:num>468</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetRowData</td>
+
+        <td align="right" x:num>499</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetRowHeight</td>
+
+        <td align="right" x:num>491</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetRowID</td>
+
+        <td align="right" x:num>477</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetSelection</td>
+
+        <td align="right" x:num>481</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGetTopRow</td>
+
+        <td align="right" x:num>1106</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblGrabFocus</td>
+
+        <td align="right" x:num>493</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblHandleEvent</td>
+
+        <td align="right" x:num>460</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblHasScrollBar</td>
+
+        <td align="right" x:num>742</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblInsertRow</td>
+
+        <td align="right" x:num>482</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblMarkRowInvalid</td>
+
+        <td align="right" x:num>479</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblMarkTableInvalid</td>
+
+        <td align="right" x:num>480</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblRedrawTable</td>
+
+        <td align="right" x:num>485</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblReleaseFocus</td>
+
+        <td align="right" x:num>487</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblRemoveRow</td>
+
+        <td align="right" x:num>483</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblRowInvalid</td>
+
+        <td align="right" x:num>484</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblRowMasked</td>
+
+        <td align="right" x:num>978</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblRowSelectable</td>
+
+        <td align="right" x:num>471</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblRowUsable</td>
+
+        <td align="right" x:num>486</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSelectItem</td>
+
+        <td align="right" x:num>462</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetBounds</td>
+
+        <td align="right" x:num>748</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetColumnEditIndicator</td>
+
+        <td align="right" x:num>728</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetColumnMasked</td>
+
+        <td align="right" x:num>976</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetColumnSpacing</td>
+
+        <td align="right" x:num>501</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetColumnUsable</td>
+
+        <td align="right" x:num>490</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetColumnWidth</td>
+
+        <td align="right" x:num>492</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetCustomDrawProcedure</td>
+
+        <td align="right" x:num>469</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetItemFont</td>
+
+        <td align="right" x:num>799</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetItemInt</td>
+
+        <td align="right" x:num>464</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetItemPtr</td>
+
+        <td align="right" x:num>494</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetItemStyle</td>
+
+        <td align="right" x:num>465</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetLoadDataProcedure</td>
+
+        <td align="right" x:num>472</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowData</td>
+
+        <td align="right" x:num>500</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowHeight</td>
+
+        <td align="right" x:num>475</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowID</td>
+
+        <td align="right" x:num>478</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowMasked</td>
+
+        <td align="right" x:num>977</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowSelectable</td>
+
+        <td align="right" x:num>470</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowStaticHeight</td>
+
+        <td align="right" x:num>741</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetRowUsable</td>
+
+        <td align="right" x:num>467</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetSaveDataProcedure</td>
+
+        <td align="right" x:num>473</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblSetSelection</td>
+
+        <td align="right" x:num>1107</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TblUnhighlightSelection</td>
+
+        <td align="right" x:num>466</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimAdjust</td>
+
+        <td align="right" x:num>254</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimDateTimeToSeconds</td>
+
+        <td align="right" x:num>253</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimeToAscii</td>
+
+        <td align="right" x:num>616</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimeZoneToAscii</td>
+
+        <td align="right" x:num>1039</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimGetAlarm</td>
+
+        <td align="right" x:num>250</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimGetSeconds</td>
+
+        <td align="right" x:num>245</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimGetTicks</td>
+
+        <td align="right" x:num>247</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimHandleInterrupt</td>
+
+        <td align="right" x:num>251</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimInit</td>
+
+        <td align="right" x:num>248</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimSecondsToDateTime</td>
+
+        <td align="right" x:num>252</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimSetAlarm</td>
+
+        <td align="right" x:num>249</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimSetSeconds</td>
+
+        <td align="right" x:num>246</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimSleep</td>
+
+        <td align="right" x:num>255</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimTimeZoneToUTC</td>
+
+        <td align="right" x:num>1041</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimUTCToTimeZone</td>
+
+        <td align="right" x:num>1042</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TimWake</td>
+
+        <td align="right" x:num>256</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">TsmDispatch</td>
+
+        <td align="right" x:num>942</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UdaMgrDispatch</td>
+
+        <td align="right" x:num>1097</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIBrightnessAdjust</td>
+
+        <td align="right" x:num>939</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIColorGetTableEntryIndex</td>
+
+        <td align="right" x:num>932</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIColorGetTableEntryRGB</td>
+
+        <td align="right" x:num>933</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIColorInit</td>
+
+        <td align="right" x:num>931</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIColorPopTable</td>
+
+        <td align="right" x:num>936</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIColorPushTable</td>
+
+        <td align="right" x:num>935</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIColorSetTableEntry</td>
+
+        <td align="right" x:num>934</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIContrastAdjust</td>
+
+        <td align="right" x:num>844</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIInitialize</td>
+
+        <td align="right" x:num>422</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIPickColor</td>
+
+        <td align="right" x:num>940</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">UIReset</td>
+
+        <td align="right" x:num>423</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WiCmdV32</td>
+
+        <td align="right" x:num>881</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinAddWindow</td>
+
+        <td align="right" x:num>506</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinClipRectangle</td>
+
+        <td align="right" x:num>530</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinCopyRectangle</td>
+
+        <td align="right" x:num>521</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinCreateBitmapWindow</td>
+
+        <td align="right" x:num>996</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinCreateOffscreenWindow</td>
+
+        <td align="right" x:num>503</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinCreateWindow</td>
+
+        <td align="right" x:num>502</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDeleteWindow</td>
+
+        <td align="right" x:num>504</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDisableWindow</td>
+
+        <td align="right" x:num>515</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDisplayToWindowPt</td>
+
+        <td align="right" x:num>525</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawArc</td>
+
+        <td align="right" x:num>913</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawBitmap</td>
+
+        <td align="right" x:num>550</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawChar</td>
+
+        <td align="right" x:num>848</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawChars</td>
+
+        <td align="right" x:num>544</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawGrayLine</td>
+
+        <td align="right" x:num>532</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawGrayRectangleFrame</td>
+
+        <td align="right" x:num>540</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawInvertedChars</td>
+
+        <td align="right" x:num>554</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawLine</td>
+
+        <td align="right" x:num>531</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawPixel</td>
+
+        <td align="right" x:num>899</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawPolygon</td>
+
+        <td align="right" x:num>908</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawRectangle</td>
+
+        <td align="right" x:num>536</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawRectangleFrame</td>
+
+        <td align="right" x:num>539</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawTruncChars</td>
+
+        <td align="right" x:num>849</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinDrawWindowFrame</td>
+
+        <td align="right" x:num>517</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEnableWindow</td>
+
+        <td align="right" x:num>514</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEraseArc</td>
+
+        <td align="right" x:num>914</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEraseChars</td>
+
+        <td align="right" x:num>545</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEraseLine</td>
+
+        <td align="right" x:num>533</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinErasePixel</td>
+
+        <td align="right" x:num>900</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinErasePolygon</td>
+
+        <td align="right" x:num>909</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEraseRectangle</td>
+
+        <td align="right" x:num>537</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEraseRectangleFrame</td>
+
+        <td align="right" x:num>541</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinEraseWindow</td>
+
+        <td align="right" x:num>518</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinFillArc</td>
+
+        <td align="right" x:num>916</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinFillLine</td>
+
+        <td align="right" x:num>535</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinFillPolygon</td>
+
+        <td align="right" x:num>911</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinFillRectangle</td>
+
+        <td align="right" x:num>553</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetActiveWindow</td>
+
+        <td align="right" x:num>511</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetBitmap</td>
+
+        <td align="right" x:num>930</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetBounds</td>
+
+        <td align="right" x:num>1110</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetClip</td>
+
+        <td align="right" x:num>527</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetDisplayExtent</td>
+
+        <td align="right" x:num>523</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetDisplayWindow</td>
+
+        <td align="right" x:num>512</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetDrawWindow</td>
+
+        <td align="right" x:num>510</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetDrawWindowBounds</td>
+
+        <td align="right" x:num>552</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetFirstWindow</td>
+
+        <td align="right" x:num>513</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetFramesRectangle</td>
+
+        <td align="right" x:num>543</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetPattern</td>
+
+        <td align="right" x:num>547</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetPatternType</td>
+
+        <td align="right" x:num>923</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetPixel</td>
+
+        <td align="right" x:num>897</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetPixelRGB</td>
+
+        <td align="right" x:num>1003</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetWindowExtent</td>
+
+        <td align="right" x:num>524</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinGetWindowFrameRect</td>
+
+        <td align="right" x:num>516</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinIndexToRGB</td>
+
+        <td align="right" x:num>927</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInitializeWindow</td>
+
+        <td align="right" x:num>505</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertArc</td>
+
+        <td align="right" x:num>915</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertChars</td>
+
+        <td align="right" x:num>546</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertLine</td>
+
+        <td align="right" x:num>534</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertPixel</td>
+
+        <td align="right" x:num>901</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertPolygon</td>
+
+        <td align="right" x:num>910</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertRectangle</td>
+
+        <td align="right" x:num>538</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinInvertRectangleFrame</td>
+
+        <td align="right" x:num>542</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinModal</td>
+
+        <td align="right" x:num>551</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinMoveWindowAddr</td>
+
+        <td align="right" x:num>809</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintArc</td>
+
+        <td align="right" x:num>912</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintBitmap</td>
+
+        <td align="right" x:num>896</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintChar</td>
+
+        <td align="right" x:num>894</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintChars</td>
+
+        <td align="right" x:num>895</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintLine</td>
+
+        <td align="right" x:num>904</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintLines</td>
+
+        <td align="right" x:num>903</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintPixel</td>
+
+        <td align="right" x:num>898</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintPixels</td>
+
+        <td align="right" x:num>902</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintPolygon</td>
+
+        <td align="right" x:num>907</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintRectangle</td>
+
+        <td align="right" x:num>905</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPaintRectangleFrame</td>
+
+        <td align="right" x:num>906</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPalette</td>
+
+        <td align="right" x:num>925</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPopDrawState</td>
+
+        <td align="right" x:num>918</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPrvInitCanvas</td>
+
+        <td align="right" x:num>1047</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinPushDrawState</td>
+
+        <td align="right" x:num>917</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinRemoveWindow</td>
+
+        <td align="right" x:num>507</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinResetClip</td>
+
+        <td align="right" x:num>529</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinRestoreBits</td>
+
+        <td align="right" x:num>520</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinRGBToIndex</td>
+
+        <td align="right" x:num>926</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSaveBits</td>
+
+        <td align="right" x:num>519</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinScreenInit</td>
+
+        <td align="right" x:num>235</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinScreenLock</td>
+
+        <td align="right" x:num>928</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinScreenMode</td>
+
+        <td align="right" x:num>830</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinScreenUnlock</td>
+
+        <td align="right" x:num>929</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinScrollRectangle</td>
+
+        <td align="right" x:num>522</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetActiveWindow</td>
+
+        <td align="right" x:num>508</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetBackColor</td>
+
+        <td align="right" x:num>921</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetBackColorRGB</td>
+
+        <td align="right" x:num>1001</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetBounds</td>
+
+        <td align="right" x:num>768</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetClip</td>
+
+        <td align="right" x:num>528</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetColors</td>
+
+        <td align="right" x:num>772</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetDrawMode</td>
+
+        <td align="right" x:num>919</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetDrawWindow</td>
+
+        <td align="right" x:num>509</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetForeColor</td>
+
+        <td align="right" x:num>920</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetForeColorRGB</td>
+
+        <td align="right" x:num>1000</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetPattern</td>
+
+        <td align="right" x:num>548</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetPatternType</td>
+
+        <td align="right" x:num>924</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetTextColor</td>
+
+        <td align="right" x:num>922</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetTextColorRGB</td>
+
+        <td align="right" x:num>1002</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinSetUnderlineMode</td>
+
+        <td align="right" x:num>549</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinValidateHandle</td>
+
+        <td align="right" x:num>806</td>
+
+    </tr>
+
+    <tr>
+
+        <td height="17" style="height:12.75pt">WinWindowToDisplayPt</td>
+
+        <td align="right" x:num>526</td>
+
+    </tr>
+
+</table>
+
+
+
+<p><i>Palm OS 5 trap numbers contributed by <a href="mailto:nicolaiev&copy; uol.com.br">Adrian Nicolaiev</a></i>
+
+</body>
+
+</html>

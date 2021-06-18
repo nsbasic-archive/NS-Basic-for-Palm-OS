@@ -1,0 +1,105 @@
+"mdl"
+8
+"SysTrap Examples","appl","SysT",1018,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100010F"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"SysTrap Examples"
+"Screen1004"
+""
+0
+"Sub Form1004_after()
+   fldTitle.Text = ~NS Basic/Palm~
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnWinDrawLine",1008,4,20,12,64,#TRUE#,0,"WinDrawLine",0,0,0
+"Sub object1008()
+   Dim x1 as Short
+   Dim y1 as Short
+   Dim x2 as Short
+   Dim y2 as Short
+
+   x1 = 80
+   y1 = 32
+   x2 = x1 + 49
+   y2 = y1
+   'sysTrapWinDrawLine
+   systrapsub 531, 4, x1, y1, x2, y2
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnWinDrawChars",1014,4,36,12,64,#TRUE#,0,"WinDrawChars",0,0,0
+"Sub object1014()
+   Dim length as Short
+   Dim x as Short
+   Dim y as Short
+
+   length = 13
+   x = 80
+   y = 20
+   'sysTrapWinDrawChars    
+   systrapsub 544, 4, ~Hello, World!~, length, x, y
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnFrmSetTitle",1015,4,52,12,64,#TRUE#,0,"FrmSetTitle",0,0,0
+"Sub object1015()
+   Dim form as Variant
+   Dim title as String
+
+   'sysTrapFrmGetActiveForm
+   form = SysTrapFunc(371, 0)
+
+   title = fldTitle.Text
+
+   'sysTrapFrmSetTitle
+   If Len(title) > 0 Then
+      SysTrapSub 401, 2, form, title
+   End If
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTitle",1016,80,52,12,76,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1018",1018,4,68,12,64,#TRUE#,0,"GetHotSyncID",0,0,0
+"Sub object1018()
+    Dim UserName as String
+    Dim NullP as Integer
+
+    NullP = 0
+    UserName = ~1234567890123456789012345678901234567890~ '40 bytes
+    MsgBox ~before sysTrapSub~
+    SysTrapSub 681, 6, NullP, NullP, NullP, UserName, NullP, NullP
+    MsgBox  username
+
+End Sub"
+"end"

@@ -1,0 +1,20 @@
+:Base PDB Creator Pro NSB Help.hlp
+1 PDB Creator Pro NSB Help
+2 General
+3 About PDB Creator Pro NSB=1
+3 Common Errors and Error Messages=18
+3 Known Issues=21
+2 Operating Modes
+3 Interactive mode=2
+2 Working with Palm OS databases
+3 Palm Database format=15
+3 Reading PDB files=8
+3 Writing PDB Files=9
+3 Reading PDB's using Field Descriptors=10
+3 Writing PDB's using Field Descriptors=11
+3 Valid Field Descriptors=16
+3 Working with Configuration Files=20
+2 NSBasic/Palm support
+3 Variable types=12
+3 Database format=13
+3 Sample code=14

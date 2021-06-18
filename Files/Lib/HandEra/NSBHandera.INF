@@ -1,0 +1,94 @@
+; GENERAL PROPERTIES
+;
+; All extensions must have a [General] section. Some keys are optional.
+;
+;	ExtensionName:	User visible name of extension (required)
+;	PrcName:	Name of .PRC file of extension (required)
+;	Version:	Version of extension (can contain chars) (required)
+;	Manufacturer:	Name of manufacturer of extension. (required)
+;       =HelpStart=      This key marks the beginning of the help text
+;			shown in the extension's properties. Enclose
+;			each line in double quotes and terminate the
+;			help section with the key =HelpEnd=. (optional,
+;			default = "No help available.")
+;
+
+[General]
+
+ExtensionName=NSBHandera
+PrcName=NSBHandera.prc
+Version=1.0
+Manufacturer=GlowkaWare
+InfVers=2.0
+
+;
+; EXTENSION HELP
+;
+
+=HelpStart=
+""
+"Shared Library Example"
+""
+"This library is an example shared library for use with NSBasic."
+""
+"Written by Ron Glowka, April 2001"
+""
+=HelpEnd=
+
+;
+; METHOD PROPERTIES
+;
+; This section is organized as follows:
+;       section:        [GlobalMethods]
+;                       name=index, type, numparams, helpstring
+;
+; where:
+;
+;	name:		Name of method
+;	index:		Index of function. Index will be passed as the
+;			first parameter on the evaluation stack.
+;	type:		Either "func" or "sub".  Funcs are methods
+;			that push a return value onto the interpreter's
+;			evaluation stack. Subs are methods that do
+;			not push return values.
+;	numparams:	Number of parameters required by this method.
+;       helpstring:	Descriptive text about method. (Optional)
+;
+;
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as flt8"
+CompileInfo= 2, sub, 2, "CompileInfo(inout CompileDateStr as string, inout CompileTimeStr as string)"
+AudioAdjVolumeSupported= 3, func, 0, "AudioAdjVolumeSupported() as int32"
+AudioDTMFSupported= 4, func, 0, "AudioDTMFSupported() as int32"
+AudioGetMasterVolume= 5, func, 0, "AudioGetMasterVolume() as int32"
+AudioGetMute= 6, func, 0, "AudioGetMute() as int32"
+AudioPlayDTMFChar= 7, sub, 2, "AudioPlayDTMFChar(in charStr as string, in toneLengthInt as int32)"
+AudioPlayDTMFStr= 8, sub, 3, "AudioPlayDTMFStr(in strStr as string, in toneLengthInt as int32, in toneGapInt as int32)"
+AudioPlayWaveSupported= 9, func, 0, "AudioPlayWaveSupported() as int32"
+AudioRecordWaveSupported= 10, func, 0, "AudioRecordWaveSupported() as int32"
+AudioSetMasterVolume= 11, sub, 1, "AudioSetMasterVolume(in volumeInt as int32)"
+AudioSetMute= 12, sub, 1, "AudioSetMute(in muteInt as int32)"
+AudioVolumeDlg= 13, sub, 1, "AudioVolumeDlg(in titleStr as string)"
+SilkGetGraffitiPersistence= 14, func, 0, "SilkGetGraffitiPersistence() as int32"
+SilkMaximizeWindow= 15, sub, 0, "SilkMaximizeWindow()"
+SilkMinimizeWindow= 16, sub, 0, "SilkMinimizeWindow()"
+SilkSetGraffitiPersistence= 17, sub, 1, "SilkSetGraffitiPersistence(in ticks as int32)"
+SilkWindowMinimized= 18, func, 0, "SilkWindowMinimized() as int32"
+SizeForm= 19, sub, 0, "SizeForm()"
+VgaBaseToVgaFont= 20, func, 1, "VgaBaseToVgaFont(in fontId as int32) as int32"
+VgaFontSelect= 21, func, 2, "VgaFontSelect(in fontFormTypeInt as int32, in defaultFontId as int32) as int32"
+VgaFrmModify= 22, func, 0, "VgaFrmModify() as int32"
+VgaFrmGetTitleHeight= 23, func, 0, "VgaFrmGetTitleHeight() as int32"
+VgaGetScreenMode= 24, func, 0, "VgaGetScreenMode() as int32"
+VgaGetScreenOffset= 25, func, 0, "VgaGetScreenOffset() as int32"
+VgaGetScreenRotation= 26, func, 0, "VgaGetScreenRotation() as int32"
+VgaGetScreenState= 27, func, 0, "VgaGetScreenState() as int32"
+VgaIsVgaFont= 28, func, 1, "VgaIsVgaFont(in fontId as int32) as int32"
+VgaRestoreScreenState= 29, func, 0, "VgaRestoreScreenState() as int32"
+VgaRotateSelect= 30, func, 1, "VgaRotateSelect(in defaultRotationInt as int32) as int32"
+VgaSaveScreenState= 31, sub, 0, "VgaSaveScreenState()"
+VgaSetScreenMode= 32, func, 2, "VgaSetScreenMode(in modeInt as int32, in rotationInt as int32) as int32"
+VgaSetScreenState= 33, func, 3, "VgaSetScreenState(in modeInt as int32, in rotationInt as int32, in offsetInt as int32) as int32"
+VgaVgaToBaseFont= 34, func, 1, "VgaVgaToBaseFont(in vgaFontId as int32) as int32"
+VgaWinDrawBitmapExpanded= 35, sub, 3, "VgaWinDrawBitmapExpanded(in objectId as int32, in x as int32, in y as int32)"

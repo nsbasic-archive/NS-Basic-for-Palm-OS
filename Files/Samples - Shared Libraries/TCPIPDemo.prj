@@ -1,0 +1,316 @@
+"mdl"
+8
+"TcpIpDemo","appl","NSBd",1012,505,0
+"Sub Project_Startup()
+    Global fd as Integer
+    Global timeout as Integer
+    Global CR as String
+    Global lf as String
+    Global CrLf as String
+    Global err as Integer
+    Global count as Integer
+    
+    loadLibrary ~TcpIpLib~,~tcp~
+    CRLF = chr(13) + chr(10)
+    LF = chr(10)
+    CR = chr(13)
+
+End Sub
+
+Function send(msg as String) as Integer 'send through open TCP/IP connection
+    err=tcp.tcpWrite(fd,msg + crlf)
+    If err<0 Then MsgBox ~Write error ~ + str(err)
+    send=err
+End Function
+
+Function readLine() as String 'read a line from open TCP/IP connection
+    Dim buf as String
+    buf=tcp.tcpRead(fd, count, LF, timeout)
+    If buf=~~ Then
+        MsgBox ~No response~
+        err=-1
+    End If
+    readline=buf
+End Function"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100013F"
+"Sub Project_Termination()
+    tcp.tcpclose(fd)
+End Sub"
+"resfile"
+1
+"TcpIpLib"
+1012
+"DBIM"
+"..\..\Lib\TcpIplib.prc"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Tcp/Ip Demo"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,4,20,12,68,#TRUE#,0,"Get Web Page",0,0,0
+"Sub object1004()
+    Dim timeout as Integer
+    Dim hostname as String
+    Dim port as Integer
+    Dim buf as String
+    Dim msg as String
+      
+    hostname=~www.nsbasic.com~
+    port=80
+    timeout=5000
+    count=250
+
+    fd=tcp.tcpOpen(hostname, port, timeout)
+    If fd<0 Then
+        MsgBox ~Open error ~ + str(fd)
+    Else
+        data.text=hostname + ~ Connected.. ~ 
+    End If
+    
+    msg=~GET /testdata.txt HTTP/1.0~ + CRLF
+    msg=msg + ~Host: ~ + hostname + ~:~ + str(port) + CRLF + CRLF
+    tcp.tcpFlush(fd) ' flush old data
+    err=tcp.tcpWrite(fd,msg)
+    If err<0 Then
+        MsgBox ~Write error ~ + str(err)
+    Else 
+        buf=~a~ 'fill buff with a char
+        Do until buf=~~
+            'read data lines until connection closed or timeout
+            buf=tcp.tcpRead(fd, count, LF, timeout)
+            msg=msg+buf ' add lines to msg
+        Loop
+        'show all lines, all data, incl header
+        data.text=msg 
+    End If
+    tcp.tcpClose(fd)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,5000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","data",1005,4,52,108,148,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1007",1007,4,36,12,68,#TRUE#,0,"Get News",0,0,0
+"Sub object1007()
+    Dim hostname as String
+    Dim port as Integer
+    Dim buf as String
+    Dim msg as String
+    Dim i as Integer
+    
+    hostname=~msnews.microsoft.com~
+    port=119
+    timeout=5000
+    count=250
+    data.text=~~   
+    
+    fd=tcp.tcpOpen(hostname, port, timeout)
+    If fd<0 Then
+        MsgBox ~Open error ~ + str(fd)
+        Exit Sub
+    End If
+    Lmsg.text = hostname 
+    
+    'open a newsgroup
+    If send(~group microsoft.public.news.server~)<0 Then Exit Sub
+   
+    'get info on message numbers in group
+    buf=tcp.tcpRead(fd, count, LF, timeout)
+    If buf=~~ Then
+        MsgBox ~No response~
+        Exit Sub
+    End If
+    data.text=data.text+lf+buf
+        
+    'request current message
+    Lmsg.text = ~Get cur msg~ 
+    If send(~article~)<0 Then Exit Sub
+     
+    msg = ~~
+    i=0
+    Lmsg.text = ~Reading~ 
+    Do until instr(1,buf,LF+~.~,0)>0
+        'read data chunks until lf dot or timeout
+        buf=tcp.tcpRead(fd, count, CR, timeout)
+        i=i+1
+        Lmsg.text = ~Chunk:~ + str(i)
+        If (buf=~~) Or (len(data.text)>4500) Then 
+            MsgBox ~timeout/overflow~ 
+            Exit Do 
+        End If
+        msg=msg+buf
+    Loop
+    Lmsg.text = ~Finished~ 
+   'show all lines, all data, incl header
+    data.text=data.text+lf+msg 'add msg to data.text
+    tcp.tcpClose(fd)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1008",1008,88,36,12,68,#TRUE#,0,"Get Email",0,0,0
+"Sub object1008()
+    Dim hostname as String
+    Dim port as Integer
+    Dim buf as String
+    Dim msg as String
+    Dim i as Integer
+    Dim username as String
+    Dim password as String
+    
+    hostname=~nsbasic.com~
+    port=110
+    timeout=5000
+    count=250
+    'yes, we're giving you the password to our spam account. :-)
+    'NS BASIC Corporation does not endorse any of the products
+    'advertised in the spam bucket.
+    username=~nsbasic.com/spam~
+    password=~spam~
+    data.text=~~
+    
+    fd=tcp.tcpOpen(hostname, port, timeout)
+    If fd<0 Then
+        MsgBox ~Open error ~ + str(fd)
+        Exit Sub
+    End If
+    data.text=hostname + ~ Connected... ~ 
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+   
+    'open a mailbox
+    If send(~USER ~ + username)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+    
+    'send password
+    If send(~PASS ~ + password)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+     
+    'request first message
+    If send(~RETR 1~)<0 Then Exit Sub  
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+    
+    'get first message back 
+    buf=~a~ 'fill buff with a char
+    Do until buf=~~
+        'read data lines until connection closed or timeout
+        buf=tcp.tcpRead(fd, count, CRLF, timeout)
+        msg=msg+buf 'add lines to msg
+        If left(buf,1)=~.~ Then Exit Do
+    Loop
+    'show all lines, all data, incl header
+    data.text=data.text+lf+msg 
+    tcp.tcpClose(fd)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1009",1009,88,20,12,68,#TRUE#,0,"Send Mail",0,0,0
+"Sub object1009()
+    Dim hostname as String
+    Dim port as Integer
+    Dim buf as String
+    Dim msg as String
+    Dim i as Integer
+    
+    hostname=~nsbasic.com~
+    port=25
+    timeout=5000
+    count=250
+    data.text=~~
+    
+    fd=tcp.tcpOpen(hostname, port, timeout)
+    If fd<0 Then
+        MsgBox ~Open error ~ + str(fd)
+        Exit Sub
+    End If
+    data.text=hostname + ~ Connected... ~ 
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+   
+    'open a new message
+    If send(~HELO nsbasic.com~)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+    
+    'send the message
+    If send(~MAIL FROM: Palm_OS_Device~)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+     
+    If send(~RCPT TO: support@nsbasic.com~)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+     
+    If send(~DATA~)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+     
+    If send(~From: Palm_OS_Device <username@hostname>~)<0 Then Exit Sub    
+    If send(~To: NSBasic Support <support@nsbasic.com>~)<0 Then Exit Sub    
+    If send(~Subject: Test Status~)<0 Then Exit Sub   
+    If send(~Content-Type: text/plain;~)<0 Then Exit Sub
+    If send(crlf)<0 Then Exit Sub 'This line is important
+    If send(~I'm happy to report that it is easy~)<0 Then Exit Sub
+    If send(~to send you messages!~)<0 Then Exit Sub   
+    If send(~.~)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+     
+    If send(~QUIT~)<0 Then Exit Sub   
+    buf=readline()
+    If err<0 Then Exit Sub
+    data.text=data.text+lf+buf
+    
+    tcp.tcpClose(fd)
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lmsg",1011,76,0,12,43,#TRUE#,0,"messages",0,0,0
+""
+"end"

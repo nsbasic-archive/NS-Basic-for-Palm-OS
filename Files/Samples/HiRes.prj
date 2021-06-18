@@ -1,0 +1,135 @@
+"mdl"
+8
+"Hi Res","appl","Test",1018,505,0
+"Sub Project_Startup()
+    Global hiRes as Integer
+    hiRes = False
+    If sysinfo(6)<50 Then
+        MsgBox ~This program requires Palm OS 5.0 or later~
+    End If
+End Sub
+
+Sub UpdateStatus()
+    Dim x as Integer 'position to place the message
+    If sysinfo(7)<=72 Then
+        x=120 'low res
+    Else
+        x=240 'hi res
+    End If
+    
+    DrawChars ~Coordinate System is ~ + str(sysinfo(7)) + ~. (ROM ~ + str(sysinfo(6)) + ~)~, 1,x
+End Sub
+
+Sub SetResolution()
+    If hiRes = True Then 
+    	sysInfoSet(~CoordinateSystem~, 144)
+    End If
+    updateStatus
+End Sub
+
+Sub ResetResolution()
+    If hiRes = True Then 
+    	sysInfoSet(~CoordinateSystem~, 72)
+    End If
+    updateStatus
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000094"
+""
+"bmpfile"
+1
+"Bitmap1014"
+1014
+"..\..\Bitmaps\Club.bmp,,,,,..\..\Bitmaps\Club.bmp,,,,"
+"bmpfile"
+1
+"Bitmap1018"
+1018
+"..\..\Bitmaps\Club.bmp"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#FALSE#
+"Form1"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+    updateStatus
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1008",1008,40,136,12,48,#TRUE#,0,"DrawLine",0,0,0
+"Sub object1008()
+    SetResolution()
+    DrawLine 80,10,160,120
+    ResetResolution()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1009",1009,92,136,12,52,#TRUE#,0,"DrawChars",0,0,0
+"Sub object1009()
+    SetResolution()
+    DrawChars ~This is some text~,80,40
+    ResetResolution()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1010",1010,40,148,12,48,#TRUE#,0,"DrawRect",0,0,0
+"Sub object1010()
+    SetResolution()
+    DrawRectangle 85,20,40,40,5
+    ResetResolution()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1011",1011,92,148,12,52,#TRUE#,0,"DrawBitmap",0,0,0
+"Sub object1011()
+    SetResolution()
+    Dim map as Integer
+    If sysinfo(7)<=72 Then
+        map=1018 'low res
+    Else
+        map=1014 'hi res
+    End If
+    
+    DrawBitmap map,0,0
+    ResetResolution()
+End Sub"
+"cho"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"cho","Pushbutton1012",1012,0,136,12,36,#TRUE#,0,"HiRes",0,0,0
+"Sub object1012()
+    hiRes=True    
+End Sub"
+"cho"
+1
+#TRUE#,1,#TRUE#
+"obj"
+3
+"cho","Pushbutton1013",1013,0,148,12,36,#TRUE#,0,"LoRes",0,0,0
+"Sub object1013()
+    hiRes = False
+End Sub"
+"end"

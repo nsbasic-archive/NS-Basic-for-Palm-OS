@@ -1,0 +1,58 @@
+// EmuLink.odl : type library source for ActiveX Control project.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(EFC9CC66-188E-11D5-9892-0000CB222337), version(1.0),
+  helpfile("EmuLink.hlp"),
+  helpstring("EmuLink ActiveX Control module"),
+  control ]
+library EMULINKLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	[ uuid(EFC9CC67-188E-11D5-9892-0000CB222337),
+	  helpstring("Dispatch interface for EmuLink Control"), hidden ]
+	dispinterface _DEmuLink
+	{
+		properties:
+			//{{AFX_ODL_PROP(CEmuLinkCtrl)
+			//}}AFX_ODL_PROP
+
+		methods:
+			//{{AFX_ODL_METHOD(CEmuLinkCtrl)
+			[id(1)] boolean ImportFile(BSTR FIleName);
+			[id(2)] boolean ExportFile(BSTR FileName, BSTR DBName);
+			[id(3)] boolean AppStop();
+			[id(4)] boolean NormalUIAppSwitch(BSTR DBName);
+			[id(5)] boolean CheckCurApp(BSTR NameDB);
+			[id(6)] boolean SysSoftReset();
+			[id(7)] boolean CheckPresence();
+			//}}AFX_ODL_METHOD
+	};
+
+	[ uuid(EFC9CC68-188E-11D5-9892-0000CB222337),
+	  helpstring("Event interface for EmuLink Control") ]
+	dispinterface _DEmuLinkEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			//{{AFX_ODL_EVENT(CEmuLinkCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	[ uuid(EFC9CC69-188E-11D5-9892-0000CB222337),
+	  helpstring("EmuLink Control"), control ]
+	coclass EmuLink
+	{
+		[default] dispinterface _DEmuLink;
+		[default, source] dispinterface _DEmuLinkEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

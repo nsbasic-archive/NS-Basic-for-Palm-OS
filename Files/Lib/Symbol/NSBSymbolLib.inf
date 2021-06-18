@@ -1,0 +1,20 @@
+[General]
+ExtensionName=NSB-Symbol-Scan-Manager
+PrcName=NSBSymbolLib.prc
+Version=2.0
+Manufacturer=NSBasic.com
+InfVers=2.0
+[GlobalMethods]
+IsPalmSymbolUnit=1, func, 0, "IsPalmSymbolUnit() as int32"
+CmdScanEnable=2, proc, 0, "CmdScanEnable()"
+CmdScanDisable=3, proc, 0, "CmdScanDisable()"
+CmdScanSetTriggeringModes=4, proc, 1, "CmdScanSetTriggeringModes(in modes as int32)"
+CmdScanSetBarcodeEnabled=5, proc, 2, "CmdScanSetBarcodeEnabled(in barCode as int32, in whether as int32)"
+CmdSendParams=6, proc, 1, "CmdSendParams(in beepo as int32)"
+CmdStartDecode=7, proc, 0, "CmdStartDecode()"
+CmdStopDecode=8, proc, 0, "CmdStopDecode()"
+GetDecodedData=9, func, 0, "GetDecodedData() as string"
+GetLastScanData=10, func, 0, "GetLastScanData() as string"
+GetBarType=11, func, 0, "GetBarType() as int32"
+CmdScanLedOn=12, proc, 0, "CmdScanLedOn()"
+CmdScanLedOff=13, proc, 0, "CmdScanLedOff()"

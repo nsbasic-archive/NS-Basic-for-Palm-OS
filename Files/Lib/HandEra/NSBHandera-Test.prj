@@ -1,0 +1,1025 @@
+"mdl"
+7
+"NSBHandera-Test","appl","HNSE",1157,200,0
+"Sub main()
+    Dim Error as Integer
+    
+    LoadLibrary ~NSBHandera~, ~NSBH~
+
+
+End Sub"
+0
+0
+"NSBHandera-Test"
+"1.0"
+""
+"bmpfile"
+1
+"Bmpfile1155"
+1155
+"C:\NSBasic\Bitmaps\logobw.bmp"
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,240,240,0,#FALSE#,#TRUE#
+"NSBHandera-Test : VGA 1"
+"frmVGA1"
+"Sub Form1004_before()
+    Dim Error as Integer
+ 
+End Sub"
+0
+""
+"Sub Form1004_events()
+    Dim eventType as Integer
+    
+    eventType = GetEventType()
+    
+    If eventType < 0 Or eventType > 3 Then MsgBox Str(eventType)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSelectRotation",1005,4,84,12,68,#TRUE#,0,"Select Rotation"
+"Sub object1005()
+    Dim SelectedRotation as Integer
+    
+    SelectedRotation = NSBH.VgaRotateSelect(1)
+    
+    txtRotation.text = Str(SelectedRotation)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetMode",1006,4,24,12,68,#TRUE#,0,"Get Mode"
+"Sub object1006()
+    Dim Mode as Integer
+    
+    Mode = NSBH.VgaGetScreenMode()
+    
+    txtMode.text = Str(Mode)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetRotation",1007,4,52,12,68,#TRUE#,0,"Get Rotation"
+"Sub object1007()
+    Dim Rotation as Integer
+    
+    Rotation = NSBH.VgaGetScreenRotation()
+    
+    txtRotation.text = Str(Rotation)
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMode",1008,92,24,12,56,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtRotation",1010,92,52,12,56,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetScreenMode",1012,4,104,12,80,#TRUE#,0,"Set Screen Mode"
+"Sub object1012()
+    Dim Error as Integer
+    Dim Mode as Integer
+    Dim Rotation as Integer
+    
+    Mode = Val(txtMode.text)
+    Rotation = Val(txtRotation.text)
+    
+    Error = NSBH.VgaSetScreenMode(Mode, Rotation)
+    
+    txtError.text = Str(Error)
+    Redraw
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtError",1013,120,104,12,28,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1015",1015,44,40,12,104,#TRUE#,0,"0 = Scale to Fit; 1 =  1 to 1"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1016",1016,12,68,12,140,#TRUE#,0,"0 = none; 1 = 90; 2 = 180; 3 = 270"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1017",1017,92,104,12,24,#TRUE#,0,"Error:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnFrmModify",1018,96,136,12,60,#TRUE#,0,"Form Modify"
+"Sub object1018()
+    Dim Error as Integer
+    
+    Error = NSBH.VgaFrmModify()
+    txtError.text = Str(Error)
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSizeForm",1021,4,136,12,44,#TRUE#,0,"Size Form"
+"Sub object1021()
+    NSBH.SizeForm()
+    Redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVGA1Done",1036,56,144,12,32,#TRUE#,0,"Done"
+"Sub object1036()
+    NextForm ~frmMenu~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1099",1099,76,80,12,80,#TRUE#,0,"Set Screen Mode"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1100",1100,76,92,12,68,#TRUE#,0,"after Selecting."
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1101",1101,4,120,12,152,#TRUE#,0,"Try SizeForm after changing mode."
+""
+"vew"
+3,1024,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"NSBHandera-Test"
+"frmMenu"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVGA1",1025,52,24,12,40,#TRUE#,0,"VGA 1"
+"Sub object1025()
+    NextForm ~frmVGA1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVGA2",1026,52,40,12,40,#TRUE#,0,"VGA 2"
+"Sub object1026()
+    NextForm ~frmVGA2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilk",1027,52,96,12,40,#TRUE#,0,"Silk"
+"Sub object1027()
+    NextForm ~frmSilk~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAudio2",1028,52,136,12,40,#TRUE#,0,"Audio 2"
+"Sub object1028()
+    NextForm ~frmAudio2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAudio1",1080,52,120,12,40,#TRUE#,0,"Audio 1"
+"Sub object1080()
+    NextForm ~frmAudio1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1127",1127,52,56,12,40,#TRUE#,0,"VGA 3"
+"Sub object1127()
+    NextForm ~frmVGA3~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1154",1154,52,72,12,40,#TRUE#,0,"VGA 4"
+"Sub object1154()
+    NextForm ~frmVGA4~
+
+End Sub"
+"vew"
+3,1030,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBHandera-Test : Audio 1"
+"frmAudio1"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAdjVolumeSupported",1044,4,20,12,108,#TRUE#,0,"Adj Volume Supported?"
+"Sub object1044()
+    Dim AdjVolumeSupported as Integer
+    
+    AdjVolumeSupported = NSBH.AudioAdjVolumeSupported()
+    
+    txtAdjVolumeSupported.text = Str(AdjVolumeSupported)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtAdjVolumeSupported",1045,116,20,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnDTMFSupported",1047,4,36,12,108,#TRUE#,0,"DTMF Supported?"
+"Sub object1047()
+    Dim DTMFSupported as Integer
+    
+    DTMFSupported = NSBH.AudioDTMFSupported()
+    
+    txtDTMFSupported.text = Str(DTMFSupported)
+
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtDTMFSupported",1048,116,36,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnPlayWaveSupported",1050,4,52,12,108,#TRUE#,0,"Play Wave Supported?"
+"Sub object1050()
+    Dim PlayWaveSupported as Integer
+    
+    PlayWaveSupported = NSBH.AudioPlayWaveSupported()
+    
+    txtPlayWaveSupported.text = Str(PlayWaveSupported)
+
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtPlayWaveSupported",1051,116,52,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnRecordWaveSupported",1053,4,68,12,108,#TRUE#,0,"Record Wave Supported?"
+"Sub object1053()
+    Dim RecordWaveSupported as Integer
+    
+    RecordWaveSupported = NSBH.AudioRecordWaveSupported()
+    
+    txtRecordWaveSupported.text = Str(RecordWaveSupported)
+
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtRecordWaveSupported",1054,116,68,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetMasterVolume",1056,4,84,12,88,#TRUE#,0,"Get Master Volume"
+"Sub object1056()
+    Dim MasterVolume as Integer
+    
+    MasterVolume = NSBH.AudioGetMasterVolume()
+    
+    txtMasterVolume.text = Str(MasterVolume)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetMasterVolume",1057,4,100,12,88,#TRUE#,0,"Set Master Volume"
+"Sub object1057()
+    Dim MasterVolume as Integer
+    
+    MasterVolume = Val(txtMasterVolume.text)
+    
+    NSBH.AudioSetMasterVolume MasterVolume
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMasterVolume",1058,100,92,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetMute",1060,4,116,12,52,#TRUE#,0,"Get Mute"
+"Sub object1060()
+    Dim Mute as Integer
+    
+    Mute = NSBH.AudioGetMute()
+    
+    txtMute.text = Str(Mute)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtMute",1061,64,124,12,12,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetMute",1063,4,132,12,52,#TRUE#,0,"Set Mute"
+"Sub object1063()
+    Dim Mute as Integer
+    
+    Mute = Val(txtMute.text)
+    
+    NSBH.AudioSetMute Mute
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVolumeDlg",1064,124,92,12,32,#TRUE#,0,"Dialog"
+"Sub object1064()
+    NSBH.AudioVolumeDlg ~Crank it up?~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAudio1Done",1073,112,140,12,36,#TRUE#,0,"Done"
+"Sub object1073()
+    NextForm ~frmMenu~
+End Sub"
+"vew"
+3,1032,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBHandera-Test : Silk"
+"frmSilk"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilkMinimize",1033,88,112,12,68,#TRUE#,0,"Silk Minimize"
+"Sub object1033()
+    NSBH.SilkMinimizeWindow()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilkMaximize",1034,4,112,12,68,#TRUE#,0,"Silk Maximize"
+"Sub object1034()
+    NSBH.SilkMaximizeWindow()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilkDone",1035,56,140,12,40,#TRUE#,0,"Done"
+"Sub object1035()
+    NextForm ~frmMenu~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilkMinimized",1037,4,84,12,68,#TRUE#,0,"Silk Minimzed?"
+"Sub object1037()
+    Dim SilkMinimized as Integer
+    
+    SilkMinimized = NSBH.SilkWindowMinimized()
+    
+    txtSilkMinimized.text = Str(SilkMinimized)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSilkMinimized",1038,92,84,12,20,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilkGetPersistence",1040,4,28,12,92,#TRUE#,0,"Silk Get Persistence"
+"Sub object1040()
+    Dim SilkPersistence as Integer
+    
+    SilkPersistence = NSBH.SilkGetGraffitiPersistence()
+    
+    txtSilkPersistence.text = Str(SilkPersistence)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtSilkPersistence",1041,112,40,12,32,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSilkSetPersistence",1043,4,52,12,92,#TRUE#,0,"Silk Set Persistence"
+"Sub object1043()
+    Dim SilkPersistence as Integer
+    
+    SilkPersistence = Val(txtSilkPersistence.text)
+    
+    NSBH.SilkSetGraffitiPersistence SilkPersistence
+End Sub"
+"vew"
+3,1078,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBHandera-Test : Audio 2"
+"frmAudio2"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnPlayDTMFChar",1081,4,92,12,72,#TRUE#,0,"Play DTMF Char"
+"Sub object1081()
+    Dim ToneLen as Integer
+    
+    ToneLen = Val(txtToneLen.text)
+    
+    NSBH.AudioPlayDTMFChar txtChrStr.text, ToneLen
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnPlayDTMFStr",1082,88,92,12,68,#TRUE#,0,"Play DTMF Str"
+"Sub object1082()
+    Dim ToneLen as Integer
+    Dim ToneGap as Integer
+    
+    ToneLen = Val(txtToneLen.text)
+    ToneGap = Val(txtToneGap.text)
+    
+    NSBH.AudioPlayDTMFStr txtChrStr.text, ToneLen, ToneGap
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1083",1083,20,112,11,17,#TRUE#,0,"Len:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtToneLen",1084,44,112,12,16,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1086",1086,104,112,11,18,#TRUE#,0,"Gap:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtToneGap",1087,128,112,12,16,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1089",1089,4,124,11,34,#TRUE#,0,"Chr/Str:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtChrStr",1090,44,124,12,76,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAudio2Done",1092,60,144,12,36,#TRUE#,0,"Done"
+"Sub object1092()
+    NextForm ~frmMenu~
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","lblWarning",1094,4,20,11,145,#TRUE#,0,"Warning:  While these functions ARE "
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1095",1095,4,32,11,138,#TRUE#,0,"implemented, they may not work"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1096",1096,4,44,11,132,#TRUE#,0,"properly - at least not on POSE.  "
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1097",1097,4,60,11,136,#TRUE#,0,"PlayDTMFStr seems to go into an"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1098",1098,4,72,11,51,#TRUE#,0,"endless loop."
+""
+"vew"
+3,1104,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBHandera-Test : VGA 2"
+"frmVGA2"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1105",1105,56,144,12,32,#TRUE#,0,"Done"
+"Sub object1105()
+    NextForm ~frmMenu~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnFormGetTitleHeight",1106,4,24,12,108,#TRUE#,0,"Form Get Title Height"
+"Sub object1106()
+    Dim FormTitleHeight as Integer
+    
+    FormTitleHeight = NSBH.VgaFrmGetTitleHeight()
+    
+    txtFormTitleHeight.text = Str(FormTitleHeight)
+
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtFormTitleHeight",1107,124,24,12,20,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtStateMode",1109,124,40,12,20,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtStateRotation",1111,124,56,12,20,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtStateOffset",1113,124,72,12,20,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVgaGetScreenState",1115,4,40,12,108,#TRUE#,0,"Get Screen State"
+"Sub object1115()
+    Dim Mode as Integer
+    
+    Mode = NSBH.VgaGetScreenState()
+    
+    txtStateMode.text = Str(Mode)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetStateRotation",1116,4,56,12,108,#TRUE#,0,"Get Rotation"
+"Sub object1116()
+    Dim Rotation as Integer
+    
+    Rotation = NSBH.VgaGetScreenRotation()
+    
+    txtStateRotation.text = Str(Rotation)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnGetStateOffset",1117,4,72,12,108,#TRUE#,0,"Get Offset"
+"Sub object1117()
+    Dim Offset as Integer
+    
+    Offset = NSBH.VgaGetScreenOffset()
+    
+    txtStateOffset.text = Str(Offset)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSetScreenState",1118,4,92,12,92,#TRUE#,0,"Set Screen State"
+"Sub object1118()
+    Dim Mode as Integer
+    Dim Rotation as Integer
+    Dim Offset as Integer
+    Dim Error as Integer
+    
+    Mode = Val(txtStateMode.text)
+    Rotation = Val(txtStateRotation.text)
+    Offset = Val(txtStateOffset.text)
+    
+    Error = NSBH.VgaSetScreenState(Mode, Rotation, Offset)
+   
+    txtStateError.text = Str(Error)
+    Redraw
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1119",1119,100,100,11,23,#TRUE#,0,"Error:"
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtStateError",1120,128,100,12,24,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnSaveScreenState",1122,4,124,12,92,#TRUE#,0,"Save Screen State"
+"Sub object1122()
+    NSBH.VgaSaveScreenState()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnRestoreScreenState",1123,4,108,12,92,#TRUE#,0,"Restore Screen State"
+"Sub object1123()
+    Dim Error as Integer
+    
+    Error = NSBH.VgaRestoreScreenState()
+    
+    txtStateError.text = Str(Error)
+    Redraw
+End Sub"
+"vew"
+3,1125,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBHandera-Test : VGA 3"
+"frmVGA3"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1126",1126,56,140,12,32,#TRUE#,0,"Done"
+"Sub object1126()
+    NextForm ~frmMenu~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnFontSelect",1128,4,20,12,56,#TRUE#,0,"Font Select"
+"Sub object1128()
+    Dim FontType as Integer
+    Dim DefaultFont as Integer
+    Dim FontId as Integer
+    
+    FontType = Val(txtFontType.text)
+    DefaultFont = Val(txtDefaultFont.text)
+    
+    FontId = NSBH.VgaFontSelect(FontType, DefaultFont)
+    
+    txtFontId.text = Str(FontId)
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1129",1129,4,36,11,44,#TRUE#,0,"Font Type:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtFontType",1130,52,36,12,20,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtFontId",1132,104,20,12,20,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1134",1134,76,36,11,53,#TRUE#,0,"Default Font:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtDefaultFont",1135,132,36,12,20,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1137",1137,32,52,11,69,#TRUE#,0,"0 = Palm 1 = VGA"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1138",1138,68,20,11,30,#TRUE#,0,"Font ID:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnIsVGAFont",1139,4,68,12,88,#TRUE#,0,"Is Font a VGA Font?"
+"Sub object1139()
+    Dim Boolean as Integer
+    Dim FontId as Integer
+    
+    FontId = Val(txtFontId.text)
+    
+    Boolean = NSBH.VgaIsVgaFont(FontId)
+    
+    txtIsVGAFont.text = Str(Boolean)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtIsVGAFont",1140,100,68,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnBaseToVGAFont",1142,4,84,12,88,#TRUE#,0,"Base To VGA Font ID"
+"Sub object1142()
+    Dim FontId as Integer
+    Dim VGAFontId as Integer
+    
+    FontId = Val(txtFontId.text)
+    
+    VGAFontId = NSBH.VgaBaseToVgaFont(FontID)
+    
+    txtVgaFontId.text = Str(VGAFontId)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtVGAFontId",1143,100,84,12,16,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnVGAToBaseFont",1145,4,100,12,88,#TRUE#,0,"VGA To Base Font ID"
+"Sub object1145()
+    Dim FontId as Integer
+    Dim BaseFontId as Integer
+    
+    FontId = Val(txtFontId.text)
+    
+    BaseFontId = NSBH.VgaVgaToBaseFont(FontID)
+    
+    txtBaseFontId.text = Str(BaseFontId)
+
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtBaseFontId",1146,100,100,12,16,#TRUE#,0,""
+""
+"vew"
+3,1149,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBHandera-Test : VGA 4"
+"frmVGA4"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1150",1150,60,140,12,32,#TRUE#,0,"Done"
+"Sub object1150()
+    NextForm ~frmMenu~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnScaleToFit",1151,12,24,12,60,#TRUE#,0,"Scale To Fit"
+"Sub object1151()
+    Dim Error as Integer
+    Error = NSBH.VgaSetScreenMode(0, 0)
+    
+    Redraw
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btn1To1",1152,88,24,12,52,#TRUE#,0,"1 To 1"
+"Sub object1152()
+    Dim Error as Integer
+    Error = NSBH.VgaSetScreenMode(1, 0)
+    
+    Redraw
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1153",1153,48,40,12,48,#TRUE#,0,"Size Form"
+"Sub object1153()
+    NSBH.SizeForm()
+    Redraw
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1156",1156,8,56,12,60,#TRUE#,0,"Draw Bitmap"
+"Sub object1156()
+    DrawBitmap 1155, 10, 80
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1157",1157,80,56,12,76,#TRUE#,0,"Draw VGA Bitmap"
+"Sub object1157()
+    Dim Mode as Integer
+    
+    Mode = NSBH.VgaGetScreenMode()
+    
+    If Mode = 0 Then
+        NSBH.VgaWinDrawBitmapExpanded 1155, 110, 105
+    Else
+        NSBH.VgaWinDrawBitmapExpanded 1155, 100, 100
+    End If
+
+End Sub"
+"end"

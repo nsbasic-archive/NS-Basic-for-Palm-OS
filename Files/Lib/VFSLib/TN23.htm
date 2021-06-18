@@ -1,0 +1,1861 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (Win98; I) [Netscape]">
+   <title>Tech Note 22: Using the NSBVFSLib Shared Library</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080">
+&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 WIDTH="478" >
+<tr>
+<td VALIGN=TOP WIDTH="22%"><img SRC="BigIcon.GIF" height=103 width=86></td>
+
+<td VALIGN=TOP WIDTH="78%"><b><font face="Helvetica"><font size=+2>Tech
+Note 22: Using the NSBVFSLib Shared Library</font></font></b>
+<p><b><font face="Helvetica"><font size=+2>Sep 04, 2002</font></font></b>
+<br>&nbsp;
+<br>&nbsp;
+<p><b><font face="Helvetica"><font size=-1>Copyright 2002 NS BASIC Corporation</font></font></b></td>
+</tr>
+</table>
+
+<hr>
+<h2>
+Contents:</h2>
+
+<pre>
+&nbsp;&nbsp;&nbsp; <a href="#intro">Introduction
+
+</a>&nbsp;&nbsp;&nbsp; <a href="#quickRef">Function Index and Quick Reference
+
+</a>&nbsp;&nbsp;&nbsp; <a href="#fullRef">Function Reference
+
+</a>&nbsp;&nbsp;&nbsp; <a href="#error">Error codes</a>
+
+</pre>
+
+<h2>
+<a NAME="intro"></a>Introduction:</h2>
+The NSBVFSLib Shared Library contains functions that provide access to
+the external storage card(s).
+<p>The functions in this library are divided into the following categories:
+<blockquote>Volume, Directory, File, File and Directory, Import/Export</blockquote>
+This document, with its examples, should provide all the information necessary
+to use the functions in the NSBVFSLib. If more information about the underlying
+PalmOS functions is desired, please consult the PalmOS SDK Reference or
+the SDK C header files (*.h). The PalmOS SDK Reference can be downloaded
+from:
+<pre>&nbsp;&nbsp;&nbsp; <a href="http://www.palmos.com/dev/tech/docs/">http://www.palmos.com/dev/tech/docs/</a></pre>
+The PalmOS SDK (Software Development Kit) can be downloaded from:
+<pre>&nbsp;&nbsp;&nbsp; <a href="http://www.palmos.com/dev/tech/tools/">http://www.palmos.com/dev/tech/tools/</a></pre>
+In order to use the NSBVFSLib Shared Library, the library must be loaded
+using the NSBasic LoadLibrary statement. This statement should be located
+in the program's Startup code so that the functions will be available throughout
+the program. The LoadLibrary statement has an optional second parameter
+to allow you to specify an abbreviated reference name for the library's
+functions. The examples in this document use "VFS" for this reference name.
+Example:
+<br>&nbsp;
+<pre>Program's Startup code:
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sub main()
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LoadLibrary "NSBVFSLib", "VFS"
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; End Sub
+
+</pre>
+Also, in order to use the NSBVFSLib Shared Library, the NSBVFSLib.INF file
+must be present in your "nsbasic\lib" directory and the NSBVFSLib.prc file
+must be downloaded to your device.
+<p><a NAME="quickRef"></a>
+<h2>
+Function Index and Quick Reference:</h2>
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#Internal Information">Internal Information</a></h3>
+</td>
+</tr>
+<pre>
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Version">Version</a></td>
+
+<td WIDTH="71%">result = Version()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetLastError">GetLastError</a></td>
+
+<td WIDTH="71%">result = GetLastError()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Init">Init</a></td>
+
+<td WIDTH="71%">result = Init()</td>
+</tr>
+
+<tr>
+<td COLSPAN="3" WIDTH="100%"></td>
+</tr>
+
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#Volume functions">Volume functions</a></h3>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#BeginVolumeEnumerate">BeginVolumeEnumerate</a></td>
+
+<td WIDTH="71%">BeginVolumeEnumerate()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetNextVolume">GetNextVolume</a></td>
+
+<td WIDTH="71%">volume = GetNextVolume()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#SetCurVolume">SetCurVolume</a></td>
+
+<td WIDTH="71%">SetCurVolume(Integer volume)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetVolumeLabel">GetVolumeLabel</a></td>
+
+<td WIDTH="71%">result = GetVolumeLabel()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#SetVolumeLabel">SetVolumeLabel</a></td>
+
+<td WIDTH="71%">SetVolumeLabel(String label)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#IsVolumeReadOnly">IsVolumeReadOnly</a></td>
+
+<td WIDTH="71%">result = IsVolumeReadOnly()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#IsVolumeHidden">IsVolumeHidden</a></td>
+
+<td WIDTH="71%">result = IsVolumeHidden()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#VolumeUsedSize">VolumeUsedSize</a></td>
+
+<td WIDTH="71%">size = VolumeUsedSize()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#VolumeTotalSize">VolumeTotalSize</a></td>
+
+<td WIDTH="71%">size =VolumeTotalSize()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#VolumeFormat">VolumeFormat</a></td>
+
+<td WIDTH="71%">VolumeFormat()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetVolumeMediaType">GetVolumeMediaType</a></td>
+
+<td WIDTH="71%">mediaType = GetVolumeMediaType()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"></td>
+
+<td WIDTH="71%"></td>
+</tr>
+
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#Directory Functions">Directory Functions</a></h3>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#DirCreate">DirCreate</a></td>
+
+<td WIDTH="71%">DirCreate(dirName)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#BeginDirEntryEnumerate">BeginDirEntryEnumerate</a></td>
+
+<td WIDTH="71%">BeginDirEntryEnumerate(dir)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#EndDirEntryEnumerate">EndDirEntryEnumerate</a></td>
+
+<td WIDTH="71%">EndDirEntryEnumerate()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#DirEntryEnumerate">DirEntryEnumerate</a></td>
+
+<td WIDTH="71%">FileOrDirName = DirEntryEnumerate()</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#RegisterDefaultDirectory">RegisterDefaultDirectory</a></td>
+
+<td WIDTH="71%">RegisterDefaultDirectory(fileType,indexMediaType, path)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#UnregisterDefaultDirectory">UnregisterDefaultDirectory</a></td>
+
+<td WIDTH="71%">UnregisterDefaultDirectory(fileType, indexMediaType)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetDefaultDirectory">GetDefaultDirectory</a></td>
+
+<td WIDTH="71%">path = GetDefaultDirectory(fileType)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"></td>
+
+<td WIDTH="71%"></td>
+</tr>
+
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#File Functions">File Functions</a></h3>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#IsEOF">IsEOF</a></td>
+
+<td WIDTH="71%">eof = IsEof(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileCreate">FileCreate</a></td>
+
+<td WIDTH="71%">FileCreate(path)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Read16">Read16</a></td>
+
+<td WIDTH="71%">res = Read16(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Read32">Read32</a></td>
+
+<td WIDTH="71%">res = Read32(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Read64">Read64</a></td>
+
+<td WIDTH="71%">res = Read64(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#ReadString">ReadString</a></td>
+
+<td WIDTH="71%">res = ReadString(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Write16">Write16</a></td>
+
+<td WIDTH="71%">Write16(fileRef, data)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Write32">Write32</a></td>
+
+<td WIDTH="71%">Write32(fileRef,data)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Write64">Write64</a></td>
+
+<td WIDTH="71%">Write64(fileRef, data)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#WriteString">WriteString</a></td>
+
+<td WIDTH="71%">WriteString(fileRef, str)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileTell">FileTell</a></td>
+
+<td WIDTH="71%">pos = FileTell(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileSize">FileSize</a></td>
+
+<td WIDTH="71%">size = FileSize(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileResize">FileResize</a></td>
+
+<td WIDTH="71%">FileResize(fileRef, newSize)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileSeekBegin">FileSeekBegin</a></td>
+
+<td WIDTH="71%">FileSeekBegin(fileRef, offset)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileSeekCurrent">FileSeekCurrent</a></td>
+
+<td WIDTH="71%">FileSeekCurrent(fileRef, offset)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#FileSeekEnd">FileSeekEnd</a></td>
+
+<td WIDTH="71%">FileSeekEnd(fileRef, offset)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"></td>
+
+<td WIDTH="71%"></td>
+</tr>
+
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#File and directory functions">File and directory functions</a></h3>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Delete">Delete</a></td>
+
+<td WIDTH="71%">Delete(path)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Close">Close</a></td>
+
+<td WIDTH="71%">Close(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Rename">Rename</a></td>
+
+<td WIDTH="71%">Rename(pathName, newName)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#SetDateCreated">SetDateCreated</a></td>
+
+<td WIDTH="71%">SetDateCreated(fileRef, date)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#SetDateModified">SetDateModified</a></td>
+
+<td WIDTH="71%">SetDateModified(fileRef, date)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#SetDateAccessed">SetDateAccessed</a></td>
+
+<td WIDTH="71%">SetDateModified(fileRef, date)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetDateCreated">GetDateCreated</a></td>
+
+<td WIDTH="71%">date = GetDateCreated(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetDateModified">GetDateModified</a></td>
+
+<td WIDTH="71%">date = GetDateModified(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetDateAccessed">GetDateAccessed</a></td>
+
+<td WIDTH="71%">date = GetDateAccessed(fileRef)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#SetAttributes">SetAttributes</a></td>
+
+<td WIDTH="71%">SetAttributes(fileRef, attributes)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#ResetAttributes">ResetAttributes</a></td>
+
+<td WIDTH="71%">ResetAttributes(fileRef, attributes)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetAttributes">GetAttributes</a></td>
+
+<td WIDTH="71%">coinside = GetAttributes(fileRef,&nbsp; checkAttributes)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Open">Open</a></td>
+
+<td WIDTH="71%">fileRef = Open(pathName, openMode)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"></td>
+
+<td WIDTH="71%"></td>
+</tr>
+
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#Import/Export">Import/Export</a></h3>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Import">Import</a></td>
+
+<td WIDTH="71%">dbName = Import(pathName)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#Export">Export</a></td>
+
+<td WIDTH="71%">Export(dbName, pathName)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#ImportDialog">ImportDialog</a></td>
+
+<td WIDTH="71%">dbName = ImportDialog(pathName, dialogTitle, actionStr)</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#ExportDialog">ExportDialog</a></td>
+
+<td WIDTH="71%">ExportDialog(dbName, pathName , dialogTitle, actionStr)</td>
+</pre>
+</tr>
+
+
+<tr>
+<td COLSPAN="3" WIDTH="100%">
+<h3>
+<a href="#Update">Card Info</a></h3>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="8%"></td>
+
+<td WIDTH="21%"><a href="#GetDeviceUniqueIDStr">GetDeviceUniqueIDStr</a></td>
+
+<td WIDTH="71%">DeviceUniqueIDStr = GetDeviceUniqueIDStr</td>
+</tr>
+</table>
+
+
+<pre>&nbsp;</pre>
+<a NAME="fullRef"></a>
+<h2>
+NSBVFSLib Function Reference:</h2>
+
+<hr>
+<p><a NAME="Internal Information"></a>
+<h3>Internal Information</h3>
+
+<h4><a NAME="Version"></a>Version</h4>
+<pre>version = VFS.Version()</pre>
+Returns the version number of the NSBVFSLib Shared Library.
+<pre></pre>
+<i>Returns</i> 
+<p>version as Integer
+<p><i>Example </i>
+<pre>
+Dim version as Integer&nbsp
+version = VFS.Version()
+</pre>
+
+<h4><a NAME="GetLastError"></a>GetLastError</h4>
+<pre>error = VFS.GetLastError()</pre>
+Returns an error of the last fullfilled lib function.
+<pre></pre>
+<i>Returns</i> 
+<p>error as Integer.
+<p><i>Example </i>
+<pre>
+Dim err as Integer&nbsp
+err = VFS.GetLastError()
+</pre>
+
+<h4><a NAME="Init"></a>Init</h4>
+<pre>result = VFS.Init()</pre>
+returns 0 if VFS and EXPANSION managers are present and an error otherwise
+If 0 does not returned any function must not be called.
+<pre></pre>
+<i>Returns</i> 
+<p>result as Integer.
+<p><i>Example </i>
+<pre>
+Dim err as Integer&nbsp
+err = VFS.Init()
+</pre>
+
+<h3><a NAME="Volume functions"></a>Volume functions</h3>
+
+<h4><a NAME="BeginVolumeEnumerate"></a>BeginVolumeEnumerate</h4>
+<pre>VFS.BeginVolumeEnumerate()</pre>
+Initialize the lib before the enumeration of volumes.
+<pre></pre>
+<p><i>Example</i>
+<pre>
+VFS.BeginVolumeEnumerate()
+</pre>
+
+<h4><a NAME="GetNextVolume"></a>GetNextVolume</h4>
+<pre>volume = VFS.GetNextVolume()</pre>
+Returns next volume number. Returns correct volume ONLY if GetLastError returns 0.
+<pre></pre>
+<i>Returns</i> 
+<p>volume as Integer.
+<p><i>Example</i>
+<pre>
+<br>Global volRef(4) as Integer
+<br>Global numVol as Integer
+<br>Dim err as Integer
+<br>Dim i as Integer
+<br>list.clear
+<br>VFS.BeginVolumeEnumerate()
+<br>numVol = 0
+<br>Do
+<br>i = VFS.GetNextVolume()
+<br>err = VFS.GetLastError()
+<br>If err = 0 Then
+<br>&nbsp;&nbsp;&nbsp; numVol = numVol + 1
+<br>&nbsp;&nbsp;&nbsp; volRef(numVol) = i
+<br>Else
+<br>&nbsp;&nbsp;&nbsp; Exit Do
+<br>EndIf
+<br>Loop
+</pre>
+
+<h4><a NAME="SetCurVolume"></a>SetCurVolume</h4>
+<pre>VFS.SetCurVolume(volume)</pre>
+Makes active chosen volume.
+<pre></pre>
+<i>Parameter</i> <p> volume as Integer.
+<p><i>Example&nbsp; </i>
+<pre>
+VFS.SetCurVolume(volRef(0))
+</pre>
+
+<h4><a NAME="GetVolumeLabel"></a>GetVolumeLabel</h4>
+<pre>label = VFS.GetVolumeLabel()</pre>
+Returns label of the active volume
+<pre></pre>
+<i>Returns</i> 
+<p>label as String.
+<p><i>Example&nbsp; </i>
+<pre>
+Dim label as String&nbsp
+label = VFS.GetVolumeLabel()
+</pre>
+
+<h4><a NAME="SetVolumeLabel"></a>SetVolumeLabel</h4>
+<pre>VFS.SetVolumeLabel(label)</pre>
+Sets label to an active volume
+<pre></pre>
+<i>Parameter</i> <p>label as string.
+<p><i>Example </i>
+<pre>
+Dim label as String&nbsp
+label = "my volume label"&nbsp
+VFS.SetVolumeLabel(label)
+</pre>
+
+<h4><a NAME="IsVolumeReadOnly"></a>IsVolumeReadOnly</h4>
+<pre>result = VFS.IsVolumeReadOnly()</pre>
+Returns 1 if the active volume is read only.
+<pre></pre>
+<i>Returns</i> 
+<p>result as Integer.
+<p><i>Example</i>
+<pre>
+Dim volumeReadOnly as Integer
+Dim VROStr as String
+volumeReadOnly = VFS.IsVolumeReadOnly()
+VROStr = "Read/Write"
+if volumeReadOnly = 1 then VROStr = "Read"
+</pre>
+
+<h4><a NAME="IsVolumeHidden"></a>IsVolumeHidden</h4>
+<pre>result = VFS.IsVolumeHidden()</pre>
+Returns 1 if the active volume is hidden.
+<pre></pre>
+<i>Returns</i> 
+<p>result as Integer.
+<p><i>Example</i>
+<pre>
+Dim volumeHidden as Integer
+Dim HStr as String
+volumeHidden = VFS.IsVolumeHidden()
+HStr = "Visible"
+if volumeHidden = 1 then HStr = "Hidden"
+</pre>
+
+<h4><a NAME="VolumeUsedSize"></a>VolumeUsedSize</h4>
+<pre>size = VFS.VolumeUsedSize()</pre>
+Returns number of used bytes of the active volume.
+<pre></pre>
+<i>Returns</i> 
+<p>size as Integer.
+<p><i>Example</i>
+<pre>
+Dim volUsedSize as Integer&nbsp
+volUsedSize =VFS.VolumeUsedSize()
+</pre>
+
+<h4><a NAME="VolumeTotalSize"></a>VolumeTotalSize</h4>
+<pre>size = VFS.VolumeTotalSize()</pre>
+Returns number of bytes of the active volume.
+<pre></pre>
+<i>Returns</i> 
+<p>size as Integer.
+<p><i>Example</i>
+<pre>
+Dim volTotalSize as Integer&nbsp; 
+volTotalSize= VFS.VolumeTotalSize()
+</pre>
+
+<h4><a NAME="VolumeFormat"></a>VolumeFormat</h4>
+<pre>VFS.VolumeFormat()</pre>
+Formats the active volume.
+<pre></pre>
+<i>Example</i>
+<pre>
+VFS.VolumeFormat()
+</pre>
+
+<h4><a NAME="GetVolumeMediaType"></a>GetVolumeMediaType</h4>
+<pre>mediaType = VFS.GetVolumeMediaType()</pre>
+Returns media type of the active volume.
+<pre></pre>
+<i>Returns</i> 
+<p>mediaType as Integer.
+<br>&nbsp;
+<table BORDER WIDTH="48%" >
+<tr>
+<td COLSPAN="2" WIDTH="100%">
+<center><b>Possible MEDIATYPEs</b></center>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">0</td>
+
+<td WIDTH="93%">Matches all media types when looking up a default directory</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">1</td>
+
+<td WIDTH="93%">Memory stick</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">2</td>
+
+<td WIDTH="93%">Compact Flash</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">3</td>
+
+<td WIDTH="93%">Secure Digital</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">4</td>
+
+<td WIDTH="93%">MultiMedia Card</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">5</td>
+
+<td WIDTH="93%">SmartMedia</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">6</td>
+
+<td WIDTH="93%">A RAM disk based media</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">7</td>
+
+<td WIDTH="93%">Host file system emulated by the Palm OS&reg; Emulator</td>
+</tr>
+
+<tr>
+<td WIDTH="7%">8</td>
+
+<td WIDTH="93%">Host file system emulated by the Mac Simulator&nbsp;</td>
+</tr>
+</table>
+
+<p><i>Example</i>
+<pre>
+<br>Dim t(9) as String
+<br>Dim err as Integer
+<br>Dim m as Integer
+<br>t(1) = "Wild"
+<br>t(2) = "Memory stick"
+<br>t(3) = "Compact Flash"
+<br>t(4) = "Secure Digital"
+<br>t(5) = "MultiMedia Card"
+<br>t(6) = "SmartMedia"
+<br>t(7) = "A RAM disk based media"
+<br>t(8) = "HFS POSE"
+<br>t(9) = "HFS Mac Simulator"
+<br>m = VFS.GetVolumeMediaType()
+<br>fld.text = t(m+1)
+</pre>
+
+<h3><a NAME="Directory Functions"></a>Directory Functions</h3>
+
+<h4><a NAME="DirCreate"></a>DirCreate</h4>
+<pre>VFS.DirCreate(dirName)</pre>
+Creates the directory with dirName&nbsp; at the active volume.
+<pre></pre>
+<i>Parameter</i> <p>dirName as string
+<p><i>Example</i>
+<pre>
+Dim path as Strin&nbsp
+path = "/palm/My directory/"&nbsp;
+VFS.DirCreate(path)
+</pre>
+
+<h4><a NAME="BeginDirEntryEnumerate"></a>BeginDirEntryEnumerate</h4>
+<pre>VFS.BeginDirEntryEnumerate(directory)</pre>
+Initialize the lib before the enumeration of a directory.
+<pre></pre>
+<i>Parameter</i> <p>directory as String.
+<p><i>Example</i>
+<pre>
+Dim path as String&nbsp
+path = "/palm/My directory/"&nbsp
+VFS.BeginDirEntryEnumerate(path)
+</pre>
+
+<h4><a NAME="EndDirEntryEnumerate"></a>EndDirEntryEnumerate</h4>
+<pre>VFS.EndDirEntryEnumerate()</pre>
+Must be called after enumeration for a normal flow of the program.
+<pre></pre>
+<i>Example&</i>
+<pre>
+VFS.EndDirEntryEnumerate()
+</pre>
+
+<h4><a NAME="DirEntryEnumerate"></a>DirEntryEnumerate</h4>
+<pre>FileOrDirName = VFS.DirEntryEnumerate()</pre>
+Enumerates the directory.
+Returns correct FileOrDirName ONLY if GetLastError returns 0.
+<pre></pre>
+<i>Returns</i> 
+<p>FileOrDirName as String.
+<p><i>Example</i>
+<pre>
+Dim dir as String
+Dim err as Integer
+Dim name as String
+dir = "/palm/My directory/"
+VFS.BeginDirEntryEnumerate(dir)
+err = VFS.GetLastError
+If err>0 Then GoTo ex
+Do
+name = VFS.DirEntryEnumerate()
+err = VFS.GetLastError()&nbsp;&nbsp;&nbsp; '10509 end of loop
+If err > 0 Then Exit Do
+lst.add name
+Loop
+ex:
+VFS.EndDirEntryEnumerate
+</pre>
+
+<h4><a NAME="RegisterDefaultDirectory"></a>RegisterDefaultDirectory</h4>
+<pre>VFS.RegisterDefaultDirectory(fileType, indexMediaType, path)</pre>
+Registers a specific directory as the default location for files of a
+given type on a particular kind of external storage card. This
+function is generally called by a slot driver for files and media types
+that are supported by that slot driver.
+The file type may either be a MIME media type/subtype pair, such as
+"image/jpeg", “text/plain”, or “audio/basic”;
+or a file extension, such as “.jpeg.”.
+<pre></pre>
+<i>Parameters</i> <p>fileType as String, IndexMediaType as Integer, path as String.
+<p>indexMediaType see GetVolumeMediaType.
+<p><i>Example</i>
+<pre>
+Dim fileType as String
+Dim indexMediaType as Integer
+Dim path as String
+fileType = ".txt"
+indexMediaType = 3 'Secure Digital
+path = "/text/"
+VFS.RegisterDefaultDirectory(fileType, indexMediaType, path)
+</pre>
+
+<h4><a NAME="UnregisterDefaultDirectory"></a>UnregisterDefaultDirectory</h4>
+<pre>VFS.UnregisterDefaultDirectory(string fileType, integer indexMediaType)</pre>
+Sever the association between a particular file type and a default
+directory for a given type of card media.
+<pre></pre>
+<i>Parameters</i> <p>fileType&nbsp; as String, indexMediaType as Integer.
+<p><i>Example</i>
+<pre>
+Dim fileType as String
+Dim indexMediaType as Integer
+fileType = ".txt"
+indexMediaType = 3 'Secure Digital
+VFS.UnregisterDefaultDirectory(fileType, indexMediaType)
+</pre>
+
+<h4><a NAME="GetDefaultDirectory"></a>GetDefaultDirectory</h4>
+<pre>path = VFS.GetDefaultDirectory(fileType)</pre>
+Determine the default location on the given volume for files of
+a particular type.
+<pre></pre>
+<i>Parameter</i> <p>fileType as String.
+<p><i>Returns</i> 
+<p>path as String
+<p><i>Example</i>
+<pre>
+Dim fileType as String
+Dim path as String
+fileType = ".txt"
+path = VFS.GetDefaultDirectory(fileType)
+</pre>
+
+<h3><a NAME="File Functions"></a>File Functions</h3>
+
+<h4><a NAME="IsEOF"></a>IsEOF</h4>
+<pre>eof = VFS.IsEof(fileRef)</pre>
+Returns 1 if the EOF of the opend file is reached and 0 otherwise.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>eof as Integer.
+<p><i>Example</i>
+<pre>
+Dim sh as Short
+Dim eof as Integer
+Dim fileRef as Integer
+...' open file
+Do
+sh = VFS.Read16(fileRef)
+eof = VFS.IsEof(fileRef)
+If eof = 1 Then Exit Do
+Loop
+...' close file
+</pre>
+
+<h4><a NAME="FileCreate"></a>FileCreate</h4>
+<pre>VFS.FileCreate(path)</pre>
+Creates file. The full PATH is needed.
+<pre></pre>
+<i>Parameter</i> <p>path as String.
+<p><i>Example</i>
+<pre>
+Dim pathName as String&nbsp
+pathName = "/palm/My directory/Sample.txt"&nbsp
+VFS.FileCreate(pathName)
+</pre>
+
+<h4><a NAME="Read16"></a>Read16</h4>
+<pre>res = VFS.Read16(fileRef)</pre>
+Reads a short from the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>res as Short.
+<p><i>Example</i>
+<pre>
+Dim data16 as Short&nbsp
+data16 = VFS.Read16(fileRef)
+</pre>
+
+<h4><a NAME="Read32"></a>Read32</h4>
+<pre>res = VFS.Read32(fileRef)</pre>
+Reads a single from the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>res as Integer.
+<p><i>Example&nbsp; </i>
+<pre>
+Dim data32 as Integer&nbsp
+data32 = VFS.Read32(fileRef)
+</pre>
+
+<h4><a NAME="Read64"></a>Read64</h4>
+<pre>res = VFS.Read64(fileRef)</pre>
+Reads a double from the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>res as double.
+<p><i>Example&nbsp; </i>
+<pre>
+Dim data64 as Double&nbsp
+data64 = VFS.Read64(fileRef)
+</pre>
+
+<h4><a NAME="ReadString"></a>ReadString</h4>
+<pre>res = VFS.ReadString(fileRef)</pre>
+Reads a string from the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>res as String.
+<p><i>Example</i>
+<pre>
+Dim dataStr as String&nbsp
+dataStr = VFS.ReadString(fileRef)
+</pre>
+
+<h4><a NAME="Write16"></a>Write16</h4>
+VFS.Write16(fileRef, data)
+Writes a short to the file specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, data as Short.
+<p><i>Example</i>
+<pre>
+Dim data16 as Short&nbsp
+VFS.Write16(fileRef, data16)
+</pre>
+
+<h4><a NAME="Write32"></a>Write32</h4>
+<pre>VFS.Write32(fileRef, data)</pre>
+Writes a single to the file specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, data as Integer.
+<p><i>Example</i>
+<pre>
+Dim data32 as Integer&nbsp
+VFS.Write32(fileRef, data32)
+</pre>
+
+<h4><a NAME="Write64"></a>Write64</h4>
+<pre>VFS.Write64(fileRef, data)</pre>
+Writes a double to the file specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, data as Double.
+<p><i>Example</i>
+<pre>
+Dim data64 as Double&nbsp
+VFS.Write64(fileRef, data64)
+</pre>
+
+<h4><a NAME="WriteString"></a>WriteString</h4>
+<pre>VFS.WriteString(Integer fileRef, string str)</pre>
+Writes a string to the file specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, str as String.
+<p><i>Example</i>
+<pre>
+Dim dataStr as String&nbsp
+VFS.WriteString(fileRef, dataStr)
+</pre>
+
+<h4><a NAME="FileTell"></a>FileTell</h4>
+<pre>pos = VFS.FileTell(fileRef)</pre>
+Returns position in the file specified by fileRef.
+<pre></pre>
+<i>Parameter </i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>pos as Integer.
+<p><i>Example</i>
+<pre>
+Dim pos as Integer&nbsp
+pos = VFS.FileTell(fileRef)
+</pre>
+
+<h4><a NAME="FileSize"></a>FileSize</h4>
+<pre>size = VFS.FileSize(fileRef)</pre>
+Returns size of the file specified by fileRef.
+<pre></pre>
+<i>Parameter </i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>size as Integer.
+<p><i>Example</i>
+<pre>
+Dim size as Integer&nbsp
+size = VFS.FileSize(fileRef)
+</pre>
+
+<h4><a NAME="FileResize"></a>FileResize</h4>
+<pre>VFS.FileResize(fileRef, newSize)</pre>
+Change (decrease) size of the file specified by fileRef.
+newSize is the new file size.
+<pre></pre>
+<i>Parameters </i> <p>fileRef as Integer, newSize as Integer.
+<p><i>Example</i>
+<pre>
+Dim newSize as Integer 
+VFS.FileResize(fileRef, newSize)
+</pre>
+
+<h4><a NAME="FileSeekBegin"></a>FileSeekBegin</h4>
+<pre>VFS.FileSeekBegin(fileRef, offset)</pre>
+Positions offset bytes from the beginning of&nbsp; the file specified by
+fileRef.
+<pre></pre>
+<i>Parameters </i> <p>fileRef as Integer, offset as Integer.
+<p><i>Example</i>
+<pre>
+Dim offset as Integer&nbsp
+offset = 10&nbsp
+VFS.FileSeekBegin(fileRef, offset)
+</pre>
+
+<h4><a NAME="FileSeekCurrent"></a>FileSeekCurrent</h4>
+<pre>VFS.FileSeekCurrent(fileRef, offset)</pre>
+Shifts offset bytes from the current position in the file specified
+by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, offset as Integer.
+<p><i>Example</i>
+<pre>
+Dim offset as Integer&nbsp
+offset = 10&nbsp
+VFS.FileSeekCurrent(fileRef, offset)
+</pre>
+
+<h4><a NAME="FileSeekEnd"></a>FileSeekEnd</h4>
+<pre>VFS.FileSeekEnd(fileRef, offset)</pre>
+Positions offset bytes backward from the end of the file specified by fileRef.
+<pre></pre>
+<i>Parameters </i> <p>fileRef as Integer, offset as Integer.
+<p><i>Example</i>
+<pre>
+Dim offset as Integer&nbsp
+offset = 10&nbsp
+VFS.FileSeekEnd(fileRef, offset)
+</pre>
+
+<h3><a NAME="File and directory functions"></a>File and directory functions</h3>
+
+<h4><a NAME="Delete"></a>Delete</h4>
+<pre>VFS.Delete(path)</pre>
+Deletes closed file or directory specified by full path path.
+<pre></pre>
+<i>Parameter</i> <p>path as String.
+<p><i>Example</i>
+<pre>
+Dim path as String&nbsp
+path = "/palm/My directory/Sample.dat"&nbsp
+VFS.Delete(path)
+</pre>
+
+<h4><a NAME="Close"></a>Close</h4>
+<pre>VFS.Close(fileRef)</pre>
+Closes file or directory specified by fileRef.
+<pre></pre>
+<i>Parameter </i> <p>fileRef as Integer.
+<p><i>Example</i>
+<pre>
+VFS.Close(fileRef)
+</pre>
+
+<h4><a NAME="Rename"></a>Rename</h4>
+<pre>VFS.Rename(pathName, newName)</pre>
+Renames closed file or directory. It works ONLY within same directory.
+pathName is the full path, newName is the short one.
+<pre></pre>
+<i>Parameters</i> <p>pathName as String, newName as String.
+<p><i>Example</i>
+<pre>
+Dim pathName as String
+Dim newName as String
+pathName = "/palm/My directory/Sample.dat"
+newName = "Test.dat"
+VFS.Rename(pathName, newName)
+</pre>
+
+<h4><a NAME="SetDateCreated"></a>SetDateCreated</h4>
+<pre>VFS.SetDateCreated(fileRef,date)</pre>
+Sets the creation date of the file specified by fileRef.
+<br>Note:&nbsp; this function is not supported by all file systems.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, date as Integer.
+<p><i>Example</i>
+<pre>
+Dim dateCreated as Integer
+dateCreated = 123456789&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' seconds
+VFS.SetDateCreated(fileRef,dateCreated)
+</pre>
+
+<h4><a NAME="SetDateModified"></a>SetDateModified</h4>
+<pre>VFS.SetDateModified(fileRef, date)</pre>
+Sets the modified date of the file specified by fileRef.
+<br>Note:&nbsp; this function is not supported by all file systems.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, date as Integer.
+<p><i>Example</i>
+<pre>
+Dim dateModified as Integer
+dateModified = 123456789&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' seconds
+VFS.SetDateModified(fileRef,dateModified)
+</pre>
+
+<h4><a NAME="SetDateAccessed"></a>SetDateAccessed</h4>
+<pre>VFS.SetDateAccessed(fileRef,date)</pre>
+Sets the last access date of the file specified by fileRef
+<br>Note:&nbsp; this function is not supported by all file systems.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, date as Integer.
+<p><i>Example</i>
+<pre>
+Dim dateAccessed as Integer
+dateAccessed = 123456789&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' seconds
+VFS.SetDateAccessed(fileRef,dateAccessed)
+</pre>
+
+<h4><a NAME="SetDateModified"></a><a NAME="GetDateCreated"></a>GetDateCreated</h4>
+<pre>date = VFS.GetDateCreated(fileRef)</pre>
+Returns the creation date of the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>date as Integer.
+<p><i>Example</i>
+<pre>
+Dim dateCreated as Integer&nbsp
+dateCreated = VFS.GetDateCreated(fileRef)
+</pre>
+
+<h4><a NAME="GetDateModified"></a>GetDateModified</h4>
+<pre>date = VFS.GetDateModified(fileRef)</pre>
+Returns the modified date of the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>date as Integer.
+<p><i>Example</i>
+<pre>
+Dim dateModified as Integer&nbsp
+dateModified = VFS.GetDateModified(fileRef)
+</pre>
+
+<h4><a NAME="GetDateAccessed"></a>GetDateAccessed</h4>
+<pre>date = VFS.GetDateAccessed(fileRef)</pre>
+Returns the last access date of the file specified by fileRef.
+<pre></pre>
+<i>Parameter</i> <p>fileRef as Integer.
+<i>Returns</i> 
+<p>date as Integer.
+<p><i>Example</i>
+<pre>
+Dim dateAccessed as Integer&nbsp
+dateAccessed = VFS.GetDateAccessed(fileRef)
+</pre>
+
+<h4><a NAME="SetAttributes"></a>SetAttributes</h4>
+<pre>VFS.SetAttributes(fileRef, attributes)</pre>
+Sets attributes of the file specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, attributes as Integer.
+<br>&nbsp;
+<table BORDER WIDTH="32%" >
+<tr>
+<td COLSPAN="2" WIDTH="100%">
+<center><b>List of attributes</b></center>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">1</td>
+
+<td WIDTH="87%">Read-only file or directory</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">2</td>
+
+<td WIDTH="87%">Hidden file or directory</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">4</td>
+
+<td WIDTH="87%">System file or directory</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">8</td>
+
+<td WIDTH="87%">Volume label</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">16</td>
+
+<td WIDTH="87%">Directory</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">32</td>
+
+<td WIDTH="87%">Archived file or directory</td>
+</tr>
+
+<tr>
+<td WIDTH="13%">64</td>
+
+<td WIDTH="87%">Link to another file or directory</td>
+</tr>
+</table>
+
+<p>NOTE: SetAttributes&nbsp; subroutine must not be used to change
+<br>Volume label(8) and Directory(16) attributes
+<p><i>Example</i>
+<pre>
+VFS.SetAttributes(fileRef,2)' 2 - hidden
+</pre>
+
+
+<h4><a NAME="ResetAttributes"></a>ResetAttributes</h4>
+<pre>VFS.ResetAttributes(fileRef, attributes)</pre>
+Resets attributes of the file specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, attributes as Integer.
+<p>NOTE: ResetAttributes&nbsp; subroutine must not be used to change
+<br>Volume label(8) and Directory(16) attributes
+<p><i>Example</i>
+<pre>
+VFS.ResetAttributes(fileRef,2)' 2 - hidden
+</pre>
+
+<h4><a NAME="GetAttributes"></a>GetAttributes</h4>
+<pre>coinside = VFS.GetAttributes(fileRef, checkAttributes)</pre>
+Returns attributes of the file or directory specified by fileRef.
+<pre></pre>
+<i>Parameters</i> <p>fileRef as Integer, checkAttributes as Integer.
+<i>Returns</i> 
+<p>coinside as Integer.
+<p><i>Example</i>
+<pre>
+Dim coinside as Integer&nbsp
+coinside = VFS.GetAttributes(fileRef, 2)' is it hidden?
+</pre>
+
+<h4><a NAME="Open"></a>Open</h4>
+
+<pre>fileRef = VFS.Open(pathName, openMode)</pre>
+Opens file or directory specified by full path pathName.
+<pre></pre>
+<i>Parameters</i> <p>pathName as String, openMode as Integer.
+<i>Returns</i> 
+<p>fileRef as Integer.
+<br>&nbsp;
+<table BORDER WIDTH="49%" >
+<tr>
+<td COLSPAN="2" WIDTH="100%">
+<center><b>OPENMODE constants</b></center>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="20%">2</td>
+
+<td WIDTH="80%">Open for read access</td>
+</tr>
+
+<tr>
+<td WIDTH="20%">3</td>
+
+<td WIDTH="80%">Open and lock for read access</td>
+</tr>
+
+<tr>
+<td WIDTH="20%">7</td>
+
+<td WIDTH="80%">Open and lock for read/write access</td>
+</tr>
+
+<tr>
+<td WIDTH="20%">15</td>
+
+<td WIDTH="80%">Open and lock for read/write access; create if file not
+exists</td>
+</tr>
+</table>
+
+<p><i>Example</i>
+<pre>
+Dim pathName as String
+Dim fileRef as Integer
+pathName ="/palm/My directory/Sample.dat"
+fileRef = VFS.Open(pathName,7)
+</pre>
+
+<h3>Import/Export</h3>
+
+<h4><a NAME="Import"></a>Import</h4>
+<pre>dbName = VFS.Import(pathName)</pre>
+Creates a database from a .pdb or .prc file on an external storage card.
+<pre></pre>
+<i>Parameter</i> <p>pathName as String is the full path for .pdb or .prc.
+<i>Returns</i> 
+<p>dbName as String.
+<p><i>Example</i>
+<pre>
+Dim pathName as String
+Dim dbName as String
+pathName="/palm/My directory/Puzzle.prc"
+dbName = VFS.Import(pathName)
+</pre>
+
+<h4><a NAME="Export"></a>Export</h4>
+<pre>VFS.Export(dbName, pathName)</pre>
+Saves the specified database to a .pdb or
+<br>.prc file on an external storage card.
+<pre></pre>
+<i>Parameters</i> <p>dbName as String is the database name, pathName as
+String is the full path for .pdb or .prc.
+<p><i>Example</i>
+<pre>
+Dim pathName as String
+Dim dbName as String
+dbName="15-Puzzle"
+pathName="/palm/My directory/Puzzle.prc"
+VFS.Export(dbName, pathName)
+</pre>
+
+<h4><a NAME="ImportDialog"></a>ImportDialog</h4>
+<pre>dbName = VFS.ImportDialog(pathName, dialogTitle, actionStr)</pre>
+Creates a database from a .pdb or .prc file on an external storage card.
+<br>This function differs from Import in that it allows you to cancel the
+import operation.
+<pre></pre>
+<i>Parameters</i> <p>pathName as String is the full path for .pdb or .prc.,
+dialogTitle as String is the title of dialog, actionStr as String is the
+dialog message.
+<i>Returns</i> 
+<p>dbName as String.
+<p><i>Example</i>
+<pre>
+Dim pathName as String
+Dim dbName as String
+Dim dialogTitle as String
+Dim actionStr as String
+pathName="/palm/My directory/Puzzle.prc"
+dialogTitle="Import file"
+actionStr="Importing Puzzle.prc"
+dbName = VFS.ImportDialog(pathName, dialogTitle, actionStr)
+</pre>
+
+<h4><a NAME="ExportDialog"></a>ExportDialog</h4>
+<pre>VFS.ExportDialog(dbName, pathName , dialogTitle, actionStr)</pre>
+Saves the specified database to a .pdb or .prc file on an external storage card.
+<br>This function differs from Export in that it allows you to cancel the
+export operation.
+<pre></pre>
+<i>Parameters</i> <p>dbName as String is the database name, pathName as
+String is the full path for .pdb or .prc, dialogTitle as String is the
+title of dialog, actionStr as String is the dialog message.
+<p><i>Example</i>
+<pre>
+Dim pathName as String
+Dim dbName as String
+Dim dialogTitle as String
+Dim actionStr as String
+dbName="15-Puzzle"
+pathName="/palm/My directory/Puzzle.prc"
+dialogTitle="Export file"
+actionStr="Exporting "
+actionStr= actionStr + dbName
+VFS.ExportDialog(dbName,pathName , dialogTitle, actionStr)
+</pre>
+
+
+<h3><a NAME="update"></a>Card Info</h3>
+
+<h4><a NAME="GetDeviceUniqueIDStr"></a>GetDeviceUniqueIDStr</h4>
+<pre>DeviceUniqueIDStr = VFS.GetDeviceUniqueIDStr</pre>
+Returns unique identifier for the product of the external storage card.
+A serial number for example. This value is set to the empty string if no identifier exist.
+<pre></pre>
+<i>Returns</i> 
+<p>DeviceUniqueIDStr as String.
+<p><i>Example</i>
+<pre>
+Dim GetDeviceUniqueIDStr as String
+GetDeviceUniqueIDStr = VFS.GetDeviceUniqueIDStr
+</pre>
+
+<h3>
+<a NAME="error"></a>Error codes</h3>
+
+<table BORDER WIDTH="100%" >
+<tr>
+<td WIDTH="9%">0</td>
+
+<td WIDTH="12%">errNone</td>
+
+<td WIDTH="79%">No error</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">537</td>
+
+<td WIDTH="12%">dmErrAlreadyExists</td>
+
+<td WIDTH="79%">Another database with the same name already exists in RAM
+store.</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">1282</td>
+
+<td WIDTH="12%">sysErrParamErr</td>
+
+<td WIDTH="79%">Wrong input parameter</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10497</td>
+
+<td WIDTH="12%">expErrUnsupportedOperation</td>
+
+<td WIDTH="79%">unsupported or undefined opcode and/or creator</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10498</td>
+
+<td WIDTH="12%">expErrNotEnoughPower</td>
+
+<td WIDTH="79%">the required power is not available</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10499</td>
+
+<td WIDTH="12%">expErrCardNotPresent</td>
+
+<td WIDTH="79%">no card is present</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10500</td>
+
+<td WIDTH="12%">expErrInvalidSlotRefNum</td>
+
+<td WIDTH="79%">slot reference number is bad</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10501</td>
+
+<td WIDTH="12%">expErrSlotDeallocated</td>
+
+<td WIDTH="79%">slot reference number is within valid range, but has been
+deallocated</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10502</td>
+
+<td WIDTH="12%">expErrCardNoSectorReadWrite</td>
+
+<td WIDTH="79%">the card does not support the SlotDriver block read/write
+API</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10503</td>
+
+<td WIDTH="12%">expErrCardReadOnly</td>
+
+<td WIDTH="79%">the card does support R/W API but the card is read only</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10504</td>
+
+<td WIDTH="12%">expErrCardBadSector</td>
+
+<td WIDTH="79%">the card does support R/W API but the sector is bad</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10505</td>
+
+<td WIDTH="12%">expErrCardProtectedSector</td>
+
+<td WIDTH="79%">The card does support R/W API but the sector is protected</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10506</td>
+
+<td WIDTH="12%">expErrNotOpen</td>
+
+<td WIDTH="79%">slot driver library has not been opened</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10507</td>
+
+<td WIDTH="12%">expErrStillOpen</td>
+
+<td WIDTH="79%">slot driver library is still open - maybe it was opened
+> once</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10508</td>
+
+<td WIDTH="12%">expErrUnimplemented</td>
+
+<td WIDTH="79%">Call is unimplemented</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10509</td>
+
+<td WIDTH="12%">expErrEnumerationEmpty</td>
+
+<td WIDTH="79%">No values remaining to enumerate</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10510</td>
+
+<td WIDTH="12%">expErrIncompatibleAPIVer</td>
+
+<td WIDTH="79%">The API version of this slot driver is not supported by
+this version of ExpansionMgr.</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10753</td>
+
+<td WIDTH="12%">vfsErrBufferOverflow</td>
+
+<td WIDTH="79%">passed in buffer is too small</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10754</td>
+
+<td WIDTH="12%">vfsErrFileGeneric</td>
+
+<td WIDTH="79%">Generic file error.</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10755</td>
+
+<td WIDTH="12%">vfsErrFileBadRef</td>
+
+<td WIDTH="79%">the fileref is invalid (has been closed, or was not obtained
+from VFS.Open() )</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10756</td>
+
+<td WIDTH="12%">vfsErrFileStillOpen</td>
+
+<td WIDTH="79%">returned from VFS.Delete if the file is still open</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10757</td>
+
+<td WIDTH="12%">vfsErrFilePermissionDenied</td>
+
+<td WIDTH="79%">The file is read only</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10758</td>
+
+<td WIDTH="12%">vfsErrFileAlreadyExists</td>
+
+<td WIDTH="79%">a file of this name exists already in this location</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10759</td>
+
+<td WIDTH="12%">vfsErrFileEOF</td>
+
+<td WIDTH="79%">file pointer is at end of file</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10760</td>
+
+<td WIDTH="12%">vfsErrFileNotFound</td>
+
+<td WIDTH="79%">file was not found at the path specified</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10761</td>
+
+<td WIDTH="12%">vfsErrVolumeBadRef</td>
+
+<td WIDTH="79%">the volume refnum is invalid</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10762</td>
+
+<td WIDTH="12%">vfsErrVolumeStillMounted</td>
+
+<td WIDTH="79%">returned if the volume is still mounted</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10763</td>
+
+<td WIDTH="12%">vfsErrNoFileSystem</td>
+
+<td WIDTH="79%">no installed filesystem supports this operation</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10764</td>
+
+<td WIDTH="12%">vfsErrBadData</td>
+
+<td WIDTH="79%">operation could not be completed because of invalid data
+(i.e., import DB from .PRC file)</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10765</td>
+
+<td WIDTH="12%">vfsErrDirNotEmpty</td>
+
+<td WIDTH="79%">can't delete a non-empty directory</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10766</td>
+
+<td WIDTH="12%">vfsErrBadName</td>
+
+<td WIDTH="79%">invalid filename, or path, or volume label or something...</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10767</td>
+
+<td WIDTH="12%">vfsErrVolumeFull</td>
+
+<td WIDTH="79%">not enough space left on volume</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10768</td>
+
+<td WIDTH="12%">vfsErrUnimplemented</td>
+
+<td WIDTH="79%">this call is not implemented</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10769</td>
+
+<td WIDTH="12%">vfsErrNotADirectory</td>
+
+<td WIDTH="79%">This operation requires a directory</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10770</td>
+
+<td WIDTH="12%">vfsErrIsADirectory</td>
+
+<td WIDTH="79%">This operation requires a regular file, not a directory</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10771</td>
+
+<td WIDTH="12%">vfsErrDirectoryNotFound</td>
+
+<td WIDTH="79%">Returned from VFS.FileCreate when the path leading up to
+the new file does not exist</td>
+</tr>
+
+<tr>
+<td WIDTH="9%">10772</td>
+
+<td WIDTH="12%">vfsErrNameShortened</td>
+
+<td WIDTH="79%">A volume name or filename was automatically shortened to
+conform to filesystem spec</td>
+</tr>
+</table>
+
+<br>&nbsp;
+</body>
+</html>

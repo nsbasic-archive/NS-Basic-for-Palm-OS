@@ -1,0 +1,119 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>List </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>List                                                                                                                 Objekt</span></h4>
+
+<p class=ManualBody><img width=134 height=44
+src="./outline_117_files/image003.gif" align=left hspace=12>Ein
+LIST Objekt ist ein Rechteck auf dem Formular in dem mehrere Strings (Elemente)
+dargestellt werden können, jedes Element in einer separaten Zeile. Ein Element
+der Liste kann markiert (highlighted) werden, und wird invertiert dargestellt,
+mit weißen Buchstaben auf schwarzem Hintergrund. Die Rechteckige Bereich ist
+nur geeignet, eine wenige Elemente anzuzeigen. Wenn es mehr Elemente als Raum
+zum Darstellen gibt, erscheint eine Scrollbar auf der rechten Seite des
+Bereiches, um hoch- oder runter zu scrollen. Die <i>Selected</i> Methode wird gesetzt, bevor der Code der Liste ausgeführt
+wird, während der Text danach gesetzt wird.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Listeninhalte können während der Designphase erstellt
+werden, indem die Listbox ausgefüllt wird, die erscheint, wenn die
+Listeneigenschaft angeklickt wird. Die Inhalte der Liste kann auch während der
+Programmausführung mittels der <i>Add</i>
+Methode gesetzt werden. Die beste Stelle um dies zu tun ist normalerweise der
+After Code des Formulars, auf dem das LIST Objekt platziert ist. Verwenden Sie
+NODISPLAY um zu verhindern, dass das Formular neu gezeichnet wird, während Sie
+Elemente hinzufügen. Um kein Element auszuwählen, setzen Sie <i>.Selected</i> auf 0. Die <i>Hide</i> und <i>Show</i> Methoden funktionieren erst ab Palm OS 3.5 korrekt.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>unterstützte
+Eigenschaften</b> (während der Entwicklungsphase setzen)</p>
+
+<p class=ManualBody>Font ID, Visible Items, Visible, List</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>unterstützte
+Methoden </b>(siehe &quot;Methoden&quot;)</p>
+
+<p class=ManualBody><span lang=EN-GB>Left, Top,
+Width, Hide, Show, Redraw, Add, Remove, Clear, Text, Selected, NoItems, ID,
+Index, Type</span></p>
+
+<p class=ManualBody><b><span lang=EN-GB>&nbsp;</span></b></p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim ItemsOnList as Integer</p>
+
+<p class=Code>Dim selectedname as String</p>
+
+<p class=Code>ListCity.clear 'die Liste immer zuerst löschen</p>
+
+<p class=Code>ListCity.add &quot;New York&quot;,NODISPLAY'Formular-Update verzögern</p>
+
+<p class=Code>ListCity.add &quot;Boston&quot;,NODISPLAY   'Formular-Update verzögern</p>
+
+<p class=Code>ListCity.add &quot;New Orleans&quot;        'Formular-Updaten</p>
+
+<p class=Code>ListCity.selected=2 'Boston markieren</p>
+
+<p class=Code>ListCity.remove 3 'New Orlean löschen</p>
+
+<p class=Code>ItemsOnList=ListCity.NoItems 'lese Anzahl der Elemente der Liste</p>
+
+<p class=Code>selectedName= ListCity.text(ListCity.selected)</p>
+
+<p class=Code>ListCity.clear</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

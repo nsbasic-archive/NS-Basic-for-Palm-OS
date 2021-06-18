@@ -1,0 +1,173 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="ROBOTS" CONTENT="NOINDEX, NOARCHIVE">
+<META NAME="GOOGLEBOT" CONTENT="NOINDEX, NOARCHIVE">
+<TITLE>Tutorial 07: &quot;How to do Sockets&quot; with NS Basic/Palm</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+    <TD WIDTH="17%" VALIGN="TOP"><P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tutorial 07: How to do Sockets</h2>
+      <h3>April 08, 2007</h3>
+      <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+      <p><em>Contributed by Marcio Annunciato</em></p>
+    </TD>
+  </TR>
+</TABLE>
+<HR>
+
+<h3>Introduction</h3>
+<p>It's fairly simple to include networking functionality in your NS BASIC/Palm 
+  application. This tutorial will guide you with a simple example, so even an 
+  NS BASIC beginner should have no problem. </p>
+
+<p>&nbsp;</p>
+
+<h2>How is it done?</h2>
+
+<p>Including network support in your application starts as simply as adding a 
+  <a href="TN05.htm">shared library</a> 
+  to your project. <a href="TN18.htm">TcpIpLib</a> 
+  is included in NS BASIC and you add it to your project using a <a href="TN05a.htm">LoadLibrary</a> 
+  call. Note that you must also copy it to your Palm OS emulator and to your Palm 
+  device, just as you would do with the nsbasic's runtime library.</p>
+
+<p><img src="images/TT07.01.gif" width="349" height="304"></p>
+<p>Once you do that, you have some extra methods to play with:</p>
+<ul>
+  <li>fd = <font color="#FF0000">TcpOpen</font>(hostname, port, timeout) </li>
+  <li><font color="#FF0000">TcpClose</font>(fd)</li>
+  <li>data = <font color="#FF0000">TcpRead</font>(fd, count, matchset, timeout) 
+  </li>
+  <li>written = <font color="#FF0000">TcpWrite</font>(fd, data)</li>
+  <li><font color="#FF0000">TcpFlush</font>(fd) </li>
+</ul>
+<p>(For a complete reference on the methods above, make sure you read the <a href="TN18.htm#chap1">chapter 
+  1 of Tech Note 18</a>)</p>
+<p>If you ever worked with TCP or even saving/reading files from the file system 
+  the methods above must mean something for you. If you didn't, don't worry, it's 
+  not difficult to understand. You talk to other computers in a similar way you 
+  deal with files:</p>
+<ul>
+  <li> First of all you have to open it, </li>
+  <li>then you can read or write things to/from it, </li>
+  <li>and finally you would close it.</li>
+</ul>
+<p>Because you are dealing with a remote system and not a local file, you have 
+  a &quot;<font color="#FF0000">timeout</font>&quot; feature. It simply means 
+  that if your application does not hear from the remote machine for a specified 
+  period of time it will give up. </p>
+<p>You must also specify to which service you want to connect in that remote machine, 
+  and that's the concept behind &quot;<font color="#FF0000">port</font>&quot;. 
+  Different ports provides different services, for instance, </p>
+<ul>
+  <li>a webserver usually listens on port 80, </li>
+  <li>your mail server accepts messages for delivery on port 25 (SMTP service), 
+    and </li>
+  <li>your email client connects on the server's port 110 to retrieve your mail 
+    using the POP3 protocol. </li>
+</ul>
+<p>&nbsp;</p>
+<h2>Let's check our Email server!</h2>
+<p>In this project will simply connect to a pop3 server, send username and password, 
+  and display the result to the STAT command (it should tell how many messages 
+  you have). Let's now put a button and a multi-line field on a form, and the 
+  code in the button, as the picture below:</p>
+<p><img src="images/TT07.02.gif" width="498" height="549"></p>
+<p>
+  <textarea name="textfield" cols="80" rows="6" wrap="OFF">    Dim server as String
+    Dim username as String
+    Dim password as String
+    Dim data as String
+    Dim crlf as String
+    Dim handle as Integer
+    Dim bytes as Integer
+
+    ' These are the same settings you would use in your email client
+    server = "mail.xxx.com"
+    username = "xxx&copy; xxx.com"
+    password = "xxx"
+    crlf = chr(13)+chr(10)
+
+    ' Connect to the server
+    handle = TcpIpLib.TcpOpen(server, 110, 10000)
+    If handle < 0 Then
+       MsgBox "Error " + str(-handle) ' Palm error code
+    End If
+
+    ' Read result into data
+    data = TcpIpLib.TcpRead(handle, 256, crlf, 10000)
+    Field1005.text = Field1005.text + chr(10) + data    
+
+    ' Send username and get response
+    bytes = TcpIpLib.TcpWrite(handle, "user " + username + crlf)
+    data = TcpIpLib.TcpRead(handle, 256, crlf, 10000)
+    
+    ' Send password and get response
+    bytes = TcpIpLib.TcpWrite(handle, "pass " + password + crlf)
+    data = TcpIpLib.TcpRead(handle, 256, crlf, 10000)
+    
+    ' get STATUS response
+    bytes = TcpIpLib.TcpWrite(handle, "stat" + crlf)
+    data = TcpIpLib.TcpRead(handle, 256, crlf, 10000)
+    Field1005.text = Field1005.text + chr(10) + data    
+
+    TcpIpLib.TcpClose(handle)</textarea>
+</p>
+<p>Now let's analyze the code, step by step:</p>
+<ul>
+  <li>From line 1 to 7 we are simply defining some variables that we wil work 
+    with</li>
+  <li>From line 10 to 13 we are saying what is our POP3 server, what is our username 
+    and password. </li>
+  <li>On line 16 we open the connection to &quot;server&quot; on port 110 with 
+    a timeout of 10 seconds.</li>
+  <li>Line 22: Read up to 256 characters or until we find a line feed into &quot;data&quot;</li>
+  <li>On line 26 we are sending the user name to the server and waiting for a 
+    response on line 27.</li>
+  <li>The same repeats for the lines 30-31 and 34-35. </li>
+</ul>
+<p>This is what is called a chat-style connection. You send something and wait 
+  for a response. Thats how the POP3 server works: </p>
+<ul>
+  <li>you connect and it greets you</li>
+  <li>you send your username, and it says either &quot;ok&quot; or that something 
+    is wrong</li>
+  <li>you send your password and it will say if you are logged in, or if your 
+    password is not correct. </li>
+</ul>
+<p>You can tell if the reponse is a success or an error on POP3 protocol by looking 
+  at the first character of the response line: a <font color="#00FF33">plus</font> 
+  means it was accepted, a <font color="#FF0000">minus</font> means there was 
+  a problem. </p>
+<p>Of course this is a very simple example to get you started. A real application 
+  would have functions to get lines and to send lines, and also check if the password 
+  was accepted, parse the STAT result lines to display only the number of messages 
+  and not the entire ugly line, and even retrieve the header of each message and 
+  display the sender, subject and date of all the emails, and much more. Make 
+  sure to check the TcpIpDemo project on the samples folder of your NS BASIC installation, 
+  there you will find the functions I am talking about as well as an example to 
+  send email, and to retrieve a web page.</p>
+<p>Here is how it would look like after you compile and run our sample:</p>
+<ul>
+  <li>The first line is the server greeting and </li>
+  <li>The second is the response to the STAT command.</li>
+</ul>
+<p><img src="images/TT07.03.gif" width="369" height="517"></p>
+<p>&nbsp;</p>
+<h2>References:</h2>
+<p></p>
+<ul>
+  <li><a href="TN18.htm">Tech Note 
+    18</a>: Using the TcpIpLib Shared Library</li>
+  <li><a href="http://www.faqs.org/rfcs/rfc1939.html">POP3</a> Protocol</li>
+  <li><a href="http://www.faqs.org/rfcs/rfc2821.html">SMTP</a> Protocol</li>
+  <li><a href="http://www.faqs.org/rfcs/rfc2616.html">HTTP</a> Protocol</li>
+</ul>
+<h2>&nbsp;</h2>

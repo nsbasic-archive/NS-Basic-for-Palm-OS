@@ -1,0 +1,353 @@
+"mdl"
+8
+"ScreenObjectSampler","appl","MKOO",1044,505,0
+"Sub main()
+Global res as Integer
+Global datReg as Date
+Global i as Integer
+Global iscommand as Short
+iscommand=0
+End Sub
+
+Sub about()
+    MsgBox ~A sample of screen/form objects for NSB Newbies from Marlon Koenigsberg 2/8/01~
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000D3"
+""
+"mnu"
+2,"mainmenu"
+1017
+1
+"menu"
+1
+"info","",1018
+1
+"menu"
+1
+"about","A","",1019
+"Sub menu1019_click()
+    Call About
+End Sub"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"           Screen Object Sampler            "
+"Form1"
+""
+0
+"Sub Form1004_after()
+
+'Code for Popup object:
+  Pop1.Clear                     
+  Pop1.Add ~Bush~, NoDisplay            'Populate the list
+  Pop1.Add ~Gore~, NoDisplay
+  Pop1.add ~Buchanan~, NoDisplay
+  Pop1.add ~None of the above~
+
+'Code for List object:
+  Lst1.Clear    
+  Lst1.add ~This is a List~, NoDisplay
+  Lst1.add ~Africa~, NoDisplay
+  Lst1.add ~Asia~, NoDisplay
+  Lst1.add ~Australia~, NoDisplay
+  Lst1.add ~Europe~, NoDisplay
+  Lst1.Add ~North America~, NoDisplay            'Populate the list
+  Lst1.Add ~South America~
+
+'Code for Field:
+  Fld1.Text = ~This is a field~
+
+End Sub"
+"Sub Form1004_events()
+  ' iscommand is a global defined in the project startup code
+  Dim Res as Integer
+  Dim LastKeyPressed as String 
+  Res=getEventType() 
+  If Not Res =nsbKeyOrButton Then Exit Sub 
+  LastKeyPressed=getKey() 
+  If LastKeyPressed=&h5 Then                                  
+     MenuDraw ~MainMenu~
+     SetEventHandled
+  ElseIf LastKeyPressed=&h6 Then
+    If iscommand=0 Then 
+        iscommand=1 ' absorb the menu command to be used in shortcut processing
+    Else
+        iscommand=0 ' if the command stroke is done twice, switch off shortcut - typical of palmOS programs that use it
+    End If
+
+    SetEventHandled
+  ElseIf asc(LastKeyPressed) = 97 Then 
+    If iscommand=1 Then
+        iscommand=0 'switch shortcut handling off
+        Call about
+        SetEventHandled
+    End If
+  End If
+End Sub"
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1",1005,4,16,10,40,#TRUE#,0,"A Button",0,0,0
+"Sub object1005()
+MsgBox ~You tapped the button! Argh!~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1",1006,87,76,12,57,#TRUE#,0,"This is a label",0,0,0
+"Sub object1006()
+  MsgBox ~Tapping a label usually doesn't do anything, but it can!~
+End Sub"
+"cho"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"cho","Cho1",1007,4,34,12,92,#TRUE#,0,"This is a PushButton",0,0,0
+"Sub object1007()
+If Cho1.status = nsbOn
+   Cho1.text = ~You turned me on~
+Else
+   Cho1.text = ~You turned me off~
+End If
+End Sub"
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","Pop1",1008,4,49,12,152,#TRUE#,0,"This is a Popup",0,0,0
+"Sub object1008()
+Fld1.Text = ~This field contains ~ + Pop1.ItemText(Pop1.Selected) ' set field to currently selected item in Popup
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Fld1",1010,4,60,12,152,#TRUE#,0,"",0,0,0
+""
+"lst"
+2
+4
+""
+"obj"
+3
+"lst","Lst1",1012,4,72,48,80,#TRUE#,0,"Lst1",0,0,0
+"Sub object1012()
+MsgBox ~You have selected ~ + Lst1.ItemText(Lst1.Selected)
+End Sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","Chk1",1013,98,34,12,60,#TRUE#,0,"Checkbox",0,0,0
+"Sub object1013()
+If Chk1.status = nsbChecked Then
+   Chk1.text = ~Checked~
+Else
+   Chk1.text = ~Unchecked~
+End If
+End Sub"
+"sel"
+1
+#FALSE#
+"obj"
+3
+"sel","Sel1",1014,66,18,12,62,#TRUE#,0,"Selector",0,0,0
+"Sub object1014()
+datReg = Today()
+res = PopupDate(datReg, ~Enter your registration date~)
+Sel1.text=DateMMDDYY(datReg)
+End Sub"
+"rpt"
+1
+#FALSE#,#TRUE#,#TRUE#
+"obj"
+3
+"rpt","Rpt1015",1015,4,124,10,153,#TRUE#,0,"repeater: a button you tap & hold",0,0,0
+"Sub object1015()
+	slider1042.Hide
+	I = I + 10
+	If i=140 Then
+		i = 10
+		DrawChars ~         ~,130,135
+	End If
+	DrawChars ~      >~,i,135
+	slider1042.show
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","BtnNext",1016,16,150,10,125,#TRUE#,0,"Try Grouped Screen Objects",0,0,0
+"Sub object1016()
+NextScreen ~Form2~
+End Sub"
+"sli"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,0,100,10,0,0,0
+"obj"
+3
+"sli","Slider1042",1042,4,136,12,152,#TRUE#,0,"Slider",0,0,0
+"Sub object1042()
+	fld1.Text=~Slider = ~ + str(slider1042.Value)
+End Sub"
+"scr"
+2
+0,0,1,1
+"obj"
+3
+"scr","Scrollbar1043",1043,148,72,48,8,#TRUE#,0,"",0,0,0
+"Sub object1043()
+	fld1.Text=~Scroller value = ~ + str(scrollbar1043.value)
+End Sub"
+"shf"
+1
+"obj"
+3
+"shf","GSI1044",1044,148,151,8,8,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1022,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"   Group Screen Object Sampler    "
+"Form2"
+""
+0
+""
+"Sub Form1022_events()
+  Dim Res as Integer
+  Dim LastKeyPressed as String 
+  Res=getEventType() 
+  If Not Res =nsbKeyOrButton Then Exit Sub 
+  LastKeyPressed=getKey() 
+  If LastKeyPressed=&h5 Then                                  
+     MenuDraw ~MainMenu~
+     SetEventHandled
+  endif
+End Sub"
+0,0,0,0
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkG1",1024,12,42,10,44,#TRUE#,0,"left",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","lblgroupchk",1026,2,16,11,135,#TRUE#,0,"[These are grouped checkboxes:]",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","LblChkPrompt",1027,2,28,11,148,#TRUE#,0,"Please indicate your political leaning:",0,0,0
+""
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkG2",1028,12,54,10,44,#TRUE#,0,"right",0,0,0
+""
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkG4",1029,74,42,10,73,#TRUE#,0,"backwards",0,0,0
+""
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkG5",1030,74,54,10,77,#TRUE#,0,"forwards",0,0,0
+""
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkG3",1031,12,66,10,44,#TRUE#,0,"center",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","LblGrpPush",1034,2,84,11,138,#TRUE#,0,"[These are grouped pushbuttons:]",0,0,0
+""
+"cho"
+1
+#FALSE#,2,#TRUE#
+"obj"
+3
+"cho","ChoG2",1035,34,120,10,86,#TRUE#,0,"shareware user",0,0,0
+""
+"cho"
+1
+#FALSE#,2,#TRUE#
+"obj"
+3
+"cho","ChoG1",1036,34,110,10,86,#TRUE#,0,"registered user",0,0,0
+""
+"cho"
+1
+#FALSE#,2,#TRUE#
+"obj"
+3
+"cho","ChoG3",1037,34,130,10,86,#TRUE#,0,"thief",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","LblChoPrompt",1038,2,97,11,132,#TRUE#,0,"Please indicate your user status:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","ButResults",1040,26,146,10,110,#TRUE#,0,"Get choices from above",0,0,0
+"Sub object1040()
+Dim mssg as String
+mssg = ~So you are a ~
+If ChkG1.Status = nsbChecked Then mssg = mssg + ChkG1.Text + ~ leaning ~
+If ChkG2.Status = nsbChecked Then mssg = mssg + ChkG2.Text + ~ leaning ~
+If ChkG3.Status = nsbChecked Then mssg = mssg + ChkG3.Text + ~ leaning ~
+If ChkG4.Status = nsbChecked Then mssg = mssg + ChkG4.Text + ~ leaning ~
+If ChkG5.Status = nsbChecked Then mssg = mssg + ChkG5.Text + ~ leaning ~
+
+If ChoG1.Status = nsbChecked Then mssg = mssg + ChoG1.Text
+If ChoG2.Status = nsbChecked Then mssg = mssg + ChoG2.Text
+If ChoG3.Status = nsbChecked Then mssg = mssg + ChoG3.Text
+
+MsgBox mssg
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","ButBack",1041,2,146,10,22,#TRUE#,0,"Back",0,0,0
+"Sub object1041()
+NextScreen ~Form1~
+End Sub"
+"end"

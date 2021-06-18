@@ -1,0 +1,49 @@
+PalmSource, Inc. End User Software Evaluation License Agreement
+
+IMPORTANT-READ CAREFULLY:  This End User Software Evaluation License Agreement (this "Agreement") is a legal agreement between you (either an individual or a single entity)  ("You" or "Licensee") and PalmSource, Inc. ("PalmSource") for the evaluation versions of the accompanying software programs, any associated media, printed materials and online or electronic documentation (collectively, the "Software").  By clicking the button below marked "I Agree", or by installing, copying or otherwise using the Software, You agree to be bound by the terms of this Agreement.  If You do not agree to the terms of this Agreement, do not install, copy or otherwise use the Software. 
+
+1. 	License Grant.  The Software is protected by international copyright laws and international copyright treaties, as well as other intellectual property right laws.  The Software is licensed, not sold.  PalmSource hereby grants Licensee a limited, non-exclusive, non-assignable license to use the Software, in object code form only, solely for the purpose of evaluating and testing the Software for Licensee's own benefit and use. Licensee may reproduce one (1) copy of the Software for each personal computer on which such Software is used.  Otherwise, the Software may not be licensed, sold, assigned or otherwise transferred by Licensee. 
+
+2.	Support Services.  PalmSource is not obligated to provide technical or other support for the Software.  PalmSource shall have no obligation to develop or provide any updates or revisions to the Software.              
+
+3.	Licensee's Obligations.  Any ideas, usability, bug reports and any other feedback with respect to the Software provided by Licensee to PalmSource  ("Supportive Information") will be the property of PalmSource or its licensors and may be used by PalmSource for any purpose. Licensee agrees to assign, and hereby assigns, all right, title and interest worldwide in the Supportive Information and the related intellectual property rights to PalmSource and agrees to assist PalmSource, at PalmSource's expense, in perfecting and enforcing such rights.   
+
+4. 	Confidentiality.  Licensee hereby acknowledges that the structure, sequence and organization of the Software, in whatever form, are the valuable trade secrets of PalmSource or its suppliers, and Licensee agrees to hold such trade secrets and the Software in strict confidence, and not to use or disclose such trade secrets or the Software, except as permitted hereunder.  
+
+5.   	Proprietary Rights.  All title and intellectual property rights in and to the Software and all copies thereof are owned by PalmSource and its suppliers.  Licensee agrees to secure and protect the Software and all copies thereof in a manner consistent with the maintenance of PalmSource's or its suppliers' rights therein and to take appropriate actions by instruction or agreement with any of its employees or agents permitted access thereto to satisfy its obligations hereunder. 
+
+6.	No Right to Modify or Disassemble the Software.  Licensee may not reverse engineer, alter, modify, disassemble or decompile the Software, or any part thereof, without PalmSource's prior written consent; provided that, if local law prohibits such a restriction, Licensee may request in writing that PalmSource provide such information as is reasonably necessary to achieve interoperability.  If and only if PalmSource declines Licensee's request, Licensee may reverse engineer the Software but only to the extent expressly permitted by local law. 
+
+7.	Warranty.  The Software is "Not For Commercial Use" and may only be used for the purpose described in Section 1 above.  Licensee may not use the Software in a live operating environment where it may be relied upon to perform in the same manner as a commercially released product or with data that has not been sufficiently backed up.  Because the Software is subject to change, PalmSource reserves the right to alter the Software at any time, and any reliance on the Software is at Licensee's own risk. Licensee accepts the Software "AS IS" and "WITH ALL FAULTS" and acknowledges that NEITHER PALMSOURCE NOR ITS SUPPLIERS MAKE ANY WARRANTY OF ANY KIND REGARDING THE SOFTWARE.  PALMSOURCE AND ITS SUPPLIERS HEREBY EXPRESSLY DISCLAIM ALL EXPRESS, IMPLIED AND STATUTORY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, ANY IMPLIED WARRANTY OR CONDITION OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT OF THIRD PARTY RIGHTS.
+
+8.	Term.  The term of this Agreement shall commence upon the date Licensee first installs or otherwise uses the Software and shall terminate one (1) year thereafter.  Without prejudice to any other rights, PalmSource may terminate this Agreement if Licensee fails to comply with the terms of this Agreement.  Upon expiration or termination of this Agreement for any reason, Licensee shall destroy all copies of the Software and all of its component parts.  The provisions of, and the obligations of the parties under, Sections 3 through 15 shall survive the termination or expiration of this Agreement.
+ 
+9.	Limitation of Liability.  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL PALMSOURCE OR ITS SUPPLIERS BE LIABLE TO LICENSEE OR ANY THIRD PARTY FOR ANY GENERAL, INCIDENTAL, CONSEQUENTIAL, INDIRECT, DIRECT, SPECIAL OR PUNITIVE DAMAGES (INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS OR CONFIDENTIAL OR OTHER INFORMATION, FOR BUSINESS INTERRUPTION, FOR PERSONAL INJURY, FOR LOSS OF PRIVACY OR FOR FAILURE TO MEET ANY DUTY), ARISING OUT OF OR RELATING TO THE SOFTWARE OR THE TRANSACTIONS CONTEMPLATED HEREIN.  Notwithstanding any damages that Licensee might incur for any reason whatsoever (including, but not limited to, all damages referenced above and all direct or general damages), the entire liability of PalmSource and any of its suppliers under any provision of this Agreement and Licensee's exclusive remedy for all of the foregoing shall be limited to the greater of the amount actually paid by Licensee for the Software or U.S. $5.00.  The foregoing limitations, exclusions and disclaimers shall apply to the maximum extent permitted by applicable law, even if any remedy fails its essential purpose.
+
+10.	United States Government Legends.  If Licensee is a United States government agency, then any software and documentation provided under this Agreement is provided to Licensee subject to the following restricted rights: 
+
+           The software delivered as part of the Software is commercial in nature and developed
+           solely at private expense. Such software is delivered as "Commercial Computer
+           Software" as defined in DFARS 252.227-7014 (June 1995) or as a commercial item as
+           defined in FAR 2.101(a) and as such is provided with only such rights as are provided
+           in this Agreement, which is PalmSource's standard commercial license for the Software.
+           Technical data is provided with limited rights only as provided in DFAR 252.227-7015
+           (Nov. 1995) or FAR 52.227-14 (June 1987), whichever is applicable. 
+
+11.	Waiver.  A waiver of any default hereunder or of any of the terms and conditions of this Agreement shall not be deemed to be a continuing waiver or a waiver of any other default or of any other term or condition, but shall apply solely to the instance to which such waiver is directed. 
+
+12.	Assignment; Severability.  Licensee agrees not to assign any rights under this Agreement, whether voluntarily, by operation of law or otherwise; any attempted assignment shall be null and void and shall result in the termination of this Agreement.  If any part of this Agreement shall be invalid or unenforceable, such invalidity or unenforceability shall not affect the validity or enforceability of any other part or provision of this Agreement which shall remain in full force and effect. 
+
+13.	Governing Law.  This Agreement shall be governed by the laws of the State of California, except as to California's conflict of law rules. The parties agree that the Superior Court of the County of Santa Clara and/or the United States District Court for the Northern District of California shall have jurisdiction and venue over all controversies in connection herewith.  The application of the United Nations Convention on Contracts for the International Sale of Goods is expressly excluded.   
+
+14.	Entire Agreement. This Agreement represents the entire agreement between the parties regarding the subject matter hereof and supersedes any and all other agreements between the parties, whether written or oral, regarding the subject matter hereof. This Agreement may not be modified or amended except in a writing executed by both parties.  Any law or regulation which provides that the language of a contract shall be construed against the drafter shall not apply to this Agreement.
+
+15.	English Language.  The parties hereto confirm that they have requested that this Agreement and all related documents be drafted in English.  Les parties ont exigé que le présent contrat et tous les documents connexes soient rédigés en anglais.
+
+PalmSource, Inc.
+1240 Crossman Avenue
+Sunnyvale, California 94089
+United States of America
+(408) 400-3000
+www.palmsource.com
+September 25, 2002

@@ -1,0 +1,291 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Grid </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Grid                                                                                                                Object</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>The Grid object allows you display a table of data, supplied either from
+your program or automatically loaded from a database. You define the basic
+appearance of the grid at design time and populate it with data at runtime.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>When a cell in the grid is tapped, the grid's row and col
+properties are set and can be used in your program. While the fields in the
+grid cannot be directly edited by the user, you can change their values using
+TextMatrix and ValueMatrix for string and numeric fields respectively. Text and
+Value can be used for the currently selected cell.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Please see Section 13 of the Handbook for a more detailed
+description of the use of this object.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Properties and
+Methods Specific to this Object</b></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.BINDTODATABASE <i>dbName</i>, <i>dbFieldNameList</i> [Where <i>condition</i>]</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Automatically loads a grid with data from a database. <i>DbName</i> is a database variable, set up
+  by a previous DIM WITH RECORD statement. <i>DbFIeldNameList</i>
+  is a list of fieldnames in the database, or the name of a Type structure in
+  the database. <i>Condition</i> is an
+  optional argument which selects which records to display. The format is the
+  same as in an IF statement.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COL</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the current column. Range is 1 to COLS.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COLS</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get the number of columns</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COLTYPE <i>colNo</i>, <i>type</i>, <i>formatString</i></p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Set the type and format of a column. Columns default to
+  text with null values. If you want a different type of data in a column, you
+  must use this method to set it at runtime. <i>ColNo</i> is an existing column number in the Grid. <i>Type</i> is either
+  &quot;text&quot;,&quot;numeric&quot; or &quot;checkbox&quot;. <i>FormatString</i> depends on <i>type</i>: for &quot;text&quot;, it will be
+  the default value of the cell. For &quot;numeric&quot;, it is a format string
+  as used in the FORMAT statement. For 
+  &quot;checkbox&quot;, the <i>formatString</i>
+  is displayed to the right of a checkbox</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COLWIDTH(<i>colNo</i>) </p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the width of column <i>columnNo</i>. To hide a column, set to -1.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.FONTMATRIX(<i>rowNo</i>,
+  <i>ColNo</i>)</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the Font Number (0-7) for the cell.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.HIDEGRIDLINES</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Hide the lines of the grid.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.ROW</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the current row. Range is 1 to ROWS. Set this
+  to 0 to unselect grid.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.ROWDATA</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the rowdata value of the row. This is a user
+  defined value.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.ROWS</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the number of rows.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.SHOWGRIDLINES</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Show the lines of the grid.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.TEXT</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the value of the current cell with text in it.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.TEXTMATRIX(<i>rowNo</i>, <i>ColNo</i>)</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the text value of the cell at <i>rowNo</i>, <i>ColNo</i>.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.TOPROW</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the top row to display</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.VALUE</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the value of the current cell with a number in
+  it.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.VALUEMATRIX(<i>rowNo</i>, <i>ColNo</i>)</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Get or set the numeric value of the cell at <i>rowNo</i>, <i>ColNo</i></p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Properties Supported</b>
+(Set at design time)</p>
+
+<p class=ManualBody>Cols, Has Scrollbar, Height, Left, Top, Visible Rows, Width</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Other Methods Supported</b>
+(See &quot;Methods&quot;)</p>
+
+<p class=ManualBody>Add, Clear, Hide, HideGridLines, Redraw, Remove, Show,
+ShowGridLines</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

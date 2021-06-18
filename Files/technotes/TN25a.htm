@@ -1,0 +1,206 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<TITLE>Tech Note 25a: Drawing Circles</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="/images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 25a: Drawing Circles</h2>
+	  <h3>Jan 7, 2003</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<p><TABLE align="center" BORDE="0" WIDTH="85%" BGCOLOR="#9DBF8D" CELLPADDING="10">
+<TR>
+<TD>
+<p>NS Basic doesn't have a command to draw circles. The DrawRectabgle command can specify round corners, but it is not designed to draw various circles. If you need a circle in your application, preparing the bitmap of the circle is one method to do it. However, if you want circles of arbitrary sizes, the bitmap will not satisfy you. In this article, I will explain how to draw circles using trigonometric functions: SIN and COS.
+
+<p>A circle of radius 1 is called the unit circle, and any point on the circumference of this circle is expressed as (cosø sinø). This may be high school Math... but a diagram tells more clearly:<br> 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/01.gif" WIDTH="320" HEIGHT="310">
+
+
+	  <p>The length of circumference of a circle is 2�?, where r is radius. In the unit circle, the circumference is 2�?since r equals 1. This is the definition of radian. In expression in degree, which is more familiar to  most of us, 1 circumference is 360 degrees. Let's stop talking Math and draw a circle.
+<p>Assign the following code to a button:<br>
+
+<PRE>
+    Dim Pi as Single
+    Dim i as Single
+    Dim X as Single
+    Dim Y as Single
+
+    Pi=3.14159265
+
+    For i=0 to 2*Pi Step Pi/20
+        X=50 * cos(i)
+        Y=50 * sin(i)
+
+        DrawLine 80,80,80+X,80+Y
+    Next
+</PRE>
+<p>It draws a fireworks-like shape of a radius 50 centering on the position of (80, 80):<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/02.gif" WIDTH="160" HEIGHT="160">
+
+<BR>
+<p>The coordinates of the point which is on the circumference of the circle of radius r, whose center is located at (x0, y0), are expressed as (x0+r*cosø, y0+r*sinø) To make up one circle, the sample uses the For...Next statement that repeats this formula. Since sin() and cos() functions in MathLib use radian, you have to assign arguments in radian.
+
+<p>In order to make this into a circle, it is necessary to connect two points. Although it was slightly forcing, I use the following method:<BR>
+
+<PRE>
+    
+    Dim Pi as Single
+    Dim i as Single
+    Dim X1 as Single
+    Dim Y1 as Single
+    Dim X2 as Single
+    Dim Y2 as Single
+
+    Pi=3.14159265
+
+    For i=0 to 2*Pi STEP Pi/20
+        
+        X1=50 * cos(i)
+        Y1=50 * sin(i)
+        X2=50 * cos(i+Pi/20)
+        Y2=50 * sin(i+Pi/20)
+
+        DrawLine 80+X1,80+Y1,80+X2,80+Y2        
+        
+    Next
+</PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/03.gif" WIDTH="160" HEIGHT="160">
+
+<p>Mmm... it draws a circle! Although it is slow, you can draw arbitrary circles now. Again, it is not easy to use radian, so taking the fact<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;360 degrees = 2�?radian<BR>
+<BR>
+we can find this constant:<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 degree = �?/ 180<BR>
+<BR>
+By multiplying any angle by this constant, it converts degree into radian.<BR>
+
+<PRE>
+    Dim Pi as Single
+    Dim i as Single
+    Dim X1 as Single
+    Dim Y1 as Single
+    Dim X2 as Single
+    Dim Y2 as Single
+
+    Pi=3.14159265/180
+
+    For i=0 to 360 STEP 5
+        
+        X1=50 * cos(i*Pi)
+        Y1=50 * sin(i*Pi)
+        X2=50 * cos((i+5)*Pi)
+        Y2=50 * sin((i+5)*Pi)
+
+        DrawLine 80+X1,80+Y1,80+X2,80+Y2        
+        
+    Next
+</PRE>
+
+<p>It should give you the same result.<br>If you use the following code, you can draw arbitrary ovals:<br>
+
+<PRE>
+    Dim Pi as Single
+    Dim i as Single
+    Dim X1 as Single
+    Dim Y1 as Single
+    Dim X2 as Single
+    Dim Y2 as Single
+
+    Pi=3.14159265/180
+
+    For i=0 to 270 STEP 5
+        
+        X1=70 * cos(i*Pi)
+        Y1=50 * sin(i*Pi)
+        X2=70 * cos((i+5)*Pi)
+        Y2=50 * sin((i+5)*Pi)
+
+        DrawLine 80+X1,80+Y1,80+X2,80+Y2        
+        
+    Next
+</PRE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/04.gif" WIDTH="160" HEIGHT="160">
+<BR>
+<BR>
+So far what I introduced is relatively old fashioned, and it used to be used commonly when circle-drawing commands were not available. This isn't new to many people but there is a problem if you use it in NS Basic. That is, it requires MathLib.prc, a library for mathematical calculation. This library is a common library which is installed in many devices by default, but not all devices have the library pre-installed. Besides, 50 KB, the size of the library, may be too much for just drawing circles. So, using "Resource", which is introduced in NS Basic 2.11, overcomes this obstacle. <BR>
+<BR>
+<p>It's simple. The values of SIN and COS for every degree are stored in a database. Integer doesn't work in this case, so I use the Single data type. The values are stored in the array that contains 720 (360 x 2) elements. It seems to be big but is actually about 3KB, a reasonable size compared with 50KB of MathLib. You can download the database here:<br>
+<BR>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A HREF="TN25.images/amisclib.zip" TARGET="_blank">amisclib.zip</A><BR>
+<BR>
+<p>The Creator ID is "Test" but you can change it using A.N.L.<br>
+Here is how to use it:<br>
+Add downloaded AmiSCLib.prc as resource in the IDE. Assume the ID is "1005" here.
+Add the following code in the Startup code:<BR>
+<PRE>
+    Dim Db as Database
+    Dim Res as Integer
+    
+    Global ss(360) as Single
+    Global cs(360) as Single
+
+    res=dbOpen(Db,"AmiSCLib",0)
+    If res<>0 Or res<>3 Then
+        res = DbCreateDatabaseFromResource("DBIM",1005)
+        res=dbOpen(Db,"AmiSCLib",0)
+    End If
+    
+    res=dbread(Db,"sin",ss)
+    res=dbread(Db,"cos",cs)
+
+    res=dbClose(Db)
+</PRE>
+<p>This assigns SIN values to SS() and COS values to CS(). If you set the AmiSCLib's creator ID the same as that of your application, the resource will be deleted when the application is uninstalled.<BR>
+<BR>
+<p>Each array contains 360 values corresponding to degrees 0-359. To get values of SIN and COS, directly look at array elements of SS() and CS() you need. You have to remember two things:<br>
+<ol><li>NS Basic's array start at index 1, not index 0. Thus, the elements of SS are referred to by indexes 1-360. If the degree you want is 'X', SS(X+1) will read the value corresponding to the degree.
+<li>The array consists of SS(1), SS(2), SS(3), ..., SS(359) and SS(360), so index values you specify have to be between 1 and 360 inclusive.
+</ol>
+<p>
+<PRE>
+    Dim i as Single
+    Dim X1 as Single
+    Dim Y1 as Single
+    Dim X2 as Single
+    Dim Y2 as Single
+
+    For i=0 to 355 STEP 5
+        
+        X1=50 * cs(i+1)
+        Y1=50 * ss(i+1)
+        X2=50 * cs(i+5)
+        Y2=50 * ss(i+5)
+
+        DrawLine 80+X1,80+Y1,80+X2,80+Y2        
+        
+    Next
+</PRE>
+<p>The code gets simpler and the process speed isn't reduced much. You can use this library freely. It contains just the values of SIN and COS... If you change the Creator ID by A.N.L, Hotsync the library. AmiSCLib will be copied into the Backup folder on the desktop. Copy this to NS Basic's Lib folder.<BR>
+<BR>
+
+
+
+<BR><BR>
+</TD>
+</TR>
+</TABLE>
+<HR WIDTH="80%">
+</BODY>
+</HTML>

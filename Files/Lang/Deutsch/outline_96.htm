@@ -1,0 +1,168 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>GetKey </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>GetKey                                                                                                     Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>GETKEY()</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Liefert einen 1-Zeichen String, mit dem zuletzt gedrückten
+Zeichen oder Schaltfläche. Bestimmte Ereignisse erzeugen ebenfalls GetKey
+Sequenzen.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Liefert die zuletzt gedrückte Taste oder Schaltfläche als
+1-Zeichen String. Siehe die nachfolgenden Beispiele für die gelieferten Werte.
+Schauen Sie sich auch das Beispiel SpecEvent.prj im Beispielordner an. Diese
+Beispiel zeigt auch, wie die Palm 5 Way Tasten erkannt werden können. Um sich
+die reinen Zeichencodes, die ein Event liefert, anzusehen, können Sie die
+Funktionen SysInfo(9), SysInfo(10) und SysInfo(11) benutzen.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Im EventCode eines Formulares, verwenden Sie folgendes:</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>dim key as string</p>
+
+<p class=Code>If Not GetEventType()=NSBKeyOrButton then Exit Sub</p>
+
+<p class=Code>key=getKey()</p>
+
+<p class=Code>select case asc(key)</p>
+
+<p class=Code>case 1     'fester Button
+#1 auf dem Device</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 2     'fester Button
+#2 auf dem Device</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 3     'fester Button
+#3 auf dem Device</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 4     'fester Button
+#4 auf dem Device</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 5     'Menü-Taste auf
+dem Silkscreenbereich</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 6     'Kommando in
+dem Grafittibereich</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 17   
+'Anwendungsstarttaste auf dem Silkscreenbereich</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 7     'Finden-Taste
+auf dem Silkscreenbereich</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 16    'Rechner-Taste
+auf dem Silkscreenbereich</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 11    'Scroll Hoch
+Schaltfläche</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 12    'Scroll Runter
+Schaltfläche</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 14    'An/Aus Knopf</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 15    'Cradle HotSync
+Knopf</p>
+
+<p class=Code>...</p>
+
+<p class=Code>case 18    ‘auto power off</p>
+
+<p class=Code>...</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>case else</p>
+
+<p class=Code>...</p>
+
+<p class=Code>end select</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

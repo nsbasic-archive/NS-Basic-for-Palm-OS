@@ -1,0 +1,325 @@
+<html><head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Tech Note 40: Using the LifeDrive Shared Library</title>
+<link rel="stylesheet" href="/style2.css"></head>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <h2>Tech Note 40: Using the LifeDrive Shared Library</h2>
+	  <h3>July 11, 2005<FONT FACE="Helvetica" SIZE=2>
+	  </font></h3>
+	  </FONT><FONT FACE="Helvetica" SIZE=2>
+	  <h5>Copyright 2005 NS BASIC Corporation</h5>
+	  </font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Index and Quick Reference</a>
+    <a href="#fullRef">Full Reference</a>
+</pre>
+<hr><a name="intro"><h2>Introduction:</h2>
+<p>The NSBLifeDriveLib shared library allows many of the multimedia features of the LifeDrive Palm device to be used from within an NSBasic program. </p>
+<p>In order to use the NSBLifeDriveLib shared library, the library must be loaded using the  NSBasic LoadLibrary statement. This statement should be located in the Startup Code of the program, as in this example: </p>
+<p><code>Sub main()</code><br> <code>&nbsp;&nbsp;&nbsp;&nbsp;LoadLibrary "NSBLifeDriveLib"</code><br> <code>End Sub</code> </p>
+<p>This document assumes that the shared library has been loaded this way. The LoadLibrary statement also has an optional second parameter to allow you to  specify an abbreviated reference name for the library's functions, as in this example: </p>
+<p><code>Sub main()</code><br> <code>&nbsp;&nbsp;&nbsp;&nbsp;LoadLibrary "NSBLifeDriveLib", "LD"</code><br> <code>End Sub</code> </p>
+<p>For this example, you can use the functions and subroutines described in this document with a prefix of <code>LD</code> instead of <code>NSBLifeDriveLib</code>. </p>
+<p>In order to use the NSBLifeDriveLib Shared Library, the <code>NSBLifeDriveLib.inf</code>  file must be present in your <code>C:\nsbasic\lib</code> directory, and the <code>NSBLifeDriveLib.prc</code> file must be downloaded to your device or included in your NSBasic program.  For more information on shared libraries,  refer to the NSBasic documentation. </p>
+<p>Many of the subroutines and functions within the NSBLifeDriveLib shared library use virtual files.  Utility subroutines and functions for accessing these files are found in the NSBVFSLib library.  See Tech Note 28 for more information. </p>
+<p>For an example of how to use this library, see <code>LifeDriveTest.prj</code>, which is  included with full distributions of NSBasic 5 or later. </p>
+<hr><a name="quickRef"><h2>Index and Quick Reference:</h2>
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><a href='#0001'> BrowserOpen</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.BrowserOpen(<i>volumeID</i>, <i>path</i>, <i>extensions</i>, <i>title</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0002'> BrowserPresent</a>    </td>    <td>&nbsp; &nbsp; &nbsp;Function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.BrowserPresent
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0003'> BrowserSave</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.BrowserSave(<i>volumeID</i>, <i>path</i>, <i>extensions</i>, <i>title</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0004'> PhotoAlbumCount</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>numAlbums</i> = NSBLifeDriveLib.PhotoAlbumCount(<i>volumeID</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0005'> PhotoAlbumID</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>albumID</i> = NSBLifeDriveLib.PhotoAlbumID(<i>volume</i>, <i>index</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0006'> PhotoAlbumName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>name</i> = NSBLifeDriveLib.PhotoAlbumName(<i>albumID</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0007'> PhotoDeleteAlbumAndContents</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.PhotoDeleteAlbum(<i>albumID</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0008'> PhotoDeleteAlbum</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.PhotoDeleteAlbum(<i>albumID</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0009'> PhotoDisplayImage</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoDisplayImage(<i>imageID</i>, <i>left</i>, <i>top</i>, <i>width</i>, <i>height</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0010'> PhotoImageCount</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>numImages</i> = NSBLifeDriveLib.PhotoImageCount(<i>albumID</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0011'> PhotoImageName</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>name</i> = NSBLifeDriveLib.PhotoImageName(<i>imageID</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0012'> PhotoNewAlbum</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>albumID</i> = NSBLifeDriveLib.PhotoNewAlbum(<i>volumeID</i>, <i>name</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0013'> PhotoPresent</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.PhotoPresent
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0014'> PhotoRenameAlbum</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>success</i> = NSBLifeDriveLib.PhotoRenameAlbum(<i>albumID</i>, <i>newName</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0015'> PhotoSelectFromAlbum</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoSelectFromAlbum(<i>albumID</i>, <i>start</i>, <i>numImages</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0016'> PhotoSelectImages</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoSelectImages
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0017'> PhotoSelectImage</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoSelectImage
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0018'> PhotoSelectNone</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoSelectNone
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0019'> PhotoSelectVideos</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoSelectVideos
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0020'> PhotoSelectVideo</a>    </td>    <td>&nbsp; &nbsp; &nbsp;subroutine</td>
+    <td>&nbsp; &nbsp; &nbsp;<code>NSBLifeDriveLib.PhotoSelectVideo
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0021'> PhotoSelectedImage</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>imageID</i> = NSBLifeDriveLib.PhotoSelectedImage(<i>which</i>)
+</code></td>
+  </tr>
+  <tr>
+    <td><a href='#0022'> PhotoSelectionCount</a>    </td>    <td>&nbsp; &nbsp; &nbsp;function</td>
+    <td>&nbsp; &nbsp; &nbsp;<code><i>numImages</i> = NSBLifeDriveLib.PhotoSelectionCount
+</code></td>
+  </tr>
+</table><hr><a><a name="fullRef"><h2>Full Reference:</h2>
+<a name='0001'>
+<h3>BrowserOpen</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.BrowserOpen(<i>volumeID</i>, <i>path</i>, <i>extensions</i>, <i>title</i>)</code><br>
+</p><p>BrowserOpen presents a file brower dialog window to open a file.  <i>VolumeID</i> and <i>path</i> are the volume ID and full path name of the file selected by the user.  <i>Extensions</i> is a string containing a list of filename extensions or MIME types, separated by commas.  Only files with these extensions will be shown.  <i>Title</i> is the title of the dialog window. </p>
+<p>Do not use BrowserOpen to open images or videos.  Use PhotoSelectImage, PhotoSelectImages, PhotoSelectVideo, or PhotoSelectVideos. </p>
+<p>BrowserOpen returns true (-1) if the user selects a file or false (0) if the user cancels. </p>
+<h4>Example:</h4>
+<tt>
+Dim&nbsp;volume&nbsp;as&nbsp;Integer<br>
+Dim&nbsp;path&nbsp;as&nbsp;String<br>
+Dim&nbsp;extend&nbsp;as&nbsp;String<br>
+Dim&nbsp;title&nbsp;as&nbsp;String<br>
+Dim&nbsp;r&nbsp;as&nbsp;Integer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+title&nbsp;=&nbsp;"Choose&nbsp;a&nbsp;file"<br>
+extend&nbsp;=&nbsp;"txt,text,text/plain"<br>
+path&nbsp;=&nbsp;""<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+volume&nbsp;=&nbsp;0&nbsp;&nbsp;&nbsp;'&nbsp;Use&nbsp;the&nbsp;device&nbsp;as&nbsp;the&nbsp;default&nbsp;volume<br>
+r&nbsp;=&nbsp;LD.BrowserOpenDialog(volume,&nbsp;path,&nbsp;extend,&nbsp;title)<br>
+<br>
+If&nbsp;r&nbsp;&lt;&gt;&nbsp;0&nbsp;Then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;Do&nbsp;something&nbsp;with&nbsp;the&nbsp;opened&nbsp;file&nbsp;here<br>
+End&nbsp;If<br>
+</tt>
+<h4>Also see:</h4>
+<p><a href='#0002'> BrowserPresent</a></p>
+<a name='0002'>
+<h3>BrowserPresent</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.BrowserPresent</code><br>
+</p><p>The file browser on the LifeDrive and some other devices mimics the behavior of  the Open and Save As... dialog windows on desktop machines.  PalmOne recommends this only in cases where a PalmOS program must look like its desktop equivalent. </p>
+<p>BrowserPresnt returns true (-1) if the file browser is present and false (0) otherwise. Do not use any subsequent file browser functions if the browser is not present. </p>
+<a name='0003'>
+<h3>BrowserSave</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.BrowserSave(<i>volumeID</i>, <i>path</i>, <i>extensions</i>, <i>title</i>)</code><br>
+</p><p>BrowserOpen presents a file brower dialog window to open a file.  <i>VolumeID</i> and <i>path</i> are the volume ID and full path name of the file selected by the user.  <i>Extensions</i> is a string containing a list of filename extensions or MIME types, separated by commas.  The first entry in this list should be the default extension of a saved file and should be an extension, not a MIME type. <i>Title</i> is the title of the dialog window. </p>
+<p>BrowserSave returns true (-1) if the user chooses to save a file or false (0) if the user cancels. </p>
+<h4>Example:</h4>
+<tt>
+Dim&nbsp;volume&nbsp;as&nbsp;Integer<br>
+Dim&nbsp;path&nbsp;as&nbsp;String<br>
+Dim&nbsp;extend&nbsp;as&nbsp;String<br>
+Dim&nbsp;title&nbsp;as&nbsp;String<br>
+Dim&nbsp;r&nbsp;as&nbsp;Integer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+title&nbsp;=&nbsp;"Choose&nbsp;a&nbsp;file"<br>
+extend&nbsp;=&nbsp;"txt,text,text/plain"<br>
+path&nbsp;=&nbsp;""<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+volume&nbsp;=&nbsp;0&nbsp;&nbsp;&nbsp;'&nbsp;Use&nbsp;the&nbsp;device&nbsp;as&nbsp;the&nbsp;default&nbsp;volume<br>
+r&nbsp;=&nbsp;LD.BrowserOpenDialog(volume,&nbsp;path,&nbsp;extend,&nbsp;title)<br>
+<br>
+If&nbsp;r&nbsp;&lt;&gt;&nbsp;0&nbsp;Then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;Do&nbsp;something&nbsp;with&nbsp;the&nbsp;opened&nbsp;file&nbsp;here<br>
+End&nbsp;If<br>
+</tt>
+<h4>Also see:</h4>
+<p><a href='#0002'> BrowserPresent</a></p>
+<a name='0004'>
+<h3>PhotoAlbumCount</h3>
+<p><code><i>numAlbums</i> = NSBLifeDriveLib.PhotoAlbumCount(<i>volumeID</i>)</code><br>
+</p><p>PhotoAlbumCount returns the number of photo albums on <i>volumeID</i>, which is an integer volume ID. Pass 0 for <i>volumeID</i> to specify the device itself.  Other volumes IDs can be obtained using the NSBVFSLib library or from any of the LifeDrive functions that return volume IDs. </p>
+<a name='0005'>
+<h3>PhotoAlbumID</h3>
+<p><code><i>albumID</i> = NSBLifeDriveLib.PhotoAlbumID(<i>volume</i>, <i>index</i>)</code><br>
+</p><p>PhotoAlbumID returns the ID of the photo album specified by <i>volume</i> and <i>index</i>.  The ID should be stored in a variable of type Integer.  <i>Volume</i> is the ID of the volume on which to look for the photo album.  Pass 0 for <i>volume</i> to use the local volume on the device.  Other volumes can be obtained from functions in the NSBVFSLib library or from any of the LifeDrive functions that return volume IDs. <i>Index</i> must be between 1 and the number of albums returned from PhotoAlbumCount. </p>
+<h4>Also see:</h4>
+<p><a href='#0004'> PhotoAlbumCount</a></p>
+<a name='0006'>
+<h3>PhotoAlbumName</h3>
+<p><code><i>name</i> = NSBLifeDriveLib.PhotoAlbumName(<i>albumID</i>)</code><br>
+</p><p>PhotoAlbumName returns as a string the name of the photo album specified by <i>albumID</i>, which should have been returned by PhotoAlbumID.   </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a></p>
+<a name='0007'>
+<h3>PhotoDeleteAlbumAndContents</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.PhotoDeleteAlbum(<i>albumID</i>)</code><br>
+</p><p>PhotoDeleteAlbum deletes the specified album.  Photos within the album are deleted as well. Returns true (-1) if successful and false (0) otherwise.  The Unfiled album cannot be deleted. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a></p>
+<a name='0008'>
+<h3>PhotoDeleteAlbum</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.PhotoDeleteAlbum(<i>albumID</i>)</code><br>
+</p><p>PhotoDeleteAlbum deletes the specified album.  Photos within the album are moved to Unfiled. Returns true (-1) if successful and false (0) otherwise.  The Unfiled album cannot be deleted. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a></p>
+<a name='0009'>
+<h3>PhotoDisplayImage</h3>
+<p><code>NSBLifeDriveLib.PhotoDisplayImage(<i>imageID</i>, <i>left</i>, <i>top</i>, <i>width</i>, <i>height</i>)</code><br>
+</p><p>PhotoDisplayImage displays the image given by <i>imageID</i> in the rectangle described by <i>left</i>, <i>top</i>, <i>width</i>, and <i>height</i>.  Coordinates are given in NSBasic coordinates, where the standard LifeDrive screen is 160 by 160.  Images with higher resolution will make use of the higher resolution of the LifeDrive screen.  For example, a 320 by 320 JPEG image will display at perfect resulution in a 180 by 180 rectangle.  Images that do not perfectly fit within the  rectangle will be shrunk to fit. </p>
+<p>If <i>imageID</i> refers to a still image, the function will return immediately after the image has been displayed.  An ideal use of this is to display an image within the bounds of a gadget. </p>
+<p>If <i>imageID</i> refers to a video rather than a still image, the rectangle will be ignored, and the  video will open within the video player. </p>
+<h4>Also see:</h4>
+<p><a href='#0021'> PhotoSelectedImage</a></p>
+<a name='0010'>
+<h3>PhotoImageCount</h3>
+<p><code><i>numImages</i> = NSBLifeDriveLib.PhotoImageCount(<i>albumID</i>)</code><br>
+</p><p>PhotoImageCount returns the number of images in the album specified by <i>albumID</i>. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a></p>
+<a name='0011'>
+<h3>PhotoImageName</h3>
+<p><code><i>name</i> = NSBLifeDriveLib.PhotoImageName(<i>imageID</i>)</code><br>
+</p><p>PhotoImageName returns the name of the image specified by <i>imageID</i>.  The name is the full path name of the image within the volume it resides on. </p>
+<h4>Also see:</h4>
+<p><a href='#0021'> PhotoSelectedImage</a></p>
+<a name='0012'>
+<h3>PhotoNewAlbum</h3>
+<p><code><i>albumID</i> = NSBLifeDriveLib.PhotoNewAlbum(<i>volumeID</i>, <i>name</i>)</code><br>
+</p><p>PhotoNewAlbum creates a new photo album named <i>name</i> on the volume specified by <i>volumeID</i>. Pass 0 for <i>volume</i> to use the local volume on the device.  Other volumes can be obtained from functions in the NSBVFSLib library or from any of the LifeDrive functions that return volume IDs.  PhotoNewAlbum returns the ID of the newly created photo album or -1 if the album could not be created. </p>
+<a name='0013'>
+<h3>PhotoPresent</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.PhotoPresent</code><br>
+</p><p>PhotoPresent returns true (-1) if the photo functions are present or false (0) if they are absent.  Check the value of this before trying to use any of the photo functions. </p>
+<a name='0014'>
+<h3>PhotoRenameAlbum</h3>
+<p><code><i>success</i> = NSBLifeDriveLib.PhotoRenameAlbum(<i>albumID</i>, <i>newName</i>)</code><br>
+</p><p>PhotoRenameAlbum renames a photo album specified by <i>albumID</i> to <i>newName</i>, returning true (-1) if renaming was successful and false (0) otherwise. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a></p>
+<a name='0015'>
+<h3>PhotoSelectFromAlbum</h3>
+<p><code>NSBLifeDriveLib.PhotoSelectFromAlbum(<i>albumID</i>, <i>start</i>, <i>numImages</i>)</code><br>
+</p><p>PhotoSelectFromAlbum selects one or more images from an album specified by <i>albumID</i>. <i>Start</i> is the number of the first image to select and must be between 1 and the  number of images returned by PhotoImageCount.  <i>NumImages</i> is the number of images to select.  For example, NSBLifeDriveLib.PhotoSelectFromAlbum(ID, 2, 3) will select images 2, 3, and 4 from album ID. </p>
+<p>Only one selection containing zero or more images or videos is available at one time.   It is called the current selection. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a>, <a href='#0010'> PhotoImageCount</a>, <a href='#0017'> PhotoSelectImage</a>, <a href='#0016'> PhotoSelectImages</a>, <a href='#0020'> PhotoSelectVideo</a>, <a href='#0019'> PhotoSelectVideos</a></p>
+<a name='0016'>
+<h3>PhotoSelectImages</h3>
+<p><code>NSBLifeDriveLib.PhotoSelectImages</code><br>
+</p><p>PhotoSelectImages presents the user with a dialog window to select any number of images. If the user cancels the dialog window, the selection will remain unchanged. </p>
+<p>Only one selection containing zero or more images or videos is available at one time.   It is called the current selection. </p>
+<p>On older devices, this subroutine may select videos as well as images but should  only select images on newer devices. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a>, <a href='#0015'> PhotoSelectFromAlbum</a>, <a href='#0017'> PhotoSelectImage</a>, <a href='#0020'> PhotoSelectVideo</a>, <a href='#0019'> PhotoSelectVideos</a></p>
+<a name='0017'>
+<h3>PhotoSelectImage</h3>
+<p><code>NSBLifeDriveLib.PhotoSelectImage</code><br>
+</p><p>PhotoSelectImage presents the user with a dialog window to select a single image. If the user cancels the dialog window, the selection will remain unchanged. </p>
+<p>Only one selection containing zero or more images or videos is available at one time.   It is called the current selection. </p>
+<p>On older devices, this subroutine may select videos as well as images but should  only select images on newer devices. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a>, <a href='#0015'> PhotoSelectFromAlbum</a>, <a href='#0016'> PhotoSelectImages</a>, <a href='#0020'> PhotoSelectVideo</a>, <a href='#0019'> PhotoSelectVideos</a></p>
+<a name='0018'>
+<h3>PhotoSelectNone</h3>
+<p><code>NSBLifeDriveLib.PhotoSelectNone</code><br>
+</p><p>PhotoSelectNone clears the current selection.  Use this before a PhotoSelectImage(s) or PhotoSelectVideo(s) to determine whether the user selected images or videos. </p>
+<a name='0019'>
+<h3>PhotoSelectVideos</h3>
+<p><code>NSBLifeDriveLib.PhotoSelectVideos</code><br>
+</p><p>PhotoSelectVideos presents the user with a dialog window to select any number of videos. If the user cancels the dialog window, the selection will remain unchanged. </p>
+<p>Only one selection containing zero or more images or videos is available at one time.   It is called the current selection. </p>
+<p>On older devices, this subroutine may select images as well as videos but should  only select videos on newer devices. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a>, <a href='#0015'> PhotoSelectFromAlbum</a>, <a href='#0017'> PhotoSelectImage</a>, <a href='#0016'> PhotoSelectImages</a>, <a href='#0020'> PhotoSelectVideo</a></p>
+<a name='0020'>
+<h3>PhotoSelectVideo</h3>
+<p><code>NSBLifeDriveLib.PhotoSelectVideo</code><br>
+</p><p>PhotoSelectVideo presents the user with a dialog window to select a single video. If the user cancels the dialog window, the selection will remain unchanged. </p>
+<p>Only one selection containing zero or more images or videos is available at one time.   It is called the current selection. </p>
+<p>On older devices, this subroutine may select images as well as videos but should  only select videos on newer devices. </p>
+<h4>Also see:</h4>
+<p><a href='#0005'> PhotoAlbumID</a>, <a href='#0015'> PhotoSelectFromAlbum</a>, <a href='#0017'> PhotoSelectImage</a>, <a href='#0016'> PhotoSelectImages</a>, <a href='#0019'> PhotoSelectVideos</a></p>
+<a name='0021'>
+<h3>PhotoSelectedImage</h3>
+<p><code><i>imageID</i> = NSBLifeDriveLib.PhotoSelectedImage(<i>which</i>)</code><br>
+</p><p>PhotoSelectedImage returns the ID of of image <i>which</i> in the current selection.  <i>Which</i> must be between 1 and the number of images returned by PhotoSelectionCount.  The return value should be stored in a variable of type Integer. </p>
+<p><i>ImageID</i> can be a still image or a video, depending on the type of media in the selection. </p>
+<h4>Also see:</h4>
+<p><a href='#0022'> PhotoSelectionCount</a>, <a href='#0015'> PhotoSelectFromAlbum</a>, <a href='#0017'> PhotoSelectImage</a>, <a href='#0016'> PhotoSelectImages</a>, <a href='#0020'> PhotoSelectVideo</a>, <a href='#0019'> PhotoSelectVideos</a></p>
+<a name='0022'>
+<h3>PhotoSelectionCount</h3>
+<p><code><i>numImages</i> = NSBLifeDriveLib.PhotoSelectionCount</code><br>
+</p><p>PhotoSelectionCount returns the number of images or videos in the current selection. </p>
+</body></html>

@@ -1,0 +1,423 @@
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<title>Using the Palm OS Emulator (POSE)</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<BODY lang=EN-US LINK="#0000ff" VLINK="#800080" style='tab-interval:.5in' TEXT="#000000" BGCOLOR="#ffffff">
+
+<div class=Section1>
+
+
+
+  <TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+    <TR>
+	  <TD WIDTH="22%" VALIGN="TOP">
+		<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+	  </TD>
+	  <TD WIDTH="78%" VALIGN="TOP">
+        <h2>Tech Note 20: Using the Palm OS Emulator (POSE)</h2>
+		<h3>October 19, 2007</h3>
+	  </TD>
+	</TR>
+  </TABLE>
+  <HR>
+There is also a good   tutorial on <A HREF="http://oasis.palm.com/dev/kb/papers/1311.cfm">Palmsource's web site</A>.
+<br>
+  <br>
+  <BR>
+  <BR>
+  <p class=MsoNormal align=center style='text-align:center'><i style='mso-bidi-font-style:
+normal'>(<span class=GramE>adapted</span> from &quot;<a
+href="http://www.nsbasicprogrammingforpalmos.com/">NS Basic Programming for
+Palm OS</a>&quot;, by Michael J. Verive)</i></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>NS Basic doesn't contain
+its own embedded Palm emulator or debugger, but instead uses the Palm OS Emulator,
+commonly known as POSE</span><span
+style='font-size:10.0pt'>.<span style='mso-spacerun:yes'>  </span>By using
+POSE, NS Basic allows you to test your applications using a wide variety of OS
+versions.</span></p>
+  <p class=MsoBodyText align=center style='text-align:center'><span
+style='font-size:10.0pt'><img border=0 width=222 height=334
+src="TN20.images/image002.gif" v:shapes="_x0000_i1025"></span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>If you want to experiment
+with different device ROM</span><span
+style='font-size:10.0pt'>'s, you will need to either download your own device's
+ROM (using a serial cable and the &quot;ROM Transfer&quot; app that comes with
+POSE) or get ROM's from Palm, Inc. (or your device's manufacturer). From Palm,
+Inc.'s web site at <a href="http://www.palmos.com/dev/tools/emulator/">www.palmos.com/dev/tools/emulator/</a>:</span></p>
+</div>
+<blockquote>
+  <div class=Section1><span
+style='font-size:9.0pt'><span style='mso-spacerun:yes'> </span>&quot;For legal
+reasons, you must sign an agreement with Palm Inc. to download ROM images. To
+obtain the agreement, you must be a member of the Palm OS Developer Program.
+After joining that program, we recommend that you also join the Developer
+Seeding Program, which requires that you return a signed agreement to us. This
+allows you to access pre-release ROM images and other valuable tools. If you
+are based in the </span><st1:country-region><st1:place><span style='font-size:
+  9.0pt'>USA</span></st1:place></st1:country-region><span style='font-size:
+9.0pt'>, you may also obtain images using a &quot;<span class=SpellE>clickwrap</span>&quot;
+agreement that does not require a signed agreement.&quot;<span
+style='mso-spacerun:yes'>  </span></span></div>
+</blockquote>
+<div class=Section1>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>I couldn't have said it any
+better.</span></p>
+
+<p>If you're using an AlphaSmart Dana, you'll need a special version of POSE. You can download it from <a href="http://www.bridgingthedisconnects.org/support/downloads.htm" target="_top">http://www.bridgingthedisconnects.org/support/downloads.htm</a>
+  <h3><a name="_Toc5216083"></a><a name="_Toc5215820"></a><a name="_Toc3993354"><span
+style='mso-bookmark:_Toc5215820'><span style='mso-bookmark:_Toc5216083'><span
+style='font-size:10.0pt'>Installing POSE</span></span></span></a><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>POSE</span><span
+style='font-size:10.0pt'> is normally installed with the NSBasic for Palm
+installation, and should exist in your NSBasic Tools directory (by default at
+c:\nsbasic\tools).<span style='mso-spacerun:yes'>  </span>If you are installing
+POSE from the zipped archive, extract the emulator files into a new directory
+(I'd call it &quot;POSE&quot;, but you can use whatever name you'd like).<span
+style='mso-spacerun:yes'>  </span>Create a subdirectory named &quot;Skins&quot;
+within this directory, and extract the skin files here.<span
+style='mso-spacerun:yes'>  </span>This directory MUST be named
+&quot;Skins&quot;, and the skin files MUST be in this directory, in order for
+POSE to find them.<span style='mso-spacerun:yes'>  </span>Note that when you
+attempt to extract the skins, they will go to their previously stored directory
+names unless you tell your uninstaller (I use WinZip ñ you can get the latest
+version at www.winzip.com) to ignore the directory names.<span
+style='mso-spacerun:yes'>  </span>If you forget this step, and POSE always
+starts with the default &quot;generic&quot; skin, look at the &quot;Skins&quot;
+directory, and you'll probably see another directory within it that contains
+the skins.<span style='mso-spacerun:yes'>  </span>Move the skins to the
+&quot;Skins&quot; directory, and everything should work appropriately.</span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>These skins aren't merely
+close approximations ñ they have the exact look <i style='mso-bidi-font-style:
+normal'>and feel</i> of the real Palm devices, like this PalmIIIc: </span></p>
+  <p class=MsoBodyText align=center style='text-align:center'><span
+style='font-size:10.0pt'><img border=0 width=233 height=361
+src="TN20.images/image004.gif" v:shapes="_x0000_i1026"></span></p>
+</div>
+<blockquote>
+  <div class=Section1><b style='mso-bidi-font-weight:
+normal'><span style='font-size:9.0pt;mso-bidi-font-size:10.0pt;font-family:
+"Gill Sans MT";mso-fareast-font-family:"MS Mincho"'><img border=0 width=51 height=21
+src="TN20.images/image018.jpg" v:shapes="_x0000_i1027"><span
+class=NoteCharChar><span style='mso-ansi-font-size:9.0pt;mso-bidi-font-size:
+10.0pt'><span style='mso-spacerun:yes'> </span></span></span></span></b><span
+style='font-size:9.0pt;mso-bidi-font-size:10.0pt'><span
+style='mso-spacerun:yes'> </span>OK ñ I lied ñ the skins don't <i
+style='mso-bidi-font-style:normal'>really</i> make POSE</span><span style='font-size:9.0pt;mso-bidi-font-size:
+10.0pt'> <i style='mso-bidi-font-style:normal'>feel</i> like the actual
+device.<span style='mso-spacerun:yes'>  </span>But they do look impressive!</span><span
+style='font-size:9.0pt;mso-bidi-font-size:12.0pt'></span></div>
+</blockquote>
+<div class=Section1>
+  <h3><a name="_Toc5216084"></a><a name="_Toc5215821"></a><a name="_Toc3993355"><span
+style='mso-bookmark:_Toc5215821'><span style='mso-bookmark:_Toc5216084'><span
+style='font-size:10.0pt'>Using POSE</span></span></span></a><span
+style='mso-bookmark:_Toc3993355'><span style='mso-bookmark:_Toc5215821'><span
+style='mso-bookmark:_Toc5216084'></span></span></span><span style='mso-bookmark:_Toc3993355'><span
+style='mso-bookmark:_Toc5215821'><span style='mso-bookmark:_Toc5216084'></span></span></span><span
+style='mso-bookmark:_Toc3993355'><span style='mso-bookmark:_Toc5215821'><span
+style='mso-bookmark:_Toc5216084'><span style='font-size:10.0pt'> with your
+device's ROM</span></span></span></span><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>As previously mentioned,
+POSE</span><span
+style='font-size:10.0pt'> doesn't ship with any ROMs.<span
+style='mso-spacerun:yes'>  </span>However, it does come with a ROM</span><span
+style='font-size:10.0pt'> Transfer app that you can load to your Palm device,
+and use it to transfer a copy of your ROM to your hard drive (currently this
+only works with devices with a serial cradle, but as more and more devices use
+USB, this may change by the time you read this).</span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>To transfer the ROM</span><span
+style='font-size:10.0pt'>, start POSE</span><span
+style='font-size:10.0pt'> on your desktop computer, then with POSE running,
+right-click on POSE, and select &quot;Transfer ROM&quot;.<span
+style='mso-spacerun:yes'>  </span>Follow the directions step by step, and
+within a few minutes you should have your ROM downloaded and ready to use.</span></p>
+  <h3><a name="_Toc5216085"></a><a name="_Toc5215822"></a><a name="_Toc3993356"><span
+style='mso-bookmark:_Toc5215822'><span style='mso-bookmark:_Toc5216085'><span
+style='font-size:10.0pt'>Using POSE</span></span></span></a><span
+style='mso-bookmark:_Toc3993356'><span style='mso-bookmark:_Toc5215822'><span
+style='mso-bookmark:_Toc5216085'></span></span></span><span style='mso-bookmark:_Toc3993356'><span
+style='mso-bookmark:_Toc5215822'><span style='mso-bookmark:_Toc5216085'></span></span></span><span
+style='mso-bookmark:_Toc3993356'><span style='mso-bookmark:_Toc5215822'><span
+style='mso-bookmark:_Toc5216085'><span style='font-size:10.0pt'> with NS Basic</span></span></span></span><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>Although you can run POSE</span><span
+style='font-size:10.0pt'> from within NS Basic, and have NS Basic automatically
+load and run your applications after they are compiled, I personally prefer to
+have POSE running in one window, the NS Basic IDE</span><span
+style='font-size:10.0pt'> in a second window, and a third window open to the NS
+Basic download directory.<span style='mso-spacerun:yes'>  </span>I set the
+compile options to neither download to POSE nor install to device ñ I prefer to
+install the applications into POSE myself.<span style='mso-spacerun:yes'> 
+</span>Navigating among the windows is only a few keystrokes or mouse clicks
+away, and loading an app into POSE is easily accomplished by dragging its PRC
+into POSE (as long as POSE isn't currently running the app).</span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>That's enough talking about
+POSE</span><span
+style='font-size:10.0pt'> ñ let's walk through the steps and get POSE
+running.<span style='mso-spacerun:yes'>  </span>If you haven't installed POSE
+yet, now would be a good time to do so.</span></p>
+  <h3><a name="_Toc5216086"></a><a name="_Toc5215823"></a><a name="_Toc3993357"><span
+style='mso-bookmark:_Toc5215823'><span style='mso-bookmark:_Toc5216086'><span
+style='font-size:10.0pt'>Running POSE</span></span></span></a><span
+style='mso-bookmark:_Toc3993357'><span style='mso-bookmark:_Toc5215823'><span
+style='mso-bookmark:_Toc5216086'></span></span></span><span style='mso-bookmark:_Toc3993357'><span
+style='mso-bookmark:_Toc5215823'><span style='mso-bookmark:_Toc5216086'></span></span></span><span
+style='mso-bookmark:_Toc3993357'><span style='mso-bookmark:_Toc5215823'><span
+style='mso-bookmark:_Toc5216086'><span style='font-size:10.0pt'> for the first
+time</span></span></span></span><span style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>To make running POSE</span><span
+style='font-size:10.0pt'> as simple as possible, I prefer to have a shortcut to
+POSE on my desktop.<span style='mso-spacerun:yes'>  </span>You can do this
+easily by locating the Emulator.exe file (again, usually in the
+c:\nsbasic\tools directory), then right-clicking on the file, and dragging it
+to the desktop.<span style='mso-spacerun:yes'>  </span>Windows</span><span
+style='font-size:10.0pt'><span style='mso-spacerun:yes'> </span>will ask you if
+you want to copy, move, or create a shortcut ñ choose the shortcut.<span
+style='mso-spacerun:yes'>  </span>Then, when you want to run POSE, just
+double-click on the shortcut, and you're in business.</span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>Before POSE</span><span
+style='font-size:10.0pt'> will actually run, you'll need to give it a ROM</span><span
+style='font-size:10.0pt'>.<span style='mso-spacerun:yes'>  </span>The first
+time you attempt to run POSE, you will be asked to select a few different
+options, including starting a new session. </span></p>
+  <p class=MsoBodyText align=center style='text-align:center'><span
+style='font-size:10.0pt'><img border=0 width=361 height=187
+src="TN20.images/image008.gif" v:shapes="_x0000_i1028"></span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>Click &quot;New&quot;, and
+select a Palm ROM</span><span
+style='font-size:10.0pt'> (the ROM from your device, if you used the ROM
+Transfer application, or a ROM from Palm, Handspring, or other manufacturer)
+for your POSE</span><span
+style='font-size:10.0pt'> session.<span style='mso-spacerun:yes'>  </span>You
+should see POSE display the Palm startup screen</span><span
+style='font-size:10.0pt'>, then the Prefs screen.<span
+style='mso-spacerun:yes'>  </span>Click on the application launcher &quot;silk
+screen&quot; button, and you should see the familiar Palm screen with
+application icons.<span style='mso-spacerun:yes'>  </span>You're in business!</span></p>
+</div>
+<blockquote>
+  <div class=Section1><b style='mso-bidi-font-weight:
+normal'><span style='font-size:9.0pt'><img border=0 width=51 height=21
+src="TN20.images/image010.jpg" v:shapes="_x0000_i1029"><span
+style='mso-spacerun:yes'> </span></span></b><span style='font-size:9.0pt'>You
+don't <i style='mso-bidi-font-style:normal'>really</i> want to go through all
+these steps each time, do you?<span style='mso-spacerun:yes'>  </span>Before
+going any further, right click on POSE</span><span
+style='font-size:9.0pt'>, select &quot;Save&quot;, and save your POSE session
+(as an Emulator Session File, with a .psf extension).<span
+style='mso-spacerun:yes'>  </span>You can then directly run POSE with this ROM</span><span
+style='font-size:9.0pt'> by selecting this session file.<span
+style='mso-spacerun:yes'>  </span>Later, when you have applications installed
+into POSE, you can save additional session files, effectively saving different
+Palm &quot;devices&quot;, each with different applications installed.<span
+style='mso-spacerun:yes'>  </span></span></div>
+</blockquote>
+<div class=Section1>
+  <h3><a name="_Toc5216087"></a><a name="_Toc5215824"></a><a name="_Toc3993358"><span
+style='mso-bookmark:_Toc5215824'><span style='mso-bookmark:_Toc5216087'><span
+style='font-size:10.0pt'>Installing applications and databases into POSE</span></span></span></a><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>As I briefly mentioned
+earlier, you can install applications and databases into POSE</span><span
+style='font-size:10.0pt'> by dragging them into POSE while it's running, or by
+right-clicking on POSE, and selecting the &quot;Install
+Application/Database&quot; option (remember, these PRC and PDB</span><span
+style='font-size:10.0pt'> files must be in Palm format ñ don't just drag an
+Access database</span><span
+style='font-size:10.0pt'> or Word document into POSE and expect them to
+load).<span style='mso-spacerun:yes'>  </span></span></p>
+  <h3><a name="_Toc5216088"></a><a name="_Toc5215825"></a><a name="_Toc3993359"><span
+style='mso-bookmark:_Toc5215825'><span style='mso-bookmark:_Toc5216088'><span
+style='font-size:10.0pt'>Automatically loading applications and databases into
+POSE</span></span></span></a><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>If there are PDB</span><span
+style='font-size:10.0pt'>'s or PRC's that you always want to load each time you
+run POSE</span><span
+style='font-size:10.0pt'> or the NS Basic emulator, create a subdirectory named
+<span class=SpellE>AutoLoad</span> in the directory that contains POSE or the
+NS Basic emulator (this will usually be c:\NS Basic\tools).<span
+style='mso-spacerun:yes'>  </span>Any PDB or PRC file in this <span
+class=SpellE>AutoLoad</span></span><span
+style='font-size:10.0pt'><span style='mso-spacerun:yes'> </span>directory will
+be loaded automatically.<span style='mso-spacerun:yes'>  </span></span></p>
+</div>
+<blockquote>
+  <div class=Section1><b style='mso-bidi-font-weight:
+normal'><span style='font-size:9.0pt'><img border=0 width=51 height=21
+src="TN20.images/image019.jpg" v:shapes="_x0000_i1030"><span
+style='mso-spacerun:yes'> </span></span></b><span style='font-size:9.0pt'>This
+can be a blessing or a curse, since you can easily forget to include these
+files with your applications for distribution!</span></div>
+</blockquote>
+<div class=Section1>
+  <h3><a name="_Toc5216089"></a><a name="_Toc5215826"></a><a name="_Toc3993360"><span
+style='mso-bookmark:_Toc5215826'><span style='mso-bookmark:_Toc5216089'><span
+style='font-size:10.0pt'>Exporting applications and databases from POSE</span></span></span></a><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>Exporting databases and
+applications from POSE</span><span
+style='font-size:10.0pt'> is a different story, however - you can't simply drag
+databases and applications from POSE to your Windows</span><span
+style='font-size:10.0pt'><span style='mso-spacerun:yes'> </span>desktop.<span
+style='mso-spacerun:yes'>  </span>Instead, to export from POSE, right click on
+POSE while it's running, and select the &quot;Export database</span><span
+style='font-size:10.0pt'>&quot; option.<span style='mso-spacerun:yes'> 
+</span>You can export any of the existing Palm applications or databases.<span
+style='mso-spacerun:yes'>  </span>This makes it easy for you to use your NS
+Basic applications to create databases within POSE, <span class=GramE>then</span>
+you can export the databases to share with other users.<span
+style='mso-spacerun:yes'>  </span></span></p>
+</div>
+<blockquote>
+  <div class=Section1><b style='mso-bidi-font-weight:
+normal'><span style='font-size:9.0pt;font-family:"Gill Sans MT";mso-fareast-font-family:
+"MS Mincho"'><img border=0 width=51 height=21
+src="TN20.images/image018.jpg" v:shapes="_x0000_i1031"></span></b><span
+style='font-size:9.0pt'><span style='mso-spacerun:yes'> </span>You can also use
+the POSE dbexport application (load the <span class=SpellE>posedbexport.prc</span>
+file into the emulator) to export any of the RAM-based databases on the
+emulator.</span></div>
+</blockquote>
+<div class=Section1>
+  <h3><a name="_Toc5216090"></a><a name="_Toc5215827"></a><a name="_Toc3993361"><span
+style='mso-bookmark:_Toc5215827'><span style='mso-bookmark:_Toc5216090'><span
+style='font-size:10.0pt'>POSE</span></span></span></a><span
+style='mso-bookmark:_Toc3993361'><span style='mso-bookmark:_Toc5215827'><span
+style='mso-bookmark:_Toc5216090'></span></span></span><span style='mso-bookmark:_Toc3993361'><span
+style='mso-bookmark:_Toc5215827'><span style='mso-bookmark:_Toc5216090'></span></span></span><span
+style='mso-bookmark:_Toc3993361'><span style='mso-bookmark:_Toc5215827'><span
+style='mso-bookmark:_Toc5216090'><span style='font-size:10.0pt'> Error messages
+and debugging options</span></span></span></span><span style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>POSE</span><span
+style='font-size:10.0pt'> is a great tool, and you'll be tempted to assume that
+an application that runs on POSE will run on the actual Palm device.<span
+style='mso-spacerun:yes'>  </span>While I haven't found many exceptions to
+this, it's always possible that the actual device will behave differently than
+POSE.<span style='mso-spacerun:yes'>  </span>Actually, POSE is much more strict
+and unforgiving that the actual Palm devices, and will surprise you from time
+to time with very strange error messages.<span style='mso-spacerun:yes'> 
+</span>While many of these messages can be ignored, it's essential to test your
+applications on real devices before distributing them.<span
+style='mso-spacerun:yes'>  </span></span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>With POSE</span><span
+style='font-size:10.0pt'> 3.4, you have considerable control over just how
+strict POSE is with how applications behave, and can tailor the error reporting
+to your needs.<span style='mso-spacerun:yes'>  </span>Right click on POSE,
+select &quot;Settings&quot;, &quot;Debugging...&quot;, and you'll see numerous
+Debug Options:</span></p>
+  <p class=MsoBodyText align=center style='text-align:center'><span
+style='font-size:10.0pt'><img border=0 width=435 height=173
+src="TN20.images/image020.gif" v:shapes="_x0000_i1032"></span></p>
+</div>
+<blockquote>
+  <div class=Section1><b style='mso-bidi-font-weight:
+normal'><span style='font-size:9.0pt'><img border=0 width=51 height=21
+src="TN20.images/image010.jpg" v:shapes="_x0000_i1033"><span
+style='mso-spacerun:yes'> </span></span></b><span style='font-size:9.0pt'>For
+most NS Basic applications, you can safely avoid common, &quot;ignorable&quot;
+errors by <span class=SpellE>unchecking</span> the &quot;<span class=SpellE>MemMgr</span>
+</span><u><span style='font-size:9.0pt;mso-bidi-font-size:10.0pt'>D</span></u><span
+style='font-size:9.0pt'>ata Access&quot;, &quot;</span><span class=SpellE><u><span
+style='font-size:9.0pt;mso-bidi-font-size:10.0pt'>O</span></u><span
+style='font-size:9.0pt'>ffscreen</span></span><span style='font-size:9.0pt'>
+Form Object&quot;, and &quot;<span class=SpellE>U<u><span style='mso-bidi-font-size:
+10.0pt'>I</span></u>Mgr</span> Data Access&quot; options.<span
+style='mso-spacerun:yes'>  </span>These errors don't occur on the actual Palm
+OS devices, so having POSE</span><span style='font-size:9.0pt'> ignore
+these errors can speed up your debugging process considerably, allowing you to
+focus on &quot;real&quot; errors.</span></div>
+</blockquote>
+<div class=Section1>
+  <h3><a name="_Toc5216091"></a><a name="_Toc5215828"></a><a name="_Toc3993362"><span
+style='mso-bookmark:_Toc5215828'><span style='mso-bookmark:_Toc5216091'><span
+style='font-size:10.0pt'>Letting POSE</span></span></span></a><span
+style='mso-bookmark:_Toc3993362'><span style='mso-bookmark:_Toc5215828'><span
+style='mso-bookmark:_Toc5216091'></span></span></span><span style='mso-bookmark:_Toc3993362'><span
+style='mso-bookmark:_Toc5215828'><span style='mso-bookmark:_Toc5216091'></span></span></span><span
+style='mso-bookmark:_Toc3993362'><span style='mso-bookmark:_Toc5215828'><span
+style='mso-bookmark:_Toc5216091'><span style='font-size:10.0pt'> be your first
+beta tester</span></span></span></span><span style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>When you get around to
+experimenting with POSE</span><span
+style='font-size:10.0pt'>, you'll come upon gremlins.<span
+style='mso-spacerun:yes'>  </span>I swear to you that I didn't make this
+up!<span style='mso-spacerun:yes'>  </span>Right click on POSE, and you'll see
+&quot;Gremlins&quot;.<span style='mso-spacerun:yes'>  </span>Basically,
+Gremlins are best thought of as tireless users who try to enter any kind of
+information in any field, tap and scroll anywhere ñ in short, <i
+style='mso-bidi-font-style:normal'>really nasty beta testers</i>.<span
+style='mso-spacerun:yes'>  </span>If you select &quot;Gremlins</span><span
+style='font-size:10.0pt'>&quot;, &quot;New&quot; you'll be given the chance to
+create a New Gremlin Horde (<span class=SpellE>POSE's</span> nomenclature, not
+mine!) that will run any application or group of applications.<span
+style='mso-spacerun:yes'>  </span>You can also determine how many times to run
+each app, and how to log the different events, errors, and activities that
+might occur.<span style='mso-spacerun:yes'>  </span></span></p>
+  <p class=MsoBodyText align=center style='text-align:center'><span
+style='font-size:10.0pt'><img border=0 width=345 height=430
+src="TN20.images/image016.gif" v:shapes="_x0000_i1034"></span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>I strongly suggest that you
+use Gremlins to test your software ñ not in place of beta testers, but to
+complement them.<span style='mso-spacerun:yes'>  </span>POSE</span><span
+style='font-size:10.0pt'> has many, many options ñ so many that you can easily
+get overwhelmed.<span style='mso-spacerun:yes'>  </span>Relax, only try one new
+technique at a time, and you'll do just fine.</span></p>
+  <h3><a name="_Toc5216092"></a><a name="_Toc5215829"></a><a name="_Toc3993363"><span
+style='mso-bookmark:_Toc5215829'><span style='mso-bookmark:_Toc5216092'><span
+style='font-size:10.0pt'>HotSyncing POSE</span></span></span></a><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>You can even HotSync</span><span
+style='font-size:10.0pt'> your POSE</span><span
+style='font-size:10.0pt'> session as though it were a really device, although
+it's a little tricky (and slow!).<span style='mso-spacerun:yes'>  </span>Here's
+one method, using two serial ports on your Windows</span><span
+style='font-size:10.0pt'><span style='mso-spacerun:yes'> </span>machine that's
+running POSE.<span style='mso-spacerun:yes'>  </span>One should be already set
+up to run HotSync.<span style='mso-spacerun:yes'>  </span>In order to allow
+POSE to HotSync on this machine, right click on POSE, select
+&quot;Settings&quot;, &quot;Properties&quot;, and under &quot;</span><st1:place><st1:PlaceName><span
+  style='font-size:10.0pt'>Serial</span></st1:PlaceName><span style='font-size:
+ 10.0pt'> </span><st1:PlaceType><span style='font-size:10.0pt'>Port</span></st1:PlaceType></st1:place><span
+style='font-size:10.0pt'>&quot;, select the other serial port for POSE to
+use.<span style='mso-spacerun:yes'>  </span>Connect the two ports through the
+use of a null <span class=GramE>modem,</span> and with HotSync and POSE both
+running, select &quot;HotSync&quot; from the &quot;System&quot; group on
+POSE.<span style='mso-spacerun:yes'>  </span>You should see the familiar
+HotSync dialog, and will be prompted for the user name if you haven't already
+wet it up through the same &quot;Settings&quot;, &quot;Properties&quot; option
+in POSE.<span style='mso-spacerun:yes'>  </span>HotSync will be much slower
+when running on the same machine as POSE, but you can speed it up by making
+sure that POSE is the &quot;foreground&quot; application, with HotSync running
+in the background.</span></p>
+  <h3><a name="_Toc5216093"></a><a name="_Toc5215830"></a><a name="_Toc3993364"><span
+style='mso-bookmark:_Toc5215830'><span style='mso-bookmark:_Toc5216093'><span
+style='font-size:10.0pt'>Quitting your POSE</span></span></span></a><span
+style='mso-bookmark:_Toc3993364'><span style='mso-bookmark:_Toc5215830'><span
+style='mso-bookmark:_Toc5216093'></span></span></span><span style='mso-bookmark:_Toc3993364'><span
+style='mso-bookmark:_Toc5215830'><span style='mso-bookmark:_Toc5216093'></span></span></span><span
+style='mso-bookmark:_Toc3993364'><span style='mso-bookmark:_Toc5215830'><span
+style='mso-bookmark:_Toc5216093'><span style='font-size:10.0pt'> session</span></span></span></span><span
+style='font-size:10.0pt'></span></h3>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>Before I go, I should
+probably tell you how to exit POSE</span><span
+style='font-size:10.0pt'>, since it doesn't have the same Windows</span><span
+style='font-size:10.0pt'><span style='mso-spacerun:yes'> </span>interface that
+you're accustomed to.<span style='mso-spacerun:yes'>  </span>To exit your POSE
+session, right click on POSE, and select &quot;Exit&quot;.<span
+style='mso-spacerun:yes'>  </span></span></p>
+  <p class=MsoBodyText><span style='font-size:10.0pt'>Experiment with POSE</span><span
+style='font-size:10.0pt'>, and learn to use it well.<span
+style='mso-spacerun:yes'>  </span>However, I must stress this again: don't rely
+on POSE for the final testing of your applications.<span
+style='mso-spacerun:yes'>  </span>There's no substitute for the real thing!</span></p>
+</div>
+</body>
+
+</html>
+

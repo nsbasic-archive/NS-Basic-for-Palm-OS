@@ -1,0 +1,109 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 23a: VFS Support - How to Read PDB Files</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 23a: VFS Support - How to Read PDB Files</h2>
+	  <h3>Oct 27, 2002</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<i>Contributed by <A HREF="mailto:jvande&copy; shaw.ca">Jeffrey VanderWal</A></i><br><br>
+
+<TABLE cellPadding=10 width="80%"  BORDE="0">
+
+  <TBODY>
+
+  <TR>
+
+    <TD><font face="Arial">Once we know the internal structure of the "PDB" file (<A HREF="TN02a.htm">See Tech Note 02a</A>), we can 
+
+    access it like any other file in regular Palm memory.&nbsp; There are some 
+
+    subtle differences however.&nbsp; Most of these are documented in the 
+
+    accompanying VFS project file &quot;VFSEg&quot;, in the Samples folder of NS Basic/Palm 3.0.1 or later.&nbsp; This is how you get started.</font><p>
+
+    <font face="Arial">1.&nbsp; Open the VFSEg project file.</font></p>
+
+    <p><font face="Arial">2.&nbsp; If your Palm emulator does not automatically start, start it. 
+
+    Make sure you are using a ROM file that supports extended memory (I will be 
+
+    using the Palm M505 with SD card support).</font></p>
+
+    <p><font face="Arial">3.&nbsp; Install the HostFS_Emulator (in the Tools folder).</font></p>
+
+    <p><font face="Arial">4.&nbsp; Create a directory on your hard drive where your&nbsp; 
+
+    &quot;simulated&quot; you SD card/Memory stick will be.&nbsp; My example will assume 
+
+    you are using <a href="file:///C:/SDCard">C:\SDCard</a></font></p>
+
+    <p><font face="Arial">5.&nbsp; Under the directory &quot;C:\SDCard&quot; create a &quot;PALM&quot; subdirectory, and 
+
+    a &quot;launcher&quot; sub subdirectory inside the PALM directory.&nbsp; You should 
+
+    finish with a <a href="file:///C:/SDCard/PALM/launcher">
+
+    C:\SDCard\PALM\launcher</a> structure.&nbsp; Any files you would like to 
+
+    show up on the memory card should be placed in this directory.</font></p>
+
+    <p><font face="Arial">4.&nbsp; Right click on the Emulator and go to settings, and then HostFS...</font></p>
+
+    <p><font face="Arial">5..Select Slot #1, click on browse to &quot;<a href="file:///C:/SDCard">C:\SDCard</a>&quot;. 
+
+    Click OK</font></p>
+
+    <p><font face="Arial">6.&nbsp; Check off Mount and then OK.</font></p>
+
+    <p><font face="Arial">7.&nbsp; Right click the emulator and do a soft reset.&nbsp; Your SD card 
+
+    should show up in the App launcher as &quot;POSESlot1&quot; or something similar.&nbsp; 
+
+    Your emulator is now ready to run the VFSEg project.</font></p>
+
+    <p><font face="Arial">In NSBasic, click on F5 to run.&nbsp; You may have to change the location 
+
+    of the shared libraries etc.&nbsp; I'll leave that challenge up to you.</font></p>
+
+    <p><font face="Arial">This project demonstrates a number of functions within the VFSLib.</font></p>
+
+    <p><font face="Arial">Copy to Palm - with and without a dialog<br>
+
+    Copy to Card<br>
+
+    Version<br>
+
+    VFSInit<br>
+
+    Delete<br>
+
+    Position<br>
+
+    ReadString and more...</font></p>
+
+    <p><font face="Arial">and more importantly, how to read the number of records and how to read 
+
+    strings and integers from a PDB file on the memory stick.&nbsp; All 
+
+    documentation/code is in the file and should be self explanatory.&nbsp; If 
+
+    you have any questions or comments, please post them on the NSBasic board 
+
+    for someone to take a look at.</font></p>
+
+
+
+</table></BODY></HTML>

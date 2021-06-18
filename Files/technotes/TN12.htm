@@ -1,0 +1,2309 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 12: Using Kyocera SmartPhone Devices</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 12: Using Kyocera SmartPhone Devices</h2>
+	  <h3>Jul 31, 2001</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<P>(Special thanks to Ron Glowka)
+
+<P>The NSBKyoceraLib Shared Library provides support for the Kyocera 
+Smartphone module, telephony, and URL handling APIs.  This document 
+describes the functions in this library.  The Kyocera Smartphone 
+API Manual should also be referenced in order to fully understand the 
+purpose and use of this shared library's functions.  This manual is part
+of the Kyocera Smartphone Software Development Kit which can be 
+downloaded from:
+
+<p><A HREF="http://www.kyocera-wireless.com/partner/partner.htm">http://www.kyocera-wireless.com/partner/partner.htm</A>
+
+<P>For the most part, the functions of this library are simply "wrappers" 
+that allow the Kyocera Smartphone API functions to be called from
+NSBasic.  The NSBKyoceraLib Shared Library provides support for all but 
+two of the Kyocera API functions.  The two functions omitted are the 
+PDQSignal and PDQSigAddClass funtions.  They were omitted because they 
+require passing a pointer to a user defined data structure.  These functions
+allow a user to implement custom signals and are not required when using 
+any of the Kyocera standard functions.
+
+<P>In order to use the NSBKyoceraLib Shared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "NSBK" for this reference name.  Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "NSBKyoceraLib", "NSBK"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the NSBKyoceraLib Shared Library, the 
+NSBKyoceraLib.INF file must be present in your "nsbasic\lib" directory 
+and the NSBKyoceraLib.prc file must be downloaded to your device.
+
+<P>Except for the functions that return version numbers, all the parameter 
+and return data types are either "Integer" or "String".  Version numbers
+are returned as a "Double".  The NSBKyoceraLib function names have almost
+the same name as the function names in the Kyocera API except that the "PDQ"
+prefix has been omitted.  For example, the NSBKyoceraLib function 
+"TelMakeCall" calls the Kyocera API function "PDQTelMakeCall".  Also, some
+Kyocera API functions return multiple pieces of data.  For example, the
+"PDQTelGetCallInfo" function returns 12 data items.  To get this data 
+through the NSBKyoceraLib Shared Library, you will need to call the 
+"TelGetCallInfo" and then call the 12 separate functions that return each
+individual data item.  These functions are documented in the function 
+reference section.
+
+<P>Included with the NSBKyoceraLib Shared Library is the NSBKyocera_Proxy 
+program.  As it's name implies, the "Proxy" program acts on behalf of
+your NSBasic program.  While it is not required when using the basic
+Kyocera API functions, it is required if you need your NSBasic program
+started or notified when certain telephony "events" occur.  These types
+of "events", called "signals", include the detection of an incoming call
+or the ending of a call in progress.  Some data, like the duration of a 
+call, is only available by processing these signals.  The next section of 
+this document will explain the purpose and use of the NSBKyocera_Proxy 
+program.
+
+<P>Note:  Many of the signal processing features of the Kyocera Smartphone
+require the use of bitmapped integer values.  These values are probably
+best processed by using the "Bits 'n Bytes" Shared Library.  For more
+information, see Tech Note number 10 on the NSBasic Web site at:
+
+	http://nsbasic.com/palm/info/technotes/TN10.htm
+
+<H4>The NSBKyocera_Proxy Program</H4>
+
+The NSBKyocera_Proxy program is a separate ".prc" file.  If its functions
+are to be used, it must be loaded on the Kyocera Smartphone along with the 
+NSBKyoceraLib Shared Library.  It is a very small C program that has the
+capability to process the special Application Launch codes that are
+used by the Kyocera signaling system.  This signaling system works as
+follows:
+
+<UL>
+	<LI>An application registers with the Kyocera signaling system for a particular signal or set of signals.  These signals can be things like the detection of an incoming call or the ending of a call in progress.
+
+	<LI>When a registered signal is detected, the Kyocera signaling system launches the registered application as a subprogram. It does this with the special launch code "sysAppLaunchCmd_PDQSignal".  Along with this launch code, the program is also passed a pointer to the signal type detected and a pointer to the data available with the signal.
+
+	<LI>Signals registered with the Kyocera signaling system do not survive a "soft reset" of the Palm OS.  They must be re-registered after a soft reset in order to continue to be processed.  The Palm OS system provides a method to allow a program to re-register for signal processing.  It does this by calling all applications, after a soft reset, with the special launch code "sysAppLaunchCmdSystemReset".
+</UL>
+
+<p>The NSBKyocera_Proxy program has the capability of handling all of the above
+actions.  A standalone NSBasic program can not handle these action
+because it can not specify what to do with application launch codes other
+than "sysAppLaunchCmdNormal".  Also, an NSBasic program can not be launched
+as a subprogram because it relies on the use of global variables.
+
+<p>The NSBKyocera_Proxy program also has to ability of starting an NSBasic 
+program that has registered, through it, for a set of Kyocera signals.
+If the particular NSBasic program is already running when a Kyocera 
+signal is detected, the NSBKyocera_Proxy program simply queues a special
+event that can be detected in an NSBasic "EventsCode" code section.  The
+event code queued has an event type of 25678.  The functions starting with
+the "Proxy" prefix in the NSBKyoceraLib Shared Library provide support
+for registering, unregistering, and retrieving data associated with a
+Kyocera signal.
+
+<p>The following "code" section examples show how to use signals processed 
+by the NSBKyocera_Proxy program:
+<pre>
+	---------------------------
+	Application "Startup" Code:
+	---------------------------
+
+	Global CurrentAppSet as Integer
+
+	Sub main()
+	    LoadLibrary "NSBKyoceraLib", "NSBK"
+	    CurrentAppSet = 0    
+	End Sub
+
+	-------------------------------
+	Application "Termination" Code:
+	-------------------------------
+
+	Sub project_termination_9915()
+	    Dim Status as Integer
+	    
+	    Status = NSBK.ProxyCurrentApp("")
+	End Sub
+
+	------------------------
+	First Form "After" Code:
+	------------------------
+
+	Sub Form1004_after()
+	    Dim Status as Integer
+	    Dim Class as Integer
+	    Dim Signal as Integer
+	    Dim SysTime as Integer
+	    
+	    If CurrentAppSet = 0 Then
+	        Status = NSBK.ProxyCurrentApp("NsBk")
+
+	        If Status = 1 Then
+	            SysTime = NSBK.ProxyEventTime()
+        	    Class = NSBK.ProxyClass()
+	            Signal = NSBK.ProxySignal()
+	            ' The proxy started this program....
+	            ' Do something based on the Kyocera Signals...
+	        End If
+	        CurrentAppSet = 1
+	    End If
+	End Sub
+
+	-------------------------
+	Any Form's "Events" Code:
+	-------------------------
+
+	Sub Form1004_events()
+	    Dim EventType as Integer
+	    Dim Class as Integer
+	    Dim Signal as Integer
+    
+	    EventType = GetEventType()
+	    If EventType = 25678 Then
+	        Class = NSBK.ProxyClass()
+	        Signal = NSBK.ProxySignal()
+		' The Proxy program posted an event...
+		' Do something based on the Kyocera Signals...
+	    End If
+	End Sub
+
+</PRE>
+
+<H4>Important Kyocera Values</H4>
+
+Use these values in the various Kyocera calls.
+
+<pre>
+					Hexidecimal	Decimal
+					-----------	-------
+Classes:
+
+	SGN_CLASS_TAPI			0x1		1
+	SGN_CLASS_MSG			0x2		2
+	SGN_CLASS_MODULE		0x80003		524291
+
+Generic Signal Masks:
+
+	SGN_ALL				0xFFFFFFFF	-1
+	SGN_NONE			0x0		0
+
+TAPI Signal Masks:
+
+	SGN_TAPI_IDLE			0x1		1
+	SGN_TAPI_INCOMING		0x2		2
+	SGN_TAPI_LOST			0x4		4
+	SGN_TAPI_MISSED			0x8		8
+	SGN_TAPI_FAILED			0x10		16
+	SGN_TAPI_CALLING		0x20		32
+	SGN_TAPI_CONVERSATION		0x40		64
+	SGN_TAPI_ENDED			0x80		128
+	SGN_TAPI_DIALPAUSED		0x100		256
+	SGN_TAPI_CALLERID		0x200		512
+	SGN_TAPI_DIALEDDTMF		0x400		1024
+	SGN_TAPI_INCOMINGMODE		0x1000		4096
+
+MSG Signal Masks:
+
+	SGN_MSG_RAW_SMS			0x1		1
+	SGN_MSG_CARRIER_VOICE_MAIL	0x2		2
+	SGN_MSG_TEXT_MESSAGE		0x8		8
+	SGN_MSG_PAGE			0x200		512
+
+Module Signal Masks:
+
+	SGN_POWER			0x1		1
+	SGN_CHARGING			0x2		2
+	SGN_SERVICE			0x1000		4096
+	SGN_ROAM			0x2000		8192
+	SGN_VOICEPRIVACY		0x4000		16384
+	SGN_NAMCHANGED			0x8000		32768
+	SGN_RSSI			0x10000		65536
+	SGN_DIGITAL			0x20000		131072
+	SGN_LOCK			0x40000		262144
+	SGN_MODULEFAILURE		0x100000	1048576
+	SGN_AIRTIMECHANGED		0x200000	2097152
+	SGN_MUTED			0x1000000	16777216
+
+Error Codes:
+
+	PDQErrNoError			0x0		0
+	PDQErrNotImplemented		0x4001		16385
+	PDQErrNoMemory			0x4002		16386
+	PDQErrLibStillOpen		0x4003		16387
+	PDQErrAlready			0x4004		16388
+	PDQErrNotInCall			0x4005		16389
+	PDQErrInvalidMode		0x4006		16390
+	PDQErrNoService			0x4007		16391
+	PDQErrBadNumber			0x4008		16392
+	PDQErrNoCallInfo		0x4009		16393
+	PDQErrPhoneOff			0x400A		16394
+	PDQErrBadVersion		0x400B		16395
+	PDQErrNoHack			0x400C		16396
+	PDQErrInConversation		0x400D		16397
+	PDQErrNoConversation		0x4011		16401
+	PDQErrPower			0x4012		16402
+	PDQErrNoSignal			0x4013		16403
+	PDQErrNotRegistered		0x4014		16404
+	PDQErrInvalidSignaling		0x4015		16405
+	PDQErrSignalReentered		0x4016		16406
+	PDQErrBadDB			0x4017		16407
+	PDQErrBadIndex			0x4018		16408
+	PDQErrBadParam			0x4019		16409
+	PDQErrDBNotFound		0x401A		16410
+	PDQErrDBNotOpen			0x401B		16411
+	PDQErrDBWriteFailed		0x401C		16412
+	PDQErrNoHandler			0x401D		16413
+	PDQErrHandlerMissing		0x401E		16414
+	PDQErrBadAddress		0x401F		16415
+	PDQErrLocked			0x4020		16416
+	PDQErrSignalStopped		0x4021		16417
+	PDQErrAppNotAllowed		0x4022		16418
+	PDQErrVerificationFailed	0x4023		16419
+	PDQErrRestricted		0x4024		16420
+	PDQErrLongNumber		0x4025		16421
+	PDQErrNoRedial			0x4026		16422
+	PDQErrCallGuard			0x4027		16423
+
+</PRE>
+
+<H4>NSBKyoceraLib Shared Library Function Reference</H4>
+
+<pre>
+Version
+-------
+
+	Version = NSBKyoceraLib.Version()
+
+    Description:
+
+	Returns the version number of the NSBKyoceraLib Shared Library.
+
+    Parameters: None
+
+    Returns:	Version as Double
+
+    Example:
+
+	Dim Version as Double
+
+	Version = NSBK.Version()
+
+CompileInfo
+-----------
+
+	NSBKyoceraLib.CompileInfo CompileDate, CompileTime
+
+    Description:
+
+	Returns the date and time that the NSBKyoceraLib Shared Library 
+	was compiled.
+
+    Parameters: CompileDate as String
+		CompileTime as String
+
+    Returns:	None
+
+    Example:
+
+	Dim CompileDate as String
+	Dim CompileTime as String
+
+	CompileDate = "mon dd yyyy"	'11 characters
+	CompileTime = "hh:mm:ss"	'8 characters
+
+	NSBK.CompileInfo CompileDate, CompileTime
+
+    Comments:
+
+	The CompileDate and CompileTime string variables must be 
+	initialized prior to calling CompileInfo.  
+
+CoreLibPresent
+--------------
+
+	LibPresent = NSBKyoceraLib.CoreLibPresent()
+
+
+    Description:
+
+	Returns 1 if the Kyocera Core Library is present.  Otherwise,
+	it returns 0.  If the Core Library is not present, do not
+	call any Core Library functions.  The Core Library functions
+	start with the prefixes "Core", "Sig", "Mod", "Tel", and
+	"Proxy".
+
+    Parameters:	None
+
+    Returns:	LibPresent as Integer
+		(1 = Kyocera Core Library is present)
+		(0 = Kyocera Core Library is not present)
+
+    Example:
+
+	Dim LibPresent as Integer
+
+	LibPresent = NSBK.CoreLibPresent()
+
+RegistryLibPresent
+------------------
+
+	LibPresent = NSBKyoceraLib.RegistryLibPresent()
+
+
+    Description:
+
+	Returns 1 if the Kyocera Registry Library is present.  Otherwise,
+	it returns 0.  If the Registry Library is not present, do not
+	call any Registry Library functions.  The Registry Library 
+	functions start with the prefix "REG".
+
+    Parameters:	None
+
+    Returns:	LibPresent as Integer
+		(1 = Kyocera Registry Library is present)
+		(0 = Kyocera Registry Library is not present)
+
+    Example:
+
+	Dim LibPresent as Integer
+
+	LibPresent = NSBK.RegistryLibPresent()
+
+CoreLibGetVersion
+-----------------
+
+	Version = NSBKyoceraLib.CoreLibGetVersion()
+
+    Description:
+
+	Returns the version number of the Kyocera Core Library.
+
+    Parameters: None
+
+    Returns:	Version as Double
+
+    Example:
+
+	Dim Version as Double
+
+	Version = NSBK.CoreLibGetVersion()
+
+SigRegister
+-----------
+
+	Status = NSBKyoceraLib.SigRegister(Class, Mask, Priority, Creator)
+
+    Description:
+
+	Register an application for signals.
+
+    Parameters: Class as Integer
+		Mask as Integer
+		Priority as Integer
+			(0 through 10 - 0 = lowest priority)
+		Creator as String
+
+    Returns:	Status as Integer
+		(0 = no error)
+		(16386 = No memory)
+
+    Example:
+
+	Dim Status as Integer
+	Dim Class as Integer
+	Dim Mask as Integer
+	Dim Priority as Integer
+	Dim Creator as String
+
+	Class = 1	'SGN_CLASS_TAPI
+	Mask = 254	'SGN_TAPI_INCOMING | SGN_TAPI_LOST |
+			'SGN_TAPI_MISSED | SGN_TAPI_FAILED |
+			'SGN_TAPI_CALLING | SGN_TAPI_CONVERSATION |
+			'SGN_TAPI_ENDED
+	Priority = 10	'Highest Priority
+	Creator = "NsBk"
+	Status = NSBK.SigRegister(Class, Mask, Priority, Creator)
+
+    Comments:
+
+	This function was provided just to complete the NSBasic 
+	function support for the Kyocera Shared Library.  In general,
+	because of the way that Kyocera Signals are processed, you
+	should use the ProxyRegister function instead.  Please read
+	the description of the "NSBKyocera_Proxy" program for more
+	information.
+
+SigUnregister
+-------------
+
+	Status = NSBKyoceraLib.SigUnregister(Class, Mask, Creator)
+
+    Description:
+
+	Unregister an application for given signals.
+
+    Parameters: Class as Integer
+		Mask as Integer
+		Creator as String
+
+    Returns:	Status as Integer
+		(0 = no error)
+		(16404 = Not registered)
+
+    Example:
+
+	Dim Status as Integer
+	Dim Class as Integer
+	Dim Mask as Integer
+	Dim Creator as String
+
+	Class = 1	'SGN_CLASS_TAPI
+	Mask = 254	'SGN_TAPI_INCOMING | SGN_TAPI_LOST |
+			'SGN_TAPI_MISSED | SGN_TAPI_FAILED |
+			'SGN_TAPI_CALLING | SGN_TAPI_CONVERSATION |
+			'SGN_TAPI_ENDED
+	Creator = "NsBk"
+	Status = NSBK.SigUnregister(Class, Mask, Creator)
+
+    Comments:
+
+	This function was provided just to complete the NSBasic 
+	function support for the Kyocera Shared Library.  In general,
+	because of the way that Kyocera Signals are processed, you
+	should use the ProxyUnregister or ProxyUnregisterAll functions
+	instead.  Please read the description of the "NSBKyocera_Proxy"
+	program for more information.
+
+SigEnumerate
+------------
+
+	outClass = NSBKyoceraLib.SigEnumerate(Number, Class, Mask, Name)
+
+    Description:
+
+	List all of the registered applications for the given signals.
+
+    Parameters: Number as Integer
+		Class as Integer
+		Mask as Integer
+		Name as String
+
+    Returns:	outClass as Integer
+		(class)
+		(-1 = No more registered applications)
+
+    Example:
+
+	Dim Number as Integer
+	Dim Class as Integer
+	Dim Mask as Integer
+	Dim Name as String
+	Dim outClass as Integer
+	Dim outMask as Integer
+	Dim outPriority as Integer
+	Dim outCreator as String
+	Dim outType as Integer
+
+	Class = 1	'SGN_CLASS_TAPI
+	Mask = 254	'SGN_TAPI_INCOMING | SGN_TAPI_LOST |
+			'SGN_TAPI_MISSED | SGN_TAPI_FAILED |
+			'SGN_TAPI_CALLING | SGN_TAPI_CONVERSATION |
+			'SGN_TAPI_ENDED
+	Number = 0
+	outClass = Class
+	Do Until outClass = -1
+	    Number = Number + 1
+	    outClass = NSBK.SigEnumerate(Number, Class, Mask, Name)
+	    If outClas <> -1 Then
+		outMask = NSBK.SigMask()
+		outPriority = NSBK.SigPriority()
+		outCreator = NSBK.Creator()
+		outType = NSBK.Type()
+	    End If
+	Loop
+
+    Comments:
+
+	This function will list all the applications that are
+	registered for the given signal mask.  To use it, start by 
+	calling the function with the "Number" parameter set to one.
+	Then, increment the "Number" parameter with each call until 
+	a -1 is returned.  The example provided above shows how this 
+	function is used.
+
+	The "Name" of a class can be used instead of the actual class
+	parameter.  To use the class "Name", specify a "Class" value 
+	of 0 (the Kyocera documentation does not specify valid "Names").
+
+SigMask
+-------
+
+	outMask = NSBKyoceraLib.SigMask()
+
+    Description:
+
+	Returns a signal mask retrieved from the most recent call
+	to the SigEnumerate function.
+
+    Parameters:	None
+
+    Returns:	outMask as Integer
+
+    Example:
+
+	See the example provided with the SigEnumerate function.
+
+SigPriority
+-----------
+
+	outPriority = NSBKyoceraLib.SigPriority()
+
+    Description:
+
+	Returns the application priority retrieved from the most recent 
+	call to the SigEnumerate function.
+
+    Parameters:	None
+
+    Returns:	outPriority as Integer
+		(0 through 10 - 0 = lowest priority)
+
+    Example:
+
+	See the example provided with the SigEnumerate function.
+
+SigCreator
+----------
+
+	outCreator = NSBKyoceraLib.SigCreator()
+
+    Description:
+
+	Returns the application Creator ID retrieved from the most recent 
+	call to the SigEnumerate function.
+
+    Parameters:	None
+
+    Returns:	outCreator as String
+
+    Example:
+
+	See the example provided with the SigEnumerate function.
+	
+SigType
+-------
+
+	outType = NSBKyoceraLib.SigType()
+
+    Description:
+
+	Returns the application Type retrieved from the most recent 
+	call to the SigEnumerate function.
+
+    Parameters:	None
+
+    Returns:	outType as Integer
+		(usually - sysFileTApplication)
+
+    Example:
+
+	See the example provided with the SigEnumerate function.
+	
+ModPower
+--------
+
+	NKBKyoceraLib.ModPower Power
+
+    Description:
+
+	Power on or off the phone.
+
+    Parameters:	Power as Integer
+			(1 = Turn power on)
+			(0 = Turn power off)
+
+    Returns:	None
+
+    Example:
+
+	Dim Power as Integer
+
+	Power = 0  'Turn Power Off
+	NSBK.ModPower Power
+
+ModSetEarVolume
+---------------
+
+	Volume = NSBKyoceraLib.ModSetEarVolume(Adjustment)
+
+    Description:
+
+	Set the earpiece volume.  The "Adjustment" parameter is a positive
+	value to increase the earpiece volume and negative to decrease
+	the volume.  If the adjustment value exceeds the valid range, the
+	volume will be set to either the minimum or maximum value,
+	depending on whether the value is negative or positive.
+
+    Parameters:	Adjustment as Integer
+		
+    Returns:	Volume as Integer
+		(Minimum = 1, Maximum = 7)
+
+    Example:
+
+	Dim Adjustment as Integer
+	Dim Volume as Integer
+
+	Adjustment = -1
+
+	Volume = NSBK.ModSetEarVolume(Adjustment)
+
+ModGetState
+-----------
+
+	State = NSBKyoceraLib.ModGetState()
+
+    Description:
+
+	Retrieve the state of the phone.  The state is returned as a
+	bitmapped integer value.  The individual state values can also
+	be retrieved with the ModStatePowered, ModStateInCall,
+	ModStateAMPS, ModStateNoService, ModStateHardPaused,
+	ModStateMuted, and ModStateLPM functions.
+
+
+    Parameters:	None
+
+    Returns:	State as Integer
+		Bitmapped integer values:
+			MSTATE_POWERED		0x1	1
+			MSTATE_INCALL		0x2	2
+			MSTATE_AMPS		0x10	16
+			MSTATE_NOSERVICE	0x40	64
+			MSTATE_HARD_PAUSED	0x100	256
+			MSTATE_MUTED		0x200	512
+			MSTATE_LPM		0x400	1024
+
+    Example:
+
+	Dim State as Integer
+
+	State = NSBK.ModGetState()
+
+ModStatePowered
+---------------
+
+	Powered = NSBKyoceraLib.ModStatePowered()
+
+    Description:
+
+	Returns the power on/off state of the phone.
+
+    Parameters:	None
+
+    Returns:	Powered as Integer
+		(1 = Power is on)
+		(0 = Power is off)
+
+    Example:
+
+	Dim Powered as Integer
+
+	Powered = NSBK.ModStatePowered()
+
+ModStateInCall
+--------------
+
+	InCall = NSBKyoceraLib.ModStateInCall()
+
+    Description:
+
+	Returns 1 if the phone has a call connected ("in conversation"),
+	it returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	InCall as Integer
+
+    Example:
+
+	Dim InCall as Integer
+
+	InCall = NSBK.ModStateInCall()
+
+ModStateAMPS
+------------
+
+	AMPS = NSBKyoceraLib.ModStateAMPS()
+
+    Description:
+
+	Returns 1 if the phone is in AMPS mode, it returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	AMPS as Integer
+
+    Example:
+
+	Dim AMPS as Integer
+
+	AMPS = NSBK.ModStateAMPS()
+
+ModStateNoService
+-----------------
+
+	NoService = NSBKyoceraLib.ModStateNoService()
+
+    Description:
+
+	Returns 1 if the phone is out of the service area, 
+	it returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	NoService as Integer
+
+    Example:
+
+	Dim NoService as Integer
+
+	NoService = NSBK.ModStateNoService()
+
+ModStateHardPaused
+------------------
+
+	HardPaused = NSBKyoceraLib.ModStateHardPaused()
+
+    Description:
+
+	Returns 1 if the phone has been "hard paused" during dialing, 
+	it returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	HardPaused as Integer
+
+    Example:
+
+	Dim HardPaused as Integer
+
+	HardPaused = NSBK.ModStateHardPaused()
+
+ModStateMuted
+-------------
+
+	Muted = NSBKyoceraLib.ModStateMuted()
+
+    Description:
+
+	Returns 1 if the phone's microphone has been muted, 
+	it returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	Muted as Integer
+
+    Example:
+
+	Dim Muted as Integer
+
+	Muted = NSBK.ModStateMuted()
+
+ModStateLPM
+-----------
+
+	LPM = NSBKyoceraLib.ModStateLPM()
+
+    Description:
+
+	Returns 1 if the phone is in LPM ("lower power mode"), 
+	it returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	LPM as Integer
+
+    Example:
+
+	Dim LPM as Integer
+
+	LPM = NSBK.ModStateLPM()
+
+ModMute
+-------
+
+	NSBKyocera.ModMute Mute
+
+    Description:
+
+	Mute or unmute the phone's microphone.
+
+    Parameters:	Mute as Integer
+			(1 = Mute)
+			(0 = Unmute)
+
+    Returns:	None
+
+    Example:
+
+	Dim Mute as Integer
+
+	Mute = 0		'Unmute
+	NSBK.ModMute Mute
+
+ModGetPhoneNumber
+-----------------
+
+	PhoneNumber = NSBKyoceraLib.ModGetPhoneNumber()
+
+    Description:
+
+	Retrieve the phone's telephone number.
+
+    Parameters:	None
+
+    Returns:	PhoneNumber as String
+
+    Example:
+
+	Dim PhoneNumber as String
+
+	PhoneNumber = NSBK.ModGetPhoneNumber()
+
+TelMakeCall
+-----------
+
+	Status = NSBKyoceraLib.TelMakeCall(PhoneNumber)
+
+    Description:
+
+	Originate a voice call.
+
+    Parameters:	PhoneNumber as String
+
+    Returns:	Status As Integer
+		(0 = No error)
+		(16392 = Bad number)
+		(16403 = No signal)
+		(16391 = No service)
+		(16388 = Already connected)
+		(16386 = No memory)
+
+    Example:
+
+	Dim PhoneNumber as String
+	Dim Status as Integer
+
+	PhoneNumber = "18005551234"
+	Status = NSBK.TelMakeCall(PhoneNumber)
+
+TelEndCall
+----------
+
+	Status = NSBKyoceraLib.TelEndCall()
+
+    Description:
+
+	End a call.
+
+    Parameters:	None
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16388 = Already ended)
+		(16386 = No memory)
+		(16394 = Phone off)
+
+    Example:
+
+	Dim Status as Integer
+
+	Status = NSBK.TelEndCall()
+
+TelAnswerCall
+-------------
+
+	Status = NSBKyoceraLib.TelAnswerCall()
+
+    Description:
+
+	Answer an incoming voice call.
+
+    Parameters:	None
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16394 = Phone off)
+
+    Example:
+
+	Dim Status as Integer
+
+	Status = NSBK.TelAnswerCall()
+
+TelGenerateDTMF
+---------------
+
+	Status = NSBKyoceraLib.TelGenerateDTMF(Key, Long)
+
+    Description:
+
+	Send a DTMF (dual tone multi-frequency) signal.
+
+    Parameters:	Key as String
+			(only the 1st character is used)
+		Long as Integer
+			(1 = send a long DTMF)
+			(0 = send a short DTMF)
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16394 = Phone off)
+
+    Example:
+
+	Dim Key as String
+	Dim Long as Integer
+	Dim Status as Integer
+
+	Key = "1"
+	Long = 0
+	Status = NSBK.TelGenerateDTMF(Key, Long)
+
+TelGetCallInfo
+--------------
+
+	Status = TelGetCallInfo()
+
+    Description:
+
+	Get current call information.  If the status returned from this
+	call is 0 (no error), then any of the following functions can be
+	called to get the individual call information values:
+		TelCISignalHist, TelCallFlags, TelCICallerIDStatus,
+		TelCIDialingPaused, TelCINumber, TelCITimeOfCall,
+		TelCITimeOfCall, TelCICallDuration, TelCIWaiting,
+		TelCIExt, TelCIErr, TelCICallType, TelCIBaudRate
+
+    Parameters:	None
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16393 = No call info)
+
+    Example:
+
+	Dim Status as Integer
+	Dim SignalHist as Integer
+	Dim CallFlags as Integer
+	Dim CallerIDStatus as Integer
+	Dim DialingPaused as Integer
+	Dim Number as String
+	Dim TimeOfCall as Integer
+	Dim CallDuration as Integer
+	Dim Waiting as String
+	Dim Ext as String
+	Dim Err as Integer
+	Dim CallType as Integer
+	Dim BaudRate as Integer
+
+	Status = NSBK.TelGetCallInfo()
+	If Status = 0 Then
+		SignalHist = NSBK.TelCISignalHist()
+		CallFlags = NSBK.TelCICallFlags()
+		CallerIDStatus = NSBK.TelCICallerIDStatus()
+		DialingPaused = NSBK.TelCIDialingPaused()
+		Number = NSBK.TelCINumber()
+		TimeOfCall = NSBK.TelCITimeOfCall()
+		CallDuration = NSBK.TelCICallDuration()
+		Waiting = NSBK.TelCIWaiting()
+		Ext = NSBK.TelCIExt()
+		Err = NSBK.TelCIErr()
+		CallType = NSBK.TelCICallType()
+		BaudRate = NSBK.TelCIBaudRate()
+	End If
+
+TelCISignalHist
+---------------
+
+	SignalHist = NSBKyoceraLib.TelCISignalHist()
+
+    Description:
+
+	Returns a history of all the signal bits set for this call.
+
+    Parameters:	None
+
+    Returns:	SignalHist as Integer
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCICallFlags
+--------------
+
+	CallFlags = NSBKyoceraLib.TelCICallFlags()
+
+    Description:
+
+	Returns the call flags (data, voice, etc) for this call.
+
+    Parameters:	None
+
+    Returns:	CallFlags as Integer
+		(0 = Normal - 2 parties)
+		(1 = Conference call)
+		(2 = Call Waiting)
+		(3 = Data)
+		(4 = SMS)
+		(5 = Test)
+		(6 = OTAPA)
+		(7 = OTASP)
+		(8 = E911 - For emergency calls)
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCICallerIDStatus
+-------------------
+
+	CallerIDStatus = NSBKyoceraLib.TelCICallerIDStatus()
+
+    Description:
+
+	Returns the Caller ID status for the call.
+
+    Parameters:	None
+
+    Returns:	CallerIDStatus as Integer
+		(0 = Allowed)
+		(1 = Restricted)
+		(2 = Not available)
+		(3 = Reserved)
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCIDialingPaused
+---------------
+
+	DialingPaused = NSBKyoceraLib.TelCIDialingPaused()
+
+    Description:
+
+	Returns 1 if dialing has been "hard paused", returns 0 if not.
+
+    Parameters:	None
+
+    Returns:	DialingPaused as Integer
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCINumber
+-----------
+
+	Number = NSBKyoceraLib.TelCINumber()
+
+    Description:
+
+	Returns the Caller ID number of the call.
+
+    Parameters:	None
+
+    Returns:	Number as String
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCITimeOfCall
+---------------
+
+	TimeOfCall = NSBKyoceraLib.TelCITimeOfCall()
+
+    Description:
+
+	Returns the starting time of the current call.  This time is
+	returned in "system format" - an integer containing the number
+	of seconds between January 1, 1904 and the returned time.  The
+	StringDateTime, StringDate, and StringTime functions can be used
+	to convert this value to a readable string representation.
+
+    Parameters:	None
+
+    Returns:	TimeOfCall as Integer
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCICallDuration
+-----------------
+
+	CallDuration = NSBKyoceraLib.TelCICallDuration()
+
+    Description:
+
+	Returns the duration, in seconds, of the current call.  This 
+	information is only available after the call ends.  To retrieve 
+	this value, the Kyocera Proxy program must be used and the 
+	ProxyGetCallInfo function must be called prior to calling this 
+	function.  See the section describing the NSBKyocera_Proxy 
+	program.
+
+    Parameters:	None
+
+    Returns:	SignalHist as Integer
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to ProxyGetCallInfo must be made before 
+	calling this function.
+
+TelCIWaiting
+------------
+
+	Waiting = NSBKyoceraLib.TelCIWaiting()
+
+    Description:
+
+	Returns the Caller ID number of a "call waiting" call.
+
+    Parameters:	None
+
+    Returns:	Waiting as String
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCIExt
+--------
+
+	Ext = NSBKyoceraLib.TelCIExt()
+
+    Description:
+
+	Returns an extension number or extra DTMF codes.
+
+    Parameters:	None
+
+    Returns:	Ext as String
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCIErr
+--------
+
+	Err = NSBKyoceraLib.TelCIErr()
+
+    Description:
+
+	Returns the error code set when a call fails, etc.
+
+    Parameters:	None
+
+    Returns:	Err as Integer
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCICallType
+-------------
+
+	CallType = NSBKyoceraLib.TelCICallType()
+
+    Description:
+
+	Returns the type of a data call.
+
+    Parameters:	None
+
+    Returns:	CallType as Integer
+		(0 = Unknown)
+		(1 = Fax)
+		(2 = PPP - packet call)
+		(3 = ADATA - async. data call)
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelCIBaudRate
+-------------
+
+	BaudRate = NSBKyoceraLib.TelCIBaudRate()
+
+    Description:
+
+	Returns the baud rate of a data call.
+
+    Parameters:	None
+
+    Returns:	BaudRate as Integer
+
+    Example:
+
+	See the example for either the TelGetCallInfo or ProxyGetCallInfo
+	functions.
+
+    Comments:
+
+	A successful call to either TelGetCallInfo or ProxyGetCallInfo
+	must be made before calling this function.
+
+TelResumeDialing
+----------------
+
+	NSBKyoceraLib.TelResumeDialing()
+
+    Description:
+
+	Resumes dialing when dialing has been "hard paused".
+
+    Parameters:	None
+
+    Returns:	None
+
+    Examples:
+
+	NSBK.TelResumeDialing()
+
+TelCancelPause
+--------------
+
+	NSBKyoceraLib.TelCancelPause()
+
+    Description:
+
+	Cancel a dialing pause when dialing has been "hard paused".
+
+    Parameters:	None
+
+    Returns:	None
+
+    Examples:
+
+	NSBK.TelCancelPause()
+
+TelFormatNumber
+---------------
+
+	FormattedNumber = NSBKyoceraLib.TelFormatNumber(Number, FormatCodes)
+
+    Description:
+
+	Format a phone number based on the bitmapped values in the
+	"FormatCodes" parameter.
+
+    Parameters:	Number as String
+			(Unformatted phone number)
+		FormatCodes as Integer
+			(Raw 		0x0	0	unformatted)
+			(Formatted	0x1	1	X(XXX) XXX-XXXX)
+			(DefaultArea	0x2	2	fully qualified nbr)
+			(AddArea	0x4	4	add area code)
+			(Prepend	0x8	8	prepend user
+							preferred local/long
+							distance string)
+			(Append		0x10	16	append user
+							preferred local/long
+							distance string)
+			(LocalOnly	0x20	32	local number only)
+
+    Returns:	FormattedNumber as String
+
+    Example:
+
+	Dim Number
+	Dim UnformattedNumber as String
+	Dim FormatCodes as Integer
+
+	UnformattedNumber = "555-1234"
+	FormatCodes = 8			'Prepend user preferences
+
+	Number = NSBK.TelFormatNumber(UnformattedNumber, FormatCodes)
+
+TelGetDigit
+-----------
+
+	KeypadDigit = NSBKyoceraLib.TelGetDigit(AsciiChar)
+
+    Description:
+
+	Convert a character to a phone keypad digit.
+
+
+    Parameters:	AsciiChar as String
+			(only the first character is used)
+
+    Returns:	KeypadDigit as String
+		(Returns a blank string "" if invalid)
+
+    Examples:
+
+	Dim AsciiChar as String
+	Dim KeypadDigit as String
+
+	AsciiChar = "*"
+	KeypadDigit = NSBK.TelGetDigit(AsciiChar)
+	
+RegGetVersion
+-------------
+
+	Version = NSBKyoceraLib.RegGetVersion()
+
+    Description:
+
+	Returns the version number of the Kyocera Registry Library.
+
+    Parameters: None
+
+    Returns:	Version as Double
+
+    Example:
+
+	Dim Version as Double
+
+	Version = NSBK.RegGetVersion()
+
+RegAddScheme
+------------
+
+	Status = NSBKyoceraLib.RegAddScheme(Scheme, Creator, CapabilityFlags)
+
+    Description:
+
+	Add a scheme to the registry.
+
+    Parameters:	Scheme as String - Scheme Name
+		Creator as String - program Creator ID
+		CapabilityFlags as Integer
+			(1 = LaunchURL - switch to application)
+			(2 = SubLaunch - launch app as subroutine call)
+
+    Returns:	Status as Integer
+		(0 = No Error)
+		(16409 = Bad Param)
+		(16410 = DB not found)
+		(16412 = DB write failed)
+
+
+    Example:
+
+	Dim Status as Integer
+	Dim Scheme as String
+	Dim Creator as String
+	Dim CapabilityFlags as Integer
+
+	Scheme = "Proxy"
+	Creator = "nsbK"
+	CapabilityFlags = 2		' Sublaunch
+
+	Status = NSBK.RegAddScheme(Scheme, Creator, CapabilityFlags)
+
+RegRemoveScheme
+---------------
+
+	Status = NSBKyoceraLib.RegRemoveScheme(Scheme, Creator)
+
+    Description:
+
+	Remove a scheme from the registry.
+
+    Parameters:	Scheme as String - Scheme Name
+		Creator as String - program Creator ID
+
+    Returns:	Status as Integer
+		(0 = No Error)
+		(16409 = Bad Param)
+		(16410 = DB not found)
+
+
+    Example:
+
+	Dim Status as Integer
+	Dim Scheme as String
+	Dim Creator as String
+
+	Scheme = "Proxy"
+	Creator = "nsbK"
+
+	Status = NSBK.RegRemoveScheme(Scheme, Creator)
+
+RegEnableScheme
+---------------
+
+	Status = NSBKyoceraLib.RegEnableScheme(Scheme, Creator, Enable)
+
+    Description:
+
+	Enable or disable registry of URL handler.
+
+    Parameters:	Scheme as String - Scheme Name
+		Creator as String - program Creator ID
+		Enable as Integer
+			(1 = enable)
+			(0 = disable)
+
+    Returns:	Status as Integer
+		(0 = No Error)
+
+    Example:
+
+	Dim Status as Integer
+	Dim Scheme as String
+	Dim Creator as String
+	Dim Enable as Integer
+
+	Scheme = "Proxy"
+	Creator = "nsbK"
+	Enable = 0		'disable
+
+	Status = NSBK.RegEnableScheme(Scheme, Creator, Enable)
+
+RegEnumSchemes
+--------------
+
+	Scheme = NSBKyoceraLib.RegEnumSchemes(Number)
+
+    Description:
+
+	List registered URL scheme handlers.
+
+    Parameters: Number as Integer
+
+    Returns:	Scheme as String
+		(scheme name)
+		("" = No more registered schemes)
+
+    Example:
+
+	Dim Number as Integer
+	Dim Scheme as String
+	Dim Name as String
+	Dim ShortName as String
+	Dim Creator as String
+	Dim CapabilityFlags as Integer
+	Dim Enabled as Integer
+
+	Number = 0
+	Scheme = "anything"
+	Do Until Scheme = ""
+	    Number = Number + 1
+	    Scheme = NSBK.RegEnumSchemes(Number)
+	    If Scheme <> "" Then
+		Name = NSBK.RegSchemeName()
+		ShortName = NSBK.RegSchemeShortName()
+		Creator = NSBK.RegSchemeCreator()
+		CapabilityFlags = NSBK.RegSchemeFlags()
+		Enabled = NSBK.RegSchemeEnabled()
+	    End If
+	Loop
+
+    Comments:
+
+	This function will list all the registered URL schemes.  To use it,
+	start by calling the function with the "Number" parameter set to
+	one.  Then, increment the "Number" parameter with each call until 
+	a blank string "" is returned.  The example provided above shows 
+	how this function is used.
+
+RegSchemeName
+-------------
+
+	Name = NSBKyoceraLib.RegSchemeName()
+
+    Description:
+
+	Returns the name for the registered URL scheme retrieved from the 
+	most recent call to the RegEnumSchemes function.
+
+    Parameters:	None
+
+    Returns:	Name as String
+
+    Example:
+
+	See the example provided with the RegEnumSchemes function.
+
+RegSchemeShortName
+------------------
+
+	ShortName = NSBKyoceraLib.RegSchemeShortName()
+
+    Description:
+
+	Returns the short name for the registered URL scheme retrieved 
+	from the most recent call to the RegEnumSchemes function.
+
+    Parameters:	None
+
+    Returns:	ShortName as String
+
+    Example:
+
+	See the example provided with the RegEnumSchemes function.
+
+RegSchemeCreator
+----------------
+
+	Creator = NSBKyoceraLib.RegSchemeCreator()
+
+    Description:
+
+	Returns the Creator ID for the registered URL scheme retrieved 
+	from the most recent call to the RegEnumSchemes function.
+
+    Parameters:	None
+
+    Returns:	Creator as String
+
+    Example:
+
+	See the example provided with the RegEnumSchemes function.
+
+RegSchemeFlags
+--------------
+
+	CapabilityFlags = NSBKyoceraLib.RegSchemeFlags()
+
+    Description:
+
+	Returns the capability flags for the registered URL scheme 
+	retrieved from the most recent call to the RegEnumSchemes function.
+
+    Parameters:	None
+
+    Returns:	CapabilityFlags as Integer
+		(1 = LaunchURL - switch to application)
+		(2 = SubLaunch - launch app as subroutine call)
+
+    Example:
+
+	See the example provided with the RegEnumSchemes function.
+
+RegSchemeEnabled
+----------------
+
+	Enabled = NSBKyoceraLib.RegSchemeEnabled()
+
+    Description:
+
+	Returns an "enabled" value for the registered URL scheme 
+	retrieved from the most recent call to the RegEnumSchemes function.
+
+    Parameters:	None
+
+    Returns:	Enabled as Integer
+		(1 = enabled)
+		(0 = disabled)
+
+    Example:
+
+	See the example provided with the RegEnumSchemes function.
+
+RegGetHandler
+-------------
+
+	Creator = NSBKyoceraLib.RegGetHandler(Scheme)
+
+    Description:
+
+	Returns the Creator ID of the application registered for a
+	scheme.
+
+    Parameters:	Scheme as String
+
+    Returns:	Creator as String
+
+    Example:
+
+	Dim Scheme as String
+	Dim Creator as String
+
+	Scheme = "Proxy"
+	Creator = NSBK.RegGetHandler(Scheme)
+
+RegProcessURL
+-------------
+
+	Status = NSBKyoceraLib.RegProcessURL(URL)
+
+    Description:
+
+	Launch an application that is registered to handle the specified
+	URL scheme.  A handler must be registered for this function to
+	work.
+
+    Parameters:	URL as String
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16409 = Bad param)
+		(16413 = No handler)
+		(16404 = Not registered)
+
+    Example:
+
+	Dim Status as Integer
+	Dim URL as String
+
+	URL = "http://www.yahoo.com"
+
+	Status = NBK.RegProcessURL(URL)
+
+RegProcessMailAddress
+---------------------
+
+	Status = NSBKyoceraLib.RegProcessMailAddress(First, Last, Address)
+
+    Description:
+
+	A Utility function that constructs and executes a valid mailto
+	URL of the form:  mailto:first last (address).  The default
+	mailto scheme handler, Eudora(TM), handles this by creating
+	a message.  This is provided as a convenient way to properly
+	encode mailto links that include the full name.  You may bypass
+	this function and generate mailto links yourself in order to
+	generate more headers and different formats.
+
+    Parameters:	FirstName as String
+		LastName as String
+		Address as String - email address or (comma-delimited)
+					addresses to send to.
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16415 = Bad address)
+		(16409 = Bad param)
+		(16413 = No handler)
+		(16404 = Not registered)
+
+    Example:
+
+	Dim Status as Integer
+	Dim FirstName as String
+	Dim LastName as String
+	Dim Address as String
+
+	FirstName = "John"
+	LastName = "Doe"
+	Address = "john.doe&copy; yahoo.com"
+
+	Status = NSBK.RegProcessMailAddress(FirstName, LastName, Address)
+
+RegAddMacro
+-----------
+
+	NSBKyoceraLib.RegAddMacro URL, ShortName, Description
+
+    Description:
+
+	Add a macro to the registry.
+
+    Parameters:	URL as String
+		ShortName as String
+		Description as String
+
+    Returns:	None
+
+    Example:
+
+	Dim URL as String
+	Dim ShortName as String
+	Dim Description as String
+
+	URL = "http://www.yahoo.com"
+	ShortName = "Yahoo"
+	Description = "Yahoo Search Engine"
+
+	NSBK.RegAddMacro URL, ShortName, Description	
+
+RegRemoveMacro
+--------------
+
+	NSBKyoceraLib.RegRemoveMacro URL
+
+    Description:
+
+	Remove a macro from the registry.
+
+    Parameters:	URL as String
+
+    Returns:	None
+
+    Example:
+
+	Dim URL as String
+
+	URL = "http://www.yahoo.com"
+	NSBK.RegRemoveMacro URL
+
+RegEnumMacros
+-------------
+
+	URL = NSBKyoceraLib.RegEnumMacros(Number)
+
+    Description:
+
+	List registered macros.
+
+    Parameters: Number as Integer
+
+    Returns:	URL as String
+		(URL)
+		("" = No more registered macros)
+
+    Example:
+
+	Dim Number as Integer
+	Dim URL as String
+	Dim ShortName as String
+	Dim Description as String
+
+	Number = 0
+	URL = "anything"
+	Do Until URL = ""
+	    Number = Number + 1
+	    URL = NSBK.RegEnumSchemes(Number)
+	    If URL <> "" Then
+		ShortName = NSBK.RegMacroShortName()
+		Description = NSBK.RegMacroDesc()
+	    End If
+	Loop
+
+    Comments:
+
+	This function will list all the registered macros.  To use it,
+	start by calling the function with the "Number" parameter set to
+	one.  Then, increment the "Number" parameter with each call until 
+	a blank string "" is returned.  The example provided above shows 
+	how this function is used.
+
+RegMacroShortName
+-----------------
+
+	ShortName = NSBKyoceraLib.RegMacroShortName()
+
+    Description:
+
+	Returns the short name for the registered macro retrieved from the 
+	most recent call to the RegEnumMacros function.
+
+    Parameters:	None
+
+    Returns:	ShortName as String
+
+    Example:
+
+	See the example provided with the RegEnumMacros function.
+
+RegMacroDesc
+------------
+
+	Description = NSBKyoceraLib.RegMacroDesc()
+
+    Description:
+
+	Returns the description for the registered macro retrieved from the 
+	most recent call to the RegEnumMacros function.
+
+    Parameters:	None
+
+    Returns:	Description as String
+
+    Example:
+
+	See the example provided with the RegEnumMacros function.
+
+RegSetHandlerName
+-----------------
+
+	Status = NSBKyoceraLib.RegSetHandlerName(Scheme, Name, ShortName)
+
+    Description:
+
+	Set the display name for a registered macro or scheme handler.
+	The registry preference panel uses these names when displaying
+	registered schemes.
+
+    Parameters:	Scheme as String - scheme or URL
+		Name as String - application name
+		ShortName as String - short version of application name
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16409 = Bad param)
+		(16410 = DB not found)
+
+    Example:
+
+	Dim Status as Integer
+	Dim Scheme as String
+	Dim Name as String
+	Dim ShortName as String
+
+	Scheme = "Proxy"
+	Name = "NSBKyocera_Proxy"
+	ShortName = NSBKProxy"
+
+	Status = NSBK.RegSetHandlerName(Scheme, Name, ShortName)
+
+ProxyRegister
+-----------
+
+	Status = NSBKyoceraLib.ProxyRegister(Class, Mask, Priority, Creator)
+
+    Description:
+
+	Register an application for signals.  These signals will actually
+	be processed by the NSBKyocera_Proxy program on behalf of the
+	specified application.  The proxy program can start the specified
+	application if it is not running; or it can issue an event that can
+	be detected by the NS Basic program in it's "EventsCode" section.
+	The functions ProxyClass and ProxySignal can then be called to
+	determine which signal was detected.  The ProxyCurrentApp function
+	is used to indicate which NS Basic program is running and also
+	to determine if the Proxy program started the NS Basic program.
+	The ProxyGetCallInfo function can be used to retrieve the call 
+	information values retrieved by the Proxy program.
+
+    Parameters: Class as Integer
+		Mask as Integer
+		Priority as Integer
+			(0 through 10 - 0 = lowest priority)
+		Creator as String
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(519 = Invalid creator id)
+		(16386 = No memory)
+
+    Example:
+
+	Dim Status as Integer
+	Dim Class as Integer
+	Dim Mask as Integer
+	Dim Priority as Integer
+	Dim Creator as String
+
+	Class = 1	'SGN_CLASS_TAPI
+	Mask = 254	'SGN_TAPI_INCOMING | SGN_TAPI_LOST |
+			'SGN_TAPI_MISSED | SGN_TAPI_FAILED |
+			'SGN_TAPI_CALLING | SGN_TAPI_CONVERSATION |
+			'SGN_TAPI_ENDED
+	Priority = 10	'Highest Priority
+	Creator = "NsBk"
+	Status = NSBK.ProxyRegister(Class, Mask, Priority, Creator)
+
+
+ProxyUnregister
+---------------
+
+	Status = NSBKyoceraLib.ProxyUnregister(Class, Mask)
+
+    Description:
+
+	Unregister an application for given signals.  The application is
+	actually unregistered with the NSBKyocera_Proxy program, which
+	is then unregistered with the Kyocera system for the particular
+	specified class and signals.
+
+    Parameters: Class as Integer
+		Mask as Integer
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(16404 = Not registered)
+
+    Example:
+
+	Dim Status as Integer
+	Dim Class as Integer
+	Dim Mask as Integer
+
+	Class = 1	'SGN_CLASS_TAPI
+	Mask = 254	'SGN_TAPI_INCOMING | SGN_TAPI_LOST |
+			'SGN_TAPI_MISSED | SGN_TAPI_FAILED |
+			'SGN_TAPI_CALLING | SGN_TAPI_CONVERSATION |
+			'SGN_TAPI_ENDED
+	Creator = "NsBk"
+	Status = NSBK.ProxyUnregister(Class, Mask)
+
+ProxyUnregisterAll
+------------------
+
+	NSBKyoceraLib.ProxyUnregisterAll()
+
+    Description:
+
+	Unregister all applications with the NSBKyocera_Proxy program
+	and then unregister the NSBKyocera_Proxy for all classes and
+	signals with the Kyocera system.
+
+    Parameters:	None
+
+    Returns:	None
+
+    Example:
+
+	NSBK.ProxyUnregisterAll()
+
+ProxyCurrentApp
+---------------
+
+	Status = NSBKyoceraLib.ProxyCurrentApp(Creator)
+
+    Description:
+
+	Provides the Creator ID of the current running program
+	to the NSBKyocera_Proxy program.  This call is used by the 
+	NSBKyocera_Proxy program to determine whether it should start 
+	a registered program or simply post an event to the event queue.
+	To indicate that the program has exited, call this function with
+	a blank "" Creator ID.
+
+    Parameters:	Creator as String - Creator ID of running program
+
+    Returns:	Status as Integer
+		(1 - The current program was started by NSBKyocera_Proxy)
+		(0 - The current program was not started by the Proxy program)
+
+    Example:
+
+	Dim Creator as String
+	Dim Status as Integer
+
+	Creator = "NsBk"
+	Status = NSBK.ProxyCurrentApp(Creator)
+
+    Comments:
+
+	During tests, it seems that this call can not be made immediately
+	after loading the NSBKyoceraLib Library (in the "Startup" code
+	section).  This may be because the library has not finished
+	initializing at this time.  Calling this function in the "After"
+	section of the first form does not seem to cause any problems.
+	The running program should call this function with a blank ""
+	Creator ID when it exits (in the "Termination" code section).
+
+ProxyGetCallInfo
+--------------
+
+	Status = ProxyGetCallInfo()
+
+    Description:
+
+	Get the call information values from the last "event" processed
+	by the NSBKyocery_Proxy program.  If the status returned from this
+	call is 0 (no error), then any of the following functions can be
+	called to get the individual call information values:
+		TelCISignalHist, TelCallFlags, TelCICallerIDStatus,
+		TelCIDialingPaused, TelCINumber, TelCITimeOfCall,
+		TelCITimeOfCall, TelCICallDuration, TelCIWaiting,
+		TelCIExt, TelCIErr, TelCICallType, TelCIBaudRate
+
+    Parameters:	None
+
+    Returns:	Status as Integer
+		(0 = No error)
+		(-1 = No call info)
+
+    Example:
+
+	Dim Status as Integer
+	Dim SignalHist as Integer
+	Dim CallFlags as Integer
+	Dim CallerIDStatus as Integer
+	Dim DialingPaused as Integer
+	Dim Number as String
+	Dim TimeOfCall as Integer
+	Dim CallDuration as Integer
+	Dim Waiting as String
+	Dim Ext as String
+	Dim Err as Integer
+	Dim CallType as Integer
+	Dim BaudRate as Integer
+
+	Status = NSBK.ProxyGetCallInfo()
+	If Status = 0 Then
+		SignalHist = NSBK.TelCISignalHist()
+		CallFlags = NSBK.TelCICallFlags()
+		CallerIDStatus = NSBK.TelCICallerIDStatus()
+		DialingPaused = NSBK.TelCIDialingPaused()
+		Number = NSBK.TelCINumber()
+		TimeOfCall = NSBK.TelCITimeOfCall()
+		CallDuration = NSBK.TelCICallDuration()
+		Waiting = NSBK.TelCIWaiting()
+		Ext = NSBK.TelCIExt()
+		Err = NSBK.TelCIErr()
+		CallType = NSBK.TelCICallType()
+		BaudRate = NSBK.TelCIBaudRate()
+	End If
+
+ProxyEventTime
+--------------
+
+	SysTime = NSBKyoceraLib.ProxyEventTime()
+
+    Description:
+
+	Returns the time of the last "event" processed by the 
+	NSBKyocera_Proxyprogram.  The time is returned in "system
+	format" which is an unsigned integer, expressed as the number
+	of seconds since January 1, 1904.
+
+    Parameters:	None
+
+    Returns:	SysTime as Integer
+
+    Example:
+
+	Dim SysTime as Integer
+
+	SysTime = NSBK.ProxyEventTime()
+
+ProxyClass
+----------
+
+	Class = NSBKyoceraLib.ProxyClass()
+
+    Description:
+
+	Returns the signal class of the last "event" processed by the 
+	NSBKyocera_Proxy program.
+
+    Parameters:	None
+
+    Returns:	Class as Integer
+		(1 = SGN_CLASS_TAPI)
+		(2 = SGN_CLASS_MSG)
+		(524291 = SGN_CLASS_MODULE)
+
+    Example:
+
+	Dim Class as Integer
+
+	Class = NSBK.ProxyClass()
+
+ProxySignal
+-----------
+
+	Signal = NSBKyoceraLib.ProxySignal()
+
+    Description:
+
+	Returns a bitmapped value of the signals of the last "event" 
+	processed by the NSBKyocera_Proxy program.
+
+    Parameters:	None
+
+    Returns:	Signal as Integer
+
+    Example:
+
+	Dim Signal as Integer
+
+	Signal = NSBK.ProxySignal()
+
+StringDateTime
+--------------
+
+	DTString = NSBKyoceraLib.StringDateTime(SysTime, ToDate, ToTime, AMPM)
+
+    Description:
+
+	Returns a Date and Time string representation of the specified
+	"SysTime" parameter.  The "SysTime" parameter is an unsigned
+	integer containing the date and time, expressed as the number of
+	seconds since January 1, 1904.
+
+    Parameters:	SysTime as Integer
+		ToDate as Integer
+			(1 = Date format = yyyy/mm/dd)
+			(0 = Date format = mm/dd/yy)
+		ToTime as Integer
+			(1 = Time format = hh:mm:ss)
+			(0 = Time format = hh:mm)
+		AMPM as Integer
+			(1 = AM or PM appended after the time and
+				the hours are adjusted as necessary)
+
+    Returns:	DTString as String
+
+    Example:
+
+	Dim DTString as String
+	Dim SysTime as Integer
+	Dim ToDate as Integer
+	Dim ToTime as Integer
+	Dim AMPM as Integer
+
+	SysTime = NSBK.TelCITimeOfCall()
+	ToDate = 1
+	ToTime = 1
+	AMPM = 0
+	DTString = NSBK.StringDateTime(SysTime, ToDate, ToTime, AMPM)
+
+StringDate
+----------
+
+	DateString = NSBKyoceraLib.StringDate(SysTime, ToDate)
+
+    Description:
+
+	Returns a Date string representation of the specified
+	"SysTime" parameter.  The "SysTime" parameter is an unsigned
+	integer containing the date and time, expressed as the number of
+	seconds since January 1, 1904.
+
+    Parameters:	SysTime as Integer
+		ToDate as Integer
+			(1 = Date format = yyyy/mm/dd)
+			(0 = Date format = mm/dd/yy)
+
+    Returns:	DateString as String
+
+    Example:
+
+	Dim DateString as String
+	Dim SysTime as Integer
+	Dim ToDate as Integer
+
+	SysTime = NSBK.TelCITimeOfCall()
+	ToDate = 1
+	DateString = NSBK.StringDate(SysTime, ToDate)
+
+StringTime
+----------
+
+	TimeString = NSBKyoceraLib.StringTime(SysTime, ToTime, AMPM)
+
+    Description:
+
+	Returns a Time string representation of the specified
+	"SysTime" parameter.  The "SysTime" parameter is an unsigned
+	integer containing the date and time, expressed as the number of
+	seconds since January 1, 1904.
+
+    Parameters:	SysTime as Integer
+		ToTime as Integer
+			(1 = Time format = hh:mm:ss)
+			(0 = Time format = hh:mm)
+		AMPM as Integer
+			(1 = AM or PM appended after the time and
+				the hours are adjusted as necessary)
+
+    Returns:	TimeString as String
+
+    Example:
+
+	Dim TimeString as String
+	Dim SysTime as Integer
+	Dim ToTime as Integer
+	Dim AMPM as Integer
+
+	SysTime = NSBK.TelCITimeOfCall()
+	ToTime = 1
+	AMPM = 0
+	TimeString = NSBK.StringTime(SysTime, ToTime, AMPM)
+
+</pre>

@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 08: Maxiumum size of variables</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 08: Maximum size of variables</h2>
+	  <h3>April 7, 2001</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR><BR><BR>
+
+<H4>Simple Variables</H4>
+
+All numeric variables are represented internally by 8 byte floating point variables.
+
+String variables have a maximum of 32767 characters.
+
+<H4>Arrays</H4>
+
+In both string and numeric variables, the limit is determined by the number of elements.
+
+<P><CODE>	elements=maxsub1*maxsub2*maxsub3*...</CODE>
+
+<P>The maximum size of any variable is 64k.
+
+<H4>String Arrays</H4>
+
+The limit is defined by this formula:
+  
+<P><CODE>        elements*2 + (length+1 of all assigned strings) + 4
+</CODE> 
+
+<P>Array elements that do not have any value assigned yet do not take up space. If each element as just 1 character, the maximum would depend on the number of elements.
+
+<P>For example, DIM s(16000) requires 32000 bytes overhead.	This leaves approx 32k for string values, so 32000 / 2  ("x" + null) = 16000 before the limit is reached. In the actual tests, the value is 15995, due to some overhead.
+
+<P>On the other hand, if "xxxx" is assigned to every element, the remaining 32k / 5 = 6400 before the limit is exceeded.  
+
+<H4>Numeric Arrays</H4>
+
+   The limit is 64k / 8 = 7999. 
+
+
+</BODY> </HTML>
+

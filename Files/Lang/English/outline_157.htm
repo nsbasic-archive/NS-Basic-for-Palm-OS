@@ -1,0 +1,125 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Select Case / Case / End Select </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Select Case / Case / End Select                                                      Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SELECT CASE <i>varname</i></p>
+
+<p class=ManualBody>    CASE <i>value1</i></p>
+
+<p class=ManualBody>        Statement
+Group 1</p>
+
+<p class=ManualBody>    CASE <i>value2</i></p>
+
+<p class=ManualBody>        Statement
+Group 2</p>
+
+<p class=ManualBody>...</p>
+
+<p class=ManualBody>    CASE ELSE</p>
+
+<p class=ManualBody>        Statement
+Group n</p>
+
+<p class=ManualBody>END SELECT</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>To execute specific statements based on the value of
+variable <i>varname</i>. The CASE ELSE is
+optional. If supplied, it specifies the statements to be executed if varname
+has any values except those identified in previous CASE value statements. The
+values in CASE statements must be variables or literals. Expressions are not
+allowed.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim PolicyType as String</p>
+
+<p class=Code>.....</p>
+
+<p class=Code>Select Case PolicyType</p>
+
+<p class=Code>  Case &quot;Auto&quot;</p>
+
+<p class=Code>    CalcAutoPremium</p>
+
+<p class=Code>    ShowAutoPolicy</p>
+
+<p class=Code>  Case &quot;Home&quot;</p>
+
+<p class=Code>    CalcHomePremium</p>
+
+<p class=Code>    ShowHomePolicy</p>
+
+<p class=Code>  Case Else</p>
+
+<p class=Code>    CalcGenericPremium</p>
+
+<p class=Code>    ShowGenericPolicy</p>
+
+<p class=Code>End Select</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

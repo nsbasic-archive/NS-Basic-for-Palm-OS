@@ -1,0 +1,296 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Dim </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Dim                                                                                                                Befehl
+</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DIM <i>varname</i> AS <i>type</i></p>
+
+<p class=ManualBody>DIM <i>varArray</i>(<i>nnn</i>) AS <i>type</i></p>
+
+<p class=ManualBody>DIM <i>varname</i> AS <i>type</i>*<i>length
+</i>[,<i>decimalPlaces</i>]</p>
+
+<p class=ManualBody>DIM <i>varArray</i>(<i>nnn</i>) AS <i>type</i>*<i>length</i>[,<i>decimalPlaces</i>]</p>
+
+<p class=ManualBody>DIM <i>varName</i> AS DATABASE <i>dbName, dbRec, dbLayout
+[,key]</i></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Definiert eine Variable um diese in einer Funktion oder
+Prozedur zu verwenden. Sofern die Variable eine Liste ist, wird mittels <i>nnn</i> die Anzahl zu erzeugender
+Listenelemente angegeben.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><i>Typ</i></p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Byte</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ein einzelnes Zeichen. Bei Datenbanklese- und
+  Schreiboperationen wird nur das eine Zeichen geschrieben, ohne das beendende
+  NULL Zeichen.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Database</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Definiert eine Datenbank Referenz, auf die
+  Datenbankkommandos angewendet werden können. Wenn die Datenbank an ein Raster
+  (Grid) gebunden werden soll, werden weitere Argumente benötigt.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Date</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Definiert ein Datumsformat. Dies ist nicht das
+  Palm-interne Format. Datenbank E/A resultieren in einer 64-Bit langen
+  Fließkommazahl. Das Datum wird intern gespeichert als (Jahr-1900) * 10000 +
+  Monat * 100 + Tag</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Double</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>In allen Aspekten mit Float identisch.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Float</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Definiert eine Fließkommazahl, die beides, Ganzzahl und
+  Nachkommaanteil haben kann. Bei Datenbank E/A Operationen wird eine 64-Bit
+  (=8 Byte) doppelgenauigkeits- Fließkommazahl verwendet.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Integer</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Definiert eine Ganzzahl ohne Nachkommaanteil. Bei
+  Datenbank E/A Operationen wird eine 32-Bit (4 Byte) Ganzzahl verwendet.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Short</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ähnlich wie Integer, nur dass bei Datenbank Operationen
+  16-Bit (2 Byte) verwendet wird.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Single</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Identisch wie Float, nur dass bei Datenbank Operationen
+  32-Bit (4 Byte) einfachgenauigkeits- Fließkommazahlen verwendet werden.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>String</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Zeichenkette mit einer maximalen Länge von 32767 Zeichen.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Time</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Definiert einen Zeitwert. Dies ist nicht das Palm-interne
+  Format. Bei Datenbank Operationen wird eine 64-Bit Fließkommazahl verwendet.
+  Eine Zeit wird intern gespeichert als</p>
+  <p class=ManualBody>Stunde * 10000 + Minute * 100 + Sekunde</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>UserType</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Siehe TYPE und END TYPE Anweisung</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Variant</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Siehe SysTrapFunc und SysTrapSub Funktionen bzw.
+  Prozeduren</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>Length</i> definiert, wie viele Stellen angezeigt
+werden. <i>DecimalPlaces</i> ist die Anzahle der Dezimalstellen ab dem
+Dezimalpunkt. Sie muss mindestens 2 Stellen kleiner sein als <i>length</i>.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Wenn Sie eine Datenbank zur Verwendung in einem Grid
+deklarieren, bezeichnet <i>varName</i> den Namen der Variablen. <i>dbName</i>
+steht für den Namen der Datenbank auf dem Palm OS Gerät. Mit <i>dbRec</i> wird
+eine globale Variable erzeugt, die den Inhalt des aktuellen Datensatzes der
+Datenbank enthält. Sie sollte noch nicht dimensioniert sein. <i>dbLayout</i>
+stellt den Datensatzaufbau dar: er sollte bereits per TYPE Anweisung festgelegt
+worden sein. <i>key</i> ist eine optionale Variable, die bereits definiert sein
+muss: es ist der Schlüssel (das Schlüsselfeld) der Datenbank <i>dbName</i>. In
+dieser Form wird <i>varName</i> nur definiert, wenn sie als erstes Argument
+einer BindToDataBase Methode für ein Grid verwendet wird.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim income as float*12,2</p>
+
+<p class=Code>Dim count as integer</p>
+
+<p class=Code>Dim yesterday as date</p>
+
+<p class=Code>Dim appt as time</p>
+
+<p class=Code>Dim rates(12) as float</p>
+
+<p class=Code>Dim Orders as database</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Type dbBluesLayout</p>
+
+<p class=Code>    Name as String</p>
+
+<p class=Code>    age as Integer</p>
+
+<p class=Code>    active as Integer</p>
+
+<p class=Code>End Type</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Dim blueKey as Integer</p>
+
+<p class=Code>Dim dbBlues1 as Database &quot;Blues&quot; Creator
+&quot;Grid&quot; Keyed With Record BlueKey, dbBluesRec as dbBluesLayout </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

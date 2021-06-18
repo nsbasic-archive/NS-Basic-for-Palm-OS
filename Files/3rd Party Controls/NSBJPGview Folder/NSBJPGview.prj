@@ -1,0 +1,139 @@
+"mdl"
+8
+"NSBJPGview Test","appl","Test",1106,505,0
+"Sub Project_Startup()
+    Global JPGCmdAbout as Integer
+    Global ExtFileName as String
+    
+    JPGCmdAbout = 33536
+    ExtFileName = ~NSBJPGview~
+
+    'if device is ARM then set screen depth to 16 bit in preparation for displaying JPGs
+    If JPG_IsARM() = true Then JPG_SetScreenDepth16()
+            
+End Sub"
+0
+0
+""
+""
+""
+""
+""
+"E056F3A1"
+""
+"resfile"
+1
+"Resource1106"
+1106
+"DBIM"
+"..\..\..\..\Alexandra.jpg"
+"mod"
+" 2"
+1105
+".\NSBJPGview-globalsubs.cod"
+"NSBJPGview-globalsubs.cod"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"NSBJPGview"
+"frmMain"
+""
+0
+"Sub Form1003_After()
+    fldJPG.text = ~Alexandra.jpg~
+End Sub"
+"Sub Form1003_Event()
+
+End Sub"
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnShowPhoto",1042,2,16,12,26,#TRUE#,0,"Show",0,0,0
+"Sub btnShowPhoto()
+    Dim result as Integer
+    Dim path as String, card as Integer
+    'check if we are using VFS or internal storage
+    If cbVFS.status = nsbChecked Then 
+    	path = ~/DCIM/~
+    	card = 1
+    Else
+    	path = ~~
+    	card = 0
+    EndIf
+    result = JPG_ShowJPG( path + fldJPG.text, card, 20, 40, 120, 120 )
+    If result <> 0 Then MsgBox ~Error: ~ +str(result)
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1049",1049,2,29,12,20,#TRUE#,0,"JPG:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldJPG",1050,20,29,12,140,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnClear",1067,139,16,12,20,#TRUE#,0,"CLR",0,0,0
+"Sub btnClear()
+    Redraw
+End Sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","cbVFS",1080,79,1,12,32,#TRUE#,0,"VFS",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnExistJPG",1093,31,16,12,36,#TRUE#,0,"Exists",0,0,0
+"Sub btnExistsJPG()
+    Dim result as Integer
+    Dim path as String, card as Integer
+    'check if we are using VFS or internal storage
+    If cbVFS.status = nsbChecked Then 
+    	path = ~/DCIM/~
+    	card = 1
+    Else
+    	path = ~~
+    	card = 0
+    EndIf
+    result = JPG_ExistsJPG( path + fldJPG.text, card )
+    If result = 0 Then 
+        MsgBox ~The file: ~ +chr(10) +path +fldJPG.text +chr(10) +~does NOT exist.~
+    Else
+        MsgBox ~The file: ~ +chr(10) +path +fldJPG.text +chr(10) +~does exist.~
+    EndIf
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnAbout",1094,123,1,12,36,#TRUE#,0,"About",0,0,0
+"Sub btnAbout()
+    JPG_About()
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnIsARM",1102,80,16,12,36,#TRUE#,0,"IsARM?",0,0,0
+"Sub btnIsARM()
+    msgbox str(JPG_IsARM())
+End Sub"
+"end"

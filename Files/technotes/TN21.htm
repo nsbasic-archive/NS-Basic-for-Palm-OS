@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0051)http://www.nsbasic.com/palm/info/technotes/TN21.htm -->
+<HTML><HEAD><TITLE>Tech Note 21: Adding and extracting resources</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="Microsoft FrontPage 5.0" name=GENERATOR>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY text=#000000 vLink=#800080 link=#0000ff bgColor=#ffffff>&nbsp;
+<TABLE cellSpacing=0 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="18%">
+      <P><IMG height=103 src="images/BigIcon.GIF" width=86></P></TD>
+    <TD vAlign=top width="82%">
+      <h2>Tech Note 21: Adding and extracting resources</h2>
+      <h3>August 21, 2002</h3>
+      <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD></TR></TBODY></TABLE>
+<HR>
+
+<P><I>Contributed by <A href="mailto:mverive&copy; peoplepc.com">Michael J. 
+Verive</A>, author of <A 
+href="http://www.nsbasic.com/palm/info/NSBasicProgrammingForPalm.html">NS BASIC 
+Programming for Palm OS</A></I> 
+<P>NSBasic for Palm provides the ability to add databases, libraries, and 
+applications to your application's PRC as resources.&nbsp; You can then extract 
+these resources into their original databases on the Palm OS device. There are a 
+few notes, however, and we'll cover those in a minute. 
+<P>In order to add a database, library, or application as a resource to your 
+PRC, you'll need to select "Add Resource" in the NSBasic IDE:<P>&nbsp;<IMG alt="" 
+src="TN21.images/image.21.001.gif" width="737" height="681"> 
+<P>When the resource is added, it's given a resource ID automatically by the 
+compiler (1004 in this example), and a Resource Type (DBIM by default):<P>&nbsp;<IMG 
+alt="" src="TN21.images/image.21.002.gif" width="740" height="681"> 
+<P>NOTE: The Palm API used by dbCreateDatabaseFromResource was created to allow 
+the Palm devices to extract sample databases to RAM from the Palm's ROM-based 
+resources.&nbsp; If you fail to check for the presence of a database prior to 
+extracting it from your program's PRC, and the database already exists, the dbCreateDatabaseFromResource statement will return an error code of 537 (database exists), and the existing database will remain unchanged.  The preferred method is to check for the presence of the database, and only extract it if it doesn't already exist:  <PRE>Dim res as integer
+Dim testdb as database
+'now, attempt to open the database to see if it's there and available for read/write access
+res=dbOpen(testdb,"PICULV-pdb",0)
+If res =0 then ' it's available...
+  res=dbClose(testdb) ' ...so we'll close it if we don't need to leave it open
+Else ' database can't be opened for read/write access, so we'll attempt to create it from a resource
+  res=dbCreateDatabaseFromResource("DBIM",1004) ' use resource type and ID from the IDE
+  If res &lt;&gt;0 then ' can't extract it
+    MsgBox "Unable to extract database"
+  End If
+End If
+</PRE><hr> 
+<P><B>Notes</B> 
+<P>1. Once in the PRC, the database is identified by its Resource ID (generated 
+automatically by the IDE), and Resource Type (defaults to DBIM, but can be set 
+to anything you like).&nbsp; If you change the Resource Type, be sure to also 
+change the Resource Type used in the dbCreateDatabaseFromResource statement. 
+<P>2. The maximum size of a resource is 64KB, so any databases, libraries, or 
+applications &gt; 64K each that you wish to include with the application will 
+not be able to be bundled as a resource in the IDE. 
+<P>3. Be EXTREMELY careful when using dbCreateDatabaseFromResource.&nbsp; It's 
+all too easy to assume that a database doesn't exist, attempt to extract it, and then also assume that the "new" database on the device was the one extracted from the resource.  If the database was modified in any way, your application would then expect the unmodified data, and unexpected application behavior could occur.  If you need to overwrite the existing database, you will probably want to delete the existing database, then extract the original database from the resource.
+<P>4. If you're including a shared library in your PRC, you'll need to use 
+dbCreateDatabaseFromResource to extract the library before using LoadLibrary to 
+load the library. 
+<P>5. As in #3 above, be EXTREMELY careful when bundling shared libraries with 
+your application, especially if these libraries are used by other applications 
+as well, such as any shared library provided by NSB.&nbsp; If you attempt to extract an early 
+version of a shared library as a resource, and the device has a more recent version, your application may not function as intended. There currently is no 
+version-checking built into the dbCreateDatabaseFromResource statement or its 
+underlying API. 
+<P>6. Creating a database from a resource does NOT remove the resource from the 
+PRC, so the amount of memory required for the database or other resources you 
+include will effectively be twice what it would have been had you distributed 
+the resources separately.&nbsp; Keep this in mind if you are using large 
+resources (or many smaller ones), especially if your users' devices have limited 
+memory. 
+<P>As you can see, dbCreateDatabaseFromResource can be a powerful tool for 
+making your applications easier to distribute (and beam from one user to 
+another).&nbsp; This power has a price, however, so be sure that you understand 
+all of the ramifications of using dbCreateDatabaseFromResource before using it. 
+</P></BODY></HTML>

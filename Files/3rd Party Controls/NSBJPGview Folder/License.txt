@@ -1,0 +1,100 @@
+THACKER NETWORK TECHNOLOGIES INC. SOFTWARE LICENSE AGREEMENT
+
+NOTICE-READ BEFORE INSTALLING THIS PACKAGE
+
+CAREFULLY READ THE TERMS AND CONDITIONS OF THIS AGREEMENT BEFORE INSTALLING
+THIS PACKAGE. INSTALLING THIS PACKAGE INDICATES YOUR ACCEPTANCE OF THESE
+TERMS AND CONDITIONS. IF YOU DO NOT AGREE WITH THE TERMS AND CONDITIONS OF
+THIS AGREEMENT, YOU MAY RETURN THE ENTIRE PACKAGE WITHIN 15 DAYS FOR A
+REFUND IN THE AMOUNT YOU PAID.
+
+1.  Definitions
+The SOFTWARE is licensed (not sold) to you, and THACKER NETWORK TECHNOLOGIES
+INC. owns all patents, trademarks, copyrights, trade secrets,
+and other proprietary rights in the SOFTWARE The term "SOFTWARE" includes
+all components of the software, associated media, printed materials, and
+electronic documentation.
+
+2.  Agreement
+This THACKER NETWORK TECHNOLOGIES INC. License Agreement ("License
+Agreement" or "Agreement") is a legal agreement between you and THACKER
+NETWORK TECHNOLOGIES INC. for use of the SOFTWARE.
+
+3.  Property
+The SOFTWARE which accompanies this License Agreement is the property of
+THACKER NETWORK TECHNOLOGIES INC. and is protected by copyright law and
+international copyright treaties, as well as other intellectual property
+laws and treaties. THACKER NETWORK TECHNOLOGIES INC. retains all
+intellectual property rights including, but not limited to, patent,
+trademark, copyright, and trade secret rights in the SOFTWARE.
+
+4. License Grant
+a.  Authorized Use.  THACKER NETWORK TECHNOLOGIES INC. grants you a
+nonexclusive license to use the SOFTWARE on a single computer. You may make
+one copy of the SOFTWARE's computer program for back-up purposes only.
+
+b. Restrictions. You may not: (1) copy (other than once for back-up
+purposes), distribute, rent, lease or sublicense all or any portion of the
+SOFTWARE; (2) modify or prepare derivative works of the SOFTWARE; or (3)
+reverse engineer, decompile or disassemble the SOFTWARE. You agree to keep
+confidential and use your best efforts to prevent and protect the contents
+of the SOFTWARE from unauthorized disclosure or use.
+
+c. Transfer. You may transfer the SOFTWARE, but only if the recipient agrees
+to accept the terms and conditions of this Agreement. If you transfer the
+SOFTWARE, you must transfer all components and documentation and erase any
+copies residing on computer equipment. Your license is automatically
+terminated if you transfer the SOFTWARE.
+
+5. Limited SOFTWARE Warranty
+The SOFTWARE is furnished "AS IS" and without warranty as to the performance
+or results you may obtain by using the SOFTWARE.
+
+6. Disclaimer of Warranty and Limitation of Remedies
+a. THE WARRANTIES IN THIS AGREEMENT REPLACE ALL OTHER WARRANTIES, EXPRESS OR
+IMPLIED, INCLUDING ANY WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A
+PARTICULAR PURPOSE. WE DISCLAIM AND EXCLUDE ALL OTHER WARRANTIES. IN NO
+EVENT WILL OUR LIABILITY OF ANY KIND INCLUDE ANY SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, EVEN IF WE HAVE KNOWLEDGE OF
+THE POTENTIAL LOSS OR DAMAGE.  IN NO EVENT SHALL THACKER NETWORK
+TECHNOLOGIES INC.'S LIABILITY EXCEED THE PURCHASE PRICE OF THE SOFTWARE.
+
+b. We will not be liable for any loss or damage caused by delay in
+furnishing a SOFTWARE or any other performance under this Agreement.
+
+c. Our entire liability and your exclusive remedies for our liability of any
+kind (including liability for negligence except liability for personal
+injury caused solely by our negligence) for the SOFTWARE covered by this
+Agreement and all other performance or nonperformance by us under or related
+to this Agreement are limited to the remedies specified by this Agreement.
+
+d. Some states do not allow the exclusion of implied warranties, so the
+above exclusion may not apply to you. This warranty gives you specific legal
+rights, and you may also have other rights which vary from state to state.
+
+7. Termination
+This Agreement is effective until terminated. You may terminate it at any
+time by destroying the SOFTWARE, including all computer programs and
+documentation, and erasing any copies residing on computer equipment. This
+Agreement also will terminate if you do not comply with an terms or
+conditions of this Agreement. Upon such termination you agree to destroy the
+SOFTWARE and erase all copies residing on computer equipment.
+
+8. MISCELLANEOUS
+This Agreement may only be modified by a license addendum which accompanies
+this license of an upgrade to the SOFTWARE, or by a written document that
+has been signed by you and an officer of THACKER NETWORK TECHNOLOGIES INC..
+This Agreement automatically terminates if the licensee violates any of the
+terms of this Agreement.
+
+9.  Additional Information
+If you have any questions regarding this Agreement, or if you wish to
+contact THACKER NETWORK TECHNOLOGIES INC. for any reason, please contact us:
+
+Thacker Network Technologies Inc.
+5338 - 51 Ave.
+Lacombe, AB  T4L 1N5  CANADA
+Tel: +1-403-782-5432
+Fax: +1-403-782-1794
+Email: Sales@PalmDataPro.com
+Http://www.PalmDataPro.com

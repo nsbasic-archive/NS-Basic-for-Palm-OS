@@ -1,0 +1,72 @@
+Microsoft (R) Help Compiler
+HCRTF 4.03.0002
+Copyright (c) Microsoft Corp 1990 - 1995. All rights reserved.
+chinese.hpj
+    HC3112: Warning: topic #1 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	The build footnote (*) is not the first footnote in the topic.
+    HC1017: Note: topic #1 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	A nonscrolling region crosses a page break.
+    HC3010: Warning: topic #2 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	The macro name "PW" is undefined.
+    HC1012: Note: topic #2 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1003: Note: topic #2 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	A paragraph marker is formatted as a hidden character.
+    HC1012: Note: topic #6 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #7 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #8 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #9 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #10 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #11 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #12 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #14 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC3048: Warning: topic #14 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Nonscrolling region defined after scrolling region.
+    HC1012: Note: topic #16 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC3048: Warning: topic #16 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Nonscrolling region defined after scrolling region.
+    HC1012: Note: topic #18 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC3048: Warning: topic #18 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Nonscrolling region defined after scrolling region.
+    HC1012: Note: topic #25 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #61 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #72 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #95 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #98 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #107 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #126 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #163 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #167 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #183 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+    HC1012: Note: topic #184 of E:\NSBP 3\Help\Chinese\CHINESE.RTF : 
+	Table cell borders are not supported.
+201	Topics
+198	Jumps
+198	Keywords
+25	Bitmaps
+
+
+Created e:\nsbp 3\help\chinese\chinese.hlp, 1,142,752 bytes
+Bitmaps: 866,979 bytes
+Compile time: 0 minutes, 0 seconds
+24 notes, 5 warnings

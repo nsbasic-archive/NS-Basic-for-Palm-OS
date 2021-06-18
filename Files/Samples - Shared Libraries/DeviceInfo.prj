@@ -1,0 +1,602 @@
+"mdl"
+8
+"DevInfoLib","appl","Test",1083,505,0
+"Global Creator as String
+Global ftr as Integer
+
+Sub main()
+    LoadLibrary ~DevInfoLib~, ~Dev~
+   ' ResultLine.Text=~Click below for result...~
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+""
+""
+"E1000169"
+""
+"resfile"
+1
+"DevInfoLib"
+1014
+"libr"
+"..\..\Lib\DevInfoLib.prc"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"DevInfoLib"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+ResultLine.Text=~Click below for result...~
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1015",1015,3,21,12,70,#TRUE#,0,"CompanyID",0,0,0
+"Sub object1015()
+	Dim Id as String
+	Id = Dev.CompanyID()
+	ResultLine.Text=~CoID: ~+Id
+End Sub"
+"fld"
+1
+#TRUE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,20,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","ResultLine",1017,60,1,12,99,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1019",1019,3,36,12,70,#TRUE#,0,"DeviceID",0,0,0
+"Sub object1019()
+	Dim Id as String
+	Id = Dev.DeviceID()
+	ResultLine.Text=~DevID: ~+Id
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1020",1020,3,51,12,70,#TRUE#,0,"HALid",0,0,0
+"Sub object1020()
+	Dim Id as String
+	Id = Dev.HALid()
+	ResultLine.Text=~CoID: ~+Id
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1021",1021,3,66,12,70,#TRUE#,0,"HwrMscFlag",0,0,0
+"Sub object1021()
+	Dim Flags as Integer
+	Flags = Dev.HwrMiscFlags()
+	ResultLine.Text=~HwrMscFlags: ~+str(Flags)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1022",1022,3,81,12,70,#TRUE#,0,"ProcessorID",0,0,0
+"Sub object1022()
+	Dim Id as Integer
+	Id = Dev.ProcessorID()
+	ResultLine.Text=~ProcID: ~+str(Id)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1023",1023,3,99,12,81,#TRUE#,0,"GetSystemFeature",0,0,0
+"Sub object1023()
+	ResultLine.Text=~~
+	Button1023.Hide
+	Label1038.Show
+	Field1036.Show
+	Button1039.Show
+	Field1036.SetFocus
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1024",1024,3,114,12,81,#TRUE#,0,"GetFeature",0,0,0
+"Sub object1024()
+	ResultLine.Text=~~
+	Button1024.Hide
+	Label1040.Show
+	Field1041.Show
+	Field1041.SetFocus
+	Button1043.Show
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1025",1025,3,129,12,81,#TRUE#,0,"SetFeature",0,0,0
+"Sub object1025()
+	ResultLine.Text=~~
+	Button1025.Hide
+	Label1048.Show
+	Field1049.Show
+	Button1051.Show
+	Field1049.SetFocus
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1026",1026,3,144,12,81,#TRUE#,0,"GetBitValue",0,0,0
+"Sub object1026()
+	ResultLine.Text=~~
+	Button1026.Hide
+	Label1060.Show
+	Field1061.Show
+	Button1063.Show
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1027",1027,76,66,12,81,#TRUE#,0,"HotSyncUserID",0,0,0
+"Sub object1027()
+	Dim HSUserID as Integer
+	HSUserID = Dev.HotSyncUserID()
+	ResultLine.Text=~HSUserID: ~+str(HSUserID)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1028",1028,76,51,12,81,#TRUE#,0,"HotSyncUserName",0,0,0
+"Sub object1028()
+	Dim HSUserName as String
+	HSUserName = Dev.HotSyncUserName()
+	ResultLine.Text=~HSUNm: ~+HSUserName
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1029",1029,76,36,12,81,#TRUE#,0,"GetSerialNumber",0,0,0
+"Sub object1029()
+	Dim SerialID as String
+	Dim AddCheckDigit as Integer
+	SerialID = Dev.GetSerialNumber(AddCheckDigit)
+	ResultLine.Text=~SerialID: ~+SerialID
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1030",1030,76,21,12,81,#TRUE#,0,"SetBitValue",0,0,0
+"Sub object1030()
+	ResultLine.Hide
+	Button1030.Hide
+	Label1072.Show
+	Field1073.Show
+	Button1075.Show
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1031",1031,87,129,12,70,#TRUE#,0,"IsPluggedIn",0,0,0
+"Sub object1031()
+	Dim State as Integer
+	State = Dev.IsPluggedIn()
+	if State=1 then ResultLine.Text=~IsPluggedIn: YES~ else ResultLine.Text=~IsPluggedIn: NO~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1032",1032,87,114,12,70,#TRUE#,0,"BatteryVolts",0,0,0
+"Sub object1032()
+	Dim Volts as Integer
+	Volts = Dev.BatteryVolts()
+	ResultLine.Text=~BatteryVolts: ~+str(Volts*.01)+~ v.~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1033",1033,87,99,12,70,#TRUE#,0,"BatteryPct",0,0,0
+"Sub object1033()
+	Dim Pct as Integer
+	Pct = Dev.BatteryPct()
+	ResultLine.Text=~BatteryPct: ~+str(Pct)+~%~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1034",1034,76,81,12,81,#TRUE#,0,"BatteryKind",0,0,0
+"Sub object1034()
+	Dim Kind as Integer
+	Dim Battery as String
+	Kind = Dev.BatteryKind()
+	Select Case Kind
+		Case 0
+		 	Battery=~Alkaline~
+		Case 1
+			Battery=~NiCad~
+		Case 2
+			Battery=~LiIon~
+		Case 3
+			Battery=~Rechargeable Alkaline~
+		Case 4
+			Battery=~NiMH~
+		Case 5
+			Battery=~LiIon, 1400mah~
+		Case Else
+			Battery=~Unknown, (~+str(Kind)+~)~
+	End Select
+	ResultLine.Text=~BatteryKind: ~+Battery
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1035",1035,87,144,12,70,#TRUE#,0,"IsDocked",0,0,0
+"Sub object1035()
+	Dim State as Integer
+
+	State = Dev.IsDocked()
+	if State=1 then ResultLine.Text=~IsDocked: YES~ else ResultLine.Text=~IsDocked: NO~
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,5,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1036",1036,45,99,12,24,#FALSE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1038",1038,3,99,12,40,#FALSE#,0,"Feature#:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1039",1039,69,99,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1039()
+	Dim value as Integer
+	Dim ftr as Integer
+	ftr=round(val(field1036.Text),0)
+	value=Dev.GetSystemFeature(ftr)
+	ResultLine.Text=~GetSysFtr: ~+str(value)
+	ResultLine.Show
+	Label1038.Hide
+	Field1036.Hide
+	Button1039.Hide
+	Button1023.Show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1040",1040,3,114,12,41,#FALSE#,0,"CreatorID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,4,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1041",1041,45,114,12,21,#FALSE#,0,"",0,0,0
+"Sub object1041()
+	Creator=field1041.Text
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1043",1043,69,114,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1043()
+	Button1043.Hide
+	Label1040.Hide
+	Field1041.Hide
+	Label1047.Show
+	Field1045.Show
+	Button1044.Show
+	Field1045.SetFocus
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1044",1044,69,114,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1044()
+	Dim value as Integer
+	Dim ftr as Integer
+	ftr=round(val(field1045.Text),0)
+	value=Dev.GetFeature(creator,ftr)
+	ResultLine.Text=~GetFtr: ~+str(value)
+	ResultLine.Show
+	Label1047.Hide
+	Field1045.Hide
+	Button1044.Hide
+	Button1024.Show
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,5,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1045",1045,45,114,12,24,#FALSE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1047",1047,3,114,12,40,#FALSE#,0,"Feature#:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1048",1048,3,129,12,41,#FALSE#,0,"CreatorID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,4,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1049",1049,45,129,12,21,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1051",1051,69,129,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1051()
+	Creator=field1049.Text
+	Label1048.hide
+	Field1049.Hide
+	Button1051.Hide
+	Label1052.show
+	Field1053.show
+	Button1055.show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1052",1052,3,129,12,40,#FALSE#,0,"Feature#:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,5,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1053",1053,45,129,12,24,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1055",1055,69,129,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1055()
+	ftr=round(val(field1053.Text),0)
+	Label1052.Hide
+	Field1053.Hide
+	Button1055.Hide
+	Label1056.show
+	Field1057.show
+	Button1059.show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1056",1056,3,129,12,27,#FALSE#,0,"Value:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1057",1057,27,129,12,42,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1059",1059,69,129,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1059()
+	Dim value as Integer
+	value=round(val(Field1057.text),0)
+	Dev.SetFeature Creator, ftr, value
+	ResultLine.Text=~SetFeature~
+	ResultLine.Show
+	Label1056.Hide
+	Field1057.Hide
+	Button1059.Hide
+	Button1025.Show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1060",1060,3,144,12,36,#FALSE#,0,"intValue:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,1,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1061",1061,42,144,12,6,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1063",1063,69,144,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1063()
+	Label1060.Hide
+	Field1061.Hide
+	Button1063.Hide
+	Label1064.Show
+	Field1065.Show
+	Button1067.Show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1064",1064,3,144,12,46,#FALSE#,0,"bitNumber:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,2,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1065",1065,51,144,12,12,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1067",1067,69,144,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1067()
+	Dim bitNumber as Integer
+	Dim result as Integer
+	Dim intValue as Integer
+	intValue=val(Field1061.text)
+	bitNumber=round(val(Field1065.Text),0)
+	result=Dev.GetBitValue(intValue,bitNumber)
+	ResultLine.Text=~GetBitValue: ~+str(result)
+	ResultLine.Show
+	Label1064.Hide
+	Field1065.Hide
+	Button1067.Hide
+	Button1026.Show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1072",1072,76,21,12,36,#FALSE#,0,"intValue:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,1,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1073",1073,114,21,12,6,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1075",1075,142,21,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1075()
+	Label1072.Hide
+	Field1073.Hide
+	Button1075.Hide
+	Label1076.Show
+	Field1077.Show
+	Button1079.Show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1076",1076,76,21,12,46,#FALSE#,0,"bitNumber:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,2,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1077",1077,123,21,12,12,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1079",1079,142,21,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1079()
+	Label1076.Hide
+	Field1077.Hide
+	Button1079.Hide
+	Label1080.Show
+	Field1081.Show
+	Button1083.Show
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1080",1080,76,21,12,36,#FALSE#,0,"bitValue:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,1,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","Field1081",1081,114,21,12,6,#FALSE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1083",1083,142,21,12,15,#FALSE#,0,"ok",0,0,0
+"Sub object1083()
+	Dim result as Integer
+	Dim bitValue as Integer
+	Dim bitNumber as Integer
+	Dim intValue as Integer
+	intValue=val(Field1073.text)
+	bitNumber=round(val(Field1077.text),0)
+	bitValue=val(Field1057.text)
+	result=Dev.SetBitValue(intValue,bitNumber,bitValue)
+	ResultLine.Text=~SetBitValue: ~+str(result)
+	ResultLine.Show
+	Label1080.Hide
+	Field1081.Hide
+	Button1083.Hide
+	Button1030.Show
+	Button1025.Show
+End Sub"
+"end"

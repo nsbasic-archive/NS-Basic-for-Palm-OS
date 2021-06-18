@@ -1,0 +1,3012 @@
+"mdl"
+7
+"Project1","appl","Test",1004,505,0
+""
+0
+0
+""
+""
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form1"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,31,41,12,36,#TRUE#,0,"OK",0,0,0
+"Sub object1004()
+Dim t as Double
+Dim p as Double
+Dim n as Double
+Dim m as Double
+Dim s as Double
+Dim d as Double
+Dim res as String
+Dim b as double
+
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+    t = 78
+    p = 0
+    For n = 2 To b * 500
+      m = n / 2
+      s = 1
+      For d = 2 To m
+        If b = 1 Then
+            If (n / d) = Int(n / d) Then s = s + d
+        End If
+        If b = 2 Then
+          If mod(n,d)= 0 Then s = s + d
+        End If
+       Next
+      If s = n Then p = p + 1
+    Next
+    res = res + ~T~ + Str(b) + ~: ~ + Str(t - 78)
+End Sub"
+"end"

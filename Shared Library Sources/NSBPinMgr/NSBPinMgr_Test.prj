@@ -1,0 +1,290 @@
+"mdl"
+7
+"NSBPinMgr_Test","appl","NPMT",1313,420,0
+"
+Sub Project_Startup()
+    LoadLibrary ~NSBPinMgr~, ~NPM~
+End Sub"
+0
+0
+"NSBPinMgr_Test"
+""
+"Sub Project_Termination()
+    NPM.WinSetDisplayExtent 0
+End Sub"
+"vew"
+3,1223,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,225,0,#TRUE#,#TRUE#
+"Pen Input Manager"
+"frmPenInMgr"
+"Sub Form1223_Before()
+    NPM.WinSetDisplayExtent 1
+End Sub"
+0
+"Sub Form1223_After()
+    NPM.RegisterNotifyEvents 30001, 30002, 30003
+End Sub"
+"Sub Form1223_Event()
+    'Dim event as Integer
+    'Dim value as Integer
+     
+    'event = GetEventType()
+    'If event = 30003 Then
+  	'    Redraw
+    'End If
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1235",1235,120,210,12,36,#TRUE#,0,"Test"
+"Sub object1235()
+    MsgBox ~Hello~
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldMaxX",1261,14,20,12,18,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1263",1263,34,20,11,8,#TRUE#,0,"Y:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldMaxY",1264,44,20,12,18,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1266",1266,52,210,12,50,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1268",1268,4,210,11,44,#TRUE#,0,"Test Input:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1271",1271,108,20,12,22,#TRUE#,0,"Get"
+"Sub object1271()
+    Dim maxX as Integer
+    Dim maxY as Integer
+    
+    NPM.WinGetDisplayExtent maxX, maxY
+    fldMaxX.text = str(maxX)
+    fldMaxY.text = str(maxY)
+    If maxY > 160 Then
+        chkLarge.status = nsbChecked
+    Else
+        chkLarge.status = nsbUnchecked
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1272",1272,134,20,12,22,#TRUE#,0,"Set"
+"Sub object1272()
+    Dim size as Integer
+    If chkLarge.status = nsbChecked Then
+        size = 1
+    Else
+        size = 0
+    End If
+    NPM.WinSetDisplayExtent size
+End Sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","chkLarge",1273,64,20,12,42,#TRUE#,0,"Large"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1274",1274,108,50,12,22,#TRUE#,0,"Get"
+"Sub object1274()
+    Dim value as Integer
+
+	value = NPM.FrmGetDIAPolicy()
+	fldDiaPolicy.text = str(value)
+	If value = 1 Then
+        chkCustom.status = nsbChecked
+    Else
+        chkCustom.status = nsbUnchecked
+    End If
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDiaPolicy",1275,32,50,12,18,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1277",1277,134,50,12,22,#TRUE#,0,"Set"
+"Sub object1277()
+    Dim value as Integer
+
+    If chkCustom.status = nsbChecked Then
+        value = 1
+    Else
+        value = 0
+    End If
+	NPM.FrmSetDIAPolicy value
+
+End Sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","chkCustom",1278,52,50,12,50,#TRUE#,0,"Custom"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1279",1279,108,66,12,22,#TRUE#,0,"Get"
+"Sub object1279()
+    Dim value as Integer
+
+	value = NPM.PINGetDIAState()
+    fldDIAState.text = str(value)
+    lstDIAState.selected = value + 1
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldDIAState",1280,32,66,12,18,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1283",1283,4,20,11,8,#TRUE#,0,"X:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1284",1284,4,50,11,26,#TRUE#,0,"Policy:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1285",1285,4,66,11,25,#TRUE#,0,"State:"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1286",1286,134,66,12,22,#TRUE#,0,"Set"
+"Sub object1286()
+	Dim value as Integer
+   
+    If lstDIAState.selected = 0 Then
+        lstDIAState.selected = 1
+    End If
+    value = lstDIAState.selected - 1
+	NPM.PINSetDIAState value
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Label1287",1287,18,36,11,103,#TRUE#,0,"Dynamic Input Area (DIA)"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1291",1291,18,106,11,54,#TRUE#,0,"Input Trigger"
+""
+"lst"
+2
+3
+"Open	Closed	None"
+"obj"
+2
+"lst","lstDIAState",1292,54,66,33,50,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Label1293",1293,4,120,11,25,#TRUE#,0,"State:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldTriggerState",1294,32,120,12,18,#TRUE#,0,""
+""
+"lst"
+2
+3
+"Enabled	Disabled	None"
+"obj"
+2
+"lst","lstTriggerState",1296,54,120,33,50,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1297",1297,108,120,12,22,#TRUE#,0,"Get"
+"Sub object1297()
+	Dim value as Integer
+
+	value = NPM.PINGetInputTriggerState()
+    fldTriggerState.text = str(value)
+    lstTriggerState.selected = value + 1
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1298",1298,134,120,12,22,#TRUE#,0,"Set"
+"Sub object1298()
+	Dim value as Integer
+   
+    If lstTriggerState.selected = 0 Then
+        lstTriggerState.selected = 1
+    End If
+    value = lstTriggerState.selected - 1
+	NPM.PINSetInputTriggerState value
+
+End Sub"
+"end"

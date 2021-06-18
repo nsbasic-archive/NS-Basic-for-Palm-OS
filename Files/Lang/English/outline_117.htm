@@ -1,0 +1,121 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>List </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>List                                                                                                                 Object</h4>
+
+<p class=ManualBody><img width=134 height=44
+src="./outline_117_files/image003.gif" align=left hspace=12>A
+LIST object is a box on the form where multiple text strings (items)
+can be displayed with each text string (item) on a separate line. One item of
+the list may be highlighted (selected) and is printed in reverse colors with
+white letters on a black background. The box area is only big enough to display
+a few items. If there are more items than there is room to display, there is a
+scrollbar along the right side of the list box to allow up/down scrolling. The
+Selected method is set before the list code is run, while the Text is set
+afterwards.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>List contents may be set at design time by filling in the
+list box that appears by clicking on the List property. List contents may also be set at execution time using the Add method.
+The best place to do this is in the form's After Code for the form on which the
+list object appears. Use the NODISPLAY option to keep the form from refreshing
+each time you add an item.  Set .Selected
+to 0 to not select any item. The hide and show methods do not work properly
+prior to Palm OS 3.5.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Properties Supported</b>
+(Set at design time)</p>
+
+<p class=ManualBody>Font ID, Visible Items, Visible, List</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Methods Supported</b>
+(See &quot;Methods&quot;)</p>
+
+<p class=ManualBody>Left, Top, Width, Hide, Show, Redraw, Add, Remove, Clear,
+Text, Selected, NoItems, ID, Index, Type</p>
+
+<p class=ManualBody><b>&nbsp;</b></p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim ItemsOnList as Integer</p>
+
+<p class=Code>Dim selectedname as String</p>
+
+<p class=Code>ListCity.clear 'always clear the list first</p>
+
+<p class=Code>ListCity.add &quot;New York&quot;,NODISPLAY'delay form update</p>
+
+<p class=Code>ListCity.add &quot;Boston&quot;,NODISPLAY   'delay form update</p>
+
+<p class=Code>ListCity.add &quot;New Orleans&quot;        'now, update form</p>
+
+<p class=Code>ListCity.selected=2 ' Highlight Boston</p>
+
+<p class=Code>ListCity.remove 3 'Delete New Orleans</p>
+
+<p class=Code>ItemsOnList=ListCity.NoItems 'get items on list</p>
+
+<p class=Code>selectedName= ListCity.text(ListCity.selected)</p>
+
+<p class=Code>ListCity.clear</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

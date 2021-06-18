@@ -1,0 +1,30 @@
+[General]
+ExtensionName=InfosystemsProLib01
+PrcName=InfosystemsProLib01.prc
+Version=1.0
+Manufacturer=InfosystemsPro.com
+InfVers=2.0
+
+=HelpStart=
+""
+""
+""
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version=1,func,0,"libVersion = Version() as flt8"
+CompileInfo=2,proc,2,"CompileInfo(out libDate as string, out libTime as string)"
+GetPhoneType=3,func,0,"result = GetPhoneType() as integer"
+GetRadioPowerStatus=4,func,0,"result = GetRadioPowerStatus() as short"
+GetPhnLibRefNum=5,func,0,"result = GetPhnLibRefNum() as short"
+GetPhnRoamMode=6,func,0,"result = GetPhnRoamMode() as short"
+SetPhnRoamMode=7,func,1,"result = SetPhnRoamMode(in mode as short) as short"
+TurnRadioOn=8,func,0,"result = TurnRadioOn() as short"
+GetDeviceInfo=9,proc,2,"GetDeviceInfo(out company as string, out device as string)"
+GetRoamWarnings=10,func,0,"result = GetRoamWarnings() as short"
+SetRoamWarnings=11,func,1,"result = SetRoamWarnings(in warnings as short) as short"
+SetModulePower=12,func,1,"result = SetModulePower(in offOn as string) as short)"
+GetRingProfile=13,func,3,"result = GetRingProfile(in profile as short,out vol as short,out vib as short) as short"
+SetRingProfile=14,func,3,"result = SetRingProfile(in profile as short,in vol as short,in vib as short) as short"

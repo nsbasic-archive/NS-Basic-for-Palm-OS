@@ -1,0 +1,546 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Tech Note 04: Using Color Objects and Graphics</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor="#FFFFFF">
+<script language="JavaScript" type="text/javascript"><!--
+function TABLE1(){
+window.open('TN04.table1.htm','table1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=780,height=350');
+};
+function TABLE2(){
+window.open('TN04.table2.htm','table2','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=640,height=350');
+};
+// --></script>
+
+<table border="0" cellspacing="0" width="478">
+    <tr>
+        <td valign="top" width="22%"><img
+        src="images/BigIcon.GIF"
+        width="86" height="103"></td>
+        <td valign="top" width="78%">
+	  <h2>Tech Note 04: Using Color Objects and Graphics
+</h2>
+	  <h3>June 2, 2001
+</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+        </td>
+    </tr>
+</table>
+
+<hr>
+<div align="left">
+
+<table border="0" width="600">
+    <tr>
+        
+	  <td>
+		<p align="left"><br>
+        Contributed by <a href="mailto:nicolaiev&copy; niconnect.com">Adrian
+        Nicolaiev</a>. </p>
+		<p align="left">In this Tech Note, we will
+        give a short introduction to Palm OS System Palettes.
+        Then, we will define Color Table and UI Color List with
+        its enum Entries. Finally, we will discuss some Window
+        Functions and UI Color Functions showing how it is
+        possible, using API functions and some tricks, to develop
+        a full color project in NSBasic.<br>
+		  </p>
+		<h4 align="left">Table of Contents:
+		  </h4>
+		<blockquote>
+		  <a href="#intro">Introduction<br>
+		  </a><a href="#colorTable">Color Table<br>
+		  </a><a href="#colorList">UI Color List<br>
+		  </a><a href="#colorTableEntries">UI Color Table Entries
+</a>		  <br>
+		  <a href="#quickindex">Function Index and Quick Reference</a><br>
+		  <a href="#functions">UI Color Funtions</a><br>
+		  <a href="#windowFunctions">Window Functions
+</a>		</blockquote>
+		<h3 align="left"><a name="intro"></a>Introduction</h3>
+		<p align="left">Starting in Palm OS
+        version 3.5, the operating system supports system
+        palettes of 1, 2, 4, or 8 bits-per-pixel, as follows: </p>
+		<ul type="square">
+            
+		  <li>1-bit: white (0) and black (1) </li>
+		  <li>2-bit: white (0), light gray (1),
+                dark gray (2), and black (3) </li>
+		  <li>4-bit: 16 shades of gray, from
+                white (0) to black (0xF) </li>
+		  <li>8-bit: 216 color &quot;Web-safe&quot;
+                palette, which includes all combinations of red,
+                green, and blue at these levels: 0x00, 0x33, 0x66,
+                0x99, 0xCC, and 0xFF. Also, it includes&nbsp;gray
+                shades at these levels:&nbsp;0x22, 0x44, 0x55, 0x77,
+                0x88, 0xAA, 0xBB, 0xDD, 0xEE. Finally, it
+                includes these extra named HTML colors: 0xC0C0C0
+                (silver), 0x808080 (gray), 0x800000 (maroon), 0x800080
+                (purple), 0x008000 (green), and 0x008080 (teal).
+                The remaining 26 entries (indexes&nbsp;230
+                through 255) are unspecified and filled with
+                black. (On debug ROMs they are filled with random
+                colors to help developers notice if they use an
+                invalid value.)</li>
+		</ul>
+		<p>Important: The above
+        approach differs from Palm OS 3.5 SDK documentation in
+        order that, for some reason, Palm OS 3.5 SDK
+        documentation about 8-bit palette says that:<br>
+        &quot;<em>8-bit: 216 color &quot;Web-safe&quot;
+        palette, which includes all combinations of red, green,
+        and blue at these levels: 0x00, 0x33, 0x66, 0x99, 0xCC,
+        and 0xFF. Also, it includes all 16 gray shades at these
+        levels: 0x00, 0x11, 0x22, ... 0xFF. Finally, it includes
+        these extra named HTML colors: 0xC0C0C0 (silver), 0x808080
+        (gray), 0x800000 (maroon), 0x800080 (purple), 0x008000 (green),
+        and 0x008080 (teal). The remaining 24 entries (indexes 0xE7
+        through 0xFE) are unspecified and filled with black.</em>&quot;<br>
+        <br>
+        As you will see, our approach is nearer of what really
+        happens...</p>
+		<h3><a name="colorTable"></a>Color Table</h3>
+		<dl>
+            
+		  <dt>The color table is a count of the number of
+                entries, followed by an array of <a
+                href="javascript:TABLE1()">RGBColorType</a>
+                colors. An RGBColorType struct holds 8 bits each
+                of red, green, and blue plus an &quot;extra&quot;
+                byte to hold an index value.</dt>
+		  <dt><a name="INDEX"></a>A color's index is used in
+                different ways by different software layers. When
+                querying for a color or doing color fitting, the
+                index holds the index of the closest
+                match to the RGB value in the reference
+                color table. When setting a color in a color
+                table, the index can specify which slot the color
+                should occupy. *In some routines, the index is ignored.</dt>
+		</dl>
+	  </td>
+    </tr>
+    <tr>
+        <td><table border="0">
+            <tr>
+                <td><img src="images/palm_palette.gif" align="left"
+                border="2" hspace="0" width="262" height="262"></td>
+                <td><img src="images/palm_palette_16.gif" border="2"
+                width="260" height="260"></td>
+            </tr>
+            <tr>
+                <td>
+			  <p align="center">Palm
+                OS 230 Color Palette<br>
+                8-bit</p>
+                </td>
+                <td>
+			  <p align="center">Palm
+                OS 16 Gray Scale Palette<br>
+                4-bit</p>
+                </td>
+            </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+		<h3><a name="colorList"></a>UI Color List</h3>
+        <dl>
+            <dt>The system builds a UI Color List in addition to
+                the system Color Table. The UI Color List
+                contains the colors used by the various user
+                interface elements. Each UI color is represented
+                by a symbolic color constant.</dt>
+        </dl>
+        <p>Do not confuse the UI
+        Color List with the system Color Table. The <a
+        href="javascript:TABLE1()">system
+        color table</a> (or system palette) defines
+        all available colors for the display or draw window,
+        whether they are in use or not. The UI Color List
+        defines the colors used to draw the interface objects.</p>
+        <h3><a name="colorTableEntries"></a>UI Color Table Entries</h3>
+        <dl>
+            
+		  <dt>The <a
+                href="javascript:TABLE2()">UIColorTableEntries</a> enum declares symbolic color constants
+                for the various UI elements.</dt>
+        </dl>
+        </td>
+    </tr>
+</table>
+</div>
+
+<hr>
+<h3><a name="quickindex"></a>Function Index and Quick Reference</h3>
+<table width="900" border="0" cellspacing="3" cellpadding="0">
+  <tr>
+	<td height="21">UI Color Functions</td>
+	<td height="21">&nbsp;</td>
+  </tr>
+  <tr>
+	<td><code><a href="#UIColorGetTableEntryIndex">UIColorGetTableEntryIndex</a></code></td>
+	<td><code>IndexedColorType
+        UIColorGetTableEntryIndex (UIColorTableEntries&nbsp;which)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#UIColorGetTableEntryRGB">UIColorGetTableEntryRGB</a></code></td>
+	<td><code>void UIColorGetTableEntryRGB (UIColorTableEntries&nbsp;which,
+        RGBColorType&nbsp;*rgbP) </code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#UIColorSetTableEntry">UIColorSetTableEntry</a></code></td>
+	<td><code>Err UIColorSetTableEntry (UIColorTableEntries&nbsp;which,
+        const&nbsp;RGBColorType&nbsp;*rgbP)</code></td>
+  </tr>
+  <tr>
+	<td height="19">Window Functions</td>
+	<td height="19">&nbsp;</td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinIndexToRGB">WinIndexToRGB</a></code></td>
+	<td><code>void WinIndexToRGB (IndexedColorType&nbsp;i,
+        RGBColorType&nbsp;*rgbP)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinRGBToIndex">WinRGBToIndex</a></code></td>
+	<td><code>IndexedColorType WinRGBToIndex (const&nbsp;RGBColorType&nbsp;*rgbP)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinSetForeColor">WinSetForeColor</a></code></td>
+	<td><code>IndexedColorType WinSetForeColor (IndexedColorType&nbsp;foreColor)</code></td>
+  </tr>
+    
+  <tr>
+	<td><code><a href="#WinSetBackColor">WinSetBackColor</a></code></td>
+	<td><code>IndexedColorType WinSetBackColor (IndexedColorType&nbsp;backColor)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinSetTextColor">WinSetTextColor</a></code></td>
+	<td><code>IndexedColorType WinSetTextColor (IndexedColorType&nbsp;textColor)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinDrawGrayLine">WinDrawGrayLine</a></code></td>
+	<td><code>void WinDrawGrayLine (Coord&nbsp;x1, Coord&nbsp;y1,
+        Coord&nbsp;x2, Coord&nbsp;y2)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinDrawPixel">WinDrawPixel</a></code></td>
+	<td><code>void WinDrawPixel (Coord&nbsp;x, Coord&nbsp;y)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinErasePixel">WinErasePixel</a></code></td>
+	<td><code>void WinErasePixel (Coord&nbsp;x, Coord&nbsp;y)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinInvertPixel">WinInvertPixel</a></code></td>
+	<td><code>void WinInvertPixel (Coord&nbsp;x, Coord&nbsp;y)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinGetPixel">WinGetPixel</a></code></td>
+	<td><code>IndexedColorType WinGetPixel (Coord&nbsp;x, Coord&nbsp;y)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinEraseLine">WinEraseLine</a></code></td>
+	<td><code>void WinEraseLine (Coord&nbsp;x1, Coord&nbsp;y1,
+        Coord&nbsp;x2, Coord&nbsp;y2)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinInvertLine">WinInvertLine</a></code></td>
+	<td><code>void WinInvertLine (Coord&nbsp;x1, Coord&nbsp;y1,
+        Coord&nbsp;x2, Coord&nbsp;y2)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinScreenLock">WinScreenLock</a></code></td>
+	<td><code>UInt8* WinScreenLock (WinLockInitType&nbsp;initMode)</code></td>
+  </tr>
+  <tr>
+	<td><code><a href="#WinScreenUnlock">WinScreenUnlock</a></code></td>
+	<td><code>void WinScreenUnlock (void)</code></td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+<h3></h3>
+
+<hr>
+<h3><a name="functions"></a>UI Color Functions  </h3>
+
+<p><a name="UIColorGetTableEntryIndex"></a></p>
+<h4>UIColorGetTableEntryIndex</h4>
+<p><code>IndexedColorType
+        UIColorGetTableEntryIndex (UIColorTableEntries&nbsp;which)</code><br>
+        where which is one of the symbolic color constants in <a
+        href="javascript:TABLE2()">UIColorTableEntries</a></p>
+<h5>Return:</h5>
+<p>The index value for a UI color
+        for the current system palette</p>
+<h5>Example:</h5>
+<p><code>Dim which as Short<br>
+        Dim IndexedColor as Short<br>
+        which = 11 'UIFieldText, for example.<br>
+        which = which * 256<br>
+        IndexedColor = SysTrapFunc(932,1,which)</code></p>
+<p>&nbsp;</p>
+<h4><a name="UIColorGetTableEntryRGB"></a>UIColorGetTableEntryRGB</h4>
+<p><code>void UIColorGetTableEntryRGB (UIColorTableEntries&nbsp;which,
+        RGBColorType&nbsp;*rgbP) </code><br>
+        where which is one of the symbolic color
+        constants in <a href="javascript:TABLE2()">UIColorTableEntries</a>
+        and *rgbP is a returned pointer to an RGB color
+        value corresponding to the current color used for the
+        symbolic color.</p>
+
+<h5>Return:</h5>
+<p>nothing</p>
+<h5>Example:</h5>
+<p><code>Dim which as Short<br>
+        Dim rgbP as Variant<br>
+        which = 10 'UIFieldBackground, for example.<br>
+        which = which * 256<br>
+        SysTrapSub 933,2,which,rgbP</code></p>
+<p>&nbsp;</p>
+<h4><a name="UIColorSetTableEntry"></a>UIColorSetTableEntry</h4>
+<p><code>Err UIColorSetTableEntry (UIColorTableEntries&nbsp;which,
+        const&nbsp;RGBColorType&nbsp;*rgbP)</code><br>
+        where which is one of the symbolic color
+        constants in <a href="javascript:TABLE2()">UIColorTableEntries</a>
+        and const *rgbP is the RGB value
+        of the color that should be used for the specified UI
+        object defined as which.</p>
+<h5>Return:</h5>
+<p>0 upon success.</p>
+<h5>Example:</h5>
+<p><code>Dim Err as Short<br>
+        Dim which as Short<br>
+        Dim constrgbP as String 'You will see why...<br>
+        which = constant * 256</code><br>
+        Here is where you
+        insert RGB Table values :-)<br>
+        This was &quot;the tip of the ICEBERG&quot;. This was
+        found while working on Window Functions using Indexed
+        colors and converting them back to RGB: RGBColor is a 4-byte
+        value representing:<br>
+        Index (may be *<a
+        href="#INDEX">anything</a>) + Red (byte) + Green (byte) + Blue (byte).<br>
+        So, an RGB would be, for example, &quot;$&quot; + &amp;h66 + &amp;h33 + &amp;hCC if you are picking color 64 (6633CC)
+        in <a href="javascript:TABLE1()">RGBColorType</a><br>
+        constrgbP = &quot;$&quot;
+        + &amp;h66 + &amp;h33 +
+        &amp;hCC<br>
+        Err = SysTrapFunc(934,2,which,constrgbP)<br>
+        But, if you wish color index 96 (00FFCC)? <br>
+        Answer: the system will consider the first 00 (null char)
+        as the end of a string and will take 00FFCC00 as its
+        value. It will become color index 121 :-(<br>
+        Solution:<br>
+        Another &quot;tip of the iceberg&quot;... remember:
+        &quot;the index holds the index of the <a
+        href="#INDEX">closest match to the RGB</a>
+        value&quot;. So, color index 96, for example, could be (01FFCC)
+        :-)<br>
+        and the system will *convert* to the closest RGB index
+        color: 00FFCC...</p>
+
+<p>&nbsp;</p>
+
+<h3><a name="windowFunctions"></a>Window Functions</h3>
+
+<h4><a name="WinIndexToRGB"></a>WinIndexToRGB</h4>
+<p><code>void WinIndexToRGB (IndexedColorType&nbsp;i,
+        RGBColorType&nbsp;*rgbP)</code><br>
+        where i is a color index value and
+        rgbP is a pointer to an RGB color value corresponding to
+        the index value <code>i</code>.</p>
+<h5>Return:</h5>
+<p>Nothing</p>
+<h5>Example:</h5>
+<p><code>Dim i as Short<br>
+        Dim rgbP as Variant<br>
+        i = 134 'Indexed color 134<br>
+        i = i * 256<br>
+        SysTrapSub 927,2,i,rgbP</code></p>
+<p>&nbsp;</p>
+<h4><a name="WinRGBToIndex"></a>WinRGBToIndex</h4>
+<p><code>IndexedColorType WinRGBToIndex (const&nbsp;RGBColorType&nbsp;*rgbP)</code></p>
+<h5>Return:</h5>
+<p>The index of the closest matching color in
+        the Color Table</p>
+<h5>Example</h5>
+<p><code>Dim constrgbP as String<br>
+        Dim IndexedColor as Short<br>
+        constrgbP = &quot;$&quot;
+        + &amp;h66 + &amp;h33 +
+        &amp;hCC 'For example<br>
+        IndexedColor = SysTrapFunc(926,1,constrgbP)</code></p>
+
+<p>&nbsp;</p>
+<h4><a name="WinSetForeColor"></a>WinSetForeColor</h4>
+<p><code>IndexedColorType WinSetForeColor (IndexedColorType&nbsp;foreColor)</code></p>
+<h5>Return:</h5>
+<p>The previous foreground color index.</p>
+<h5>Example:</h5>
+<p><code>Dim ForeIndexedColor as Short<br>
+        Dim ForePreviousIndexedColor as Short<br>
+        ForeIndexedColor = 96 'For example<br>
+        ForeIndexedColor = ForeIndexedColor * 256<br>
+        ForePreviousIndexedColor = SysTrapFunc(920,1,ForeIndexedColor)</code></p>
+
+<p>&nbsp;</p>
+<h4><a name="WinSetBackColor"></a>WinSetBackColor</h4>
+<p><code>IndexedColorType WinSetBackColor (IndexedColorType&nbsp;backColor)</code></p>
+<h5>Return:</h5>
+<p>The previous background color index.</p>
+<h5>Example:</h5>
+<p><code>Dim BackIndexedColor as Short<br>
+        Dim BackPreviousIndexedColor as Short<br>
+        BackIndexedColor = 96 'For example<br>
+        BackIndexedColor = BackIndexedColor * 256<br>
+        BackPreviousIndexedColor = SysTrapFunc(921,1,BackIndexedColor)</code></p>
+
+<p>&nbsp;</p>
+<h4><a name="WinSetTextColor"></a>WinSetTextColor</h4>
+<p><code>IndexedColorType WinSetTextColor (IndexedColorType&nbsp;textColor)
+</code></p>
+<h5>Return:</h5>
+<p>The previous text color index.</p>
+<h5>Example:</h5>
+<p><code>Dim textIndexedColor as Short<br>
+        Dim textPreviousIndexedColor as Short<br>
+        textIndexedColor = 96 'For example<br>
+        textIndexedColor = textIndexedColor * 256<br>
+        textPreviousIndexedColor = SysTrapFunc(922,1,textIndexedColor)</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinDrawGrayLine"></a>WinDrawGrayLine</h4>
+<p><code>void WinDrawGrayLine (Coord&nbsp;x1, Coord&nbsp;y1,
+        Coord&nbsp;x2, Coord&nbsp;y2) </code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  This routine does not draw in the gray color; it draws
+        with alternating foreground and background pixels
+</p>
+<h5>Example:</h5>
+<p><code>Dim x1 as Short<br>
+        Dim y1 as Short<br>
+        Dim x2 as Short<br>
+        Dim y2 as Short<br>
+        SysTrapSub 532,4,x1,y1,x2,y2</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinDrawPixel"></a>WinDrawPixel</h4>
+<p><code>void WinDrawPixel (Coord&nbsp;x, Coord&nbsp;y) </code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  Draw a pixel in the draw window using the current
+        foreground color.</p>
+<h5>Example:</h5>
+<p><code>Dim x as Short<br>
+        Dim y as Short<br>
+        SysTrapSub 899,2,x,y</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinErasePixel"></a>WinErasePixel</h4>
+<p><code>void WinErasePixel (Coord&nbsp;x, Coord&nbsp;y) </code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  Draw a pixel in the draw window using the current
+        background color.</p>
+<h5>Example:</h5>
+<p><code>Dim x as Short<br>
+        Dim y as Short<br>
+        SysTrapSub 900,2,x,y</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinInvertPixel"></a>WinInvertPixel</h4>
+<p><code>void WinInvertPixel (Coord&nbsp;x, Coord&nbsp;y)</code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  Invert a pixel in the draw window.</p>
+<h5>Example:</h5>
+<p><code>Dim x as Short<br>
+        Dim y as Short<br>
+        SysTrapSub 900,2,x,y</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinGetPixel"></a>WinGetPixel</h4>
+<p><code>IndexedColorType WinGetPixel (Coord&nbsp;x, Coord&nbsp;y)
+</code></p>
+<h5>Return:</h5>
+<p>The indexed color value of the pixel in the
+        current draw window.</p>
+<h5>Example:</h5>
+<p><code>Dim x as Short<br>
+        Dim y as Short<br>
+        Dim PixelIndexedColor as Short<br>
+        PixelIndexedColor = SysTrapFunc(897,2,x,y)</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinEraseLine"></a>WinEraseLine</h4>
+<p><code>void WinEraseLine (Coord&nbsp;x1, Coord&nbsp;y1,
+        Coord&nbsp;x2, Coord&nbsp;y2) </code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  Draw a line in the draw window using the current
+        background color.</p>
+<h5>Example:</h5>
+<p><code>Dim x1 as Short<br>
+        Dim y1 as Short<br>
+        Dim x2 as Short<br>
+        Dim y2 as Short<br>
+        SysTrapSub 533,4,x1,y1,x2,y2</code></p>
+
+<p>&nbsp;</p>
+<h4><a name="WinInvertLine"></a>WinInvertLine</h4>
+<p><code>void WinInvertLine (Coord&nbsp;x1, Coord&nbsp;y1,
+        Coord&nbsp;x2, Coord&nbsp;y2) </code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  Invert a line in the draw window.</p>
+<h5>Example:</h5>
+<p><code>Dim x1 as Short<br>
+        Dim y1 as Short<br>
+        Dim x2 as Short<br>
+        Dim y2 as Short<br>
+        SysTrapSub 534,4,x1,y1,x2,y2</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinScreenLock"></a>WinScreenLock</h4>
+<p><code>UInt8* WinScreenLock (WinLockInitType&nbsp;initMode) </code></p>
+<h5>Return:</h5>
+<p>A pointer to the new screen base address.<br>
+        &quot;Lock&quot; the current screen by switching the UI
+        concept of the screen base address to an area that is not
+        reflected on the display. This routine can be used to &quot;freeze&quot; the
+        display while doing lengthy drawing operations to avoid a
+        flickering effect. Call WinScreenUnlock to unlock the
+        display and cause it to be updated with any changes. The
+        screen must be unlocked as many times as it is locked to
+        actually update the display. </p>
+<h5>Example:</h5>
+<p><code>Dim initMode as Short<br>
+        Dim screenAddress as Variant<br>
+        initMode = 0 'Copy old screen to new<br>
+        screenAddress = SysTrapFunc(928,1,initMode)</code></p>
+<p>&nbsp;</p>
+
+<h4><a name="WinScreenUnlock"></a>WinScreenUnlock</h4>
+<p><code>void WinScreenUnlock (void)</code></p>
+<h5>Return:</h5>
+<p>Nothing.<br>
+  Unlock the screen and update the display.<br>
+        The screen must be unlocked as many times as it is locked
+        to actually update the display.</p>
+<h5>Example:</h5>
+<p><code>SysTrapSub 929,0</code></p>
+<p>&nbsp;</p>
+
+<p><br>
+</p>
+</body>
+</html>

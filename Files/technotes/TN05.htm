@@ -1,0 +1,386 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 05: Shared Libraries in NS Basic/Palm</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 05: Shared Libraries in NS Basic/Palm</h2>
+	  <h3>February 27, 2006</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+<p>Palm OS provides shared libraries.  These are like dynamically linked libraries on desktop systems
+and provide functions and subroutines available to other programs. 
+NSBasic/Palm provides a way to use many shared libraries
+within an NSBasic program.  <a href="TN05a.htm">Tech Note 05a: Using Shared Libraries</a> describes how to use a
+shared library.  In addition, there are tech notes and examples for using many specific shared libraries.</p>
+
+<p>Shared libraries come from several different sources:</p>
+
+<ul>
+<li>There are many shared libraries available from NSBasic, all free of charge.  In addition, there
+are other shared libraries written for NSBasic by third parties.  There is a list of the ones known to
+work at the end of this tech note.</li>
+<li>You can write your own shared libraries in languages such as C, C++, and Pascal.  You cannot, however,
+use NSBasic itself to write shared libraries.</li>
+<li>Many, but not all, shared libraries available elsewhere can be adapted for use in NSBasic.</li>
+</ul>
+
+<p>For more information on writing and adapting shared libraries,
+see <a href="TN05b.htm">Tech Note 05b: Writing and Adapting Shared Libraries</a><p>
+
+<p>A shared library for use with NSBasic has two components:</p>
+<p>One is a file containing the shared library.  The name ends in <code>.prc</code>.  This file must be
+downloaded onto each Palm OS device that will use the library.  These files should be kept in the Download folder within
+the NSBasic/Palm install folder (<i>e.g.</i> <code>C:\NSBasic\Download</code>).  For convenience in distribution, 
+NSBasic/Palm also provides a way
+to bundle a shared library into the NSBasic program itself.</p>
+
+<p>The other is an information file, whose name ends in <code>.inf</code>.  These files are kept in the Libs folder 
+within the NSBasic/Palm install folder (<i>e.g.</i> <code>C:\NSBasic\Lib</code>).  Information files provide information 
+for the IDE to use when constructing calls to shared libraries.  They are not downloaded onto the device.  The process of
+adapting a shared library to run under NSBasic, when possible, only requires changing the information file.  There are two
+versions of information files.  The main difference is that version 2 provides automatic type checking.  All new development
+should use version 2.  Version 1 is deprecated, but there are still some of this version around.  For more information, see
+<a href="TN05a.htm">Using Shared Libraries</a>.</p>
+
+<h3>List of Shared Libraries</h3>
+
+<p>This is a list shared libraries and extensions that are known to work with NS Basic/Palm.  If you know of additional libraries that should be listed here, <A HREF="support&copy; nsbasic.com">please let us know</A>.</p>
+<p>For further information on each library, click the documentation link.</p>
+<table width="720" border="0" cellspacing="3" cellpadding="0">
+  <tr bgcolor="cccccc">
+	<th>Name</th>
+	<th>Description</th>
+	<th bgcolor="cccccc">Type</th>
+	<th bgcolor="cccccc">Price</th>
+	<th bgcolor="cccccc">Sample</th>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.astawireless.com/products/skywire/clients/nsbasic/">AstaLib</a></td>
+	<td>Using SkyWire Components, your PDA will be able to manipulate         your Enterprise data using industry standard SQL statements. This         functionality is in addition to the extensibility of the SkyWire         Server itself.</td>
+	<td>
+	  <div align="center">SkyWire Client program</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN10.htm">BitsNBytesLib</a></td>
+	<td>BitsNbyteslib adds a number of handy functions to NS Basic/Palm for doing bit manipulation and conversions. You can do a variety of bitwise AND, OR and NOT operations, shift bits left and right, and convert between hex, binary and decimal. Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <p>BitnGadf.prj in Samples folder</p>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://homecreations.tripod.com/">GraphLib</a></td>
+	<td>Graph Lib  is a set of API's that help developers "graph-enable" their applications quickly and painlessly. The  visual impact  of graph/charts  is much greater than a set of numbers, and these API's provide a  cool way to create those graphs. 
+</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">$19.99</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN11.htm">Handera</a></td>
+	<td>NSBHandEra provides support for the HandEra's high resolution screen, virtual silkscreen, and audio features.  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>NSBHandera-Test.prj in Samples folder</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.tektonica.com/projects/httplib2/">HttpLib2</a></td>
+	<td>The HTTPLib2 library is an HTTP library which allows an application developer to write NSBasic programs that interact with a web service over the Internet via the HTTP protocol. This library does not need the iNetLib from the PalmOS mobile internet toolkit anymore, unlike HTTPLib.</td>
+	<td>
+	  <div align="center">Shareware/ Commercial</div>
+	</td>
+	<td>
+	  <div align="center">
+25/ 
+100</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN17.htm">HostTraceLib</a></td>
+	<td>NSBHostTraceLib adds handy functions to NS Basic/Palm for doing tracing of your applications. You won't need to use MsgBox Function anymore, nor clicking its button :) Your application will run while you trace it.  Included with the full version of NS Basic/Palm.
+
+</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.iscomplete.org/Store/Developers.asp">IrPrint</a></td>
+	<td>
+IrPrint Open Library provides many different levels of printing for you to add to your applications.
+</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center"><a href="http://www.iscomplete.org/Store/Developers.asp">Contact</a></div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN12.htm">KyoceraLib</a></td>
+	<td>NSBKyoceraLib provides support for the Kyocera  Smartphone module, telephony, and URL handling APIs.  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <p>NSBKyocera_Test.prj in Samples folder</p>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.radiks.net/%7Erhuebner/mathlib.html">MathLib</a></td>
+	<td>MathLib is a PalmOS shared library which makes a complete set of IEEE-754 double-precision math functions available to other PalmPilot applications. Does not require an INF file to use: it is built into NS Basic/Palm.</td>
+	<td>
+	  <div align="center">GNU Library General Public License</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.palmdatapro.com/itm00113.htm">NSBeamer</a></td>
+	<td>NSBeamer is a database and record beaming extension for NSBasic/Palm applications. Commercial.</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">CAD$40</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.palmdatapro.com/itm00123.htm">NSBJPGview</a></td>
+	<td>
+NSBJPGview is an NSBasic/Palm extension that enables you to view JPG images
+in your NSB application. JPG images files stored in the Palm's main memory
+(RAM) and on VFS expansion cards are supported. JPG images are scaled to the
+dimensions and location on the form that you specify. High and standard
+density displays are supported. Supports OS5 ARM powered devices ONLY.
+</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">CAD$50</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.palmdatapro.com/itm00114.htm">NSBSplashPhoto</a></td>
+	<td>NSBSplashPhoto is an NSBasic/Palm extension that enables you to view JPG images via SplashPhoto from an NSB application.  JPG images files stored in the Palm's internal memory and on VFS expansion cards are supported. Commercial.</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">CAD$50</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  
+  <tr bgcolor="dddddd">
+	<td><a href="http://www.palmdatapro.com/itm00124.htm">NSBZire71Camera</a></td>
+	<td>NSBZire71Camera is an extension that enables your NSBasic Palm application
+to control the built in digital camera of the Palm Zire71 handheld. With
+NSBZire71Camera your application can snap photos, view photos, rename, copy,
+and delete photos, and more. It even features ultra fast ARM code for JPG
+encoding and decoding.</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">CAD$50</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  
+  <tr bgcolor="dddddd">
+
+	<td><a href="http://www.stevenscreek.com/palm/palmprint.shtml">PalmPrint</a></td>
+	<td>Serial and infrared printing from NS Basic/Palm apps. Workd on a very wide variety of printers. </td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">$39.95</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  
+	
+  <tr bgcolor="dddddd">
+    <td><a href="http://pda.datecs.bg/product.html?pda=Palm&page=Software&product_id=1">Print Manager</a></td>
+	<td>DATECS Print Manager is used to print data from the standard palm applications. This versatile software is also the central application where you can control the printer options, enable DATECS Screen Print and determine the printer or Palm battery status. You can choose the application to be printed, view its complete content and select the font size. Has NS Basic SDK.</td>
+	<td>
+	  <div align="center">Freeware</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  
+  <tr bgcolor="dddddd">
+	<td><a href="TN13.htm">ScreenLib</a></td>
+	<td>It allows you to change the bit depth and color attributes. There are also drawing functions and a screen lock function.  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>ScreenLibTest.prj in Samples folder</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://groups.yahoo.com/group/nsbasic-palm/files/SnumLib.zip">SnumLib</a></td>
+	<td>Shared library for obtaining a device serial number, if
+any.</td>
+	<td>
+	  <div align="center">Freeware</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN15.htm">StringLib</a></td>
+	<td>NSBStringLib adds a number of handy functions to NS Basic/Palm for doing string manipulation and data formatting.  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>StringLibUse.prj in Samples folder</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="http://groups.yahoo.com/group/nsbasic-palm/files/syncanywhereeng_eval.zip">SyncAnywhere</a></td>
+	<td>SyncAnywhere is an FTP Client that you can control
+from inside your NSBasic application (your user does not have to leave
+your application to sync data!), Pack many Palm databases inside
+one single database for faster transfers, Unpack all or only one database.
+Supports Delphi and Visual Basic in the Server side to Pack
+and Unpack the PDB files.</td>
+	<td>
+	  <div align="center">Commercial</div>
+	</td>
+	<td>
+	  <div align="center">$159</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN09.htm">SymbolLib</a></td>
+	<td>NSBSymbolLib  provides support for Symbol devices.  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>Symbol.prj in Samples folder</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN14.htm">SystemLib</a></td>
+	<td>NSBSystemLib contains functions that provide access to the PalmOS System.  Some of these functions allow calls to PalmOS APIs that can not currently be called using NSBasic's SysTrap statements. Others, just provide a simplified interface to the PalmOS.  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>SysLibTest.prj in Samples folder</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN18.htm">TcpIpLib</a></td>
+	<td>TcpIpLib is a simple to use shared library that lets you communicate from a Palm using Tcp/IP.  There is also sample code to exchange data with a VB app on the desktop. Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>TCPIPDemo.prj in Samples folder</td>
+  </tr>
+  <tr bgcolor="dddddd">
+	<td><a href="TN23.htm">VFSLib</a></td>
+	<td>NSBVFSLib contains functions that provide access to the external storage card(s).  Included with the full version of NS Basic/Palm.</td>
+	<td>
+	  <div align="center">Included in NS Basic</div>
+	</td>
+	<td>
+	  <div align="center">--</div>
+	</td>
+	<td>VFSTest.prj in Samples folder</td>
+  </tr>
+</table>
+
+
+</body></html>
+

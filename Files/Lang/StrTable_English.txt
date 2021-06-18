@@ -1,0 +1,836 @@
+ 100	Abs(Thenumber as Float)
+ 101	Acos(Theangle as Float)
+ 102	Acosh(Theangle as Float)
+ 103	Adddays(Thedate as Date, Days as Integer)
+ 104	Addmonths(Thedate as Date, Months as Integer)
+ 105	Addyears(Thedate as Date, Years as Integer)
+ 106	Alert(Title as String, Msg as String, Type as Integer, Button0 as String, Button1 as String, ..., Buttonn as String)
+ 107	Applaunch( 0, Pgm as String, Cmd as Integer, Data as String)
+ 108	asc(Thestring as String)
+ 109	asin(Theangle as Float)
+ 110	asinh(Theangle as Float)
+ 111	Atan(Theangle as Float)
+ 112	Atan2(X as Float, Y as Float)
+ 113	Atanh(Theangle as Float)
+ 114	Ceiling(Thenumber as Float)
+ 115	Chr(X as Integer)
+ 116	Cos(Theangle as Float)
+ 117	Cosh(Theangle as Float)
+ 118	Dateval(Year as Integer, Month as Integer, Day as Integer)
+ 119	Datediff(Date1 as Date, Date2 as Date)
+ 120	Datemmddyy(Thedate)
+ 121	Day(Thedate as Date)
+ 122	Dayofweek(Thedate as Date)
+ 123	Dayofyear(Thedate as Date)
+ 124	Dbclose(Dbname as Database)
+ 125	Dbcreate(Dbname as Database, Filename as Str, 0, Creator as Str)
+ 126	Dbcreatedatabasefromresource(Type as String, Id as Int)
+ 127	Dbdelete(Dbname as Database, Dbkey as Anyvartype)
+ 128	Dberase(Dbname as Database)
+ 129	Dbfind(Dbname as Database, Dbkey as Anyvartype)
+ 130	Dbget(Dbname as Database, Avariable as Vartype)
+ 131	Dbgetnorecs(Dbname as Database)
+ 132	Dbinsert(Dbname as Database, Dbkey as Anyvartype, Varlist)
+ 133	Dbopen(Dbname as Database, Filename as String, 0)
+ 134	Dbposition(Dbname as Database, Recno as Double, Offset as Int) 
+ 135	Dbput(Dbname as Database, Avariable as Vartype)
+ 136	Dbread(Dbname as Database, Dbkey as Anyvartype, Varllist)
+ 137	Dbreadnext(Dbname as Database, Dbkey as Anyvartype, Varlist)
+ 138	Dbreadprev(Dbname as Database, Dbkey as Anyvartype, Varlist)
+ 139	Dbreset(Dbname as Database)
+ 140	Dbupdate(Dbname as Database, Dbkey as Anyvartype, Varlist)
+ 141	Exp(Thenumber as Float)
+ 142	Firstofmonth(Thedate as Date)
+ 143	Floor(Thenumber as Float)
+ 144	Format( Numvar as Anynumtype,  Fmtstring as String)
+ 145	Geteventtype() 
+ 146	Getkey()
+ 147	Getpen Currentxpos, Currentypos, Penstatus
+ 148	Getversion(Prcname as String)
+ 149	Hour(Thetime as Time)
+ 150	Hourmin(Thetime as Time)
+ 151	Hourminampm(Thetime as Time)
+ 152	Instr(Start as Integer, S as String, Pattern as String, Type as Integer)
+ 153	Int(Thenumber as Float)
+ 154	Lastofmonth(Thedate)
+ 155	Lcase(Thestring)
+ 156	Left(Thestring as String, Num as Integer)
+ 157	Leftpad(Thestring as String, Num as Integer)
+ 158	Len(Thestring as String)
+ 159	Log(Thenumber as Float)
+ 160	Log10(Thenumber as Float)
+ 161	Ltrim(Thestring as String) as String
+ 162	Mid(Thestring as String, Start as Integer, Num as Integer)
+ 163	Minute(Thetime as Time)
+ 164	Mmddyytodate(Thestring as String)
+ 165	Mod(Thenumber as Integer, Thedivisor as Integer)
+ 166	Month(Thedate as Date)
+ 167	Monthday(Thedate)
+ 168	Nooccurs(Thevariable, Thesubscriptlevel as Integer) 
+ 169	Now() 
+ 170	Popupdate(Dateval as Date, Title as String) 
+ 171	Popuptime(Starttime as Time, Endtime as Time, Title as String)
+ 172	Pow(Thenumber as Float, Pow as Float)
+ 173	Power10(Thenumber as Float, Pow as Integer)
+ 174	Proper(Thestring as String)
+ 175	Radtodegrees(Theangleindegrees as Float)
+ 176	Rand()
+ 177	Rem(A as Double, B as Double) 
+ 178	Right(Thestring as String, Num as Integer)
+ 179	Rightpad(Thestring as String, Num as Integer)
+ 180	Round(Thenumber as Float, Pos as Integer)
+ 181	Rtrim(Thestring as String) as String
+ 182	Second(Thetime as Time)
+ 183	Serialclose()
+ 184	Serialdial(Phoneno as String, Modemsetup as String)
+ 185	Serialhangup()
+ 186	Serialopen(Port as Integer, Baudrate as Integer)
+ 187	Serialreceive(Buffer as String Or Integer Arrray, Nochars as Integer, Timeout as Double)
+ 188	Serialsend(Buffer as String Or Integer Array, Nochars as Integer)
+ 189	Serialset(Characteristic as String, Value as Integer)
+ 190	Sign(Thenumber as Float)
+ 191	Sin(Theangle as Float)
+ 192	Sinh(Theangle as Float)
+ 193	Sqrt(Thenumber as Float) 
+ 194	Str(Thenumber as Float)
+ 195	Subtractdays(Thedate as Date, Days as Integer)
+ 196	Subtractmonths(Thedate as Date, Months as Integer)
+ 197	Subtractyears(Thedate as Date, Years as Integer)
+ 198	Syseventavailable()
+ 199	Sysinfo(Arg as Integer)
+ 200	Sysinfoset(Characteristic as String, Value as Integer)
+ 201	Systrapfunc(Trapnum, Numargs[, Arg1[, Arg2[, ...]]]))
+ 202	Systrapsub(Trapnum, Numargs[, Arg1[, Arg2[, ...]]]))
+ 203	Tan(Theangle as Float)
+ 204	Tanh(Theangle as Float)
+ 205	Testnum(Thestring as String, Signoption as String, Nodigitsbeforedecpt as Integer, Nodigitsafterdecpt as Integer
+ 206	Timediff(Time1 as Time, Time2 as Time)
+ 207	Timeval(Hour as Integer, Minute as Integer, Second as Integer)
+ 208	Todate(Thestring as String)
+ 209	Today()
+ 210	Totime(Thetime as String)
+ 211	Trim(Thestring as String) as String
+ 212	Trunc(Thenumber as Float, Nodgts as Integer))
+ 213	Ucase(Thestring)
+ 214	Val(Thestring as String)
+ 215	Year(Thedate as Date) 
+ 216	Yearmonth(Thedate)
+ 217	SetTheme(themeName as String)
+1000	&File
+1001	&New Project
+1002	&Open Project...
+1003	Sa&ve Project
+1004	Sav&e Project As...
+1005	&Save
+1006	Save &As...
+1007	Save A&ll
+1008	Print Set&up...
+1009	&Print...
+1010	E&xit
+1011	&Edit
+1012	&Undo
+1013	Redo
+1014	Cu&t
+1015	&Copy
+1016	&Paste
+1017	&Delete
+1018	Select &All
+1019	&Find...
+1020	Find &Next
+1021	R&eplace...
+1022	&Go To Line...
+1023	&View
+1024	&Toolbar
+1025	Status &Bar
+1026	&Refresh
+1027	&Project
+1028	Add &Form
+1029	Add &Menu
+1030	Add &Bitmap
+1031	&Startup Code
+1032	&Termination Code
+1033	&Help Code
+1034	Ma&ke 
+1035	&Hotsync 
+1036	HotSync NS Basic Ru&ntime
+1037	HotSync Shared Lib&rary
+1038	P&roperties...
+1039	Set Target Pro&ject
+1040	F&ormat
+1041	&Align
+1042	&Lefts
+1043	&Centers
+1044	&Rights
+1045	&Tops
+1046	&Middles
+1047	&Bottoms
+1048	To &Grid
+1049	&Make Same Size
+1050	&Width
+1051	&Height
+1052	&Both
+1053	&Size To Grid
+1054	&Horizontal Spacing
+1055	&Equal
+1056	&Increase
+1057	&Decrease
+1058	&Remove
+1059	&Vertical Spacing
+1064	&Center In Form
+1065	&Horizontally
+1066	&Vertically
+1067	&Order
+1068	Bring To F&ront
+1069	Move &Forward
+1070	Move &Backward
+1071	&Send To Back
+1072	&Tools
+1073	&Menu Editor
+1074	&Options...
+1075	&Window
+1076	&Toolbox
+1077	P&roperties Window
+1078	&Cascade
+1079	Tile &Horizontal
+1080	Tile &Vertical
+1081	&Windows...
+1082	&Help
+1083	&Register...
+1084	&Language Reference
+1085	&NS Basic Website
+1086	&About NS Basic/Palm OS...
+1087	New
+1088	Open
+1089	Save
+1090	Print
+1091	Undo
+1092	Redo
+1093	Cut
+1094	Copy
+1095	Paste
+1096	Delete
+1097	Find
+1098	Add Form
+1099	Add Bitmap
+1100	Add Module
+1101	&Compile 
+1102	Properties
+1103	Menu Editor
+1104	About Project1
+1105	&System Info...
+1106	OK
+1107	Warning: ...
+1108	Version
+1109	Application Title
+1110	App Description
+1111	Back
+1112	Forward
+1113	Stop
+1114	Refresh
+1115	Home
+1116	Search
+1117	&Address:
+1118	&Project Explorer
+1119	Get &Creator ID from Access
+1120	NS Basic/Palm
+1121	Demonstration Edition
+1122	The Easiest way to program a Palm OS device!
+1123	Buy
+1124	Demo Info
+1125	Find
+1126	&Find What:
+1127	Replace &With:
+1128	Search
+1129	Current &Module
+1130	&Current Project
+1131	Selected &Text
+1132	Find Whole Word &Only
+1133	Match Ca&se
+1134	Find &Next
+1135	Cancel
+1136	&Replace
+1137	Replace &All
+1138	&Install
+1139	&Cancel
+1141	New
+1142	Existing
+1143	Recent
+1144	Don't show this dialog in the f&uture
+1145	&Open
+1146	&Cancel
+1147	File name:
+1148	File of type:
+1149	New Project
+1150	Options
+1151	&Files Directory
+1152	&Path to POSE
+1153	&Browse
+1154	&Launch POSE at start up
+1155	When NS Basic starts
+1156	Prompt for pr&oject
+1157	Create d&efault project
+1158	E&ditor Preferences
+1159	Plain Text Font
+1160	Draw &Plain Text Objects
+1161	&Font...
+1162	&Snap to Grid
+1163	&Grid Size:
+1164	&Save before Compile
+1165	&Compile into Fat App
+1166	Set &High Res for HandEra
+1167	After Compiling...
+1168	Send to POS&E
+1169	Run &Immediately
+1170	&Hotsync to Device
+1171	Do &Nothing
+1172	B&rowse
+1173	Example
+1174	Project Explorer
+1175	Properties
+1176	Registration
+1177	To obtain the unrestricted version and complete documentation, contact NS BASIC Corporation at our website, http://www.nsbasic.com, and follow the directions for registering the product.
+1178	&Serial Number
+1179	Unregistered Demo
+1180	When you have obtained a Serial Number, enter it into the space above. If you have not legally obtained a serial number, the field must contain the text "Unregistered Demo". See Licence Agreement for complete details.
+1181	Advanced Features
+1182	Show White Space
+1183	Comment
+1184	Uncomment
+1185	Set Repeat Count
+1186	Execute Command
+1202	Button
+1203	List
+1204	Label
+1205	Field
+1206	PushButton
+1207	Checkbox
+1208	Popup Trigger
+1209	Selector Trigger
+1210	Bitmap
+1211	Gadget
+1212	Repeating Button
+1213	Scrollbar
+1214	Graffiti Shift Indicator
+1215	&Run
+1216	Compile &Options...                            
+1217	Download Runtime
+1218	P&references...
+1219	Start Palm OS &Emulator
+1220	&Start 
+1221	Return to &Launcher
+1222	Download Shared Library
+1223	Download 
+1224	Copy &Protect
+1225	Set Wide Screen for AlphaSmart Dana
+1301	Project Explorer
+1302	Properties
+1303	Find
+1304	Find/Replace
+1305	Go to Emulator Downloads at Access.com
+1400	Version
+1401	NS Basic/Palm
+1403	Warning: This computer program and its documentation are protected by copyright law and international treaties. Unauthorized reproduction, use or distribution of this program, or any portion of it, will result in severe civil and criminal penalties and will be prosecuted to the maximum extent possible under the law. Please see the License Agreement in the NS BASIC Handbook.
+1404	OK
+1405	&System Info...
+1406	\ / : * ? " < > |
+1407	A valid filename cannot contain any of the following characters: \ / : * ? " < > |
+1408	Invalid Property Value
+1409	\a/a[a]a|a+a=a-a(a)a*a&a^a%a$a#a@a!a:a;a'a"a{a}a<a>a,a.a?a a`a~
+1410	Not a legal object name: 
+1411	One or more Palm OS fonts are missing.  Please reinstall NS Basic/Palm.
+1412	Project will not compile without at least one form.
+1413	Please locate Emulator.exe
+1414	&Launch POSE on start up?
+1440	General
+1441	General Program Options
+1442	Editor
+1443	Editor Window Options
+1444	Design Screen
+1445	Palm Screen Options
+1446	Compile/Download
+1447	Compile/Download Options
+1450	NSBasicText9
+1451	NSBasicText9B
+1452	NSBasicText12
+1453	NSBasicSymbol9
+1454	NSBasicSymbol11
+1455	NSBasicSymbol7
+1456	NSBasicLED
+1457	NSBasicText12B
+1500	View O&bject
+1501	View C&ode
+1502	View &Startup Code
+1503	View &Termination Code
+1504	View &Before Code
+1505	View &After Code
+1506	View &Events Code
+1507	View &Help Code
+1508	&Add
+1509	&Form
+1510	&Menu
+1511	&Bitmap
+1512	&New Module
+1513	&Existing Module...
+1514	Add &MenuBar
+1515	Add &Dropdown
+1516	Add &New Module
+1517	Add &Existing Module...
+1518	&Close Project
+1519	Re&move Bitmap
+1520	Re&move Module
+1600	Menu Editor
+1601	Move &Up
+1602	Move Do&wn
+1603	Insert &MenuBar
+1604	Add Menu&Bar
+1605	Insert Dro&pdown
+1606	Add D&ropdown
+1607	&Delete
+1608	Move Up
+1609	Move Down
+1610	M&enu:
+1611	&Caption:
+1612	Proc Name:
+1613	&Shortcut:
+1614	Menu &Layout
+1618	&Next
+1619	&OK
+1620	Menu item must have a caption
+1621	Edit Menu Name
+1622	Add New Menu
+1623	Enter Menu Name
+1624	Add New Menu
+1625	Enter MenuBar name
+1626	Delete Menu
+1627	Do you want to delete this menu?
+1628	Enter Dropdown Name
+1629	Add New MenuBar
+1630	Add New Dropdown
+2000	(None)
+2001	(Icon)
+2002	Project does not contain a bitmap with that ID
+2050	There is already a project open with that name
+2051	A project file exists with that name. Overwrite it?
+2052	Creator ID must contain at least one uppercase character
+2100	 is already designated as the default form of the project.  Do you want to change the default form?
+2150	Project already has a form named: 
+2151	Form origin and dimension are not currently used by NS Basic/Palm
+2152	Modal forms are not currently available in NS Basic/Palm
+2200	File>Load Image>Image Files (*.gif;*.jpg;*.bmp;*.ico;*.emf;*.wmf)|*.gif;*.jpg;*.bmp;*.ico;*.emf;*.wmf|All Files|*.*>bmp
+2201	File>Load Resource>Resource Files (*.prc;*.pdb)|*.prc;*.pdb|All Files|*.*>prc
+2202	Add Bitmap
+2203	File>Load Image>Image Files (*.svg)|*.svg|All Files|*.*>bmp
+2204	File>Load Image>Image Files (*.bmp)|*.bmp;|All Files|*.*>bmp
+2205	File>Load License File>Text Files (*.txt)|*.txt;|All Files|*.*>txt
+2206	File>Load Theme File>Theme Files (*.pdb)|*.pdb>.pdb
+2207	Choose Theme File
+2250	Project already has a bitmap named: 
+2300	File>Load Module>Modules (*.cod)|*.cod>cod
+2400	0 - Standard>1 - Standard Bold>2 - Large>3 - Symbol>4 - Symbol 11>5 - Symbol 7>6 - LED>7 - Large Bold
+2450	Project already has an object named: 
+2550	Project does not have a bitmap with that Resource ID
+2551	The bitmap with that Resource ID is already in use
+2700	Another object on this form with the same Group ID is already selected.  Are you sure you want this object to have the same Group ID?
+2701	Another object on this form with the same Group ID is already selected.  Are you sure you want this object to be selected?
+2702	Group ID range is 0-255.
+2850	Max Characters must be greater than 0 and less than 32767.
+2851	A field cannot be sized dynamically with a scrollbar, do you want to remove the scrollbar?
+2852	A field must have multiple lines to use a scrollbar, do you want to remove the scrollbar?
+2950	Number of visible items must be greater than zero
+3050	Min Value must be less than Max Value
+3051	Value must be between Min Value and Max Value
+3100	List Resource Type is not currently available in NS Basic/Palm
+3101	Re&move Project
+3102	De&lete Form
+3103	Error...
+3104	Missing SUB or FUNCTION header
+3105	The only statement that can follow a SELECT CASE is the CASE statement.
+3106	Expecting a numeric variable or numeric constant.
+3107	Expecting a variable of type STRING or a string literal surrounded by quote marks. Term and type:
+3108	Missing required levels of subscripting
+3109	Found a term longer than limit of 
+3110	Subscripts must be numeric constants or variables.
+3111	Name used as a subscript is not defined elsewhere.
+3112	Expecting a valid LABEL name.
+3113	Expecting a valid subroutine or function name.
+3114	Module has exceeded size limit.
+3115	Syntax error.
+3116	Compiled code exceeds internal buffer size.
+3117	SUB or FUNCTION not defined: 
+3118	Label not defined:
+3119	Missing END SUB or END FUNCTION statement.
+3120	Right parenthesis found without open left parenthesis.
+3121	Left parenthesis missing after function name.
+3122	Missing right parenthesis at end of function call.
+3123	 needs: 
+3124	 found: 
+3125	Missing left parenthesis at end of function call.
+3126	Missing right parenthesis at end of function call.
+3127	Invalid table object name
+3128	Cannot locate an object with name 
+3129	Invalid Object Name
+3130	Database name cannot be same as project name.
+3131	Expecting a database name variable
+3132	Invalid TYPE name
+3133	TYPE structures cannot be used as database keys.
+3134	Argument is not a valid variable name or literal.
+3135	Incorrect type of variable used:
+3136	Argument is not a valid variable name or literal.
+3137	Incorrect type of variable used:
+3138	Incorrect type of variable used:
+3139	Argument is not a valid variable name or literal.
+3140	Incorrect type of variable used:
+3141	Incorrect type of variable used:
+3142	Incorrect type of variable used:
+3143	Argument is not a valid variable name or literal.
+3144	Incorrect type of variable used:
+3145	Incorrect type of variable used:
+3146	Incorrect type of variable used:
+3147	Incorrect type of variable used:
+3148	Incorrect number of function arguments
+3149	Object does not support that method or property: 
+3150	Must assign function result to a variable name.
+3151	An IF or SELECT CASE statement is not matched with ENDIF or END SELECT.
+3152	Missing right parenthesis: 
+3153	Unidentified command:
+3154	Can't use a constant on the left side of =.
+3155	Can only assign a CTypeDef to another CTypeDef
+3156	Can only assign CtypeDef variables to the same kind of CDefTypeVariable.
+3157	Too many levels of subscripting
+3158	Too many levels of subscripting
+3159	Too many levels of subscripting
+3160	Too many levels of subscripting
+3161	Too many levels of subscripting
+3162	Right and left side of = must be the same type.
+3163	ENDIF found with no IF
+3164	ENDWHILE found with no WHILE
+3165	EXIT SUB not allowed in a function
+3166	EXIT FUNCTION not allowed in a subroutine
+3167	EXIT SUB not allowed in a function
+3168	IF does not have matching ENDIF
+3169	EXIT FUNCTION not allowed in a subroutine
+3170	IF does not have matching ENDIF
+3171	Variable already defined
+3172	TYPE name already defined as a variable
+3173	TYPE name already defined.
+3174	Element of TYPE structure is duplicated
+3175	TYPE definitions cannot contain other TYPE variables.
+3176	Duplicate library object name: 
+3177	Unable to open library .INF file
+3178	Variable already defined
+3179	Too many levels of subscripting
+3180	Can only use DIM statement modifiers on numeric variables.
+3181	Function name same as subroutine or function name.
+3182	DEFINE not needed and may conflict with function definition.
+3183	Function type must be defined with AS clause
+3184	Previous SUB or FUNCTION not terminated by EXIT statement.
+3185	Function name same as paragraph or function name.
+3186	Wrong number of arguments
+3187	Function type must be defined with AS clause
+3188	Function name defined in two places
+3189	Previous SUB or FUNCTION not terminated by EXIT statement
+3190	Subroutine name same as paragraph or function name.
+3191	Subroutine name defined in two places.
+3192	Wrong number of arguments
+3193	Can't use CALL on same line as IF
+3194	Subroutine name same as paragraph name or function name.
+3195	Wrong number of arguments.
+3196	Extra information at end of statement.
+3197	The name given is not a valid menu name.
+3198	Statement too complex.
+3199	NEXT without matching FOR.
+3200	CASE without SELECT CASE.
+3201	CASE with value cannot follow CASE ELSE
+3202	CASE not followed by valid dataname.
+3203	Statement too complex
+3204	END SELECT without SELECT CASE.
+3205	SELECT CASE has no CASE statements
+3206	Can't stack IF statement on the same line.
+3207	IF Statement too complex.
+3208	Statement too complex.
+3209	Duplicate label.
+3210	NEXTFORM name must be in quotes or a string variable.
+3211	Must use name of a form in quotes.
+3212	NEXTFORM references unknown form: 
+3213	Can't redraw this kind of object.
+3214	Table subscript must be numeric
+3215	Transfer tables must be same data type.
+3216	The label cannot be set before the object is displayed.
+3217	Can't hide the Graffiti Shift Indicator.
+3218	The text value cannot be set before the object is displayed.
+3219	Object does not support this action.
+3220	Too many levels of CTypeDef subscripting.
+3221	Module too large.
+3222	Unable to open .INF file.
+3223	Invalid method declaration in .INF file: 
+3224	Not enough arithmetic work variables.
+3225	Not enough string work variables.
+3226	Not enough logical work variables.
+3227	Compile will continue, but is not successful.
+3228	Bad IF logic in the internals of the program.
+3229	Internal compiler error - found function code:
+3230	Compiling...
+3231	Saving...
+3232	Downloading... Stopping current app...
+3233	Downloading...
+3234	Starting app...
+3235	Internal Compiler Error
+3236	Form has more than one Pushbutton assigned the same group ID.  Only one member of a Group ID can have Selected status.
+3237	Invalid Form Version: 
+3238	Invalid paste: Form Version
+3239	Invalid menu version:
+3240	Invalid paste: Menu Type
+3241	Invalid paste: Menu Version
+3242	Invalid paste: Menubar Type
+3243	Invaid paste: Menubar version
+3244	Invalid Menubar version: 
+3245	Invaid paste: Dropdown Type
+3246	Invalid paste: Dropdown Version
+3247	Invalid Dropdown Version: 
+3248	Invalid Object Type: 
+3249	Invalid Object Version: 
+3250	Invalid paste: Object Type
+3251	Invalid paste: Object Version
+3252	Module not found: 
+3253	Project name cannot contain double byte characters.
+3254	Error: cannot recognise form object: 
+3255	Invalid Project version: 
+3256	Unable to save project.
+3257	Unable to find module: 
+3258	Illegal Object Type: 
+3259	Error loading project: 
+3260	Bitmap not found: 
+3261	Do you want to hide the Titlebar?
+3262	Enter new form title
+3263	Congratulations! You now have a fully licensed version.
+3264	Reverting to Unregistered Demo. Please reenter your serial number.
+3265	This is a demo copy. It cannot be registered. Please contact NS BASIC Corporation for a registered version.
+3266	Do you want to remove this item?
+3267	Invalid Bitmap Version: 
+3268	Invalid Paste: Bitmap Type
+3269	Invalid Paste: Bitmap Version
+3270	Invalid Button Version: 
+3271	Invalid paste: Button Type
+3272	Invalid paste: Button Version
+3273	Invalid CheckBox version: 
+3274	Invalid paste: Checkbox Type
+3275	Invalid paste: Checkbox Version
+3276	Invalid PushButton version: 
+3277	Invalid paste: PushButton Type
+3278	Invalid paste: PushButton Version
+3279	Invalid Field Version: 
+3280	Invalid Paste: Field Type
+3281	Invalid Paste: Field Version
+3282	Invalid Gadget Version: 
+3283	Invalid paste: Gadget Type
+3284	Invalid paste: Gadget Version
+3285	Invalid Graffit Shift Indicator Version:
+3286	Invalid paste: Shift Indicator Type
+3287	Invalid paste: Shoft Indicator Version
+3288	Invalid Label Version: 
+3289	Invalid paste: Label Type
+3290	Invalid paste: Label Version
+3291	Invalid List Version: 
+3292	Invalid paste: List Type
+3293	Invalid paste: List Version
+3294	Invalid Popup Version: 
+3295	Invalid paste: Popup Type
+3296	Invalid paste: Popup Version
+3297	Invalid Repeater Version: 
+3298	Invalid paste: Repeater Type
+3299	Invalid paste: Repeater Version
+3300	Invalid Scrollbar Version: 
+3301	Invalid paste: Scrollbar Type
+3302	Invalid paste: Scrollbar Version
+3303	Invalid Selector Version: 
+3304	Invalid paste: Selector Type
+3305	Invalid paste: Selector Version
+3306	End of search area reached. Do you want to start from the beginning?
+3307	Invalid Bitmap File Version: 
+3308	Error: Bitmap has zero bytes: 
+3309	Bitmap not found: 
+3310	NS Basic/Palm Demo Edition has timed out. It is time to buy a copy.
+3311	Days Remaining 
+3312	Welcome to NS Basic/Palm's Demonstration Edition!
+3313	Click the Buy button for more information or to get the latest version of NS Basic/Palm with full support and 140 page Handbook.
+3314	This is the full version of NS Basic/Palm with some restrictions:
+3315	1. Apps you create will only run for 5 days.
+3316	2. Apps created do not need a runtime.
+3317	3. This demo copy will only run for 30 days.
+3318	4. Shared libraries are not included.
+3319	Be sure to read the release notes for full information on getting started.
+3320	Search text is not found.
+3321	End of search reached
+3322	Please select a username.
+3323	Program will install on Palm device during next Hotsync.
+3324	Can't find any Usernames to install programs for. Installation cancelled.
+3325	Could not find associated Browser.
+3326	URL failed. Web page not opened.
+3327	Project already open: 
+3328	Unable to open project file: 
+3329	Save 
+3330	Project is already open
+3331	Module has been changed. Do you want to save?
+3332	Download Failed
+3333	Unable to display Help contents.
+3334	Click OK when reset is complete.
+3335	Downloading... Copying...
+3336	Download failed.
+3337	No download option selected in Compile/Download Options
+3338	There were errors. Compile is not completed.
+3339	POSE pathname not valid.
+3340	Could not start app on POSE: 
+3341	POSE is not responding. Is it running?
+3342	Some compile error...
+3343	Ready to download to your Palm device or POSE
+3344	Compile Complete
+3345	There were errors. The program will not be downloaded.
+3346	Restart NS Basic to see new language setting.
+3347	Bitmap object has invalid Resource ID: 
+3348	MS Sans Serif
+3349	9
+3350	0
+3351	 Variable table overflow. Reduce number of variables and literals.
+3352	&Tech Notes
+3353	Print just current module?
+3354	CASE must be followed by a string or numeric literal or a simple variable name. Calculated values or functions are not allowed.
+3355	Add Resource
+3356	Remove Resource
+3357	Add Resource
+3358	Palm Files (*.prc;*.pdb;)|*.prc;*.pdb
+3359	Resource
+3360	Resource not found: 
+3361	Error: Resource > 64k:
+3362	Decimal Places must be at least 2 less than Length.
+3363	Cannot recognise term: 
+3364	Must use form name in quotes.
+3365	NEXTFORM references unknown form name.
+3366	 Literal table overflow (65535 max). Reduce the number of string and numeric literals in your code.
+3367	DateDiff is a reserved word and cannot be used as a function name.
+3368	TimeDiff is a reserved word and cannot be used as a function name.
+3369	Startup SUB statement not formatted properly.
+3370	Missing 'End Select' statement.
+3371 	Missing 'Next' statement
+3372	A screen object has the same name as a form: 
+3373	Project cannot contain an empty code module.
+3374	NS Basic not registered - program will time out after 5 days.
+3375    Unable to open new .INF file, tryng old format.
+3376	Path to Si&mulator
+3377	L&aunch Simulator at start up
+3378	Send to Simulator
+3379	Run immediately
+3380	Start Simulator
+3381	Please locate PalmSim.exe
+3382	Simulator pathname not valid.
+3383	Error communicating with Simulator: 
+3384	Could not stop:
+3385	Can't set Simulator Port to 
+3386	Invalid 68KDebuggerPort in PalmSim.ini
+3387	Waiting for Simulator...
+3388	POSE or Simulator must be running before download. Try again after its startup is complete.
+3389	Simulator must be running before download. Try again after its startup is complete.
+3390	Reorder...
+3391	Include ARM Native Runtime (OS5)
+3392	Error: Invalid Grid Version: 
+3392	Maximum rows/cols must be between 1 and 32767.
+3393	Invalid paste: Grid Type
+3394	Invalid paste: Grid Version
+3395	Must provide a database record layout name.
+3396 	Database record name cannot be an array.
+3397	Must supply database name in quotes.
+3398	Filename must be followed by 'CREATOR "cccc".
+3399	Database format syntax is incorrect--expecting WITH RECORD
+3400	Functions cannot return a user defined TYPE result
+3401	Database record must be a TYPE name.
+3402	Expecting a database name.
+3403	Internal error -- can't find database from number.
+3404	Expecting a database field.
+3405	Statement too complicated -- please simplify.
+3406	Grid
+3407	Database format syntax is incorrect--expecting record name.
+3408	Database record's keyField is not defined by DIM statement.
+3409	Database keyField cannot be a TYPE name, must be simple variable.
+3410	Database keyField cannot be subscripted.
+3411	Database format syntax is incorrect--expecting record layout name.
+3412	Must supply the database keyField and/or record layout name.
+3413	Code module is read only. Changes not saved.
+3414	Database name already defined elsewhere.
+3415	Slider
+3416	Error: Invalid Slider Version: 
+3417	Please report this error to support@nsbasic.com.
+3418	Invalid paste: Slider object.
+3419	Invalid paste: Slider version.
+3420	The program does not have any variables defined.
+3421	program error -- can't update variable list at node# = 
+3422	Debugger in module 
+3423	The selected variable is already in the watch variable list to be viewed.
+3424	&Continue
+3425	&Watch Variable List
+3426	&Variables
+3427	Call &Stack
+3428	Clear Breakpoints in current &module
+3429	Clear &all Breakpoints
+3430	Continue without Breakpoints
+3431	Watch Variable List
+3432	&Add
+3433	&Delete
+3434	&Clear All
+3435	Variables
+3436	Debugger Call Stack
+3437	Debug Mode
+3438	The end of the module was reached. Do you want to continue searching from the beginning?
+3439	You cannot close code window in Debug Mode. Contine execution instead.
+3440	Error starting Debugger.
+3441	End
+3442	Are you sure you want to delete form 
+3443	Maximum number of resources in a project is 9999. To continue with this project, adjust the HighestSequenceNo in the project header record.
+3444	The end of the module was reached, do you want to continue searching from the beginning?
+3445	Tutorials
+3446	&Create Installer
+3447	Create &S60 Installer
+3448	Create &UIQ Installer
+3449	Version must be in format #,#,#
+3450	Run Installer
+3451	Error creating installer. Please check Compile.log and Error.log in output folder for more information.
+3452	Read Me
+3453	Theme
+3454	Theme Editor
+3455	Are you sure you want to overwrite 
+3500	Object Border|Borders of command buttons, push buttons, etc. 
+3501	Object Fill|Background of a solid or filled objects (except for Fields and Grids). 
+3502	Object Foreground|Foreground (text) of objects such as labels, graphics and MsgBox.
+3503	Selected Object Fill|Background of the selected object, whether that object is solid or not.
+3504	Selected Object Foreground|Foreground of items in a selected object.
+3505	Menu Border|Border around the menu.
+3506	Menu Fill|Background of a menu item.
+3507	Menu Text|Color of the menu's text.
+3508	Selected Menu Background|Background of a selected menu item.
+3509	Selected Menu Text|Text of a selected menu item.
+3510	Field Fill|Background of an editable text field.
+3511	Field Text|Text in the editable field.
+3512	Field Underlines|Underlines in an editable field.
+3513	Field Cursor|Cursor in an editable text field.
+3514	Field Selected Fill|Background of selected text in an editable text field.
+3515	Field Selected Text|Selected text in an editable text field. 
+3516	(not used)|Color used for unconverted text in the inline conversion area when a FEP is used as a text input method (for example, on Japanese devices). If the FEP colors are identical to field colors, unconverted text has a solid underline.
+3517	(not used)|The background color for unconverted text in the inline conversion area when a FEP is used as a text input method. If the FEP colors are identical to field colors, unconverted text has a solid underline.
+3518	(not used)|Color used for converted text in the inline conversion area when a FEP is used as a text input method (for example, on Japanese devices). If the FEP colors are identical to field colors, converted text has a double-thick underline.
+3519	(not used)|The background color used for converted text in the inline conversion area. If the FEP colors are identical to field colors, converted text has a double-thick underline.
+3520	(not used)|The color used for underlines in the inline conversion area.
+3521	Border|Border and titlebar on a form.
+3522	Form Fill|Background of a form and text of titlebar. 
+3523	Modal Form Border|Border and titlebar on a modal form.
+3524	Modal Form Fill|Background of a modal form.
+3525	Msgbox Panel Border|Border and titlebar on an alert panel.
+3526	MsgBox Fill|Background of an alert panel.
+3527	(not used)|Informational icon.
+3528	(not used)|Caution icon.
+3529	(not used)|Warning icon. NS Basic does not currently use the OK, Caution, and Warning color settings.
+3530	0 - Left>1 - Right>2 - Center
+3531	0 - Flat>1 - 3D
+3532	0 - Left to Right>1 - Top to Bottom
+3533	0 - none>1 - single
+3534	Image must be less than 64K: Actual size: 
+3535	Theme changed to 
+3536	NS Basic Programmming for Palm OS (Book)
+3537	NS Basic/Palm Handbook

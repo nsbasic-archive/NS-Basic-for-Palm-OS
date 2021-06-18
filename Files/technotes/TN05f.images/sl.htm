@@ -1,0 +1,150 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="pt-br">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Pascal Compiler Shared Library for NSBasic</title>
+</head>
+
+<body>
+
+<pre><font color="green"><i>{$code libr,PPNB,libr,0}</i></font>
+
+<font color="red"><b>program</b></font> PPNSBasicLib<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>,</b></font>entryP<font color="blue" size="+1"><b>);</b></font>
+
+<font color="green"><i>{$i PalmAPI.pas}</i></font>
+
+<font color="red"><b>type</b></font>
+ SysLibTblEntryType<font color="blue" size="+1">=</font><font color="red"><b>record</b></font>
+  dispatchTblP <font color="blue" size="+1"><b>:</b></font> pointer<font color="blue" size="+1"><b>;</b></font>
+  globalsP <font color="blue" size="+1"><b>:</b></font> pointer<font color="blue" size="+1"><b>;</b></font>
+  dbID <font color="blue" size="+1"><b>:</b></font> LocalID<font color="blue" size="+1"><b>;</b></font>
+  CodeRscH <font color="blue" size="+1"><b>:</b></font> pointer<font color="blue" size="+1"><b>;</b></font>
+ <font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+ SysLibTblEntryPtr<font color="blue" size="+1">=</font><font color="cyan"><font color="blue" size="+1">^</font>SysLibTblEntryType</font><font color="blue" size="+1"><b>;</b></font>
+ resultP<font color="blue" size="+1">=</font><font color="cyan"><font color="blue" size="+1">^</font>integer</font><font color="blue" size="+1"><b>;</b></font>
+<font color="green"><i>// program parameter declaration
+// no other global must be declared
+</i></font><font color="red"><b>var</b></font>
+ refnum <font color="blue" size="+1"><b>:</b></font> UInt16<font color="blue" size="+1"><b>;</b></font>
+ entryP <font color="blue" size="+1"><b>:</b></font> <font color="cyan"><font color="blue" size="+1">^</font>SysLibTblEntryType</font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> SysLibTblEntry<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>):</b></font>SysLibTblEntryPtr<font color="blue" size="+1"><b>;</b></font> <font color="red"><b>inline</b></font><font color="blue" size="+1"><b>(</b></font><font color="pink">$4e4f</font><font color="blue" size="+1"><b>,</b></font><font color="pink">$a0b9</font><font color="blue" size="+1"><b>);</b></font>
+<font color="red"><b>type</b></font>
+  This_LibGlobalsT<font color="blue" size="+1">=</font><font color="red"><b>record</b></font>
+  refcount<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>;</b></font>
+ <font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> This_LibOpen<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>):</b></font>Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>var</b></font>
+ entryP <font color="blue" size="+1"><b>:</b></font> SysLibTblEntryPtr<font color="blue" size="+1"><b>;</b></font>
+ gl <font color="blue" size="+1"><b>:</b></font> <font color="cyan"><font color="blue" size="+1">^</font>This_LibGlobalsT</font><font color="blue" size="+1"><b>;</b></font>
+ e <font color="blue" size="+1"><b>:</b></font> Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>begin</b></font>
+ entryP<font color="blue" size="+1"><b>:</b>=</font>SysLibTblEntry<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>);</b></font>
+ gl<font color="blue" size="+1"><b>:</b>=</font>entryP<font color="blue" size="+1">^<b>.</b></font>GlobalsP<font color="blue" size="+1"><b>;</b></font>
+ <font color="red"><b>if</b></font> gl<font color="blue" size="+1">&lt;&gt;</font><font color="red"><b>nil</b></font> <font color="red"><b>then</b></font>
+ <font color="red"><b>begin</b></font>
+  <font color="green"><i>// we are already open in some other application, just increment the refcount
+</i></font>  gl<font color="blue" size="+1">^<b>.</b></font>refcount<font color="blue" size="+1"><b>:</b>=</font>gl<font color="blue" size="+1">^<b>.</b></font>refcount<font color="blue" size="+1">+</font><font color="brown">1</font><font color="blue" size="+1"><b>;</b></font>
+  This_LibOpen<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+ <font color="red"><b>end</b></font>
+ <font color="red"><b>else</b></font>
+ <font color="red"><b>begin</b></font>
+  <font color="green"><i>// need to allocate for the globals
+</i></font>  new<font color="blue" size="+1"><b>(</b></font>gl<font color="blue" size="+1"><b>);</b></font>
+  <font color="red"><b>if</b></font> gl<font color="blue" size="+1">&lt;&gt;</font><font color="red"><b>nil</b></font> <font color="red"><b>then</b></font>
+  <font color="red"><b>begin</b></font>
+   entryP<font color="blue" size="+1">^<b>.</b></font>globalsP<font color="blue" size="+1"><b>:</b>=</font>gl<font color="blue" size="+1"><b>;</b></font>
+   e<font color="blue" size="+1"><b>:</b>=</font>MemPtrSetOwner<font color="blue" size="+1"><b>(</b></font>entryP<font color="blue" size="+1">^<b>.</b></font>globalsP<font color="blue" size="+1"><b>,</b></font><font color="brown">0</font><font color="blue" size="+1"><b>);</b></font>
+   <font color="red"><b>if</b></font> e<font color="blue" size="+1">=</font><font color="brown">0</font> <font color="red"><b>then</b></font>
+   <font color="red"><b>begin</b></font>
+    gl<font color="blue" size="+1">^<b>.</b></font>refcount<font color="blue" size="+1"><b>:</b>=</font><font color="brown">1</font><font color="blue" size="+1"><b>;</b></font> <font color="green"><i>// initialize the globals
+</i></font>    This_LibOpen<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+   <font color="red"><b>end</b></font>
+   <font color="red"><b>else</b></font> This_LibOpen<font color="blue" size="+1"><b>:</b>=</font><font color="brown">1</font><font color="blue" size="+1"><b>;</b></font>
+  <font color="red"><b>end</b></font>
+  <font color="red"><b>else</b></font> This_LibOpen<font color="blue" size="+1"><b>:</b>=</font><font color="brown">2</font><font color="blue" size="+1"><b>;</b></font> <font color="green"><i>// unable to allocate
+</i></font> <font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+ 
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> This_LibClose<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>;</b></font><font color="red"><b>var</b></font> numapps<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>):</b></font>Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>var</b></font>
+ entryP<font color="blue" size="+1"><b>:</b></font>SysLibTblEntryPtr<font color="blue" size="+1"><b>;</b></font>
+ gl<font color="blue" size="+1"><b>:</b></font><font color="cyan"><font color="blue" size="+1">^</font>This_LibGlobalsT</font><font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>begin</b></font>
+ entryP<font color="blue" size="+1"><b>:</b>=</font>SysLibTblEntry<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>);</b></font>
+ gl<font color="blue" size="+1"><b>:</b>=</font>entryP<font color="blue" size="+1">^<b>.</b></font>GlobalsP<font color="blue" size="+1"><b>;</b></font>
+ <font color="red"><b>if</b></font> gl<font color="blue" size="+1">=</font><font color="red"><b>nil</b></font> <font color="red"><b>then</b></font> This_LibClose<font color="blue" size="+1"><b>:</b>=</font><font color="brown">1</font> <font color="green"><i>// we're not open!
+</i></font> <font color="red"><b>else</b></font>
+ <font color="red"><b>begin</b></font>
+  gl<font color="blue" size="+1">^<b>.</b></font>refcount<font color="blue" size="+1"><b>:</b>=</font>gl<font color="blue" size="+1">^<b>.</b></font>refcount<font color="blue" size="+1">-</font><font color="brown">1</font><font color="blue" size="+1"><b>;</b></font>
+  numapps<font color="blue" size="+1"><b>:</b>=</font>gl<font color="blue" size="+1">^<b>.</b></font>refcount<font color="blue" size="+1"><b>;</b></font>
+  <font color="red"><b>if</b></font> numapps<font color="blue" size="+1">=</font><font color="brown">0</font> <font color="red"><b>then</b></font>
+  <font color="red"><b>begin</b></font>
+   dispose<font color="blue" size="+1"><b>(</b></font>gl<font color="blue" size="+1"><b>);</b></font>
+   entryP<font color="blue" size="+1">^<b>.</b></font>GlobalsP<font color="blue" size="+1"><b>:</b>=</font><font color="red"><b>nil</b></font><font color="blue" size="+1"><b>;</b></font>
+  <font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+  This_LibClose<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+ <font color="red"><b>end</b></font>
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> This_LibSleep<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>):</b></font>Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>begin</b></font>
+ This_LibSleep<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> This_LibWake<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>):</b></font>Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>begin</b></font>
+ This_LibWake<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> This_LibAdd<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>;</b></font>a<font color="blue" size="+1"><b>,</b></font>b<font color="blue" size="+1"><b>:</b></font>integer<font color="blue" size="+1"><b>;</b></font>result<font color="blue" size="+1"><b>:</b></font>resultP<font color="blue" size="+1"><b>):</b></font>Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>begin</b></font>
+ result<font color="blue" size="+1">^<b>:</b>=</font>a<font color="blue" size="+1">+</font>b<font color="blue" size="+1"><b>;</b></font>
+ This_LibAdd<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> This_LibMul<font color="blue" size="+1"><b>(</b></font>refnum<font color="blue" size="+1"><b>:</b></font>UInt16<font color="blue" size="+1"><b>;</b></font>a<font color="blue" size="+1"><b>,</b></font>b<font color="blue" size="+1"><b>:</b></font>integer<font color="blue" size="+1"><b>;</b></font>result<font color="blue" size="+1"><b>:</b></font>resultP<font color="blue" size="+1"><b>):</b></font>Err<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>begin</b></font>
+ result<font color="blue" size="+1">^<b>:</b>=</font>a<font color="blue" size="+1">*</font>b<font color="blue" size="+1"><b>;</b></font>
+ This_LibMul<font color="blue" size="+1"><b>:</b>=</font><font color="brown">0</font><font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>const</b></font>
+ LibName<font color="blue" size="+1">=</font><font color="purple">'PPNSBasicLib'</font><font color="blue" size="+1"><b>;</b></font> <font color="green"><i>// library name
+</i></font> LibFuncNum<font color="blue" size="+1">=</font><font color="brown">6</font><font color="blue" size="+1"><b>;</b></font> <font color="green"><i>// Number of functions defined in library
+</i></font> FirstF<font color="blue" size="+1">=</font><font color="brown">2</font><font color="blue" size="+1">*</font>LibFuncNum<font color="blue" size="+1">+</font><font color="brown">2</font><font color="blue" size="+1"><b>;</b></font>
+ TblSize<font color="blue" size="+1">=<b>(</b></font>Length<font color="blue" size="+1"><b>(</b></font>LibName<font color="blue" size="+1"><b>)</b>+</font><font color="brown">4</font><font color="blue" size="+1">+</font>6<font color="blue" size="+1">*</font>LibFuncNum<font color="blue" size="+1"><b>)</b></font> <font color="red"><b>and</b></font> <font color="pink">$fffe</font><font color="blue" size="+1"><b>;</b></font>
+
+<font color="red"><b>function</b></font> GetTable<font color="blue" size="+1"><b>:</b></font>pointer<font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>inline</b></font><font color="blue" size="+1"><b>(</b></font>
+  <font color="pink">$41fa</font><font color="blue" size="+1"><b>,</b></font><font color="brown">4</font><font color="blue" size="+1"><b>,</b></font>   <font color="green"><i>// lea 4(pc),a0 ; returns table adress
+</i></font>  <font color="pink">$6000</font><font color="blue" size="+1">+</font>TblSize<font color="blue" size="+1"><b>,</b></font> <font color="green"><i>// bra + ; skip table data (short skip&lt;128)
+</i></font>  <font color="brown">2</font><font color="blue" size="+1">+</font>6<font color="blue" size="+1">*</font>LibFuncNum<font color="blue" size="+1"><b>,</b></font> <font color="green"><i>// external functions number+2
+</i></font>  FirstF<font color="blue" size="+1"><b>,</b></font>
+  FirstF<font color="blue" size="+1">+</font><font color="brown">4</font><font color="blue" size="+1"><b>,</b></font>
+  FirstF<font color="blue" size="+1">+</font><font color="brown">8</font><font color="blue" size="+1"><b>,</b></font>
+  FirstF<font color="blue" size="+1">+</font><font color="brown">12</font><font color="blue" size="+1"><b>,</b></font>
+  FirstF<font color="blue" size="+1">+</font><font color="brown">16</font><font color="blue" size="+1"><b>,</b></font>
+  FirstF<font color="blue" size="+1">+</font><font color="brown">20</font><font color="blue" size="+1"><b>,</b></font>
+  <font color="pink">$6000</font><font color="blue" size="+1"><b>,</b>@</font>This_LibOpen<font color="blue" size="+1"><b>,</b></font>
+  <font color="pink">$6000</font><font color="blue" size="+1"><b>,</b>@</font>This_LibClose<font color="blue" size="+1"><b>,</b></font>
+  <font color="pink">$6000</font><font color="blue" size="+1"><b>,</b>@</font>This_LibSleep<font color="blue" size="+1"><b>,</b></font>
+  <font color="pink">$6000</font><font color="blue" size="+1"><b>,</b>@</font>This_LibWake<font color="blue" size="+1"><b>,</b></font>
+  <font color="pink">$6000</font><font color="blue" size="+1"><b>,</b>@</font>This_LibAdd<font color="blue" size="+1"><b>,</b></font>
+  <font color="pink">$6000</font><font color="blue" size="+1"><b>,</b>@</font>This_LibMul<font color="blue" size="+1"><b>,</b></font>
+  LibName
+<font color="blue" size="+1"><b>);</b></font>
+
+<font color="red"><b>begin</b></font>
+ entryP<font color="blue" size="+1">^<b>.</b></font>dispatchTblP<font color="blue" size="+1"><b>:</b>=</font>GetTable<font color="blue" size="+1"><b>;</b></font>
+ entryP<font color="blue" size="+1">^<b>.</b></font>globalsP<font color="blue" size="+1"><b>:</b>=</font><font color="red"><b>nil</b></font><font color="blue" size="+1"><b>;</b></font>
+<font color="red"><b>end</b></font><font color="blue" size="+1"><b>.</b></font></pre>
+
+</body>
+
+</html>

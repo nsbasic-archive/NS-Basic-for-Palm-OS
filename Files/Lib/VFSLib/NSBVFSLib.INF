@@ -1,0 +1,116 @@
+; GENERAL PROPERTIES
+;
+; All extensions must have a [General] section. Some keys are optional.
+;
+;	ExtensionName:	User visible name of extension (required)
+;	PrcName:	Name of .PRC file of extension (required)
+;	Version:	Version of extension (can contain chars) (required)
+;	Manufacturer:	Name of manufacturer of extension. (required)
+;       =HelpStart=      This key marks the beginning of the help text
+;			shown in the extension's properties. Enclose
+;			each line in double quotes and terminate the
+;			help section with the key =HelpEnd=. (optional,
+;			default = "No help available.")
+;
+
+[General]
+
+ExtensionName=NSBVFSLib
+PrcName=NSBVFSLib
+Version=2
+Manufacturer=DubnaWare
+InfVers=2.0
+
+;
+; EXTENSION HELP
+;
+
+=HelpStart=
+""
+"Shared Library NSBStringLib"
+""
+"This library is for working with VFS manager through NSBasic."
+""
+"Written in Dubna, August 2002"
+""
+=HelpEnd=
+
+;
+; METHOD PROPERTIES
+;
+; This section is organized as follows:
+;       section:        [GlobalMethods]
+;                       name=index, type, numparams, helpstring
+;
+; where:
+;
+;	name:		Name of method
+;	index:		Index of function. Index will be passed as the
+;			first parameter on the evaluation stack.
+;	type:		Either "func" or "sub".  Funcs are methods
+;			that push a return value onto the interpreter's
+;			evaluation stack. Subs are methods that do
+;			not push return values.
+;	numparams:	Number of parameters required by this method.
+;       helpstring:	Descriptive text about method. (Optional)
+;
+;
+[GlobalMethods]
+Version= 1, func, 0, "Version() as int32"
+GetLastError= 2, func, 0, "GetLastError() as int32"
+Init= 3, func,0, "Init() as int32"
+BeginVolumeEnumerate= 4, sub, 0, "BeginVolumeEnumerate()"
+GetNextVolume= 5, func, 0, "GetNextVolume() as int32"
+SetCurVolume= 6, sub, 1, "SetCurVolume(in volume as int32)"
+GetVolumeLabel= 7, func, 0, "GetVolumeLabel() as string"
+SetVolumeLabel= 8, sub, 1, "SetVolumeLabel(in label as string)"	
+IsVolumeReadOnly= 9, func, 0, "IsVolumeReadOnly() as int32"
+IsVolumeHidden= 10, func, 0, "IsVolumeHidden() as int32"
+VolumeUsedSize= 11, func, 0, "VolumeUsedSize() as int32"	
+VolumeTotalSize= 12, func, 0, "VolumeTotalSize() as int32"	
+VolumeFormat= 13, sub, 0, "VolumeFormat()"			
+GetVolumeMediaType= 14, func, 0, "GetVolumeMediaType() as int32"	
+DirCreate=15, sub, 1, "DirCreate(in dirName as string)"			
+IsEOF= 16, func, 1, "IsEof(in fileRef as int32) as int32"	
+FileCreate= 17, sub, 1, "FileCreate(in path as string)"			
+Read16=18, func, 1, "Read16(in fileRef as int32) as int16"	
+Read32=19, func, 1, "Read32(in fileRef as int32) as int32"	
+Read64=20, func, 1, "Read64(in fileRef as int32) as flt8"	
+ReadString= 21, func, 1, "ReadString(in fileRef as int32) as string"
+Write16= 22, sub, 2, "Write16(in fileRef as int32, in data as int16)"	
+Write32= 23, sub, 2, "Write32(in fileRef as int32, in data as int32)"
+Write64= 24, sub, 2, "Write64(in fileRef as int32, in data as flt8)"	
+WriteString= 25, sub, 2, "WriteString(in fileRef as int32, in str as string)"
+FileTell= 26, func, 1, "FileTell(in fileRef as int32) as int32"	
+FileSize= 27, func, 1, "FileSize(in fileRef as int32) as int32"	
+FileResize= 28, sub, 2, "FileResize(in fileRef as int32, in newSize as int32)"
+FileSeekBegin=29, sub, 2, "FileSeekBegin(in fileRef as int32, in offset as int32)"
+FileSeekCurrent=30, sub, 2,"FileSeekCurrent(in fileRef as int32, in offset as int32)"
+FileSeekEnd= 31, sub, 2, "FileSeekEnd(in fileRef as int32, in offset as int32)"
+Delete= 32, sub,1, "Delete(in path as string)"
+Close= 33, sub, 1, "Close(in fileRef as int32)"
+Rename= 34, sub, 2, "Rename(in pathName as string, in newName as string)"		
+SetDateCreated= 35, sub, 2, "SetDateCreated(in fileRef as int32, in date as int32)"
+SetDateModified= 36, sub, 2, "SetDateModified(in fileRef as int32, in date as int32)"
+SetDateAccessed= 37, sub, 2, "SetDateAccessed(in fileRef as int32, in date as int32)"
+GetDateCreated= 38, func, 1, "GetDateCreated(in fileRef as int32) as int32"
+GetDateModified= 39, func, 1, "GetDateModified(in fileRef as int32) as int32"	
+GetDateAccessed= 40, func, 1, "GetDateAccessed(in fileRef as int32) as int32"	
+BeginDirEntryEnumerate = 41, sub, 1, "BeginDirEntryEnumerate(in dir as string)"
+EndDirEntryEnumerate= 42, sub, 0, "EndDirEntryEnumerate()"				
+DirEntryEnumerate= 43, func, 0, "DirEntryEnumerate() as string"
+SetAttributes= 44, sub, 2, "SetAttributes(in fileRef as int32, in attributes as int32)"
+ResetAttributes= 45, sub, 2, "ResetAttributes(in fileRef as int32, in attributes as int32)"
+GetAttributes=46, func, 2, "GetAttributes(in fileRef as int32, in checkAttributes as int32) as int32"	
+Open= 47, func, 2, "Open(in pathName as string,in openMode as int32) as int32"		
+Import= 48, func, 1, "Import(in pathName as string) as string"				
+Export= 49, sub, 2, "Export(in dbName as string, in pathName as string)"				
+ImportDialog= 50, func, 3, "ImportDialog(in pathName as string, in dialogTitle as string, in actionStr as string) as string"
+ExportDialog= 51, sub, 4, "ExportDialog(in dbName as string, in pathName as string, in dialogTitle as string, in actionStr as string)"
+RegisterDefaultDirectory = 52, sub, 3, "RegisterDefaultDirectory(in fileType as string, in indexMediaType as int32, in path as string)"
+UnregisterDefaultDirectory = 53, sub, 2, "UnregisterDefaultDirectory(in fileType as string, in indexMediaType as int32)"
+GetDefaultDirectory= 54, func, 1, "GetDefaultDirectory(in fileType as string) as string"
+GetResource = 55, func, 3, "GetResource(in fileRef as int32, in resID as int32, in resType as string) as int32"
+ReadHuge = 56, func, 3, "ReadHuge(in fileRef as int32, inout data as string, in size as int32) as int32"
+WriteHuge = 57, func, 3, "WriteHuge(in fileRef as int32, in data as string, in size as int32) as int32"
+GetDeviceUniqueIDStr = 58, func, 0, "GetDeviceUniqueIDStr() as string"

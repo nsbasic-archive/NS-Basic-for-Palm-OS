@@ -1,0 +1,625 @@
+<HTML>
+
+<HEAD>
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" href="style2.css">
+<TITLE>Tech Note 10: The Bits 'n Bytes Lib</TITLE>
+
+</HEAD>
+
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+
+<TR><TD WIDTH="22%" VALIGN="TOP">
+
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 10: The Bits 'n Bytes Lib</h2>
+	  <h3>January 14, 2009</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+
+</TR>
+
+</TABLE>
+
+<HR><BR><BR>
+
+
+
+<P>The BitsNbyteslib adds a number of handy functions to NS Basic for doing bit manipulation and conversions. You can do a variety of bitwise AND, OR and NOT operations, shift bits left and right, and convert between hex, binary and decimal.
+
+
+
+<P>To use it, add BitsnBytesLib.prc to your project as a resource. It is a small file, about 7k in size. Initialise it in your startup code as follows:
+
+
+
+<pre>
+
+     loadLibrary "BitsNBytesLib","BNB"   'case is important
+
+</pre>
+
+
+
+<P>These functions require datatypes to be exactly as defined. Most of the arguments are required to be integers. Integers for these calls are 32 bits. Shorts are 16 bits. They are the same as standard NS Basic integer and short variables. If you use incorrect datatypes, you will get execution errors at runtime. 
+
+
+
+<p>When calling routines in libraries, it is important to use the correct variable types. The calling routine uses the variable type to properly place the values on the stack to be passed to the library. A call such as 
+
+<pre>c=BNB.xorInteger(16,4)</pre>
+
+will not work because the library calling routine cannot determine whether 16 and 4 should be short, integer or float datatypes for the call. The call will work properly if you assign 16 and 4 to variables that you use in the function statement:
+
+<pre>dim a as integer
+dim b as integer
+a=16
+b=4
+c=BNB.xorInteger(a,b)</pre>
+
+<P>BitsnByteslib includes the following files:
+
+<OL COMPACT>
+
+	<LI>BitsNByteslib.prc: put into \nsbasic\downloads and in your project as a resource
+
+	<LI>BitsNByteslib.INF: put into \nsbasic\lib
+
+	<LI>BitsNBytes.prj: put into \nsbasic\projects. This is the sample.
+
+	<LI>BitsNBytes_encript.zip: additional encryption stuff
+
+</OL>
+
+
+
+
+
+<hr>
+
+
+
+<h4>AndInteger(a,b)</h4>
+
+Performs a bitwise AND on A and B and returns the result as an integer. Both arguments must be declared as integers.
+
+<P>Related Functions: AndByte, AndShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Integer
+Dim c as Integer
+a = 63
+b = 4
+c = BNB.AndInteger(a,b) ' result is 4</pre>
+
+
+
+<h4>Bin2Dec(A)</h4>
+
+Returns string in base 2 converted to an integer in base 10.
+
+<p><i>Example</i><pre>
+
+Dim a as string
+Dim c as Integer
+a = "100"
+c = BNB.Bin2Dec(a)  ' result is 4</pre>
+
+
+
+<h4>CRC32(buf, count, crc)</h4>
+
+Perform a CRC32 check sum calculation on buf. Count is the number of bytes to use in the string and crc is the seed crc value.
+
+<p><i>Example</i><pre>
+
+Dim buf as String
+Dim count as Short
+Dim crc as Integer
+buf = "Dmitry"
+count = Len(buf)
+crc = BNB.CRC32(buf,count,b,0)   'result is 168098323</pre>
+
+
+
+<h4>CycleShiftInteger(a,b)</h4>
+
+Shift the bits in a by b bit positions. If b is positive, bits are shifted left. If B is negative, they are shifted right. Bits that are moved of the end of the number are rotated to the other end of the number.
+
+<P>Related Functions: CylceShiftByte, CycleShiftShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = 65536
+b = 16
+c = BNB.CycleShiftInteger(a,b)  'result is 1</pre>
+
+
+
+<h4>Dec2Bin(a,s)</h4>
+
+Convert a value in base 10 to base 2. The second argument should be a string pre-filled to the maximum possible length of the result.
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim s as String
+a = 64
+s = "123456781234567812345679812345678"
+BNB.Dec2Bin(a,s)   'result is 1000000</pre>
+
+
+
+<h4>Dec2Hex(c,a)</h4>
+
+Convert a value in base 10 to a string in base 16. The supplied string needs to be filled with enough characters to contain the result.
+
+<p><i>Example</i><pre>
+
+Dim a as String
+Dim c as Integer
+a = "12345678901234567890"
+c = 64
+BNB.Dec2Hex(c,a)  'a is "40"</pre>
+
+
+
+<h4>EncrpytDES(src, key, dst, enc)</h4>
+
+Encrypts or decrypts an 8 byte string using DES.
+
+src - input string. Must be 8 characters.
+
+key - Encryption key. Must be 8 characters.
+
+dst - result string
+
+enc - 1 to encrypt, 0 to unencrypt
+
+<p><i>Example</i><pre>
+
+Dim src as String
+Dim dst as String
+Dim res as String
+Dim key as String
+Dim enc as Short
+Dim err as Integer
+
+
+src = "ASDFGHJK"
+dst = "!!!!!!!!"
+res = "!!!!!!!!"
+key = "12345678"
+
+enc=1
+err=BNB.EncryptDES(src,key,dst,enc)  'src is encrypted into dst
+
+enc=0
+err=BNB.EncryptDES(dst,key,res,enc)  'dst is unencrypted into res
+
+</pre>
+
+
+
+<h4>EqvInteger(a,b,mask)</h4>
+
+Compares two integers using the following logical expression:
+
+(a XOR b) AND mask.
+
+<P>Related Functions: EqvByte, EqvShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Integer
+Dim c as Integer
+Dim mask as Integer
+a = 64
+b = 62
+mask = 2
+c = BNB.EqvInteger(a,b,mask)  'result is 2</pre>
+
+
+
+<h4>GetBitByte(a,b)</h4>
+
+Get the value of the bit in position b of byte a.
+
+<P>Related Functions: GetBitInteger, GetBitShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Short
+a = 64
+b = 6
+c = BNB.GetBitByte(a,b)  'result is 1</pre>
+
+<h4>GetBitShort(a,b)</h4>
+
+Get the value of the bit in position b of short a.
+
+<P>Related Functions: GetBitByte, GetBitInteger
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Short
+a = 64
+b = 6
+c = BNB.GetBitShort(a,b)  'result is 1</pre>
+
+<h4>GetBitInteger(a,b)</h4>
+
+Get the value of the bit in position b of integer a.
+
+<P>Related Functions: GetBitByte, GetBitShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Short
+a = 64
+b = 6
+c = BNB.GetBitInteger(a,b)  'result is 1</pre>
+
+
+
+<h4>GetLowWord(a)</h4>
+
+Get the bottom 16 bits of an integer.
+
+<P>Related Functions: GetHiWord, GetLowByte, GetHiByte
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim c as Short
+a = 65537
+c = BNB.GetLowWord(a)  'result is 1</pre>
+
+
+
+<h4>Hex2dec(a)</h4>
+
+Convert a number in base 16 to base 10.
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim c as String
+C = "40"
+A = BNB.Hex2Dec(C)  'result is 64</pre>
+
+
+
+<h4>InverseBitInteger(a,b)</h4>
+
+Toggles bit b in integer a.
+
+<P>Related Functions: InverseBitByte, InverseBitShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = 3
+b = 1
+c = BNB.InverseBitInteger(a,b) 'result is 1</pre>
+
+
+
+<h4>NotInteger(a)</h4>
+
+Toggles the setting of all bits.
+
+<P>Related Functions: NotByte, NotShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim c as Integer
+a = 32767
+c = BNB.NotInteger(a)  'result is -32768</pre>
+
+
+
+<h4>OrInteger(a,b)</h4>
+
+Compares the two integers bit by bit. If either or both have a bit set, the result has the bit set.
+
+<P>Related Functions: OrByte, OrShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Integer
+Dim c as Integer
+a = 3
+b = 9
+c = BNB.OrInteger(a,b)  'result is 11</pre>
+
+
+
+<h4>ResetBitInteger(a,b)</h4>
+
+Sets bit b to 0 in integer a.
+
+<P>Related Functions: ResetBitByte, ResetBitShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = 3
+b = 0
+c = BNB.ResetBitInteger(a,b) 'result is 2</pre>
+
+
+
+<h4>SetBitInteger(a,b)</h4>
+
+Sets bit b to 1 in integer a.
+
+<P>Related Functions: SetBitByte, SetBitShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = 2
+b = 0
+c = BNB.SetBitInteger(a,b)  'result is 3</pre>
+
+
+
+<h4>SetLowWord(a,b)</h4>
+
+Replaces the lower 2 bytes of a with b.
+
+<P>Related Functions: SetHiWord, SetLowByte, SetHighByte
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = INT(VAL(FldA.text))
+b = INT(VAL(FldB.text))
+c = BNB.SetLoWord(a,b)</pre>
+
+
+
+<h4>ShiftInteger(a,b)</h4>
+
+Shift the bits in a by b bit positions. If B is positive, bits are shifted left. If B is negative, they are shifted right. Bits that are moved of the end of the number are lost. Zero bits are put into the positions that are opened up at the other end of a.
+
+<P>Related Functions: ShiftByte, ShiftShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = 65536
+b = 16
+c = BNB.ShiftInteger(a,b)  'result is 0</pre>
+
+
+
+<h4>SignShiftInteger(a,b)</h4>
+
+Shift the bits in a by b bit positions without affecting the sign bit. If A if positive, bits are shifted left. If B is negative, they are shifted right. Bits that are moved of the end of the number are lost. Zero bits are put into the positions that are opened up at the other end of a.
+
+<P>Related Functions: SignShiftByte, SignShiftShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Short
+Dim c as Integer
+a = -4
+b = 2
+c = BNB.SignShiftInteger(a,b)  'result is -16</pre>
+
+
+
+<h4>Swap16(a)</h4>
+
+Swaps two bytes of a Short. Use for converting data between big endian and little endian systems.
+
+<p><i>Example</i><pre>
+
+Dim A as Short
+Dim B as Short
+A = 256
+b=BNB.Swap16(a)  'B will be 1. (&h01  -> $h01)</pre>
+
+
+
+<h4>Swap32(a)</h4>
+
+Swaps first two bytes of an integer with last 2 bytes. Use for converting data between big endian and little endian systems.
+
+<p><i>Example</i><pre>
+
+Dim A as Integer
+Dim B as Integer
+A = 32768
+B=BNB.Swap32(a)   'B will be 1. (&h0100  -> $h0001)</pre>
+
+
+
+<h4>Swap64(a)</h4>
+
+Swaps first four bytes of an double or float with last 4 bytes. Use for converting data between big endian and little endian systems. The result will not make sense in NS Basic, since it will not follow the format of a float value.
+
+
+
+<p><i>Example</i><pre>
+
+Dim A as Double
+Dim B as Double
+A = 32768
+B=BNB.Swap64(a)</pre>   
+
+
+
+<h4>Version()</h4>
+
+Returns the version number of BitsnByteslib
+
+<p><i>Example</i><pre>
+
+Dim c as Short
+c = BNB.Version()  'result is 1</pre>
+
+
+
+<h4>XorInteger(a,b)</h4>
+
+Compares the arguments bit by bit. If a bit is set in either, but not both, it is set in the result.
+
+<P>Related Functions: XorByte, XorShort
+
+<p><i>Example</i><pre>
+
+Dim a as Integer
+Dim b as Integer
+Dim c as Integer
+a = 3
+b = 9
+c = BNB.XorInteger(a,b)  'result is 10
+
+</pre>
+
+
+
+<h2>Encryption of longer strings </h2>
+
+
+
+The standard EncrpytDES function is limited in how long a string it can encrypt as well as by issues with nulls in the string. These functions allow longer strings to be encrypted. (Thanks to Ron Glowka).
+
+
+
+<p>Code is also provide to encrypt and decrypt data on the Windows desktop. This code is in \nsbasic\tools\BitsNBytes_encrypt.zip.
+
+
+
+<H4>SetDESKey keyStr</H4>
+
+
+
+Establishes the encryption or decryption key to be used with the EncryptDESString() and DecryptDESString() functions.  This key value must be set before using these functions.  Once set, it will be used for all subsequent operations or until the program ends.  If the length of the key is 8 characters or less, standard DES encryption will be used.  If the key length is from 9 to 24 characters, Triple-DES encryption is used.
+
+<p><i>Example</i><pre>
+
+Dim keyStr as String
+keyStr = "secret"
+BNB.SetDESKey keystr
+
+</pre>
+
+
+
+<H4>EncryptDESString(plainText)</H4>
+
+
+
+Returns the encrypted value of the plainText string.  The plainText string can not be more than 248 characters in length.  The length of the encrypted string may be up to 9 characters longer than the plainText string.  Note:  the SetDESKey subroutine must have been called at least once prior to calling this function.
+
+<p><i>Example</i><pre>
+
+Dim plainText as String
+Dim encryptedText as String
+plainText = "The quick brown fox jumps over the lazy dog!"
+encryptedText = BNB.EncryptDESString(plainText)
+
+</pre>
+
+
+
+<H4>DecryptDESString(encryptedText)</H4>
+
+
+
+Returns the plain text value of the encryptedText string.  The encryptedText string can not be more than 250 characters in length.  Note:  the SetDESKey subroutine must have been called at least once prior to calling this function.
+
+<p><i>Example</i><pre>
+
+Dim encryptedText as String
+Dim plainText as String
+plainText = BNB.DecryptDESString(encryptedText)
+
+</pre>
+
+
+
+<H4>Encryption/Decryption component for the Windows Desktop</H4>
+
+
+
+There is a Windows component of the EncryptDESString() and DecryptDESString() functions.  This component is implemented as a Windows DLL file and can be called from Visual Basic/VBA and Visual C/C++.  Its purpose is to allow a desktop program to encrypt or decrypt data using the same algorithms as the BitsNbytesLib routines.
+
+
+
+<p>To use it, the EncDec.dll file must be placed in a system directory or some directory that is currently in your PATH.  For Visual Basic/VBA, include the EncDec.bas module.  For Visual C/C++, include the EncDec.h header file and link with the EncDec.lib library (note that the EncDec.dll is still required).
+
+
+
+<p>The EncDec DLL functions have the same restrictions as their BitsNbytes library counterparts.  The main differences are that you specify the encryption key with every function call and that the functions return the length of the returned string.
+
+<p><i>VB/VBA Example</i><pre>
+
+Dim KeyStr As String
+Dim DecryptedStr As String
+Dim EncryptedStr As String
+Dim StrLen As Integer
+KeyStr = "secret"
+DecryptedStr = "The quick brown fox jumps over the lazy dog!"
+StrLen = EncryptData(KeyStr, DecryptedStr, EncryptedStr)
+DecryptedStr = ""
+StrLen = DecryptData(KeyStr, EncryptedStr, DecryptedStr)
+
+</pre>
+
+
+
+<p><i>C/C++ Example</i><pre>
+
+char keyStr[25];
+char decryptedStr[251];
+char encryptedStr[251];
+int  len;
+strcpy(keyStr, "secret");
+strcpy(decryptedStr, "The quick brown fox jumps over the lazy dog!");
+len = encryptData(keyStr, decryptedStr, encryptedStr);
+strcpy(decryptedStr, "");
+len = decryptData(keyStr, encryptedStr, decryptedStr);
+
+</pre>
+
+
+
+</body></html>

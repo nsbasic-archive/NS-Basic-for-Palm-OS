@@ -1,0 +1,280 @@
+void ExitHousekeeping()
+{
+       VoidPtr tempWinPtr;
+       VoidPtr temp;
+       VoidHand tempH;
+       //struct data_elem* de; 
+       int i,j;                         
+                   
+       struct ViewData * viewPtr;       
+       VoidPtr objectsPtr;              
+       struct ObjectData * thisObjPtr;  
+       FormPtr frm;                     
+       UInt useCnt;
+       //
+       VoidHand newHand;
+	   VoidHand oldHand;
+	   VoidPtr oldPtr;
+	   VoidPtr newPtr;
+	   Int ix;
+	   int id;
+	   //Int i;
+	   //int kk;
+	   int res;
+	   //UInt finalInstrCtr=instr_ctr;
+	   //struct data_elem* de;
+	   
+	   VoidPtr p3;
+	   VoidHand h3;
+	   struct codeBlock* tempPtr;
+	   int schCnt=0;
+	   
+	   //
+//SysFatalAlert("in exit housekeeping");
+
+#ifdef ORG_NSB    // 12/08/2000 MMD
+   NSBTerm();     // 12/08/2000 MMD
+#endif            // 12/08/2000 MMD
+    
+   
+     
+    //free up view and view objects memory
+     
+    for(i=0;i<view_cnt;++i)
+    {
+
+       if(viewElemsPtr==0) goto noViewsYet;    //01272003
+       viewPtr=(struct ViewData*)((char*)viewElemsPtr+i*sizeof(viewExample));  //point to this view's data 
+       frm=FrmGetFormPtr(viewPtr->id);
+       FrmEraseForm(frm);     //08032002
+       FrmDeleteForm(frm);    //08032002 to clear memory for form  
+       
+//SysFatalAlert("past the form delete");       
+       if(viewPtr->cnt==0) goto skipView;    //added 5.24.2000
+       
+       objectsPtr=viewPtr->objectsPtr;
+       
+       
+//StrPrintF(debug,"housekeeping form=%lu",(long unsigned)frm);
+//SysFatalAlert(debug);
+       for(j=0;j<viewPtr->cnt;++j)
+       {
+          thisObjPtr=(struct ObjectData*)((char*)objectsPtr+j*sizeof(objectExample));  //point to this object's data
+          if(thisObjPtr->dataPtr!=0)
+          {
+              if(thisObjPtr->type == frmFieldObj)
+              {
+
+//dbug("freeing field");
+                
+                  MemHandleFree((VoidHand)(thisObjPtr->dataPtr));
+                  
+              }
+              else
+              {
+                 if(thisObjPtr->type == frmListObj)
+                 {
+                    
+//dbug("freeing list");
+	                FreeListValues(thisObjPtr->dataPtr,thisObjPtr->numItems);
+                 }
+                 else
+                 {
+//dbug("freeing other obj");
+                     MemPtrFree( thisObjPtr->dataPtr);
+                 }
+              }   
+          }
+           
+       }
+       MemHandleUnlock(viewPtr->objectsHand);
+       MemHandleFree(viewPtr->objectsHand);       
+skipView:                                    //added 5.24.2000
+        ;                                    //added 5.24.2000 
+    }
+    if(viewElems) MemHandleUnlock(viewElems);  //mod 05282003
+    if(viewElems) MemHandleFree(viewElems);    //mod 05282003
+//-----------------------------------------------------------------------------------------------------------------------
+noViewsYet:              //01272003       
+
+
+    while(1)
+    {  
+//SysFatalAlert("in free vars loop again");
+       //free vars allocated from heap //08032002
+//StrPrintF(debug,"2a   codeBlkPtr=%lu id=%d deListPtr=%lu",codeBlockPtr,codeBlockPtr->id,deListPtr);
+//SysFatalAlert(debug);
+       if(codeBlockPtr==0) break;                       //sequence 05282003
+       //commented out 01122004 if(codeBlockPtr->id==50000) goto elimCodeBlock;  //sequence 05282003
+       //its the first  one
+       
+       for(i=1;i<(de_cnt+string_work_de_max+arith_work_de_max+2);++i)
+       {
+          de=*((VoidPtr*)((char*)deListPtr+i*4));
+          if(de)
+          {
+//char buffer[100];
+ //if((i>50)&&(i<60))
+ //{
+ //StrPrintF(buffer,"wkvar=%d flags=%2.2x",de->flags3);
+ //SysFatalAlert(buffer);
+ //}
+              	if((de->flags3 & 0x02)==0x02)   						
+				{
+//StrPrintF(debug,"freeing delistptr for var=%d",i);
+//SysFatalAlert(debug);
+				    MemPtrFree(de);
+				}
+          }
+       }
+	   if(codeBlockPtr->id==50000) goto elimCodeBlock; //added 01122004
+       //now--move back thru nested sub/func calls and do the same again
+       //05282003 if(codeBlockPtr==0) break;                       
+       //05282003 if(codeBlockPtr->id==50000) goto elimCodeBlock;  
+       id=codeBlockPtr->functionLinkNo;
+       while(1)
+       {
+//StrPrintF(debug,"searching for rec=%d offset=&%d",codeBlockPtr->functionLinkNo, codeBlockPtr->offset);
+//SysFatalAlert(debug);
+          schCnt+=1;
+          if(schCnt==10) goto noMore;
+          ix=DmFindResource(VbRscDB,(ULong)'fwrk',id,NIL); 
+          if(ix!= -1)
+          {
+//SysFatalAlert("got old func rec");
+             oldHand=MiscDmGetResourceIndex(VbRscDB,ix,"rescwk"); 
+             if(oldHand)  //inserted 05282003
+             {
+		             oldPtr=MiscHandleLock(oldHand);
+		//StrPrintF(debug,"got id=%d offset=%d",*((int*)oldPtr),*((unsigned int*)((char*)oldPtr+2)));
+		//SysFatalAlert(debug);
+
+		             if( (*((int*)oldPtr) != codeBlockPtr->functionLinkNo) || (*((unsigned int*)((char*)oldPtr+2)) != codeBlockPtr->offset))
+		             {
+		                MiscHandleUnlock(oldHand);
+		                MiscDmReleaseResource(oldHand);
+		                id+=50;                        //increm recno by 50 to try again
+		             }
+		             else
+		             {
+		               break;               //found the record we want
+		             }
+		     }   //inserted 05282003         
+          }
+          else
+          {
+//SysFatalAlert("no wkvars rec found");
+              goto noMore;
+              //MiscFatalAlert("internal error exiting a function.");
+          }
+       }   
+//StrPrintF(debug,"find linkNo=%d rsc=%d ",id,ix);
+//SysFatalAlert(debug);
+
+
+       if(deListPtr) MemMove((char*)deListPtr+4,(char*)oldPtr+4,work_de_max*4);  //05282003      //and copy the handles
+       if(oldHand)  MemHandleUnlock(oldHand);   //05282003
+       MiscDmReleaseResource(oldHand);
+   
+       userFunctionSequentialNo-=1;  //reduce count of nested user function calls
+       //move back to prev code block ptr
+//SysFatalAlert("deleting codeBlockPtr");
+      //h3=codeBlockPtr->newh3;
+      //p3=(char*)codeBlockPtr->newp3;
+      //MemPtrUnlock(p3);
+      //DmReleaseResource(h3);
+elimCodeBlock:
+      tempPtr=codeBlockPtr;
+      //p3=(char*)codeBlockPtr->p3;
+      //h3=codeBlockPtr->h3;
+
+      //numberParas=codeBlockPtr->numberParas;
+      //paragTbl=(char*)codeBlockPtr->paragTbl;
+      //theCodeOffset=codeBlockPtr->oldOffset;
+      //codePtr=(char*)codeBlockPtr->codePtr;
+      //instr_ctr=codeBlockPtr->instr_ctr;
+
+      codeBlockPtr=(struct codeBlock*)codeBlockPtr->prevCodePtr;
+      MemPtrUnlock(tempPtr);
+      MemPtrFree(tempPtr);
+//StrPrintF(debug,"done deleting codeBlockPtr  new=%lu",(unsigned long)codeBlockPtr);
+//SysFatalAlert(debug);  
+      if(codeBlockPtr==0)
+      {
+//SysFatalAlert("found 0 codeBlockPtr");
+         break;          
+      }     
+     }  
+noMore:      
+
+//SysFatalAlert("past codeBlock deletes totally");
+       //free for loop strucs that may have been left open
+       while(1)
+       {
+          if( forptr==0) break;
+          temp=forptr->prevForPtr;
+          MemPtrFree(forptr);
+          forptr=temp;
+       }
+       //free drawing windows
+       while(1)
+       {
+          if( winRoot==0) break;
+          tempWinPtr=(struct DrawWinStruct*)(MemHandleLock(winRoot));
+          tempH=(VoidHand)(((struct DrawWinStruct*)(tempWinPtr))->next);
+//SysFatalAlert("destroying window name");
+          MemHandleFree((VoidHand)(((struct DrawWinStruct*)(tempWinPtr))->nameHandle));
+//SysFatalAlert("destroying os window");
+          //MemHandleFree((VoidHand)(((struct DrawWinStruct*)(tempWinPtr))->win));
+          WinDeleteWindow((WinHandle)(((struct DrawWinStruct*)(tempWinPtr))->win),false);
+//SysFatalAlert("destroying swb window");
+          MemHandleUnlock(winRoot);
+          MemHandleFree(winRoot);
+          winRoot=tempH;
+       }
+       
+
+       
+       if(oldName[0]!=0x00)
+       {
+         DmResetRecordStates( ApplPrcDB );
+         DmCloseDatabase( ApplPrcDB );
+       }
+
+       if(dbElems!=NULL)
+       {
+          MemHandleFree(dbElems);
+          dbElems=NULL;
+       }    
+
+       if(deListHand!=NULL)
+       {
+          MemHandleFree(deListHand);
+          deListHand=NULL;
+       }    
+       if(VbRscLocalID != 0)
+       {
+          DmResetRecordStates( VbRscDB );
+          DmCloseDatabase(VbRscDB);
+          DmDeleteDatabase(bp.cardNo,VbRscLocalID);
+          VbRscLocalID=0;
+       }
+       //while(1)
+       //{
+       //    if (codeBlockPtr==0) break;
+       //    if(h3!=0)  MemHandleUnlock(h3);
+       //    temp=codeBlockPtr->prevCodePtr;
+       //    h3=codeBlockPtr->h3;
+       //    MemPtrFree(codeBlockPtr);
+       //    codeBlockPtr=(struct codeBlock*)temp;
+       //}
+//SysFatalAlert("closing forms");
+       FrmCloseAllForms() ;
+       //added 11/17/2001  remove Mathlib ref library
+       if(mathLibOpenSw==true)
+       {
+           MathLibClose(MathLibRef,&useCnt);
+           SysLibRemove(MathLibRef);
+       }      
+//SysFatalAlert("Leaving housekeeping");
+}

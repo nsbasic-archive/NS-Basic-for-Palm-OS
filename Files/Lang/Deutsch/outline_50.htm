@@ -1,0 +1,95 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbCreate </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>DbCreate                                                                                                 Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBCREATE(<i>dbName</i> as Database, <i>fileName</i> as String, <i>cardNo</i>
+as Integer, <i>creator</i> as String)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Erzeugt eine neue Datenbank auf der Speicherkarte <i>cardNo</i> des Palm OS Gerätes
+(normalerweise 0), und liefert einen ganzzahligen Fehlercode zurück, der bei <i>dbOpen</i> detailliert beschrieben wird.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>DbName</i>
+referenziert den Datenbanknamen innerhalb des Programms. Alle Aktionen mit
+dieser Datenbank beziehen sich auf diesen Namen. <i>FileName</i> bezeichnet den Namen der Datenbankdatei, mit dem diese im
+Palm OS Speicher abgelegt wird. <i>CardNo</i>
+ist auf allen modernen Geräten 0.<i>Creator</i>
+ist ein 4-Zeichen String, der als CreatorID fungiert, um den Eigentümer der
+Datenbank zu identifizieren. Im Normalfall sollten Sie die gleiche Creator ID
+verwenden, die Sie für Ihr Projekt definiert haben. Um Dubletten zu vermeiden,
+erlaubt Palm Computing Ihnen eigene CreatorIDs zu reservieren. Dies können Sie
+auf der Palm Computing Webseite kostenlos tun, so dass gewährleistet ist, dass
+die CreatorIDs eindeutig bleiben. Die Datei wird mit dem gesetzten Backup
+Attribut erzeugt, was zu Folge hat, dass HotSync diese automatisch auf Ihrem
+Desktop speichert. Die Palm Namenskonvention setzt sich zusammen aus Ihrem
+Datenbanknamen, einen Unterstrich gefolgt von Ihrer CreatorID.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim result as integer</p>
+
+<p class=Code>Dim CustomerDb as database</p>
+
+<p class=Code>Result=DbCreate(CustomerDb, “Company-Test”,
+0, “JimB”)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+PalmRI g1.bmp:16 g2.bmp:16d bitmap.prc Tbmp 1000 

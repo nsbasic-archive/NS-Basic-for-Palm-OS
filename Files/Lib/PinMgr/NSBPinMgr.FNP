@@ -1,0 +1,69 @@
+<FNProject VERSION="2.0" NAME="NSBPinMgr">
+    <FILE FILENAME="makefile">
+        <CONFIGURATIONS DEFAULT="-1"></CONFIGURATIONS>
+        </FILE>
+    <FOLDER NAME="Source">
+        <FILE FILENAME="NSBPinMgr.c">
+            <CONFIGURATIONS DEFAULT="-1">
+                <CONFIGURATION NAME="Debug">
+                    <SETTING ExcludeFromBuild="0"></SETTING>
+                    <SETTING UseCustomBuildStep="0"></SETTING>
+                    <SETTING cbOptimalization="0"></SETTING>
+                    <SETTING chkDebugInfo="1"></SETTING>
+                    <SETTING WarningLevel="0"></SETTING>
+                    </CONFIGURATION>
+                <CONFIGURATION NAME="Release">
+                    <SETTING ExcludeFromBuild="0"></SETTING>
+                    <SETTING UseCustomBuildStep="0"></SETTING>
+                    <SETTING cbOptimalization="0"></SETTING>
+                    <SETTING chkDebugInfo="1"></SETTING>
+                    <SETTING WarningLevel="0"></SETTING>
+                    </CONFIGURATION>
+                </CONFIGURATIONS>
+            </FILE>
+        </FOLDER>
+    <FOLDER NAME="Headers">
+        <FILE FILENAME="NSBPinMgr.h">
+            <CONFIGURATIONS DEFAULT="-1">
+                <CONFIGURATION NAME="Debug"></CONFIGURATION>
+                <CONFIGURATION NAME="Release"></CONFIGURATION>
+                </CONFIGURATIONS>
+            </FILE>
+        <FILE FILENAME="NSBPinMgrGlobals.h">
+            <CONFIGURATIONS DEFAULT="-1">
+                <CONFIGURATION NAME="Debug"></CONFIGURATION>
+                <CONFIGURATION NAME="Release"></CONFIGURATION>
+                </CONFIGURATIONS>
+            </FILE>
+        </FOLDER>
+    <CONFIGURATIONS DEFAULT="1">
+        <CONFIGURATION NAME="Debug">
+            <SETTING SNAPIN="Falch.Net PalmPilot SnapIn"></SETTING>
+            <SETTING ICONTEXT="NSBPinMgr"></SETTING>
+            <SETTING APPID="NPin"></SETTING>
+            <SETTING AUTOBUILDMAKEFILE="1"></SETTING>
+            <SETTING IsLibrary="1"></SETTING>
+            <SETTING TARGETOS="3"></SETTING>
+            <SETTING STDAPP="0"></SETTING>
+            <SETTING HACK="0"></SETTING>
+            <SETTING MULTIPLESEGMENTS="0"></SETTING>
+            <SETTING AUTOBUILDRCPHEADER="1"></SETTING>
+            <SETTING AUTOBUILDDEFFILE="1"></SETTING>
+            <SETTING PRCFILENAME="./Debug/NSBPinMgr.prc"></SETTING>
+            </CONFIGURATION>
+        <CONFIGURATION NAME="Release">
+            <SETTING SNAPIN="Falch.Net PalmPilot SnapIn"></SETTING>
+            <SETTING ICONTEXT="NSBPinMgr"></SETTING>
+            <SETTING APPID="NPin"></SETTING>
+            <SETTING AUTOBUILDMAKEFILE="1"></SETTING>
+            <SETTING IsLibrary="1"></SETTING>
+            <SETTING TARGETOS="3"></SETTING>
+            <SETTING STDAPP="0"></SETTING>
+            <SETTING HACK="0"></SETTING>
+            <SETTING MULTIPLESEGMENTS="0"></SETTING>
+            <SETTING AUTOBUILDRCPHEADER="1"></SETTING>
+            <SETTING AUTOBUILDDEFFILE="1"></SETTING>
+            <SETTING PRCFILENAME="./Release/NSBPinMgr.prc"></SETTING>
+            </CONFIGURATION>
+        </CONFIGURATIONS>
+    </FNProject>

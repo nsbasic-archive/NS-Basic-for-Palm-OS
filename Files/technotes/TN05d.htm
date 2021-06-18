@@ -1,0 +1,447 @@
+<HTML> 
+<HEAD> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1"> 
+<TITLE>Tech Note 05d: Enhancements to Shared Libraries
+</TITLE> 
+<link rel="stylesheet" href="style2.css"> 
+</HEAD> <BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478> 
+<TR><TD WIDTH="22%" VALIGN="TOP"> 
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD> 
+<TD WIDTH="78%" VALIGN="TOP"> 
+<h2>Tech Note 05d: Enhancements to Shared Libraries
+</h2> 
+<h3>November 25, 2003</h3> 
+<h5>© 2009 NS BASIC Corporation. All rights reserved.</h5> </TD> </TR> 
+</TABLE> 
+<HR>
+
+This document describes enhancements to the NSBasic shared library 
+interface.  It is intended for people already familiar with NS Basic shared
+libraries on the Palm.
+
+<h3>1. Enhanced .inf file format</h3>
+
+NSBasic supports PALM OS shared libraries as subroutines and 
+functions, with some conventions:
+
+<UL>
+	<LI>All functions written in the shared library in C must return an Err value. This is standard practice for all Palm OS shared libraries.  This value should be 0 if the library subroutine encounters no error.
+	<LI>The first argument of every function must be a UInt16 argument to recieve a library instance reference number.  This is also standard practice, as it is practically the only way that shared library instances can maintain their own static variables.
+	<LI>If the function is to be used as a function in NSBasic, its final argument should be a pointer argument for the return value.  If the function is to be used as a subroutine, this does not apply.
+</UL>
+
+<p>Examples:
+
+<pre>
+Err Multiply(UInt16 refNum, double src1, double src2, double *ret)
+{
+    *ret = src1 + src2;
+    return 0;
+}
+</pre>
+
+This is suitable for use within NSBasic as a function.  (With the 
+new shared library mechanism, it can also be defined as a subroutine.)
+
+<pre>
+Err ChangeStatus(UInt16 refNum, Int32 in)
+{
+    if (in) TurnOn(); else TurnOff();
+    return 0;
+}
+</pre>
+
+This is suitable for use as a subroutine. It is an error to use a subroutine in place of a function or a function in place of a subroutine.
+
+<p>Accompanying this is a .inf file, which specifies how the library is
+to be used within NSBasic.  A typical .inf file might look like this:
+
+<pre>
+[General]
+ExtensionName=Test-library
+PrcName=TestLib.prc
+Version=2.0 Beta
+Manufacturer=NSBasic.com
+
+[GlobalMethods]
+Multiply=1,func,2,""
+ChangeStatus=2,proc,1, ""
+</PRE>
+
+The last two lines are the important ones.  They say that Multiply
+is the first subroutine or function, it's a function, and takes 2
+arguments.  Also ChangeStatus is the second subroutine or function,
+is a subroutine, and takes one argument.
+
+<p>Under the old mechanism, NSBasic had to guess the
+types of the arguments based on the types of arguments supplied
+to the expression in NSBasic.  This made many shared libraries
+unusable, prevented returning numeric values other than by the
+return function, required excessive care when choosing how to 
+call functions, and resulted in some rather nasty bugs in cases
+where it is difficult to tell the type from within an NSBasic 
+use.
+
+<h4>The New Mechanism</h4>
+
+The new mechanism fixes these problems.  The only change is to
+the .inf file, which using the new mechanism looks like this:
+
+<pre>
+[General]
+ExtensionName=Test-library
+PrcName=TestLib.prc
+Version=2.0 Beta
+Manufacturer=NSBasic.com
+InfVers=2.0
+
+[GlobalMethods]
+Multiply=1,func,2,"Multiply(in a as double, in b as double) as double"
+ChangeStatus=2,proc,1, "ChangeStatus(in a as integer)"
+</pre>
+
+The only difference is that the material within the double quotes, 
+which used to be blank or unimportant, is now used to describe the 
+function, including its types.  Everything following this description
+is ignored, so it is possible to use this string as documentation.
+
+<p>The function or subroutine description looks much like a declaration
+in NSBasic, with a few twists to give the compiler important information.
+Consider the ChangeStatus subroutine:
+<pre>
+   ChangeStatus(in a as integer)
+</pre>
+
+This specifies a subroutine that takes one argument.  "In a as integer"
+means that there is an argument, a, which is an integer.  It also 
+specifies that this is an in parameter.  There are three kinds of
+arguments: in, out, and inout (one word).  In parameters are used
+when a value should just go in the shared library function.  In the 
+case of in arguments, the C code of the shared library expects a simple 
+type such as double or Int16.  Out and inout parameters are used when a 
+value must come out of or go in and come out of a shared library function.
+In the case of out and inout arguments, the C code expects a pointer
+to a type, such as double* or Int16.  
+
+<p>Types are not case sensitive.
+
+<p>To make .inf files accessible both to people who prefer C and to 
+people who prefer NSBasic, some types can be specified in many ways:
+
+<pre>
+NSBasic Type    C Type         .inf types
+------------    ------         ----------
+Integer         long, Int32    integer, int32, int4, long
+Short           short          short, int16, int2, int
+Float           double         double, flt8, flt64
+Single          float          float, single, flt4, flt32
+String          char *         string, char
+Variant         ? *            variant
+</pre>
+
+Note that there is possible confusion over "float," as a Float
+in NSBasic is a 64-bit floating point number, while float in C
+is a 32-bit floating point number.
+
+<p>A function is specified just as a subroutine, except that it has a type
+specifier at the end:
+
+<pre>
+   Multiply(in a as double, in b as double) as double
+</pre>
+
+Whether an argument is in, out, or inout, no matter what type of argument
+or return value, types are converted between C and NSBasic types 
+automatically.
+
+<p>Note that inout parameters open up more functionality than before.
+Consider a shared library function that looks like this in C:
+
+<pre>
+    Err DoIt(UInt16 refNum, double src1, double *ret, double src2)
+</pre>
+
+Assuming that ret is supposed to be a return argument, there was
+previously no way to retrieve this value.  Using inout parameters, 
+it's simple:
+
+<pre>
+    DoIt(in src1 as double, inout ret as double, in src2 as double)
+</pre>
+
+Calling this in NSBasic as
+
+<pre>
+    TestLib.DoIt(3, x, 4)
+</pre>
+
+will result in x holding the value that DoIt stuffed into ret, 
+suitably type-converted to whatever numeric type x has as a
+variable.
+
+<h4>Backward Compatibility</h4>
+
+Old libraries should work just as well as they ever worked.  However,
+you will get a warning message in the IDE upon using an old .inf file.  The new 
+mechanism is far better and is easy to upgrade to.
+
+
+
+<h3>2. Version number of .INF file</h3>
+
+To make sure the compiler interprets your .INF file properly, add the 
+line InfVers=2.0 in the first section of your .INF file.
+
+
+
+<h3>3. More Arguments</h3>
+The maximum number of arguments for shared libraries and system
+traps has been increased to not less than 50.
+
+<p>This applies to both new- and old-style shared libraries.
+
+
+<h3>4. Dynamic Strings</h3>
+Previous versions of the shared libraries only allowed storing
+characters into static strings.  There are now two new ways to 
+return strings of arbitrary length, limited only by memory. 
+They are only implemented for new-style shared libraries.
+
+<h4>Way 0: The Old Way</h4>
+
+Consider the following function:
+
+<pre>
+/**
+	Yuk generator after Doug Lee
+	Returns a sentence of n Yuks
+
+    Yuk(3) => "Yuk, yuk, yuk."
+    Yuk(1) => "Yuk."
+  */
+Err Yuk(UInt16 refNum, short in, char *ret)
+{
+    char *s;
+    int k;
+    
+    if (in <= 0) return 0;
+    
+    s = ret;
+    
+    for (k = 0; k < in; ++k)
+    {
+        if (k)
+        {
+            *s++ = ',';
+            *s++ = ' ';
+        }
+    	*s++ = k ? 'y' : 'Y';
+    	*s++ = 'u';
+    	*s++ = 'k';
+    }
+    *s++ = '.';
+    *s = '\0';
+    
+    return 0;  // No error
+}
+</pre>
+
+Depending on the .inf file, this could be a function of
+one short argument that returns a string or a subroutine
+of two arguments, one short, and one string, which 
+modifies the second argument.  For the purposes of this
+discussion, it does not matter which way it is defined
+in the .inf file.
+
+<p>The problem with this is that it stores the resuting 
+string starting at *ret, and there is no way to know
+how long the memory is.  The original shared library
+code ensured that there were at least 300 bytes or
+the size of the previous returned string, whichever
+was longer.  However, this is not enough for some
+applications.
+
+<h4>Way 1: Resizing Handles</h4>
+
+The pointer passed in *ret is actually a pointer into
+a locked handle.  The string begins with *ret.  However,
+immediately before *ret is a pointer to *ret.  Way 1
+involves recovering the handle, resizing it, relocking it, 
+and setting it up correctly.
+
+<p>Way 1 is most useful when the string is to be made on
+the fly based on the input data.
+
+<p>Consider Yuk rewritten this way:
+
+<pre>
+/**
+	Yuk generator after Doug Lee
+	Returns a sentence of in Yuks
+
+    Yuk(3) => "Yuk, yuk, yuk."
+    Yuk(1) => "Yuk."
+  */
+Err Yuk(UInt16 refNum, short in, Char *ret)
+{
+    char *s;
+    int k;
+    
+    if (in <= 0) return 0;
+    
+    /* NEW CODE */
+    {
+    	MemHandle m = MemPtrRecoverHandle(ret - sizeof(Char *));
+    	MemHandleUnlock(m);
+
+    	if (0 != MemHandleResize(m, in * 5 * sizeof(Char) + sizeof(Char *)))
+    	{
+    	    ErrFatalDisplay("Resize failed in Yuk.");
+    	}
+    	
+    	s = MemHandleLock(m);
+    	*((Char **) s) = s + sizeof(Char *);
+    	s += sizeof(Char *);
+    }
+    /* END NEW CODE */
+    
+    for (k = 0; k < in; ++k)
+    {
+        if (k)
+        {
+            *s++ = ',';
+            *s++ = ' ';
+        }
+    	*s++ = k ? 'y' : 'Y';
+    	*s++ = 'u';
+    	*s++ = 'k';
+    }
+    *s++ = '.';
+    *s = '\0';
+    
+    return 0;  // No error
+}
+</pre>
+
+For clarity, the new code is in a separate block.  It replaces 
+"s = ret;" in the previous version.  Here it is, line by line:
+
+<pre>
+    	MemHandle m = MemPtrRecoverHandle(ret - sizeof(Char *));
+</pre>
+
+Subtract sizeof(Char *) from ret to make it point to the beginning
+of this pointer and recover the handle associated with it.
+
+<pre>
+    	MemHandleUnlock(m);
+</pre>
+
+The handle will be locked upon entry into the subroutine.  Unlock
+it.  Note that from now on the value given by ret is unreliable
+and should not be used.
+
+<pre>
+    	if (0 != MemHandleResize(m, in * 5 * sizeof(Char) + sizeof(Char *)))
+    	{
+    	    ErrFatalDisplay("Resize failed in Yuk.");
+    	}
+</pre>
+
+The structure of the Yuk means that each Yuk uses five characters,
+except for the last, which uses only four.  With one extra character
+needed for the end of string, in * 5 is the right number of bytes
+for the string part.  It's multiplied by sizeof(Char), which should
+always be 1 if Char is the same size as char for purely paranoid
+reasons.  The addition of sizeof(Char *) is for the pointer that 
+needs to be at the beginning of the block of memory.
+
+<p>This is only an example; production code should probably have more
+graceful error recovery than just a fatal display.
+
+<pre>
+    	s = MemHandleLock(m);
+</pre>
+
+Relock the handle, putting the pointer into s.  From now on, s 
+will be used exclusively, and ret will not be used.
+
+<pre>
+    	*((Char **) s) = s + sizeof(Char *);
+</pre>
+
+At the first part of *s is a pointer to the rest of s, put it
+there.  If you don't do this, NSBasic will be unable to find the
+string.
+<pre>
+    	s += sizeof(Char *);
+</pre>
+
+Advance s beyond this pointer, because for the rest of the function
+we are going to use it as a pointer to the string.
+
+<h4>Way 2: Changing Pointers</h4>
+
+The pointer passed in *ret is actually a pointer into
+a locked handle.  The string begins with *ret.  However,
+immediately before *ret is a pointer to *ret.  Way 2
+involves replacing the pointer to *ret with another
+pointer.
+
+<p>Way 2 is useful when the return string is fixed in memory
+and will not change at least until the next shared library
+call.  Perhaps the string is in a database.  Perhaps it is
+some string that is managed by the shared library in some
+sort of "global" string.
+
+<p>Here is Yuk rewritten this way:
+
+<pre>
+**
+	Yuk generator after Doug Lee
+	Returns a sentence of in Yuks
+
+    Yuk(3) => "Yuk, yuk, yuk."
+    Yuk(1) => "Yuk."
+  */
+Err Yuk(UInt16 refNum, short in, Char *ret)
+{
+    char *s;
+    int k;
+    
+    if (in <= 0) return 0;
+    
+    ret -= sizeof(Char *);
+    * ((Char **) ret) = HaveSomeYuks(in);
+    
+    return 0;  // No error
+}
+</pre>
+
+HaveSomeYuks is deliberately undefined, but it should be
+a function that returns a pointer to some static string.
+
+<p>As part of the return process, this string will be copied
+into an NSBasic string.  However, for long strings, at 
+least this way of writing the function does not use up 
+extra temporary memory beyond this.
+
+<h3>5. GetVersion(prcName)</h3>
+This function returns the value of the version string in the TVER
+resource of any prc name. You can use this to check if the latest
+version of a program is installed.
+
+<h3>6. Shared Library as resources</h3>
+Until now, the only effective way to access shared libraries as resources was to use DbCreateDatabaseFromResource. This still works, but there is a new option. When you add a shared library to a project, you can change the Resource Type to 'libr'. The shared library can then be used directly, without needing to be unloaded into a separate file. 
+
+This will allow simpler installations and better version control.
+
+<h3>7. Improved Library Sharing</h3>
+
+Two changes have been made to handle more gracefully cases where NSBasic 
+is sharing a library with another process.  When loading a library, if NSBasic 
+detects using SysLibFind that the library is already loaded, it will not try to load 
+it a second time.  Furthermore, if NSBasic detects that another process has 
+unloaded the library, it will not try to unload it a second time. 

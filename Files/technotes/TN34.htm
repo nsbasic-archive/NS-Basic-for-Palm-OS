@@ -1,0 +1,1596 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 34: Accessing Palm OS Databases</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="78%" VALIGN="TOP"> <B><FONT FACE="Helvetica" SIZE=5> 
+      <h2>Tech Note 34: Accessing Palm OS Databases</h2>
+      <h3>January 9, 2008</h3>
+      </FONT><FONT FACE="Helvetica" SIZE=2> 
+      <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+      </font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+
+    <a href="#objects">Objects</a>
+    <a href="#quickRef">Index and Quick Reference</a>
+    <a href="#objectsAndCollections">Objects and Collections</a>
+    <a href="#fullRef">Functions</a>
+    <a href="#fullRef">Methods</a>
+    <a href="#fullRef">Properties</a>
+
+
+</pre>
+
+<a name="intro"></a><h2>Introduction</h2>
+<P>The PalmDB Automation Control (PalmDB.dll) is a COM component that allows full access to Palm OS Database files as created by Palm organizers, Treo phones, or similar handeld  devices.  These are .pdb files containing a binary representation of a database as stored on a desktop PC after a backup HotSync.</P>
+
+<p>PalmDB was created by Maxime Labelle several years ago. While it is no longer be actively maintained by the author, it works reasonably well and the source code is freely available. We've made some enhancements to it. If you have made improvements to the control itself, <a href="mailto:support&copy; nsbasic.com" target="_top">please let us know</a>.
+
+<p>You can download the original binaries, source and documentation here:<br>
+<a href="http://www.palmgear.com/index.cfm?fuseaction=software.showsoftware&PartnerREF=&siteid=1&prodID=7371" target="_top">http://www.palmgear.com/index.cfm?fuseaction=software.showsoftware&PartnerREF=&siteid=1&prodID=7371</a>
+
+<a name="installation"></a><h2>Installation and Use</h2>
+<p>In order to use the PalmDB Automation Control, <code>PalmDB.dll</code> must be copied to the computer running an NSBasic program that uses it.  As it is an ActiveX control, it is not contained within an NS Basic/Desktop program and must be installed and registered separately. It is, however, included in the NS Basic/Desktop installer so if you are developing using NS Basic/Desktop, there is nothing you need to do to install on your own machine.
+
+<p>To use the control in an NSBasic program, include the statement</p>
+<p><code>AddObject "PalmDB.Database", "PalmDB"</code></p>
+<p>This must be executed before the control can be used.  
+<code>"PalmDB"</code> is the name that you will use to refer to the control.  Any name can
+be used, but this document assumed <code>"PalmDB"</code>.  Each instance of the control can only open a single database, so if you need
+multiple databases opened, such as for copying, you will need additional <code>AddObject</code>
+statements.</p>
+
+<p>There is a sample called PalmDatabase included with the standard set of samples that come with NS Basic/Desktop. It shares a data file called keydbtest.pdb with the sample called KeyedDBDemo, included with NS Basic/Palm. 
+
+<p>To use this control, you need to use NS Basic/Desktop 1.2 or later.
+
+<h2><a name="objects"></a></h2>
+<h2>Objects</h2>
+<p>The PalmDB Automation Control exposes the following objects and collection: 
+</p>
+<table border="0" cellspacing="2" cellpadding="5" width="600">
+  <tr bgcolor="#CCCCCC"> 
+    <th width="26%" align="left">Object</th>
+    <th width="74%" align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td width="26%"><a href="#database">Database</a></td>
+    <td width="74%">The <a href="#recordsProperty">Database</a> object is the 
+      top-level object and can be directly created by a client application. It 
+      represents a .pdb file on the desktop.  Use <code>PalmDB</code> to refer to this object.</td>
+  </tr>
+  <tr>
+
+    <td width="26%"><a href="#applicationInfo">ApplicationInfo</a></td>
+    <td width="74%">Each PalmOSc database can contain user-defined application-specific 
+      data. This usually contains the database categories.  Use <code>PalmDB.ApplicationInfo</code> to refer 
+	to this object.</td>
+  </tr>
+  <tr>
+    <td width="26%"><a href="#records">Records</a></td>
+    <td width="74%">The <a href="#records">Records</a> collection allows both 
+      random and sequential access to the list of records in the database. Adding 
+      and removing records is also supported.  Use <code>PalmDB.Record</code> to refer to this collection.</td>
+
+  </tr>
+  <tr>
+    <td width="26%"><a href="#record">Record</a></td>
+    <td width="74%">This object represents an actual record in the database. It 
+      exposes methods and functions to manage the individual fields.  Use <code>PalmDB.Records(<i>whichRecord</i>)</code> 
+	refer to an individual record.  Records are numbered starting at 0 and running through <code>PalmDB.Records.Count
+- 1</code>. </td>
+
+  </tr>
+</table>
+<p>&nbsp; </p>
+<p><a name="quickRef"></a> </p>
+<h2>Index and Quick Reference:</h2>
+
+<table width="1000" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td colspan=2 height="22"><a href="#objectsAndCollections">Objects and Collections</a></td>
+  </tr>
+
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#applicationInfo">ApplicationInfo 
+      (object)</a></td>
+    <td width="656"> <code>ApplicationInfo</code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#database">Database 
+      (object) </a></td>
+    <td width="656"> <code>Database</code> </td>
+
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#record">Record 
+      (object) </a></td>
+    <td width="656"> <code>Record</code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#records">Records 
+      (collection) </a></td>
+
+    <td width="656"> <code>Records</code> </td>
+  </tr>
+  <tr> 
+    <td colspan=2><a href="#functions">Functions</a></td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#count">Count 
+      (function) </a></td>
+
+    <td width="656"> <code>object.Count </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getDateField">GetDateField 
+      (function) </a></td>
+    <td width="656"> <code>object.GetDateField(Offset)</code> </td>
+  </tr>
+    <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getDoubleField">GetDoubleField 
+      (function) </a></td>
+    <td width="656"> <code>object.GetDoubleField(Offset)</code> </td>
+  </tr>
+<tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getNSBDateField">GetNSBDateField 
+      (function) </a></td>
+    <td width="656"> <code>object.GetNSBDateField(Offset)</code> </td>
+  </tr>
+<tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getNSBTimeField">GetNSBTimeField 
+      (function) </a></td>
+    <td width="656"> <code>object.GetNSBTimeField(Offset)</code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getSingleField">GetSingleField 
+      (function) </a></td>
+    <td width="656"> <code>object.GetSingleField(Offset)</code> </td>
+  </tr>
+ 
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getStringField">GetStringField 
+      (funtion) </a></td>
+    <td width="656"> <code>object.GetStringField(Offset, length) </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#getValueField">GetValueField 
+      (function) </a></td>
+    <td width="656"> <code>object.GetValueField(Offset, Length) </code> </td>
+
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Item">Item 
+      (function) </a></td>
+    <td width="656"> <code>object[.Item](Index) </code> </td>
+  </tr>
+  <tr> 
+    <td colspan=2><a href="#methods">Methods</a></td>
+
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#add">Add 
+      (method) </a></td>
+    <td width="656"> <code>object.Add(Index) </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#categoryInitialize">CategoryInitialize 
+      (method) </a></td>
+
+    <td width="656"> <code>object.CategoryInitialize</code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#load">Load 
+      (method) </a></td>
+    <td width="656"> <code>object.Load(Filename) </code> </td>
+  </tr>
+
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putDateField">PutDateField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutDateField(Value, Offset)</code> </td>
+  </tr>
+<tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putDoubleField">PutDoubleField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutDoubleField(Value, Offset)</code> </td>
+  </tr>
+ <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putNSBDateField">PutNSBDateField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutNSBDateField(Value, Offset)</code> </td>
+  </tr>
+<tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putNSBTimeField">PutNSBTimeField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutNSBTimeField(Value, Offset)</code> </td>
+  </tr>
+ <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putSingleField">PutSingleField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutSingleField(Value, Offset)</code> </td>
+  </tr>
+ <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putStringField">PutStringField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutStringField(Value, [Offset]) </code> </td>
+
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#putValueField">PutValueField 
+      (method) </a></td>
+    <td width="656"> <code>object.PutValueField(Value, Offset, Length) </code> 
+    </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#remove">Remove 
+      (method) </a></td>
+
+    <td width="656"> <code>object.Remove(Index) </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#save">Save 
+      (method) </a></td>
+    <td width="656"> <code>object.Save(Filename) </code> </td>
+  </tr>
+
+  <tr> 
+    <td colspan=2><a href="#properties">Properties</a></td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#applicationInfoProperty">ApplicationInfo 
+      (property) </a></td>
+    <td width="656"> <code>object.ApplicationInfo </code> </td>
+  </tr>
+
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#attributes">Attributes 
+      (property) </a></td>
+    <td width="656"> <code>object.Attributes [= Value] </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#category1">Category 
+      (property - Record object)</a></td>
+    <td width="656"> <code>object.Category [= Value] </code> </td>
+
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#category2">Category 
+      (property - ApplicationInfo object)</a></td>
+    <td width="656"> <code>object.Category(Index) [= Value] </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creationDate">CreationDate 
+      (property) </a></td>
+
+    <td width="656"> <code>object.CreationDate </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#creator">Creator 
+      (property) </a></td>
+    <td width="656"> <code>object.Creator [= Value] </code> </td>
+  </tr>
+
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#modificationDate">ModificationDate</a></td>
+    <td width="656"> <code>object.ModificationDate </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#name">Name 
+      (property) </a></td>
+    <td width="656"> <code>object.Name [= Value] </code> </td>
+
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#recordsProperty">Records 
+      (property) </a></td>
+    <td width="656"> <code>object.Records </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#size">Size 
+      (property) </a></td>
+
+    <td width="656"> <code>object.Size [= Value] </code> </td>
+  </tr>
+  <tr> 
+    <td width="344">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#type">Type 
+      (property) </a></td>
+    <td width="656"> <code>object.Type [= Value] </code> </td>
+  </tr>
+
+</table>
+
+<hr>
+<a name="objectsAndCollections"></a> 
+<h2>Objects and Collections</h2>
+<p>&nbsp; </p>
+<p><a name="applicationInfo"></a></p>
+<h3>ApplicationInfo (object)</h3>
+
+<p> <img src="images/TN34.1.gif" width="161" height="56"> <br>
+  The <b>ApplicationInfo</b> object can contain user-defined application-specific 
+  data. <br>
+
+  This usually contains the database categories.</p>
+<h4>Syntax </h4>
+<pre><b>ApplicationInfo</b></pre>
+<h4>Methods</h4>
+<ul>
+  <li><a href="#category2">Category</a> (property - ApplicationInfo object)</li>
+  <li><a href="#categoryInitialize">CategoryInitialize</a> (method)</li>
+
+</ul>
+<h4>Propertities</h4>
+<ul>
+  <li><a href="#size">Size</a> (property) </li>
+</ul>
+<h4>Remarks</h4>
+<p>This implementation doesn't support putting arbitrary data in the application-info 
+  area. To this end, methods and functions will be added, much like the implementation 
+  of the Record object.<br>
+  <br>
+  This object can not be created directly. Instead, use the ApplicationInfo property 
+  of the Database object.</p>
+
+<p><br>
+</p>
+<h5>&nbsp;</h5>
+<h5><a name="database"></a></h5>
+<h3>Database (object) </h3>
+<p> <img src="images/TN34.2.gif" width="114" height="22"> <br>
+  The <b>Database</b> object is the top-level object and can be directly created 
+  by a client application. It represent a <i>.pdb</i> file on the desktop.</p>
+
+<h4>Syntax </h4>
+<pre><b>Database</b></pre>
+<h4> Methods</h4>
+<ul>
+  <li><a href="#load">Load</a> (method)</li>
+  <li><a href="#save">Save</a> (method)</li>
+
+</ul>
+<h4>Propertities</h4>
+<ul>
+  <li><a href="#applicationInfoProperty">ApplicationInfo</a> (property)</li>
+  <li><a href="#attributes">Attributes</a> (property)</li>
+  <li><a href="#creationDate">CreationDate</a> (property)</li>
+
+  <li><a href="#creator">Creator</a> (property)</li>
+  <li><a href="#modificationDate">ModificationDate</a> (property)</li>
+  <li><a href="#name">Name</a> (property)</li>
+  <li><a href="#recordsProperty">Records</a> (property)</li>
+
+  <li><a href="#type">Type</a> (property)</li>
+</ul>
+<p></p>
+<h4>Remarks</h4>
+<p>Use the <code>AddObject</code> statement to create a database object as described in
+<a href="#installation">Installation and Use</a></p>
+<pre>&nbsp;
+ </pre>
+
+<h5>&nbsp;</h5>
+<h5><a name="record"></a></h5>
+<h3>Record (object) </h3>
+<p> <img src="images/TN34.3.gif"> <br>
+  The <b>Record</b> object represents an actual record in the database. It exposes 
+  methods and functions to manage the individual fields. </p>
+<h4>Syntax </h4>
+<pre><b>Record</b></pre>
+
+<h4> Methods</h4>
+<ul>
+  <li><a href="#getDateField">GetDateField</a> (function)</li>
+  <li><a href="#getDoubleField">GetDoubleField</a> (function)</li>
+  <li><a href="#getNSBDateField">GetNSBDateField</a> (function)</li>
+  <li><a href="#getNSBTimeField">GetNSBTimeField</a> (function)</li>
+  <li><a href="#getSingleField">GetSingleField</a> (function)</li>
+  <li><a href="#getStringField">GetStringField</a> (function)</li>
+  <li><a href="#getValueField">GetValueField</a> (function)</li>
+
+  <li><a href="#putDateField">PutDateField</a> (method)</li>
+  <li><a href="#putDoubleField">PutDoubleField</a> (method)</li>
+  <li><a href="#putNSBDateField">PutNSBDateField</a> (method)</li>
+  <li><a href="#putNSBTimeField">PutNSBTimeField</a> (method)</li>
+  <li><a href="#putSingleField">PutSingleField</a> (method)</li>
+  <li><a href="#putStringField">PutStringField</a> (method)</li>
+  <li><a href="#putValueField">PutValueField</a> (method)</li>
+</ul>
+<h4>Propertities</h4>
+
+<ul>
+  <li><a href="#size">Attributes</a> (property)</li>
+  <li><a href="#category1">Category</a> (property - Record object)</li>
+  <li><a href="#size">Size</a> (property)</li>
+</ul>
+
+<p></p>
+<h4>Remarks</h4>
+<p>This object can not be created directly. Instead, use the methods and functions 
+  of the <a href="#records">Records</a> collection. </p>
+<pre>&nbsp;
+ </pre>
+<h5>&nbsp;</h5>
+<h5><a name="records"></a></h5>
+<h3>Records (collection) </h3>
+<p> <img src="images/TN34.4.gif" width="138" height="56"> <br>
+
+  The <b>Records</b> collection allows for both random and sequential access to 
+  the list of records in the database. Adding and removing records is also supported. 
+</p>
+<h4>Syntax </h4>
+<pre><b>Records</b></pre>
+<h4> Methods</h4>
+<ul>
+  <li><a href="#add">Add</a> (method)</li>
+
+  <li><a href="#categoryInitialize">Count</a> (function)</li>
+  <li><a href="#item">Item</a> (function)</li>
+  <li><a href="#remove">Remove</a> (method)</li>
+</ul>
+<h4>Remarks</h4>
+
+<p>The <b>Records</b> object support Visual Basic's <i>For Each</i> construct 
+  to allow for enumerating the records in the Database. </p>
+<p>This object can not be created directly. Instead, use the <a href="#recordsProperty">Records 
+  property</a> of the <a href="#database">Database</a> object. </p>
+<pre>&nbsp;
+
+ </pre>
+<h5>&nbsp;</h5>
+<hr>
+<a name="functions"></a> 
+<h2>Functions</h2>
+<p><a name="count"></a></p>
+<h3>Count (function)</h3>
+<p><a href="#records">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Count</b></pre>
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr>
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the Applies To 
+      list.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="getDateField"></a></p>
+<h3>GetDateField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetDateField</b>(<i>Offset</i>)</pre>
+
+The <b>GetDateField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the date starts, starting from 0.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>A Date value stored in a field is a 4-byte long value. </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="getDoubleField"></a></p>
+<h3>GetDoubleField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetDoubleField</b>(<i>Offset</i>)</pre>
+
+The <b>GetDoubleField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the double-precision floating point number starts, starting from 0.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>GetDoubleField can be used to retrieve NSBasic Palm dates and times.  See the NSBasic Palm
+documentation for more information.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="getNSBDateField"></a></p>
+<h3>GetNSBDateField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetNSBDateField</b>(<i>Offset</i>)</pre>
+
+The <b>GetNSBDateField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the date starts, starting from 0.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p>The NSBasic Desktop <code>Date</code> type includes both the date and time,
+while the NSBasic Palm <code>Date</code> type only includes the date.  This method
+will return a value that represents midnight on the given date.  It can be combined
+with the <a href="#getNSBTimeField">GetNSBTimeField</a> method to combine an NSBasic Palm
+date and time into a single value.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="getNSBTimeField"></a></p>
+<h3>GetNSBTimeField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetNSBTimeField</b>(<i>Offset</i>, <i>BaseDate</i>)</pre>
+
+The <b>GetNSBTimeField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the time starts, starting from 0.</td>
+  </tr>
+ <tr> 
+    <td width="26%">BaseDate</td>
+    <td width="74%">The date which is combined with the time to form an NSBasic Desktop date.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p>The NSBasic Desktop <code>Date</code> type includes both the date and time,
+while the NSBasic Palm <code>Time</code> type only includes the time.  You must
+include a date in which the time is given.</p>
+<p>The following code fragment shows how to reas an NSBasic Desktop date from a database
+containing a date and a time:</p>
+<pre>
+   With PalmDB.Records(0)
+        Dim dt
+        Dim d
+        d = .GetNSBDateField(0)
+        dt = .GetNSBTimeField(8, d)
+        MsgBox t
+    End With    
+</pre>
+<p>If you are only interested in comparing times within a single arbitrary day, you can 
+use the <code>Now</code> function to get today's date and use that as the base date.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="getSingleField"></a></p>
+<h3>GetSingleField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetSingleField</b>(<i>Offset</i>)</pre>
+
+The <b>GetSingleField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the single-precision floating point number starts, starting from 0.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="getStringField"></a></p>
+<h3>GetStringField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetStringField</b>(<i>offset[, length</i>])</pre>
+
+The <b>GetStringField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the string starts, starting from 0.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Length</td>
+    <td width="74%">Number of bytes to read</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p>This function will retrieve all of the characters from the offset to the
+end of the record.  This is useful for storing binary data in a database.
+When the string contains text, use code similar to the following to 
+trim the string:</p>
+<p><code>s = PalmDB.Record(0).GetStringField(37)<br>
+s = Left(s, Instr(s, chr(0)) - 1)</code></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="getValueField"></a></p>
+<h3>GetValueField (function) </h3>
+<p><a href="#record">Applies To</a></p>
+
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>GetValueField</b>(O<i>ffset, Length</i>)</pre>
+The <b>GetValueField</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Length</td>
+    <td width="74%">Length in bytes of the value to retrieve. Can either be 1 
+      (Byte), 2 (Integer) or 4 (Long).</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><a name="item"></a></pre>
+<h3>Item (function)</h3>
+<p><a href="#records">Applies To</a></p>
+<h4>Syntax </h4>
+<pre>object[.<b>Item</b>](<i>Index</i>)
+
+</pre>
+The <b>Item</b> function syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Index</td>
+    <td width="74%">A valid index of the record to be retrieved, in the range 
+      [0 - <a href="#count">Count</a>].</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre>&nbsp;
+</pre>
+
+<hr>
+<a name="methods"></a> 
+<h2>Methods</h2>
+<p>&nbsp;</p>
+
+<p><a name="add"></a></p>
+<h3>Add (method) </h3>
+<p><a href="#records">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Add</b>(<i>Index</i>)</pre>
+The <b>Add</b> method syntax contains the following items: 
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+  <tr> 
+    <td width="26%">Index</td>
+    <td width="74%">A numeric value specifying the index of the new record in 
+      the database, starting from 0. The record will be inserted at position Index 
+      or appended to the list of records if Index is equal the records <a href="#count">Count</a>.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="categoryInitialize"></a></p>
+<h3>CategoryInitialize (method) </h3>
+<p><a href="#applicationInfo">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>CategoryInitialize</b> </pre>
+The <b>CategoryInitialize</b> method syntax contains the following items: 
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>The CategoryInitialize method creates initial categories of <code>Unfiled</code>, 
+  <code>Business</code> and <code>Personal</code>. </p>
+<p>&nbsp;</p>
+
+<p><a name="load"></a></p>
+<h3>Load (method) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Load</b>(<i>Filename</i>)
+</pre>
+The <b>Load</b> method syntax contains the following items: 
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+  <tr> 
+    <td width="26%">Filename</td>
+    <td width="74%">The full path name of the <i>.pdb</i> file in which the Database is stored. If FileName does not exist, an error will be raised. Use On Error Resume Next to trap this. If you want to create a new database, do not do a Load.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="putDateField"></a></p>
+<h3>PutDateField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>PutDateField</b>(<i>Value, Offset</i>)</pre>
+
+The <b>PutDateField</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A Date value to be stored in the field.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p>This method works on Palm dates, which are 4-byte integers representing a total
+number of seconds since a specified date.  These are different from
+from NSBasic dates. </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="putDoubleField"></a></p>
+<h3>PutDoubleField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>PutDoubleField</b>(<i>Value, Offset</i>)</pre>
+
+The <b>PutDoubleField</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A double-precision floating point value to be stored in the field.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p>This method can be used to store NSBasic Palm dates and times.  See the NSBasic Palm
+documentation for more information.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="putNSBDateField"></a></p>
+<h3>PutNSBDateField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>PutNSBDateField</b>(<i>Value, Offset</i>)</pre>
+
+The <b>PutNSBDateField</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A date value to be stored in the field.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p>The <code>Date</code> data type in NSBasic Desktop stores both the date and time of 
+day, while the <code>Date</code> data type in NSBasic Palm only stores the date.  This
+method extracts the date portion of its argument and stores it as an NSBasic Palm date.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="putNSBDateField"></a></p>
+<h3>PutNSBDateField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>PutNSBDateField</b>(<i>Value, Offset</i>)</pre>
+
+The <b>PutNSBDateField</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A time value to be stored in the field.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p>The <code>Date</code> data type in NSBasic Desktop stores both the date and time of 
+day, while the <code>Time</code> data type in NSBasic Palm only stores the time.  This
+method extracts the time portion of its argument and stores it as an NSBasic Palm time.
+This time is truncated to the second.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+<p><a name="putSingleField"></a></p>
+<h3>PutSingleField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>PutSingleField</b>(<i>Value, Offset</i>)</pre>
+
+The <b>PutSingleField</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A single-precision floating point value to be stored in the field.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="putStringField"></a></p>
+<h3>PutStringField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.PutStringField(<i>Value</i>, [<i>Offset</i>])</pre>
+The <b>PutStringField</b> method syntax contains the following items: 
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A valid String to be stored in the field.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="putValueField"></a></p>
+<h3>PutValueField (method) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>PutValueField</b>(<i>Value</i>, <i>Offset</i>, <i>Length</i>)
+
+</pre>
+The <b>PutValueField</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A numeric value to be stored in the field. Make sure to use 
+      an appropriate datatype to hold the value, depending upon the Length.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Offset</td>
+    <td width="74%">Offset in bytes from the beginning of the record data where 
+      the value starts, starting from 0.</td>
+  </tr>
+  <tr>
+    <td width="26%">Length</td>
+    <td width="74%">Length in bytes of the value to retrieve. Can either be 1 
+      (Byte), 2 (Integer) or 4 (Long).</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="remove"></a></p>
+<h3>Remove (method) </h3>
+<p><a href="#records">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Remove</b>(<i>Index</i>)
+
+</pre>
+The <b>Remove</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Index</td>
+    <td width="74%">A valid index of the record to remove from the database, in 
+      the range 0 to <a href="#count">Count</a> - 1.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="save"></a></p>
+<h3>Save (method) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Save</b>(<i>Filename</i>)
+
+</pre>
+The <b>Save</b> method syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Filename</td>
+    <td width="74%">The full path name of the <i>.pdb</i> file in which to store 
+      the Database. If the file does not exist, it will be created.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp; </p>
+<hr>
+<a name="properties"></a>
+<h2>Properties</h2>
+
+<p>&nbsp;</p>
+<h4><a name="applicationInfoProperty"></a></h4>
+<h3>ApplicationInfo (property) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>ApplicationInfo</b> </pre>
+The <b>ApplicationInfo</b> property syntax contains the following items: 
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="attributes"></a></p>
+<h3>Attributes (property) </h3>
+<p>Applies To: <a href="#database">Database</a>, <a href="#record">Record</a></p>
+
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Attributes</b> [= <i>Value</i>]
+</pre>
+The <b>Attributes</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A combination of one or more numeric values that represents 
+      the attributes to set. It is recommended to use the symbolic <a href="#databaseAttributes">Database 
+      Attributes</a> constants or <a href="#recordAttributes">Record Attributes</a> 
+      constants to specify the mask.</td>
+  </tr>
+</table>
+<h5><a name="databaseAttributes"></a> </h5>
+
+<h4>Database Attributes </h4>
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="62%">Name</th>
+    <th width="38%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="62%">dmHdrAttrResDB</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr> 
+    <td width="62%">dmHdrAttrReadOnly</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrAppInfoDirty</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrBackup</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrOKToInstallNewer</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrResetAfterInstall</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrCopyPrevention</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrStream</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrHidden</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrLaunchableData</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="62%">dmHdrAttrOpen</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr>
+    <td width="62%">dmAllHdrAttrs</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+</table>
+<h5><a name="recordAttributes"></a></h5>
+<h4>Record Attributes </h4>
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="62%">Name</th>
+
+    <th width="38%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="62%">dmRecAttrSecret</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="62%">dmRecAttrBusy</td>
+
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="62%">dmRecAttrDirty</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="62%">dmRecAttrDelete</td>
+    <td width="38%">&nbsp;</td>
+
+  </tr>
+  <tr> 
+    <td width="62%">dmAllRecAttrs</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+</table>
+<h5><a name="categoryAttributes"></a></h5>
+<h4>Category Attributes </h4>
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="62%">Name</th>
+
+    <th width="38%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="62%">dmRecAttrCategoryMask</td>
+    <td width="38%">&nbsp;</td>
+  </tr>
+</table>
+<h4>Remarks</h4>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="category1"></a></p>
+<h3>Category (property - Record object) </h3>
+<p><a href="#record">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Category</b> [= <i>Value</i>]
+</pre>
+
+The <b>Category</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A numeric value in the range [0 - 15].</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="category2"></a></p>
+<h3>Category (property - ApplicationInfo object) </h3>
+<p><a href="#applicationInfo">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Category</b>(<i>Index</i>) [= <i>Value</i>]
+
+</pre>
+The <b>Category</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr>
+    <td width="26%">Index</td>
+    <td width="74%">A numeric value in the range [0 - 15].</td>
+  </tr>
+
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A valid String to be stored in the specified category slot.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="creationDate"></a></p>
+
+<h3>CreationDate (property) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>CreationDate</b>
+</pre>
+The <b>CreationDate</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="creator"></a></p>
+<h3>Creator (property) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Creator</b> [= <i>Value</i>]
+
+</pre>
+The <b>Creator</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A valid 4-letter String to hold the Database creator. A valid 
+      creator consist of a String containing upper-case only or mixed upper and 
+      lower case letters. Lower-case only creators are reserved for use by Palm.</td>
+  </tr>
+
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="modificationDate"></a></p>
+<h3>ModificationDate (property)</h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>ModificationDate</b>
+
+</pre>
+The <b>ModificationDate</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="name"></a></p>
+<h3>Name (property) </h3>
+
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Name</b> [= <i>Value</i>]
+</pre>
+The <b>Name</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A valid String to hold the name of the database.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<p><a name="recordsProperty"></a></p>
+<h3>Records (property) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Records</b>
+</pre>
+The <b>Records</b> property syntax contains the following items: 
+
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="size"></a></p>
+<h3>Size (property) </h3>
+<p>Applies To: <a href="#applicationInfo">ApplicationInfo</a>, <a href="#record">Record</a></p>
+
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Size</b> [= <i>Value</i>]
+</pre>
+The <b>Size</b> property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+  </tr>
+
+  <tr>
+    <td width="26%">Value</td>
+    <td width="74%">The new size of the object. The original contents of the object 
+      will be kept if at all possible. If the new size if greater than the current 
+      size, the object will be truncated.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><a name="type"></a></p>
+<h3>Type (property) </h3>
+<p><a href="#database">Applies To</a></p>
+<h4>Syntax </h4>
+<pre><i>object</i>.<b>Type</b> [= <i>Value</i>]
+</pre>
+The Type property syntax contains the following items: 
+<table border="0" cellspacing="2" cellpadding="5" width="450">
+
+  <tr bgcolor="#CCCCCC" align="left"> 
+    <th width="26%">Item</th>
+    <th width="74%">Meaning</th>
+  </tr>
+  <tr> 
+    <td width="26%">object</td>
+    <td width="74%">An expression that evaluates to an object in the <i>Applies 
+      To</i> list.</td>
+
+  </tr>
+  <tr> 
+    <td width="26%">Value</td>
+    <td width="74%">A valid 4-letter String to hold the Database type. A valid 
+      type consist of a String containing lower-case only or mixed upper and lower 
+      case letters. Upper-case only types are reserved for use by Palm.</td>
+  </tr>
+</table>
+<h4> Remarks</h4>
+<p></p>
+<p>This implementation assumes Data databases. Therefore, it is recommended to 
+  always create new databases using a Type of "<code>data</code>". </p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</html>
+

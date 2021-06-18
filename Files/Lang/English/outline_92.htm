@@ -1,0 +1,225 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Format </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Format                                                                                                   Functions</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>FORMAT( <i>numVar</i> as anyNumType,  <i>fmtstring</i> as String)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Returns: A formatted text string</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>To format numeric data into text strings suitable for
+display or printing. <i>NumVar</i> is any
+numeric format including integer, short, float, or double. <i>Fmtstring</i> is a string which controls the formatting of the numeric
+data. The variable being assigned to should be padded with enough characters to
+receive the result. <i>fmtstring</i> may
+contain one or more of the following characters:</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>replaced by a digit from the number if available or zero
+  if not</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>n</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>replaced by a digit from the number if available or space
+  if not</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>#</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>replaced by a digit from the number if available or
+  nothing if not</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>places a decimal point in the output text</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>+</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Replaced by a minus sign if the number is negative or
+  space if positive</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>-</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Replaced by a minus sign if the number is negative or
+  space if positive</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>,</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>places a comma in the output string if a leading digit
+  has been encountered or a space if not.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=37 valign=top style='width:27.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+  <td width=505 valign=top style='width:378.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Any other character is copied into the output stream</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim a as double</p>
+
+<p class=Code>Dim b as double</p>
+
+<p class=Code>Dim c as double</p>
+
+<p class=Code>Dim i as integer</p>
+
+<p class=Code>Dim j as integer</p>
+
+<p class=Code>Dim k as Integer</p>
+
+<p class=Code>Dim s as String</p>
+
+<p class=Code>a=123.45</p>
+
+<p class=Code>b=-37.65</p>
+
+<p class=Code>c= 12345.6</p>
+
+<p class=Code>i=92</p>
+
+<p class=Code>s=&quot;         &quot;</p>
+
+<p class=Code>s=Format(a, &quot;#####.000&quot; ) 'result= 123.450  (length=7 because # does not reserve a blank
+if there is no leading digit)</p>
+
+<p class=Code>s=Format(a, &quot;nnnnn.000&quot; ) 'result=123.450(length=9
+because n reserves a blank if there is no leading digit)</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>s=Format(a, &quot;-00000.000&quot;) 'result=  00123.450 (minus is ignored because the
+number is negative)</p>
+
+<p class=Code>s=Format(b,&quot;+nn,nnn.0&quot;) 'result is -37.6   </p>
+
+<p class=Code>s=Format(c, &quot;nn,nnn.00&quot;) 'result is 12,345.60</p>
+
+<p class=Code>s=Format(i, &quot;###%&quot;)   
+'result is 92%</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

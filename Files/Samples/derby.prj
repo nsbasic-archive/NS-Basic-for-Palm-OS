@@ -1,0 +1,149 @@
+"mdl"
+9
+"derby","appl","Drby",1015,505,0
+"Sub main()
+ Global xstart as Integer
+ Global ystart as Integer
+ Global wid as Integer
+ Global ht as Integer
+ 
+ Global noHorses as Integer
+ Global increm as Integer
+ Global pos(25) as Integer   'each horses position
+ Global firsttime as Integer 
+
+ Dim r as Integer
+ Dim z as Integer
+ Dim i as Integer
+ Dim temp as Integer
+ 
+ Call initialize
+
+ increm=10
+ noHorses=4
+ xstart=25
+ ystart=30
+ wid=120
+ ht=100
+ firstTime=0
+  
+End Sub 
+
+Sub initialize()
+ Dim i as Integer
+ For i=1 to 25
+   pos(i)=10
+ Next
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+""
+""
+""
+"..\..\Themes\Classic.pdb"
+""
+"bmpfile"
+1
+"Bmpfile1011"
+1011
+",,,..\..\Bitmaps\cars.bmp,,,,,,"
+"bmpfile"
+1
+"Bmpfile1012"
+1012
+",,,..\..\Bitmaps\erasecars.bmp,,,,,,"
+"resfile"
+1
+"Classic"
+1015
+"DBIM"
+"..\..\Themes\Classic.pdb"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#FALSE#
+""
+"RaceScreen"
+""
+0
+"Sub Form1004_after()
+ Dim i as Integer
+ Dim z as Integer
+ Dim r as Integer
+ Dim temp as Integer
+ Dim Result as Integer
+ Dim le as Integer
+ Dim lx as Integer
+ 
+  DrawRectangle xstart,ystart,wid,ht,0 
+  For i=1 to 3
+    lx=xstart+i*wid/4
+    le=ystart+ht
+    DrawLine lx,ystart,lx,le,gray
+  Next
+
+  z=noHorses - 1
+  For i=1 to z
+    r=ystart + i * ht / noHorses
+    temp=xstart+wid
+    DrawLine xstart,r,temp,r
+  Next
+ 
+
+drawAgain:
+ For i=1 to noHorses
+   Call eraseIcon(i)
+   pos(i)=pos(i)+rand()*increm
+   If pos(i)>(xstart+wid-11) Then
+   pos(i)=xstart+wid-11
+  endif
+  Call drawIcon(i)
+  
+  If pos(i) >(xstart+wid-16) Then
+    MsgBox ~Congratulations! Contestant # ~+str(i) +~ is the winner!~
+	Stop 
+  endif
+ Next
+ Delay .01
+ GoTo drawAgain
+End Sub
+
+Sub drawRealIcon( color as Integer , x as Integer, y as Integer)
+ If color=1 Then
+    DrawBitmap 1011,x,y 
+ Else
+    DrawBitmap 1012,x,y 
+  endif
+End Sub
+
+Sub drawIcon(c as Integer)
+  Dim sx as Integer
+  Dim sy as Integer
+
+  sx=pos(c)
+  sy=ystart + (c-.9) * ht / noHorses
+
+  Call drawRealIcon 1,sx,sy
+End Sub 
+
+Sub eraseIcon(c as Integer)
+  Dim sx as Integer
+  Dim sy as Integer
+
+  sx=pos(c)
+  sy=ystart+(c-.9)*ht/noHorses
+
+  Call drawRealIcon (0,sx,sy)
+End Sub"
+""
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1009",1009,28,12,17,91,#TRUE#,7,"Racing Derby",0,0,0
+"sub object1009()
+ Stop
+end sub"
+"end"

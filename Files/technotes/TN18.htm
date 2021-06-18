@@ -1,0 +1,845 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<title>Tech Note 18: Using the TcpIpLib Shared Library</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF"
+vlink="#800080">
+
+<table border="0" cellspacing="0" width="550">
+  <TBODY>    
+  <tr>
+        
+	<td valign="top" width="19%"><img
+        src="http://nsbasic.com/palm/info/technotes/images/BigIcon.GIF"
+        width="86" height="103"></td>
+        
+	<td valign="top" width="81%">
+	  <h2>Tech Note 18: Using the TcpIpLib Shared Library 2.1
+</h2>
+	  <h3>April 23, 2002
+</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+        </td>
+    </tr>
+</TBODY></table>
+<hr>
+<h4>Contents</h4>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#chap1">1. Shared Library Methods</a>
+    <a href="#chap2">2. Using TcpIpLib to communicate with the Desktop</a>
+    <a href="#chap3">3. Some Standard Internet Protocols</a>
+    <a href="#chap31">3.1 Getting Web Pages: http</a>
+    <a href="#chap32">3.2 Reading Newsgroups: nntp</a>
+    <a href="#chap33">3.3 Sending Mail: smtp</a>
+    <a href="#chap34">3.4 Getting Mail: pop3</a>
+    <a href="#chap4">4. Compiling the Source Code</a>
+    <a href="#appA">Appendix A: List of common Port Numbers</a>
+    <a href="#appB">Appendix B: Palm OS Net Error Messages</a>
+</pre>
+<hr>
+
+<a name="intro"></a><h4>Introduction</h4>
+
+<p>This shared library was orginally written by <a href="mailto:floyd&copy; gswsa.com">Floyd Worley</a>. Version 2.1 was written by <A HREF="mailto:beep&copy; nubz.org">Matthijs van Duin</A>. Please send your problems and suggestions to <A HREF="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</A></p>
+
+<p>TcpIpLib is a simple to use shared library that lets you communicate from a Palm using Tcp/IP. We include samples of retrieving a web page and communicating with a desktop program written in Visual Basic.
+
+<p>The libraries and samples can be downloaded <A HREF="http://www.nsbasic.com/pub/palm/updates/TcpIpLib2.zip">here</A>.
+
+The following files are included:
+<UL>
+	<LI>TcpIpLib.INF: INF file for NS Basic to use. Install into \nsbasic\lib.
+	<LI>TcpIpLib.prc: Shared library. Install into \nsbasic\lib and download to your device.
+	<LI>TcpIpDemo.prj: NS Basic program which demonstrates standard internet services, such as getting web pages, news, and sending and receiving email.
+	<LI>TCP2VB.prj: NS Basic program which communicates with a desktop VB program.
+	<LI>VB Server Folder: Server program for desktop, written in Visual Basic.
+	<LI>src folder: source code. can be compiled with PRC Tools. 
+</UL>
+
+<p>You can run the samples on a net enabled Palm OS device. Remember to install the NSBRuntime and the TCPIPLIB before you try to run the program.
+
+<p>We find the easiest way to test TCP/IP programs is on POSE. Under POSE Properties, make sure that "Redirect NetLib calls to host TCP/IP" is set. The calls you issue in your program will then use your desktop computer's TCP/IP connection.
+<hr>
+
+<a name="chap1"></a><h4>1. Shared Library Methods</H4>
+
+<b>Version()</b>
+<p>Returns the version number.<br><br>
+
+<b>fd = TcpOpen(hostname, port, timeout)</b>
+<p>Opens the specified post on the hostname. Fd will be returned as a negative value if the open fails. See <A HREF="#appA">Appendix A</A> for a list of common port numbers. See <A HREF="#appB">Appendix B</A> for a list of error codes. 
+<UL>
+	<LI>Hostname = string filled with dotted IP or hostname
+	<LI>port     = integer for IP Port number
+	<LI>timeout  = integer for timeout in mS (use 5000)
+	<LI>fd       = integer; the reference or error code
+</UL>
+
+<p><i>Example</i>
+<PRE>
+fd = TcpOpen("www.nsbasic.com", 80, 5000)
+If fd < 0 Then
+   msgbox "open error " + str(-fd) ' Palm error code
+end if
+</PRE>
+
+<br><br>
+<b>TcpClose(fd)</b>
+<p>Closes the current connection fd
+<UL>
+	<LI>fd       = integer. Value set in TcpOpen. 
+</UL>
+
+
+<br><br>
+<b>data = TcpRead(fd, count, matchset, timeout)</b>
+<p>Read data from an open connection.
+<UL>
+	<LI>data 	 = String. the returned data
+	<LI>fd       = integer. Value set in TcpOpen. 
+	<LI>count	 = integer. maximum number of characters to return
+	<LI>matchSet = string, up to 2 characters. TcpRead will return when one of these characters are encountered.
+	<LI>timeout  = timeout in milliseconds
+</UL>
+
+<p><i>Example</i>
+<PRE>
+'return when 100 chars are received, 
+' until a # or > was found in the stream, 
+' or 2.5 seconds have passed
+' or connection was closed 
+timeout = 2500
+toread = 100
+data = TcpRead(fd, toread, "#>", timeout) 
+</PRE>
+
+
+<br><br>
+<b>written = TcpWrite(fd, data)</b>
+<p>Write data to an open connection. Returns the number of bytes of data written. If written is negative, there was an error. See <A HREF="#appB">Appendix B</A> for a list of error codes. 
+<UL>
+	<LI>fd       = integer. Value set in TcpOpen. 
+	<LI>data     = string, 
+	<LI>written  = integer
+</UL>
+
+
+<p><i>Example</i>
+<PRE>
+bytes=TcpWrite(fd, data)
+</PRE>
+
+
+<br><br>
+<b>TcpFlush(fd) </b>
+<p>Flushes the input buffer
+<UL>
+	<LI>fd = integer. Value set in TcpOpen. 
+</UL>
+
+<p><i>Example</i>
+<PRE>
+TcpFlush()
+</PRE>
+
+<hr>
+
+<a name="chap2"></a><h4>2. Using TcpIpLib to communicate with the Desktop</h4>
+
+<p>It's easy to send and receive data with a a VB program running on the desktop. The hostname is the IP Address of the desktop machine and the port is a number that both sides have hard coded in their programs. Send and receive commands then communicate data back and forth.
+
+<p>The easiest way to understand how to do this is to run the sample. Here's how:
+<OL>
+	<LI>Install the files as above.
+	<LI>From NS Basic, compile, download and run TCP2VB. You can run this on a TCP/IP enabled device with a connection to the desktop or directly on POSE.
+	<>I>Run the program.
+	<LI>Fill in the IP address of your desktop. If you don't know the address, on the desktop do Start...Run. Enter CMD to bring up a DOS shell, then type ipconfig to see your IP address.
+	<LI>On the destop, run vbTcpIp.exe.
+	<LI>On the device, tap Connect to establish the connection.
+	<LI>Enter some text into the Send field.
+	<LI>Tap the Send button.
+	<LI>You will see your text appear in the vbTcpIp program running on the desktop.
+	<LI>The vbTcpIp program running on the desktop will then send your message back to the device.
+</OL>
+Your message will appear in the Received Data field on the device, completing the round trip.
+
+<hr>
+
+<a name="chap3"></a><h4>3. Some Standard Internet Protocols</h4>
+
+<P>This is an over simplified introduction to some of the most common protocol used on the net. In each case, a link has been provided to the relevant RFC that gives more information than you'll ever need. (An RFC is a Request for Comment, the documents that set forth how just about everything on the internet works.) 
+
+<p>The master index to all the RFC documents is at <A HREF="http://www.faqs.org/rfcs/">http://www.faqs.org/rfcs/</A>.
+
+<p>Please note that the URLs below are not live: you should substitute current URLs if you want to try these.
+
+
+
+<a name="chap31"></a><p><A HREF="http://www.faqs.org/rfcs/rfc2616.html"><b>3.1 Getting Web Pages: http</b><a><b></b>
+
+</a></a><p><a><A HREF="http://www.faqs.org/rfcs/rfc2616.html">(For more information, read </a></a><a><A HREF="http://www.faqs.org/rfcs/rfc2616.html">RFC2616</A>)
+
+<p>To connect with a web server, use address "www.nsbasic.com" and port 80. 
+(The address will be different depending on the web server you wish to 
+access; the port is always 80. See <A HREF="#appA">Appendix A</A> for a list of standard
+ports).
+
+<p>To get a web page,
+
+<br><pre>GET /testdata.txt HTTP:/1.0
+Host: www.nsbasic.com:80
+
+</pre>
+
+<p>The data will come back and the connection will be closed. Note that while 
+News lines end with CR/LF, web information that returns may end in just 
+LF. At the end of receiving a page of data, the server closes the 
+connection, so to see if the page is complete, wait for the connection to 
+be terminated.
+
+<p>Web sites also have local programs that get run, using something called 
+cgi. For example, to check a stock price, connect to location www.dbc.com 
+and do the following command:
+
+<br><pre>GET /cgibin/htx.exe/squote?TICKER=DOCSF</pre>
+
+<p>See the sample TcpIpDemo.prj for an example.
+
+
+
+<a name="chap32"></a><p><b><A HREF="http://www.faqs.org/rfcs/rfc977.html">3.2 Reading Newsgroups: nntp</A></b>
+
+<p>(For more information, read <A HREF="http://www.faqs.org/rfcs/rfc977.html">RFC977</A>)
+
+<p>To connect with news, use address such as "nntp.netcruiser" and port 119. (The address will be different with your service provider; the port will always be 119. See <A HREF="#appA">Appendix A</A> for a complete list of ports). 
+
+<p>You'll get an initial welcome message back:
+
+<br><pre>"200 tor-nn1.netcom.ca InterNetNews NNRP server INN 1.4unoff4 05-Mar-96 
+ready (posting ok)."</pre>
+
+<p>Tell it what newsgroup you want:
+
+<br><pre>group alt.food.wine</pre>
+
+<p>You'll get back :
+
+<br><pre>211 206 16868 17075 alt.food.wine</pre>
+
+<p>This means there are 206 articles, numbered from 16868 to 17075.
+
+<p>To read the headers of some of the articles, send
+
+<br><pre>xover 17000-17005</pre>
+
+<p>You'll get back:
+
+<br><pre>"17070	Re: Old Liebfraumich...	"Roger L. Lustig" 	
+Wed, 31 Jul 1996 22:51:21 -0400	<32001BA9.367&copy; ix.netcom.com>	
+<4tnroe$m9m&copy; mcmail.CIS.McMaster.CA>	1092	14"
+"17071	Re: Wine de Constantia, info needed	"Roger L. Lustig" 
+	Wed, 31 Jul 1996 22:54:37 -0400	
+<32001C6D.76ED&copy; ix.netcom.com>	
+	1590	31"
+"17072	Napa Crush Begins	"Brian Boulden" 	1 Aug 
+1996 04:50:45 GMT	<01bb7f64$195b6da0$a677ae8c&copy; boulden.community.net>		1523	
+22"
+"17073	Re: Alsace	zincats&copy; aol.com (ZinCats)	1 Aug 1996 01:00:41 -0400	
+<4tpdlp$m8i&copy; newsbf02.news.aol.com>	<31FD65C5.4774&copy; widomaker.com>	992	8"
+"17074	Re: Oregon Bound - Need Help	zincats&copy; aol.com (ZinCats)	1 Aug 1996 
+01:14:38 -0400	<4tpefu$mog&copy; newsbf02.news.aol.com>	
+<31FAFB21.2052&copy; execpc.com>	793	5"
+"17075	RE: Old Liebfraumich...	chris.anderson&copy; dinosaur.com	Wed, 31 Jul 96 
+23:06:55 -0700	<9607312306.0WH1U00&copy; dinosaur.com>	
+<4tnroe$m9m&copy; mcmail.CIS.McMaster.CA>	1317	18"</pre>
+
+<p>To read a single article, send
+
+<br><pre>article 17000</pre>
+
+<p>Articles may be any number of lines long, terminated by a final line that 
+consists of a period by itself (".").
+
+<p>See the sample TcpIpDemo.prj for an example.
+
+
+
+<a name="chap33"></a><p><b><A HREF="http://www.faqs.org/rfcs/rfc2821.html">3.3 Sending Mail: smtp</A></b>
+
+<p>(For more information, read <A HREF="http://www.faqs.org/rfcs/rfc2821.html">RFC2821</A>)
+
+<p>The most common program used to send mail is SMTP, sometimes called sendmail. 
+
+<p>To connect with a SMTP server, use address such as "netcom.ca" and port 25. (The address will be different depending on the web server you wish to access; 
+the port will always be 25. See <A HREF="#appA">Appendix A</A> for a complete list of ports).
+
+<p>To show how this works, we'll connect to a smtp server via telnet and enter the commands manually In your NS BASIC program, you'll want to duplicate this dialog. Lines entered by the user start with U:
+
+<br><pre>U: telnet netcom.ca 25
+Trying 207.93.1.148...
+Connected to netcom.ca.
+Escape character is '^]'.
+220 tor-srs1.netcom.ca ESMTP Sendmail 8.7.5/SMI-4.1/Netcom ready at Tue, 
+27 Aug 1996 15:23:06 -0400 (EDT)
+U: HELO io.com
+250 tor-srs1.netcom.ca Hello nsbasic&copy; pentagon.io.com [199.170.88.5], 
+pleased to meet you
+U: MAIL FROM: gh&copy; nsbasic.com
+250 gh&copy; nsbasic.com... Sender ok
+U: RCPT TO: gh&copy; nsbasic.com
+250 Recipient ok
+U: DATA
+354 Enter mail, end with "." on a line by itself
+U: SUBJECT: This is some test data
+U: This is line 1 of my message
+U: and line 2.
+U: .
+250 PAA16699 Message accepted for delivery
+U: QUIT
+221 tor-srs1.netcom.ca closing connection
+Connection closed by foreign host.</pre>
+
+<p>See the sample TcpIpDemo.prj for an example.
+
+
+
+<a name="chap34"></a><p><b><A HREF="http://www.faqs.org/rfcs/rfc1939.html">3.4 Getting Mail: pop3</A></b>
+
+<p>(For more information, read <A HREF="http://www.faqs.org/rfcs/rfc1939.html">RFC1939</A>)
+
+<p>The program most commonly used to read mail on a server is called POP3. 
+
+<p>To connect with a POP3 server, use an address such as "netcom.ca" and port 110. (The address will be different depending on the web server you wish to access; the port will always be 110. See <A HREF="#appA">Appendix A</A> for a complete list of ports).
+
+<p>To show how this works, we'll connect to a smtp server via telnet and enter the commands manually In your NS BASIC program, you'll want to duplicate this dialog. Lines entered by the user start with U:
+
+<br><pre>U: telnet netcom.ca 110
+Trying 207.93.1.148...
+Connected to netcom.ca.
+Escape character is '^]'.
++OK NETCOM v0.1 at tor-srs1 starting : built on Aug  2 1996 14:00:08.
+U: user ghenne
++OK Password required for ghenne.
+U: PASS xxxxxx
++OK ghenne has 0 message(s) (0 octets).
+U: STAT
++OK 3 1766
+U: DELE 3
++OK Message 3 has been deleted.
+U: LIST
++OK 2 messages (1425 octets)
+1 801
+2 624
+.
+U: DELE 2
++OK Message 2 has been deleted.
+U: RETR 1
++OK 801 octets
+Return-Path: 
+Received: from deliverator.io.com by tor-srs1.netcom.ca 
+(8.7.5/SMI-4.1/Netcom)
+        id PAA17679; Tue, 27 Aug 1996 15:28:22 -0400 (EDT)
+From: gh&copy; nsbasic.com
+Received: from tor-srs1.netcom.ca (tor-srs1.netcom.ca [207.93.1.148]) by 
+deliverator.io.com (8.7.5/8.7.3) with ESMTP id OAA16463 for 
+; Tue, 27 Aug 1996 14:24:42 -0500 (CDT)
+Received: from pentagon.io.com by tor-srs1.netcom.ca (8.7.5/SMI-4.1/Netcom)
+        id PAA16699; Tue, 27 Aug 1996 15:23:18 -0400 (EDT)
+Date: Tue, 27 Aug 1996 15:23:18 -0400 (EDT)
+Message-Id: <199608271923.PAA16699&copy; tor-srs1.netcom.ca>
+
+This is line 1 of my message
+and line 2.
+
+.
+U: QUIT
++OK Pop server at  signing off.
+Connection closed by foreign host.</pre>
+
+<p>See the sample TcpIpDemo.prj for an example.
+
+
+
+<hr>
+<a name="chap4"></a><h4>4. Compiling the source code</h4>
+
+<p>The source code for TcpIpLib is included in the download. It can be compiled using the Prc-Tools.
+
+<p>PRC-Tools is a complete compiler tool chain for building Palm OS applications in C or C++. The PRC-Tools package includes patched versions of the GNU packages GCC, binutils, GDB, and various post-linker tools. The Palm OS specific parts of PRC-Tools were originally written by D. Jeff Dionne, Kresten Krab Thourp, they are currently maintained by John Marshall, and many other people have made contributions over the years. It is free software. Visit the <A HREF="http://prc-tools.sourceforge.net/">PRC-Tools page</A> for the latest version of PRC-Tools and for installation instructions for the latest version. PalmSource also has a <A HREF="http://www.palmos.com/dev/tools/gcc/">PRC-Tools page</A>.
+
+<p>TcpIpLib is a shared library. To find out more about shared libraries and NS Basic, see <A HREF="TN05.htm">Tech Note 5</A>. 
+
+<p>If you modify TcpIpLib for your own use, be sure to change the name and Creator ID, so it doesn't interfere with the official copy of TcpIpLib that is being used by others.
+
+<p>If you have modfications you think should be part of the standard TcpIpLib release, please send them to <A HREF="mailto:beep&copy; nubz.org">Fokko van Duin</A>, who will then decide whether to include them.
+
+<hr>
+
+
+<a name="appA"></a><h4>Appendix A: List of common Port Numbers</h4>
+To get the commands supported by each post, consult the relevant RFC documentation. A complete list of RFC documents is at <A HREF="http://www.faqs.org/rfcs/">http://www.faqs.org/rfcs/</A>.
+<pre>
+
+tcpmux          1/tcp                           # TCP port multiplexer (RFC1078)
+echo            7/tcp
+echo            7/udp
+discard         9/tcp           sink null
+discard         9/udp           sink null
+systat          11/tcp          users
+daytime         13/tcp
+daytime         13/udp
+netstat         15/tcp
+qotd            17/tcp          quote
+chargen         19/tcp          ttytst source
+chargen         19/udp          ttytst source
+ftp             21/tcp
+telnet          23/tcp
+smtp            25/tcp          mail
+time            37/tcp          timserver
+time            37/udp          timserver
+rlp             39/udp          resource        # resource location
+nameserver      42/tcp          name            # IEN 116
+whois           43/tcp          nicname
+domain          53/tcp          nameserver      # name-domain server
+domain          53/udp          nameserver
+mtp             57/tcp                          # deprecated
+bootps          67/udp          bootp           # bootp server
+bootpc          68/udp                          # bootp client
+tftp            69/udp
+gopher          70/tcp
+rje             77/tcp          netrjs
+finger          79/tcp
+link            87/tcp          ttylink
+http            80/tcp
+supdup          95/tcp
+hostnames       101/tcp         hostname        # usually from sri-nic
+tsap            102/tcp                         # part of ISODE.
+pop2            109/tcp                         # old pop port
+pop             110/tcp         pop3 postoffice
+sunrpc          111/tcp
+sunrpc          111/udp
+ident           113/tcp         auth tap authentication
+sftp            115/tcp
+uucp-path       117/tcp
+nntp            119/tcp         read news untp   # USENET News Transfer Protocol
+ntp             123/udp         ntpd
+imap            143/tcp
+snmp            161/udp                         # network time protocol
+snmp-trap       162/udp
+smux            199/tcp
+ </pre>
+ 
+<hr>
+ 
+<a name="appB"></a><h4>Appendix B: Palm OS Net Error Messages</h4>
+Some of the function in the TcpIpLib will return a number. If it is negative, the call failed. The table below lists the meanings of the error numbers (as positive numbers).
+<TABLE>
+	<TR>
+		<TD>4609</TD> <TD>netErrAlreadyOpen</TD>
+	</TR>
+	<TR>
+		<TD>4610</TD> <TD>netErrNotOpen</TD>
+	</TR>
+	<TR>
+		<TD>4611</TD> <TD>netErrStillOpen</TD>
+	</TR>
+	<TR>
+		<TD>4612</TD> <TD>netErrParamErr</TD>
+	</TR>
+	<TR>
+		<TD>4613</TD> <TD>netErrNoMoreSockets</TD>
+	</TR>
+	<TR>
+		<TD>4614</TD> <TD>netErrOutOfResources</TD>
+	</TR>
+	<TR>
+		<TD>4615</TD> <TD>netErrOutOfMemory</TD>
+	</TR>
+	<TR>
+		<TD>4616</TD> <TD>netErrSocketNotOpen</TD>
+	</TR>
+	<TR>
+		<TD>4617</TD> <TD>netErrSocketBusy</TD>
+	</TR>
+	<TR>
+		<TD>4618</TD> <TD>netErrMessageTooBig</TD>
+	</TR>
+	<TR>
+		<TD>4619</TD> <TD>netErrSocketNotConnected </TD>
+	</TR>
+	<TR>
+		<TD>4620</TD> <TD>netErrNoInterfaces</TD>
+	</TR>
+	<TR>
+		<TD>4621</TD> <TD>netErrBufTooSmall</TD>
+	</TR>
+	<TR>
+		<TD>4622</TD> <TD>netErrUnimplemented</TD>
+	</TR>
+	<TR>
+		<TD>4623</TD> <TD>netErrPortInUse</TD>
+	</TR>
+	<TR>
+		<TD>4624</TD> <TD>netErrQuietTimeNotElapsed</TD>
+	</TR>
+	<TR>
+		<TD>4625</TD> <TD>netErrInternal</TD>
+	</TR>
+	<TR>
+		<TD>4626</TD> <TD>netErrTimeout</TD>
+	</TR>
+	<TR>
+		<TD>4627</TD> <TD>netErrSocketAlreadyConnected </TD>
+	</TR>
+	<TR>
+		<TD>4628</TD> <TD>netErrSocketClosedByRemote </TD>
+	</TR>
+	<TR>
+		<TD>4629</TD> <TD>netErrOutOfCmdBlocks</TD>
+	</TR>
+	<TR>
+		<TD>4630</TD> <TD>netErrWrongSocketType</TD>
+	</TR>
+	<TR>
+		<TD>4631</TD> <TD>netErrSocketNotListening</TD>
+	</TR>
+	<TR>
+		<TD>4632</TD> <TD>netErrUnknownSetting</TD>
+	</TR>
+	<TR>
+		<TD>4633</TD> <TD>netErrInvalidSettingSize</TD>
+	</TR>
+	<TR>
+		<TD>4634</TD> <TD>netErrPrefNotFound</TD>
+	</TR>
+	<TR>
+		<TD>4635</TD> <TD>netErrInvalidInterface</TD>
+	</TR>
+	<TR>
+		<TD>4636</TD> <TD>netErrInterfaceNotFound</TD>
+	</TR>
+	<TR>
+		<TD>4637</TD> <TD>netErrTooManyInterfaces</TD>
+	</TR>
+	<TR>
+		<TD>4638</TD> <TD>netErrBufWrongSize</TD>
+	</TR>
+	<TR>
+		<TD>4639</TD> <TD>netErrUserCancel</TD>
+	</TR>
+	<TR>
+		<TD>4640</TD> <TD>netErrBadScript</TD>
+	</TR>
+	<TR>
+		<TD>4641</TD> <TD>netErrNoSocket</TD>
+	</TR>
+	<TR>
+		<TD>4642</TD> <TD>netErrSocketRcvBufFull</TD>
+	</TR>
+	<TR>
+		<TD>4643</TD> <TD>netErrNoPendingConnect</TD>
+	</TR>
+	<TR>
+		<TD>4644</TD> <TD>netErrUnexpectedCmd</TD>
+	</TR>
+	<TR>
+		<TD>4645</TD> <TD>netErrNoTCB</TD>
+	</TR>
+	<TR>
+		<TD>4646</TD> <TD>netErrNilRemoteWindowSize</TD>
+	</TR>
+	<TR>
+		<TD>4647</TD> <TD>netErrNoTimerProc</TD>
+	</TR>
+	<TR>
+		<TD>4648</TD> <TD>netErrSocketInputShutdown</TD>
+	</TR>
+	<TR>
+		<TD>4649</TD> <TD>netErrCmdBlockNotCheckedOut</TD>
+	</TR>
+	<TR>
+		<TD>4650</TD> <TD>netErrCmdNotDone</TD>
+	</TR>
+	<TR>
+		<TD>4651</TD> <TD>netErrUnknownProtocol</TD>
+	</TR>
+	<TR>
+		<TD>4652</TD> <TD>netErrUnknownService</TD>
+	</TR>
+	<TR>
+		<TD>4653</TD> <TD>netErrUnreachableDest</TD>
+	</TR>
+	<TR>
+		<TD>4654</TD> <TD>netErrReadOnlySetting</TD>
+	</TR>
+	<TR>
+		<TD>4655</TD> <TD>netErrWouldBlock</TD>
+	</TR>
+	<TR>
+		<TD>4656</TD> <TD>netErrAlreadyInProgress</TD>
+	</TR>
+	<TR>
+		<TD>4657</TD> <TD>netErrPPPTimeout</TD>
+	</TR>
+	<TR>
+		<TD>4658</TD> <TD>netErrPPPBroughtDown</TD>
+	</TR>
+	<TR>
+		<TD>4659</TD> <TD>netErrAuthFailure</TD>
+	</TR>
+	<TR>
+		<TD>4660</TD> <TD>netErrPPPAddressRefused</TD>
+	</TR>
+	<TR>
+		<TD>4661</TD> <TD>netErrDNSNameTooLong</TD>
+	</TR>
+	<TR>
+		<TD>4662</TD> <TD>netErrDNSBadName</TD>
+	</TR>
+	<TR>
+		<TD>4663</TD> <TD>netErrDNSBadArgs</TD>
+	</TR>
+	<TR>
+		<TD>4664</TD> <TD>netErrDNSLabelTooLong</TD>
+	</TR>
+	<TR>
+		<TD>4665</TD> <TD>netErrDNSAllocationFailure</TD>
+	</TR>
+	<TR>
+		<TD>4666</TD> <TD>netErrDNSTimeout</TD>
+	</TR>
+	<TR>
+		<TD>4667</TD> <TD>netErrDNSUnreachable</TD>
+	</TR>
+	<TR>
+		<TD>4668</TD> <TD>netErrDNSFormat</TD>
+	</TR>
+	<TR>
+		<TD>4669</TD> <TD>netErrDNSServerFailure</TD>
+	</TR>
+	<TR>
+		<TD>4670</TD> <TD>netErrDNSNonexistantName</TD>
+	</TR>
+	<TR>
+		<TD>4671</TD> <TD>netErrDNSNIY</TD>
+	</TR>
+	<TR>
+		<TD>4672</TD> <TD>netErrDNSRefused</TD>
+	</TR>
+	<TR>
+		<TD>4673</TD> <TD>netErrDNSImpossible</TD>
+	</TR>
+	<TR>
+		<TD>4674</TD> <TD>netErrDNSNoRRS</TD>
+	</TR>
+	<TR>
+		<TD>4675</TD> <TD>netErrDNSAborted</TD>
+	</TR>
+	<TR>
+		<TD>4676</TD> <TD>netErrDNSBadProtocol</TD>
+	</TR>
+	<TR>
+		<TD>4677</TD> <TD>netErrDNSTruncated</TD>
+	</TR>
+	<TR>
+		<TD>4678</TD> <TD>netErrDNSNoRecursion</TD>
+	</TR>
+	<TR>
+		<TD>4679</TD> <TD>netErrDNSIrrelevant</TD>
+	</TR>
+	<TR>
+		<TD>4680</TD> <TD>netErrDNSNotInLocalCache</TD>
+	</TR>
+	<TR>
+		<TD>4681</TD> <TD>netErrDNSNoPort</TD>
+	</TR>
+	<TR>
+		<TD>4682</TD> <TD>netErrIPCantFragment</TD>
+	</TR>
+	<TR>
+		<TD>4683</TD> <TD>netErrIPNoRoute</TD>
+	</TR>
+	<TR>
+		<TD>4684</TD> <TD>netErrIPNoSrc</TD>
+	</TR>
+	<TR>
+		<TD>4685</TD> <TD>netErrIPNoDst</TD>
+	</TR>
+	<TR>
+		<TD>4686</TD> <TD>netErrIPktOverflow</TD>
+	</TR>
+	<TR>
+		<TD>4687</TD> <TD>netErrTooManyTCPConnections</TD>
+	</TR>
+	<TR>
+		<TD>4688</TD> <TD>netErrNoDNSServers</TD>
+	</TR>
+	<TR>
+		<TD>4689</TD> <TD>netErrInterfaceDown</TD>
+	</TR>
+	<TR>
+		<TD>4690</TD> <TD>netErrNoChannel</TD>
+	</TR>
+	<TR>
+		<TD>4691</TD> <TD>netErrDieState</TD>
+	</TR>
+	<TR>
+		<TD>4692</TD> <TD>netErrReturnedInMail</TD>
+	</TR>
+	<TR>
+		<TD>4693</TD> <TD>netErrReturnedNoTransfer</TD>
+	</TR>
+	<TR>
+		<TD>4694</TD> <TD>netErrReturnedIllegal</TD>
+	</TR>
+	<TR>
+		<TD>4695</TD> <TD>netErrReturnedCongest</TD>
+	</TR>
+	<TR>
+		<TD>4696</TD> <TD>netErrReturnedError</TD>
+	</TR>
+	<TR>
+		<TD>4697</TD> <TD>netErrReturnedBusy</TD>
+	</TR>
+	<TR>
+		<TD>4698</TD> <TD>netErrGMANState</TD>
+	</TR>
+	<TR>
+		<TD>4699</TD> <TD>netErrQuitOnTxFail</TD>
+	</TR>
+	<TR>
+		<TD>4700</TD> <TD>netErrFlexListFull</TD>
+	</TR>
+	<TR>
+		<TD>4701</TD> <TD>netErrSenderMAN</TD>
+	</TR>
+	<TR>
+		<TD>4702</TD> <TD>netErrIllegalType</TD>
+	</TR>
+	<TR>
+		<TD>4703</TD> <TD>netErrIllegalState</TD>
+	</TR>
+	<TR>
+		<TD>4704</TD> <TD>netErrIllegalFlags</TD>
+	</TR>
+	<TR>
+		<TD>4705</TD> <TD>netErrIllegalSendlist</TD>
+	</TR>
+	<TR>
+		<TD>4706</TD> <TD>netErrIllegalMPAKLength</TD>
+	</TR>
+	<TR>
+		<TD>4707</TD> <TD>netErrIllegalAddressee</TD>
+	</TR>
+	<TR>
+		<TD>4708</TD> <TD>netErrIllegalPacketClass</TD>
+	</TR>
+	<TR>
+		<TD>4709</TD> <TD>netErrBufferLength</TD>
+	</TR>
+	<TR>
+		<TD>4710</TD> <TD>netErrNiCdLowBattery</TD>
+	</TR>
+	<TR>
+		<TD>4711</TD> <TD>netErrRFinterfaceFatal</TD>
+	</TR>
+	<TR>
+		<TD>4712</TD> <TD>netErrIllegalLogout</TD>
+	</TR>
+	<TR>
+		<TD>4713</TD> <TD>netErrAAARadioLoad</TD>
+	</TR>
+	<TR>
+		<TD>4714</TD> <TD>netErrAntennaDown</TD>
+	</TR>
+	<TR>
+		<TD>4715</TD> <TD>netErrNiCdCharging</TD>
+	</TR>
+	<TR>
+		<TD>4716</TD> <TD>netErrAntennaWentDown</TD>
+	</TR>
+	<TR>
+		<TD>4717</TD> <TD>netErrNotActivated</TD>
+	</TR>
+	<TR>
+		<TD>4718</TD> <TD>netErrRadioTemp</TD>
+	</TR>
+	<TR>
+		<TD>4719</TD> <TD>netErrNiCdChargeError</TD>
+	</TR>
+	<TR>
+		<TD>4720</TD> <TD>netErrNiCdSag</TD>
+	</TR>
+	<TR>
+		<TD>4721</TD> <TD>netErrNiCdChargeSuspend</TD>
+	</TR>
+	<TR>
+		<TD>4722</TD> <TD>not used</TD>
+	</TR>
+	<TR>
+		<TD>4723</TD> <TD>netErrConfigNotFound</TD>
+	</TR>
+	<TR>
+		<TD>4724</TD> <TD>netErrConfigCantDelete</TD>
+	</TR>
+	<TR>
+		<TD>4725</TD> <TD>netErrConfigTooMany</TD>
+	</TR>
+	<TR>
+		<TD>4726</TD> <TD>netErrConfigBadName</TD>
+	</TR>
+	<TR>
+		<TD>4727</TD> <TD>netErrConfigNotAlias</TD>
+	</TR>
+	<TR>
+		<TD>4728</TD> <TD>netErrConfigCantPointToAlias</TD>
+	</TR>
+	<TR>
+		<TD>4729</TD> <TD>netErrConfigEmpty</TD>
+	</TR>
+	<TR>
+		<TD>4730</TD> <TD>netErrAlreadyOpenWithOtherConfig</TD>
+	</TR>
+	<TR>
+		<TD>4731</TD> <TD>netErrConfigAliasErr</TD>
+	</TR>
+	<TR>
+		<TD>4732</TD> <TD>netErrNoMultiPktAddr</TD>
+	</TR>
+	<TR>
+		<TD>4733</TD> <TD>netErrOutOfPackets</TD>
+	</TR>
+	<TR>
+		<TD>4734</TD> <TD>netErrMultiPktAddrReset</TD>
+	</TR>
+	<TR>
+		<TD>4735</TD> <TD>netErrStaleMultiPktAddr</TD>
+	</TR>
+	<TR>
+		<TD>4736</TD> <TD>netErrScptPluginMissing</TD>
+	</TR>
+	<TR>
+		<TD>4737</TD> <TD>netErrScptPluginLaunchFail</TD>
+	</TR>
+	<TR>
+		<TD>4738</TD> <TD>netErrScptPluginCmdFail</TD>
+	</TR>
+	<TR>
+		<TD>4739</TD> <TD>netErrScptPluginInvalidCmd</TD>
+	</TR>
+	<TR>
+		<TD>4740</TD> <TD>netErrTelMissingComponent</TD>
+	</TR>
+	<TR>
+		<TD>4741</TD> <TD>netErrTelErrorNotHandled</TD>
+	</TR>
+</TABLE>
+
+</a></body>
+</html>

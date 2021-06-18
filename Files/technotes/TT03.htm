@@ -1,0 +1,126 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tutorial 03: Adding Two Numbers</TITLE>
+<link rel="stylesheet" href="/style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+		
+    <TD WIDTH="17%" VALIGN="TOP"> 
+      <P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+    	</TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tutorial 03: Adding Two Numbers</h2>
+	  <h3>November 29, 2006</h3>
+      		  
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.
+		</h5>
+	  <p><em>Contributed by <a href="http://www.dynamiteinc.com" target="_blank">Dynamite Inc</a></em></p>	
+		
+	</TD>
+	</TR>
+</TABLE>
+<HR>
+
+<h3>Contents:</h3>
+<ol>
+    <li><a href="#behind">Getting Behind the Scenes</a></li>
+    <li><a href="#code">Creating the Code</a></li>
+    <li><a href="#user">Adding Together User Input</a></li>
+	<li><a href="#crunching">"Crunching the Numbers"</a></li>
+	<li><a href="#floats">Handling Decimals</a></li>
+</ol>
+
+
+<a name="behind"></a><h3>1. Getting Behind the Scenes</h3>
+
+<p>To demonstrate simply adding two numbers toegether, we will
+first go to the "After Code" of the project's only form. Right-click
+and select "After Code"</p>
+
+<img src="images/TT03.01.gif" width="339" height="308">
+
+
+<a name="code"></a><h3>2. Creating the Code</h3>
+
+<p>Now we will declare three variable, all as <em>integers</em>, which whole numbers</p>
+
+<ol>
+	<li><em>firstnumber</em> as an Integer, which of course, will contain the value of half our math equation</li>
+	<li><em>secondnumber</em> as an Integer as well</li>
+	<li><em>total</em> as an Integer, which will contain the answer</li>
+</ol>
+
+<p>Next we set <em>firstnumber</em> to equal 10 and <em>secondnumber</em> to 7</p>
+
+<p>To set <em>total</em> as the sum of both of these is quite simple; just include <b>+</b> between
+the two variable names that are to added together. You're done!</p>
+
+<p>To test and make sure it worked, we will display a message box with a string representation of
+the Integer <em>total</em> by using the <b>Str()</b> function.</p>
+
+<img src="images/TT03.02.gif" width="457" height="378">
+
+<br><a name="user"></a><h3>3. Adding Together User Input</h3>
+
+<p>Now we will work on adding together two values that is inputted by the
+user in two different text fields. In our example, it will be <em>firstnumberfield</em> and <em>secondnumberfield</em></p>
+
+<p>The first step here is to create three text fields. Name each accordingly, and also
+change the attribute of <b>Numeric</b> to "True" for each. This will ensure that only
+numbers are entered.</p>
+
+<p>The third and last field, <em>totalfield</em>, we will set <b>Editable</b> to "False" to
+keep the user from changing the answer, and also set <b>Underline</b> to "False" so that it
+does not confuse them to think they can change it.</p>
+
+<p>Lastly, we will create a button and change the label to "Add!"</p>
+
+<img src="images/TT03.03.gif" width="630" height="552">
+
+
+<a name="crunching"></a><h3>4. "Crunching the Numbers"</h3>
+
+<p>The next step is to actually perform the calculation when the user taps on the
+"Add!" button. Double-click on the button to bring up the code window for that action.</p>
+
+<p>The only variable we need to declare here will be the answer, as the numbers used
+will be directly read from the text field inputs.</p>
+
+<p>In order to deal with the inputs properly, they need to be evaluated as numbers and not
+as strings, which is how the value of text fields are stored in the object. Using the
+<b>val()</b> function, we can convert the string inputs for each of the fields. We will
+reference the value of the fields using the ".text" attribute of the text field object.</p>
+
+<p>Lastly, we assign ".text" attribute of the <em>totalfield</em> object as a string
+representation of our <em>theanswer</em> integer</p>
+
+<img src="images/TT03.04.gif" width="476" height="396">
+
+<br><a name="floats"></a><h3>5. Handling Decimals</h3>
+
+<p>You may soon find out that your simple calculator cannot correctly add
+any numbers with a decimal place.</p>
+
+<p>Luckily, the solution is very simple.</p>
+
+<p><b>Integer</b> variables can only handle whole numbers. If any decimals are
+found, they are simply dropped. 9.999 turns into just 9.</p>
+
+<p>To allow for decimals, you must use the variable type of <b>Float</b>.</p>
+
+<p>The functions <b>val()</b> and <b>str()</b> can correctly handle integers or
+floats, so nothing needs to change in your code expect the declration ("Dim") statement.</p>
+
+<img src="images/TT03.05.gif" width="482" height="414">
+
+
+</BODY>
+</HTML>
+  
+  
+  

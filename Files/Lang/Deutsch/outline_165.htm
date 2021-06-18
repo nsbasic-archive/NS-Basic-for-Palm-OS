@@ -1,0 +1,407 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SerialSet </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>SerialSet                                                                                                  Funktion</span></h4>
+
+<p class=ManualBody>SERIALSET(<i>characteristic</i> as string, <i>value</i>
+as integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Setzt <i>Charakteristika</i>
+der Verbindung im den seriellen Ein-/Ausgang zu beschreiben. Dies muss nach
+einem SerialOpen geschehen. Der ganzzahlige Fehlercode wird bei SerialOpen
+näher beschrieben.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Standard</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Autobaud</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0=aus, 1=an</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Buffersize</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Maximale Zeichenzahl für SerialReceive</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>512</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Baudrate</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Übertragungsrate pro Sekunde in Bits (z.B. 28800)</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>SerialOpen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>BitsPerChar</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>5,6,7,oder 8</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Cmdtimeout</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Zeitüberlauf in Mikrosekunden</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>500000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ctsauto</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1=an, 2=aus</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ctstimeout</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Anzahl Sekunden die gewartet wird, bevor ein Fehler
+  erzeugt wird</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>5</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Dcdwait </p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Sekunden, die auf eine Verbindungsherstellung gewartet
+  werden</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>70</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Dialtone</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0=Impulswahl, 1=Tonwahl</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>DtrAssert</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0=normal, 1=liegt fest</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Dtwait</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Sekunden, die auf einen Wählton gewartet werden</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>4</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Handshake</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Modem Handshake 0=aus, 1=an</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>IR</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0= kein IR, 1=InfraRot empfangen, 2=InfraRot senden</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Parity</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1=ungerade, 2=gerade, 3=keine Parität</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>3</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>PortID</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Setze die serielle PortID auf einen neuen Wert. Kann
+  benutzt werden, um mehr als eine serielle Verbindung zu nutzen (sofern die
+  Hardware dies unterstützt). Siehe auch SysInfo(3)</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Rtsauto</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1=an, 2=aus</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Stopbits</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Anzahl Stoppbits ( 1 oder 2)</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Volume</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lautstärke Level von 0-3, wobei 0=aus, und 3=maximum
+  bedeutet</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=109 valign=top style='width:81.9pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>XonXoff*</p>
+  </td>
+  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1=an, 2=aus</p>
+  </td>
+  <td width=73 valign=top style='width:54.9pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>*einige Palm OS Anleitungen geben an, dies sei nicht
+implementiert.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>err = SerialOpen(32769,9600)             ’Einstellung für IR-Kommunikation</p>
+
+<p class=Code>err = SerialSet(&quot;IR&quot;,1)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

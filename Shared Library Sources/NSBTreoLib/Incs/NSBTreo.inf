@@ -1,0 +1,6 @@
+[General]
+ExtensionName=NSB-Symbol-Scan-Manager
+PrcName=NSBTreo.prc
+Version=1.0
+Manufacturer=NSBasic.com
+[GlobalMethods]

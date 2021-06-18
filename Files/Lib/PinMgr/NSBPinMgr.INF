@@ -1,0 +1,37 @@
+[General]
+
+ExtensionName=NSBPinMgr
+PrcName=NSBPinMgr.prc
+Version=1.0
+Manufacturer=GlowkaWare
+InfVers=2.0
+=HelpStart=
+""
+"NSBPinMgr Shared Library"
+""
+"This library provides a wrapper for the PIN Manager (Pen Input Manager)"
+"for manipulating the Dynamic Input/virtual graffiti Area (DIA)."
+""
+"Written by Ron Glowka, June 2004"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as Double"
+CompileInfo= 2, func, 0, "CompileInfo() as String"
+PINMgrAPIVersion= 3, func, 0, "PINMgrAPIVersion() as String"
+PINMgrAPIMajorMinor= 4, sub, 2, "PINMgrAPIMajorMinor(out major as Integer, out minor as Integer)"
+RegisterNotifyEvents= 5, sub, 3, "RegisterNotifyEvents(in displayResized as Integer, in DIAOpened as Integer, in DIAClosed as Integer)"
+WinGetDisplayExtent= 6, sub, 2, "WinGetDisplayExtent(out x as Integer, out y as Integer)"
+WinSetDisplayExtent= 7, sub, 1, "WinSetDisplayExtent(in size as Integer)"
+FrmGetDIAPolicy= 8, func, 0, "FrmGetDIAPolicy() as Integer"
+FrmSetDIAPolicy= 9, sub, 1, "FrmSetDIAPolicy(in value as Integer)"
+PINGetDIAState= 10, func, 0, "PINGetDIAState() as Integer"
+PINSetDIAState= 11, sub, 1, "PINSetDIAState(in value as Integer)"
+PINGetInputTriggerState= 12, func, 0, "PINGetInputTriggerState() as Integer"
+PINSetInputTriggerState= 13, sub, 1, "PINSetInputTriggerState(in value as Integer)"
+SysGetOrientation= 14, func, 0, "SysGetOrientation() as Integer"
+SysSetOrientation= 15, func, 1, "SysSetOrientation(in value as Integer) as Integer"
+SysGetOrientationTriggerState= 16, func, 0, "SysGetOrientationTriggerState() as Integer"
+SysSetOrientationTriggerState= 17, func, 1, "SysSetOrientationTriggerState(in value as Integer) as Integer"

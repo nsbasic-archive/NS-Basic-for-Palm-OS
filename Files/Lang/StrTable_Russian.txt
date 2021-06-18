@@ -1,0 +1,586 @@
+0001	Translated by Dmitri Eremeev <info@scopesoftware.net>
+1000	&Файл
+1001	&Новый проект
+1002	&Открыть проект...
+1003	Со&хранить проект
+1004	С&охранить проект как...
+1005	&Сохранить
+1006	Сохранить &как...
+1007	Сохранить &все
+1008	&Установка принтера...
+1009	&Печать...
+1010	&Выход
+1011	&Редактировать
+1012	&Отменить
+1013	Вперед
+1014	&Вырезать
+1015	&Копировать
+1016	&Вставить
+1017	&Удалить
+1018	Выделить &все
+1019	&Найти...
+1020	Найти &далее
+1021	&Заменить...
+1022	&К строке...
+1023	&Просмотр
+1024	&Панель инструментов
+1025	&Статусная панель
+1026	&Обновить
+1027	&Проект
+1028	Добавить &форму
+1029	Добавить &меню
+1030	Добавить &рисунок
+1031	&Процедура запуска
+1032	&Процедура завершения
+1033	&Помощь
+1034	&Сделать
+1035	&Синхронизировать 
+1036	Синхронизировать библиотеки &NS Basic
+1037	Синхронизировать &общие библиотеки
+1038	&Свойства...
+1039	&Установить целевой проект
+1040	&Формат
+1041	&Размещение
+1042	&Слева
+1043	&Центровать
+1044	&Справа
+1045	&Верх
+1046	&Средний
+1047	&Нижний
+1048	По &сетке
+1049	&Сделать размер
+1050	&Ширина
+1051	&Высота
+1052	&Оба
+1053	&Размер по сетке
+1054	&Горизонтальное
+1055	&Equal
+1056	&Увеличить
+1057	&Уменьшить
+1058	&Убрать
+1059	&Вертикальное размещение
+1064	&Центровать по форме
+1065	&Горизонтально
+1066	&Вертикально
+1067	&Заказ
+1068	Двигать &вперед
+1069	&Forward
+1070	Двигать &назад
+1071	&Send To Back
+1072	&Инструменты
+1073	&Редактор меню
+1074	&Опции...
+1075	&Окно
+1076	&Набор инструментов
+1077	&Окно свойств
+1078	&Каскадом
+1079	Размещать &горизонтально
+1080	Размещать &вертикально
+1081	&Окна...
+1082	&Помощь
+1083	&Зарегистрировать...
+1084	&Помощь
+1085	&Вебсайт NS Basic
+1086	&Про NS Basic для Palm OS...
+1087	Новый
+1088	Открыть
+1089	Сохранить
+1090	Печать
+1091	Отменить
+1092	Вперед
+1093	Вырезать
+1094	Копировать
+1095	Вставить
+1096	Удалить
+1097	Искать
+1098	Добавить форму
+1099	Добавить рисунок
+1100	Добавить модуль
+1101	&Компилировать 
+1102	Свойства
+1103	Редактор меню
+1104	Про Project1
+1105	&Системная информация...
+1106	OK
+1107	Внимание! ...
+1108	Версия
+1109	Заголовок приложения
+1110	Описание приложения
+1111	Назад
+1112	Переслать
+1113	Стоп
+1114	Обновить
+1115	Домой
+1116	Искать
+1117	&Адрес:
+1118	&Диспетчер проекта
+1119	Получить &идентификатор разработчика на PalmOS.com
+1120	NS Basic для Palm
+1121	Демонстрационная версия
+1122	Простейший способ программирования для Palm OS!
+1123	Купить
+1124	Информация о демоверсии
+1125	Искать
+1126	&Что искать:
+1127	Заменить на:
+1128	Поиск
+1129	Текущий &Модуль
+1130	&Текущий проект
+1131	Выбранный &текст
+1132	Искать &только слово
+1133	С учетом &регистра
+1134	Искать &дальше
+1135	Отмена
+1136	&Заменить
+1137	Заменить &все
+1138	&Установить
+1139	&Отмена
+1141	Новый
+1142	Текущий
+1143	Недавний
+1144	Не показывать это окно в &будущем
+1145	&Открыть
+1146	&Отмена
+1147	Имя файла:
+1148	Тип файла:
+1149	Новый проект
+1150	Опции
+1151	&Общий путь
+1152	&Путь к эмулятору POSE
+1153	&Найти
+1154	&Открывать эмулятор POSE при запуске
+1155	Когда NS Basic запускается
+1156	Сообщение &проекту
+1157	Создать &начальный проект
+1158	Редактор &свойств
+1159	Plain Text Font
+1160	Нарисовать &Plain Text объекты
+1161	&Шрифт...
+1162	&По сетке
+1163	&Размер сетки:
+1164	&Сохранить перед компиляцией
+1165	&Компилировать в Fat App
+1166	Установить &высокое разрешение для HandEra
+1167	Перед компиляцией...
+1168	Отправить на POS&E
+1169	Запустить &незамедлительно
+1170	&Синхронизировать на устройство
+1171	Ничего &не делать
+1172	&Искать
+1173	Пример
+1174	Диспетчер проекта
+1175	Свойства
+1176	Регистрация
+1177	Для получения демоверсии и документации обращайтесь на наш вебсайт, www.nsbasic.com, и следуйте инструкциям по регистрации.
+1178	&Серийный номер
+1179	Незарегистрированная демо-копия
+1180	Когда вы получите серийный номер, введите здесь. Если вы нелегально владеете копией, вы видите текст "Unregistered Demo". Посмотрите Лицензионное Соглашение для изучения структуры момента.
+1202	Кнопка
+1203	Список
+1204	Метка
+1205	Поле
+1206	КнопкаНажатия
+1207	Галочка
+1208	Выпадающий триггер
+1209	Триггер выбора
+1210	Рисунок
+1211	Гаджет
+1212	Кнопка повтора
+1213	Скроллинг-панель
+1214	Graffiti индикатор
+1215	&Запуск
+1216	Опции &компилирования...                            
+1217	Загрузить Runtime
+1218	&Настройки...
+1219	Запустить Palm OS &эмулятор
+1220	&Запустить 
+1221	Вернуться
+1222	Загрузить общие библиотеки
+1223	Загрузить 
+1224	Копировать &проект
+1301	Диспетчер проекта
+1302	Свойства
+1303	Найти
+1304	Найти/Заменить
+1305	Открыть страницу эмулятора Palm OS на PalmOS.com
+1400	Версия
+1401	NS Basic/Palm
+1403	Внимание: эта компьютерная программа и документация на нее защищены законами о авторском праве. Неавторизированное воспроизведение, использование и распространение этой программы, или любые незаконные действия над ней могут привести к негативным последствиям, определенным законодательством. Пожалуйста, смотрите Лицензионное Соглашение (License Agreement) в прилагаемом к дистрибутиву Руководстве Пользователя.
+1404	OK
+1405	&Информация о системе...
+1406	\ / : * ? " < > |
+1407	Имя файла не может содержать следующие сиволы: \ / : * ? " < > |
+1408	Установлены неправильные свойста
+1409	\a/a[a]a|a+a=a-a(a)a*a&a^a%a$a#a@a!a:a;a'a"a{a}a<a>a,a.a?a a`a~
+1410	Не парвильное имя объекта: 
+1411	Один или более шрифтов испорчены.  Пожалуйста переустановите NS Basic/Palm.
+1412	Без форм проект компилировать нет смысла
+1413	Пожалуйста, найдите Emulator.exe
+1414	&Открывать POSE при запуске?
+1440	Главное
+1441	Главные опции программы
+1442	Редактор
+1443	Опции редактора окон
+1444	Экран Palm
+1445	Опции экрана Palm
+1446	Компилировать/Загрузить
+1447	Опции компилирования/загрузки
+1450	NSBasicText9
+1451	NSBasicText9B
+1452	NSBasicText12
+1453	NSBasicSymbol9
+1454	NSBasicSymbol11
+1455	NSBasicSymbol7
+1456	NSBasicLED
+1457	NSBasicText12B
+1500	Просмотр О&бъекта
+1501	Просмотр К&ода
+1502	Прсомотр &процедуры запуска
+1503	Просмотр &процедуры завершения
+1504	Просмотр &предварительной процедуры
+1505	Просмотр &пост-процедуры
+1506	Просмотр &процедуры события
+1507	Просмотр &процедуры помощи
+1508	&Добавить
+1509	&Форма
+1510	&Меню
+1511	&Картинка
+1512	&Новый модуль
+1513	&Имеющийся модуль...
+1514	Добавить панель &инструментов
+1515	Добавить D&ropdown
+1516	Добавить &новый модуль
+1517	Добавить &имеющийся модуль...
+1518	&Закрыть проект
+1519	&Удалить рисунок
+1520	&Удалить модуль
+1600	Редактор меню
+1601	Двигать &вверх
+1602	Двигать в&низ
+1603	Вставить &Панель инструментов
+1604	Добавить &Панель инструментов
+1605	Вставить выпадающий список
+1606	Добавить выпадающий список
+1607	&Удалить
+1608	Двигать вверх
+1609	Двигать вниз
+1610	М&еню:
+1611	&Надпись:
+1612	&Имя роцедуры:
+1613	&Ярлык:
+1614	&Размещение меню
+1618	&Следующий
+1619	&OK
+1620	Элемент меню должен иметь надпись
+1621	Редактировать имя меню
+1622	Добавить новое меню
+1623	Ввести имя меню
+1624	Добавить новое меню
+1625	Ввести имя панели меню
+1626	Удалить меню
+1627	Вы действительно хотите удалить меню?
+1628	Ввеси имя выпадающего списка
+1629	Добавить новую панель меню
+1630	Добавить новый выпадающий список
+2000	(Ничего)
+2001	(Иконка)
+2002	Проект не содержит рисунка с таким ID
+2050	Проект с таким именем уже открыт
+2051	Найден проект с именем текущег опроекта. Переписать?
+2052	Идентификатор разработчика (Creator ID) должен содержать только заглавные буквы
+2100	 уже есть на дефолтной форме проекта.  Вы хотите изменить дефолтную форму?
+2150	Проект уже имеет форму названную: 
+2151	Описание формы и расширение уже занял NS Basic/Palm
+2152	NS Basic/Palm пока не поддерживает модальные формы
+2200	Файл>Загрузить рисунок>Файлы русунков (*.gif;*.jpg;*.bmp;*.ico;*.emf;*.wmf)|*.gif;*.jpg;*.bmp;*.ico;*.emf;*.wmf|Все файлы|*.*>bmp
+2201	Файл>Загрузить ресурс>Файлы ресурсов (*.prc;*.pdb)|*.prc;*.pdb|Все файлы|*.*>prc
+2202	Добавить рисунок
+2250	Проект уже имеет рисунок, названный: 
+2300	Файл>Загрузить модуль>Модули (*.cod)|*.cod>cod
+2400	0 - Стандартный>1 - Стандартный жирный>2 - Крупный>3 - Symbol>4 - Symbol 11>5 - Symbol 7>6 - LED>7 - Крупный жирный
+2450	Проект уже имеет объект, названный: 
+2550	Проект не содержит рисунка с таким идентификатором
+2551	Рисунок с таким идентификатором уже используется
+2700	Another object on this form with the same Group ID is already selected.  Are you sure you want this object to have the same Group ID?
+2701	Another object on this form with the same Group ID is already selected.  Are you sure you want this object to be selected?
+2850	Max Characters must be greater than 0 and less than 32767.
+2851	A field cannot be sized dynamically with a scrollbar, do you want to remove the scrollbar?
+2852	A field must have multiple lines to use a scrollbar, do you want to remove the scrollbar?
+2950	Число видимых объектов должно быть больше нуля
+3050	Минимальное значение не должно превышать максимальное
+3051	Значение должно быть между минимальным и максимальным
+3100	List Resource Type is not currently available in NS Basic/Palm
+3101	Удалить проект
+3102	Удалить форму
+3103	Ошибка...
+3104	Missing SUB or FUNCTION header
+3105	The only statement that can follow a SELECT CASE is the CASE statement.
+3106	Expecting a numeric variable or numeric constant.
+3107	Expecting a variable of type STRING or a string literal surrounded by quote marks. Term and type:
+3108	Missing required levels of subscripting
+3109	Found a term longer than limit of 
+3110	Subscripts must be numeric constants or variables.
+3111	Name used as a subscript is not defined elsewhere.
+3112	Expecting a valid LABEL name.
+3113	Expecting a valid subroutine or function name.
+3114	Module has exceeded size limit.
+3115	Syntax error.
+3116	Compiled code exceeds internal buffer size.
+3117	SUB or FUNCTION not defined: 
+3118	Label not defined:
+3119	Missing END SUB or END FUNCTION statement.
+3120	Right parenthesis found without open left parenthesis.
+3121	Left parenthesis missing after function name.
+3122	Missing right parenthesis at end of function call.
+3123	 needs: 
+3124	 found: 
+3125	Missing left parenthesis at end of function call.
+3126	Missing right parenthesis at end of function call.
+3127	Invalid table object name
+3128	Cannot locate an object with name 
+3129	Invalid Object Name
+3130	Database name cannot be same as project name.
+3131	Expecting a database name variable
+3132	Invalid TYPE name
+3133	TYPE structures cannot be used as database keys.
+3134	Argument is not a valid variable name or literal.
+3135	Incorrect type of variable used:
+3136	Argument is not a valid variable name or literal.
+3137	Incorrect type of variable used:
+3138	Incorrect type of variable used:
+3139	Argument is not a valid variable name or literal.
+3140	Incorrect type of variable used:
+3141	Incorrect type of variable used:
+3142	Incorrect type of variable used:
+3143	Argument is not a valid variable name or literal.
+3144	Incorrect type of variable used:
+3145	Incorrect type of variable used:
+3146	Incorrect type of variable used:
+3147	Incorrect type of variable used:
+3148	Incorrect number of function arguments
+3149	Object does not support that method or property: 
+3150	Must assign function result to a variable name.
+3151	An IF or SELECT CASE statement is not matched with ENDIF or END SELECT.
+3152	Missing right parenthesis: 
+3153	Unidentified command:
+3154	Can't use a constant on the left side of =.
+3155	Can only assign a CTypeDef to another CTypeDef
+3156	Can only assign CtypeDef variables to the same kind of CDefTypeVariable.
+3157	Too many levels of subscripting
+3158	Too many levels of subscripting
+3159	Too many levels of subscripting
+3160	Too many levels of subscripting
+3161	Too many levels of subscripting
+3162	Right and left side of = must be the same type.
+3163	ENDIF found with no IF
+3164	ENDWHILE found with no WHILE
+3165	EXIT SUB not allowed in a function
+3166	EXIT FUNCTION not allowed in a subroutine
+3167	EXIT SUB not allowed in a function
+3168	IF does not have matching ENDIF
+3169	EXIT FUNCTION not allowed in a subroutine
+3170	IF does not have matching ENDIF
+3171	Variable already defined
+3172	TYPE name already defined as a variable
+3173	TYPE name already defined.
+3174	Element of TYPE structure is duplicated
+3175	TYPE definitions cannot contain other TYPE variables.
+3176	Duplicate library object name: 
+3177	Unable to open library .INF file
+3178	Variable already defined
+3179	Too many levels of subscripting
+3180	Can only use DIM statement modifiers on numeric variables.
+3181	Function name same as subroutine or function name.
+3182	DEFINE not needed and may conflict with function definition.
+3183	Function type must be defined with AS clause
+3184	Previous SUB or FUNCTION not terminated by EXIT statement.
+3185	Function name same as paragraph or function name.
+3186	Wrong number of arguments
+3187	Function type must be defined with AS clause
+3188	Function name defined in two places
+3189	Previous SUB or FUNCTION not terminated by EXIT statement
+3190	Subroutine name same as paragraph or function name.
+3191	Subroutine name defined in two places.
+3192	Wrong number of arguments
+3193	Can't use CALL on same line as IF
+3194	Subroutine name same as paragraph name or function name.
+3195	Wrong number of arguments.
+3196	Extra information at end of statement.
+3197	The name given is not a valid menu name.
+3198	Statement too complex.
+3199	Есть NEXT но нет  FOR.
+3200	Есть CASE но нет SELECT CASE.
+3201	CASE with value cannot follow CASE ELSE
+3202	CASE not followed by valid dataname.
+3203	Statement too complex
+3204	END SELECT without SELECT CASE.
+3205	SELECT CASE has no CASE statements
+3206	Can't stack IF statement on the same line.
+3207	IF Statement too complex.
+3208	Statement too complex.
+3209	Duplicate label.
+3210	NEXTFORM name must be in quotes or a string variable.
+3211	Must use name of a form in quotes.
+3212	NEXTFORM references unknown form: 
+3213	Can't redraw this kind of object.
+3214	Table subscript must be numeric
+3215	Transfer tables must be same data type.
+3216	The label cannot be set before the object is displayed.
+3217	Can't hide the Graffiti Shift Indicator.
+3218	The text value cannot be set before the object is displayed.
+3219	Object does not support this action.
+3220	Too many levels of CTypeDef subscripting.
+3221	Module too large.
+3222	Unable to open .INF file.
+3223	Invalid method declaration in .INF file: 
+3224	Not enough arithmetic work variables.
+3225	Not enough string work variables.
+3226	Not enough logical work variables.
+3227	Compile will continue, but is not successful.
+3228	Bad IF logic in the internals of the program.
+3229	Internal compiler error - found function code:
+3230	Compiling...
+3231	Saving...
+3232	Downloading... Stopping current app...
+3233	Downloading...
+3234	Starting app...
+3235	Compile Error
+3236	Form has more than one Pushbutton assigned the same group ID.  Only one member of a Group ID can have Selected status.
+3237	Invalid Form Version: 
+3238	Invalid paste: Form Version
+3239	Invalid menu version:
+3240	Invalid paste: Menu Type
+3241	Invalid paste: Menu Version
+3242	Invalid paste: Menubar Type
+3243	Invaid paste: Menubar version
+3244	Invalid Menubar version: 
+3245	Invaid paste: Dropdown Type
+3246	Invalid paste: Dropdown Version
+3247	Invalid Dropdown Version: 
+3248	Invalid Object Type: 
+3249	Invalid Object Version: 
+3250	Invalid paste: Object Type
+3251	Invalid paste: Object Version
+3252	Module not found: 
+3253	Project name cannot contain double byte characters.
+3254	Error: cannot recognise form object: 
+3255	Invalid Project version: 
+3256	Unable to save project.
+3257	Unable to find module: 
+3258	Illegal Object Type: 
+3259	Error loading project: 
+3260	Bitmap not found: 
+3261	Do you want to hide the Titlebar?
+3262	Enter new form title
+3263	Congratulations! You now have a fully licensed version.
+3264	Reverting to Unregistered Demo. Please reenter your serial number.
+3265	This is a demo copy. It cannot be registered. Please contact NS BASIC Corporation for a registered version.
+3266	Do you want to remove this item?
+3267	Invalid Bitmap Version: 
+3268	Invalid Paste: Bitmap Type
+3269	Invalid Paste: Bitmap Version
+3270	Invalid Button Version: 
+3271	Invalid paste: Button Type
+3272	Invalid paste: Button Version
+3273	Invalid CheckBox version: 
+3274	Invalid paste: Checkbox Type
+3275	Invalid paste: Checkbox Version
+3276	Invalid PushButton version: 
+3277	Invalid paste: PushButton Type
+3278	Invalid paste: PushButton Version
+3279	Invalid Field Version: 
+3280	Invalid Paste: Field Type
+3281	Invalid Paste: Field Version
+3282	Invalid Gadget Version: 
+3283	Invalid paste: Gadget Type
+3284	Invalid paste: Gadget Version
+3285	Invalid Graffit Shift Indicator Version:
+3286	Invalid paste: Shift Indicator Type
+3287	Invalid paste: Shoft Indicator Version
+3288	Invalid Label Version: 
+3289	Invalid paste: Label Type
+3290	Invalid paste: Label Version
+3291	Invalid List Version: 
+3292	Invalid paste: List Type
+3293	Invalid paste: List Version
+3294	Invalid Popup Version: 
+3295	Invalid paste: Popup Type
+3296	Invalid paste: Popup Version
+3297	Некорректная версия повторителя: 
+3298	Некорректная вставка: Тип повторителя
+3299	Некорректная вставка: Версия повторителя
+3300	Некорректная версия полосы прокрутки: 
+3301	Некорректная вставка: Тип полосы прокрутки
+3302	Некорректная вставка: Версия полосы прогрутки
+3303	Некорректная версия селектора: 
+3304	Некорректная вставка: Selector Type
+3305	Некорректная вставка: Selector Version
+3306	Поиск в заданном промежутке завершен. Хотите начать поиск сначала?
+3307	Некорректная версия рисунка: 
+3308	Ошибка, некорректный рисунок: 
+3309	Рисунок не найден: 
+3310	Срок использования демоверсии NS Basic/Palm истек. Зарегистрируйте вашу копию.
+3311	Осталось дней 
+3312	Добро пожаловать в демонстраионную версию NS Basic/Palm!
+3313	Щелкните кнопку "Buy" для получении информации о регистрации и получении 180-страничного руководства пользователя.
+3314	Это полная версия NS Basic/Palm с некоторыми ограничениями:
+3315	1. Приложение будет работоспособно только в течение 5 дней.
+3316	2. Приложение не требует дополнительных библиотек.
+3317	3. Эта демоверсия работоспособна только  течении 30 дней.
+3318	4. Библиотеки не вложены.
+3319	Убедитесь, что читали примечания выпуска для полной информации относительно начала работы.
+3320	Искомый текст не найден.
+3321	Окончание поиска
+3322	Выберите имя пользователя.
+3323	Программа будет установлена в Palm при следующей синхронизации.
+3324	Не могу найте ни одного имени ползователя. Установка отменена.
+3325	Не могу нати браузер.
+3326	Неверный адрес. Страница не открывается.
+3327	Проект уже открыт: 
+3328	Не могу открыть файл проекта: 
+3329	Сохранить 
+3330	Проект уже открыт
+3331	Модуль изменен. Сохранить?
+3332	Ошибка загрузки
+3333	Не могу показать содерджимое файлов справки.
+3334	Щелкните OK если переустановка завершена.
+3335	Загрузка... Копирование...
+3336	Download toЗагрзка в POSE невозможна.
+3337	No download option selected in Compile/Download Options
+3338	Ошибки, компиляция не завершена.
+3339	Путь к POSE некорректен.
+3340	Не могу запутить в POSE: 
+3341	POSE не дает ответа. Он запущен?
+3342	Некоторые ошибки компиляции...
+3343	Программа готова для загрузки в Palm или POSE
+3344	Компиляция окончена
+3345	Ошибка. Программа не может быть загружена.
+3346	Перезапустите NS Basic для изменения установок языка.
+3347	Рисунок некорректный Resource ID: 
+3348	MS Sans Serif Cyr
+3349	9
+3350	0
+3351	 Variable table overflow. Reduce number of variables and literals.
+3352	Руководство пользователя
+3353	Печатать текущий модль?
+3354	CASE must be followed by a string or numeric literal or a simple variable name. Calculated values or functions are not allowed.
+3355	Добавить ресурс
+3356	Удалить ресурс
+3357	Добавить ресурс
+3358	Palm Files (*.prc;*.pdb;)|*.prc;*.pdb
+3359	Ресурс
+3360	Ресурс не найден: 
+3361	Ошибка: нехватка ресурсов > 64k:
+3362	Decimal Places must be at least 2 less than Length.
+3363	Неозможно настроить форму: 
+3364	Должно использоваться наименование формы.
+3365	NEXTFORM использует неизвестное имя формы.
+3366	 Текстовая строка превышает стандартное ограничение (65535 max).
+3367	DateDiff является зарезервированным словом, и не может быть использовано как имя функции.
+3368	TimeDiff является зарезервированным словом, и не может быть использовано как имя функции.
+3369	Запуск SUB-процедуры оформлен неверно.
+3370	Проблема с  'End Select'.
+3371 	Проблема с 'Next'
+3372	Экранный объект имеет имя как форма: 
+3373	Проект не может содержать пустой модуль.
+3374	NS Basic не зарегистрирован - программа будет работать только 5 дней.

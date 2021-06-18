@@ -1,0 +1,142 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>PopUp </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>PopUp                                                                                                           Objekt</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><img width=157 height=61
+src="./outline_138_files/image003.gif" align=left hspace=12>Ein
+POPUP Objekt zeigt ein Text Label mit einem grafischen Element (Dreieck)
+an. Wenn darauf geklickt wird, so werden mehrere Texte (Elemente) in jeweils
+einer separaten Zeile dargestellt. Ein Element kann markiert werden, und wird
+invertiert dargestellt. Die Größe des Rahmens wird während der Kompilierung
+gesetzt, und kann während der Ausführung nicht geändert werden. Sollte diese
+Größe nicht ausreichen, so werden automatisch hoch- und runter Scrolllelemente
+angezeigt. Der Inhalt der Liste kann während der Designphase über die
+Listen-Eigenschaften oder während der Ausführung mittels der <i>Add</i> Methode gesetzt werden.
+Normalerweise wird dies in der „After“ Sektion des Startup Codes des Formulars
+gemacht. Die <i>Selected</i> Methode
+identifiziert das selektierte Element der Liste. Die <i>Text</i> Methode wird verwendet, um den Text zu setzen. Dieser kann
+sich von dem selektiertem Element unterscheiden, bis die <i>Redraw</i> Methode verwendet wird.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>unterstützte
+Eigenschaften </b>(während der Entwicklungsphase setzen)</p>
+
+<p class=ManualBody>Label, Font ID, Anchor Left, Visible, List</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>unterstützte
+Methoden </b>(siehe &quot;Methoden&quot;)</p>
+
+<p class=ManualBody><span lang=EN-GB>Left, Top,
+Width, Height, Hide, Show, Redraw, Add, Remove, Clear, Text, Selected, NoItems,
+ItemText, ItemNo, ID, Index, Type</span></p>
+
+<p class=ManualBody><b><span lang=EN-GB>&nbsp;</span></b></p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>  Dim ItemsInList as
+Integer</p>
+
+<p class=Code>  Dim selectedName as
+String</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>  'list löschen und neu
+füllen, während der After Phase des Formulars</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>  PopListCity.Clear                     </p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>  PopListCity.Add
+&quot;New York&quot;                    'Liste
+füllen</p>
+
+<p class=Code>  PopListCity.Add
+&quot;Boston&quot;</p>
+
+<p class=Code>  PopListCity.add
+&quot;New Orleans&quot;</p>
+
+<p class=Code> 
+PopListCity.Selected=2               
+'Element #2 (Boston) selektieren</p>
+
+<p class=Code> 
+PopListCity.Text=&quot;What City?&quot; 
+        'Text anzeigen</p>
+
+<p class=Code>  PopListCity.Redraw                    'Selektieren Text anzeigen</p>
+
+<p class=Code>  PopListCity.Remove
+3                  'Element #3 (New Orleans) löschen</p>
+
+<p class=Code> 
+ItemsInList=PopListCity.NoItems      
+'Anzahl Elemente in Liste lesen</p>
+
+<p class=Code> 
+selectedName=PopListCity.ItemText(PopListCity.Selected) 'lese text des
+markierten Elements</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

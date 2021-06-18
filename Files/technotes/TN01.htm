@@ -1,0 +1,82 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 01: Installation Issues</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 01: Common Problems</h2>
+	  <h3>Oct 19, 2007</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR size="1" noshade>
+<BR><BR>
+
+<h4>1. Error '429' on starting NS Basic/Palm</h4>
+Run the file \Program Files\nsbasic\palm\register.bat as Administrator. This will re register all the controls that NS Basic/Palm uses.
+
+<p>If that doesn't help and you are running Windows 95, your version of the system file ComCtl32.dll may be out of date. Here's a Microsoft Knowledge Base article that tells you how to update it:<br>
+<A HREF="http://support.microsoft.com/support/kb/articles/Q186/1/76.ASP">http://support.microsoft.com/support/kb/articles/Q186/1/76.ASP</A>
+
+<h4>2. POSE/Simulator does not work properly</h4>
+If POSE or the Simulator are clearly running, but NS Basic does not see it (programs do not download or multiple copies of POSE/Simulator are started), then check if your firewall or antivirus software is blocking socket connections. POSE and the Simulator use Port 6415 to send and receive communications. Either set your firewall/antivirus software to allow port 6415, or disable it.
+
+<p>A second possibility is that you are running an old version of Emulink.ocx. If you are running NS Basic/Palm 4, this file should be Version 2. Look for the file in c:\WINNT\System32\Emulink.ocx. (c:\Windows\System32 for older versions of Windows).
+
+<p>We also have a report of Norton Ghost 6.5 causing random hangs when starting NS Basic/Palm.
+
+<p>If you are using the Palm Simulator, check the .ini file in the Simulator folder. Make sure that 68KDebuggerPort=localhost:6415. It is set to different values in some versions of the Simulator.
+
+<h4>3. Run Time Error 380 - Invalid Property Value</h4>
+This is caused by having only True Type fonts enabled. In the Fonts Control panel, in the View Options dialog there's a True Type Fonts
+tab. In this is a check box entitled "Show only True Type fonts
+in the programs on my computer". Unchecking this solves the problem.
+<p>In some cases, this can be caused by Windows not being able to locate the special fonts that NS Basic/Palm uses. You can fix this by moving the fonts in \program files\nsbasic\fonts into \windows\fonts.
+
+<h4><p>4. Norton Anti Virus: "Malicious script detected" message". </h4>
+Click on "Authorize this script". NAV is being overzealous here. It is objecting to the NS Basic IDE doing a normal operation using a standard Microsoft interface. Authorizing it here will not compromise the security in your system in any way. To permanently stop this message, start Norton Antivirus and go into Options. Under Script Blocking, turn off "Enable Script Blocking".
+
+<h4>5. Divide error in module GDI.EXE</h4>
+"I received my copy of NSBasic/Palm this week, and encountered exactly the same problem. I have a K6-2/400, Win95 OSR 2.1, and a Trident AGP 9850 video card. I was running the latest drivers from the Trident web site. In my case, the problem was not the CPU speed or printer driver. It is the video driver. Once I changed my video driver to Windows supplied ones (either Trident Super VGA or Microsoft Super VGA), NSBasic ran fine. Of course, my refresh rates are less than ideal, but at least now I can use NSBasic." -- John Rook
+
+<h4>6. "From Object ID #xxxx (...) is completely offscreen."</h4>
+This message appears in POSE, when you have a Listbox or Popup object that is too near the edge of the screen. When the Palm OS creates the object, it also creates a little scroll arrow along its right hand side. If the normal location of that scroll arrow would be off the screen, this message is produced. The object being referred to is actually (xxxx-1), where xxxx is the object ID number in the message. This error can actually be ignored: when you run your program on a actual device, it will work fine.
+
+<h4>7. When trying to install my app, I get "Can't find any username to install programs for...installation cancelled."</h4>
+You need to do a successful Hotsync first. This initializes the settings within Hotsync so it knows the username.
+
+<h4>8. "Unable to find the PalmCntl.ocx" during installation</h4>
+This can be caused by an old version of Novell Client being installed. Make sure you have at least 4.81.1.1 of Novell Client installed. Another solution (syggested by a Novell employee) is to do the installation in Safe mode.
+
+<h4>9. Removing NS Basic/Palm completely</h4>
+The Windows Uninstaller only removes files that have not been modified since an application has been installed. As a result, uninstalling a package often leaves some files and registry keys. If you do the following, you will remove NS Basic completely from your system. This can be a useful procedure if you want to make a complete clean reinstallation.
+<OL>
+	<LI>Uninstall NS Basic from the Start Menu.
+	<LI>Delete the folder c:\nsbasic. Make sure you back up any files of yours that might be there!
+	<LI>Delete the folder c:\program files\nsbasic. <br>
+	If you have NS Basic/CE installed, do not delete c:\program files\nsbasic\CE.
+	<LI>Clean out the registry:<br>
+	 [Start]...[Run]...regedit. Click on OK. <br>
+	 Navigate to HKEY_CURRENT_USER\Software\NSBasic. <br>
+	 Right click on it to delete it.
+	<LI>Delete C:\Windows\Palm OS Emulator.ini if it exists.
+</OL>
+
+<h4>10. Vista and Palm's app install tools</h4>
+Palm Inc.'s tools for installing apps to Palm devices are broken on Vista. There is no word from them when a fix will be released.
+
+<p>In the meantime, BTSolved has released the TreoVista Simple installer which does work. This article explains the bug in Palm's software and offers a workaround.
+<<a href="http://www.palminfocenter.com/news/9321/simple-installer-released-for-vista/" target="_top">http://www.palminfocenter.com/news/9321/simple-installer-released-for-vista/</a>>
+
+<p>How does this affect NS Basic/Palm? We use Palm's tools to copy the compile app to the device when you do Run. Under Vista, you will get an error message like "The HotSync operation was interrupted.  Some of your data was NOT backed up".  The log shows, "HotSync error.  An applicationcancelled synchronisation or failed to respond to a HotSync operation.  Please ensure that you are not currently editing data using applications such as Palm OS Desktop or Install Tool (8009)"
+
+<p>To use BTSolved, go into NS Basic/Palm's Tools...Options...Compile/Download screen and set it to "Do Nothing" after compile. Once you are done compiling, drag and drop the prc file into TreoVista Simple Installer.
+
+<p><b>UPDATE:</B> Palm has released a beta of Palm Desktop 6.2 which should fix the problems: <a href="http://www.palm.com/us/support/downloads/windesk62.html" target="_top">http://www.palm.com/us/support/downloads/windesk62.html</a>

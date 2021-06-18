@@ -1,0 +1,431 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 26: AppForge Porting Guide</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 26: AppForge Porting Guide </h2>
+	  <h3>May 08, 2007
+</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.
+</h5>
+	</TD>
+</TR>
+</TABLE>
+<hr>
+
+<B><font face="helvetica" size=4>Introduction</font></b>
+
+<p>While AppForge and NS Basic/Palm are both VB like development tools, there are differences in implementation. This document is intended to make it easier to migrate apps from AppForge to NS Basic/Palm.
+
+<p>AppForge was designed with two key principles: to be cross platform and to work within Visual Studio. NS Basic takes a different approach on both of these. Most of the differences between the two products come as a result.
+
+<p>NS Basic/Palm is optimized for the Palm OS. Wherever possible, it uses the native facilities of the Palm OS. All the objects, the file handling, the communication, etc. are based on the functions that are built into the Palm OS. Since these features in the ROM of every device, NS Basic ends up with a much smaller runtime.
+
+<p>There are other advantages. Since the Palm OS controls are used, the apps automatically have a true Palm "Look and Feel". Compatibility with existing and upcoming devices is improved, and execution speed is enhanced.
+
+<p>When porting to any new environment, the first things you'll notice are what is missing. Hopefully, in time you'll discover other features that more than make up for these. If you run into something you can't figure out how to do in NS Basic, email us at <A HREF="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</A>. We'll help find a solution. Key advantages of NS Basic are:
+<UL>
+\	<LI>Runs on Vista
+	<LI>Better performance
+	<lI>Has Native mode for Palm OS 5 devices - much faster
+	<LI>Much lower memory requirements
+	<LI>Open architecture
+	<li>Does not require Visual Studio
+	<LI>Much more cost effective
+	<Li>No device licensing fees, license or activation
+	<lI>Desktop IDE does not require activation from a server
+</UL>
+
+<p>Many users have switched from AppForge to NS Basic. You can <a href="http://www.nsbasic.com/palm/info/kudos5.html" target="_top">read comments about their experiences here</a>.
+
+<p>AppForge ceased operations on March 13, 2007.
+
+<p><i>Note: This document contains the best information NS BASIC Corporation has available at this time. If you have additional useful information or corrections, please contact us at <A HREF="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</A> so we can update this document.</i>
+
+<p><B><font face="verdana" size=4>Contents</font></b>
+<pre>
+	<a href="#benchmarks">Benchmarks</a>
+	<a href="#ide">Development Interface</a>
+	<a href="#cross">Cross Platform Compatibility</a>
+	<a href="#palmos">Palm OS Compatibility</a>
+	<a href="#external">External Libraries</a>
+	<a href="#international">Internationalization</a>
+	<a href="#memory">Runtime Memory Requirements</a>
+		<a href="#runtime">Runtime Code</a>
+		<a href="#code">Application Code</a>
+	<a href="#testing">Testing and Debugging</a>
+	<a href="#licensing">Licensing and Royalties</a>
+	<a href="#conversion">Conversion Tips</a>
+		<a href="#variables">Variable Types</a>
+		<a href="#codeconversion">Program Code</a>
+		<a href="#objects">Objects</a>
+		<a href="#colors">Colors</a>
+		<a href="#databases">Databases</a>
+		<a href="#sorted">Sorted Databases</a>
+		<a href="#conduits">Conduits</a>
+		<a href="#misc">Miscellaneous</a>
+	<a href="#nsbasic">NS BASIC Corporation</a>
+		<a href="#company">Company</a>
+</pre>
+
+<p><a name="benchmarks"></a><B><font face="helvetica" size=4>Benchmarks</font></b>
+
+<p>We set up a small business-style application with two forms and 16 objects. The program switches back and forth between the forms, updating the information in the objects. The AF and NSB programs are virtually identical.
+
+<p>Here are the results:
+<TABLE border>
+	<TR>
+		<TH></TH> <TH align=right>MobileVB 6.5</TH> <TH align=right>NS Basic/Palm 6.0</TH>
+	</TR>
+	<TR>
+		<TD align=right>Runtime Size</TD> <TD align=right>~1500k</TD> <TD align=right>137 or 354k</TD>
+	</TR>
+	<TR>
+		<TD align=right>Size (k)</TD> <TD align=right>76k</TD> <TD align=right>68k</TD>
+	</TR>
+	<TR>
+		<TD align=right>Processing Speed (secs)<br>
+		100000 loops</TD> <TD align=right>25</TD> <TD align=right>5</TD>
+	</TR>
+	<TR>
+		<TD align=right>Screen Updating (secs)<br>
+		Display 100 forms</TD> <TD align=right>32</TD> <TD align=right>11</TD>
+	</TR>
+	<TR>
+		<TD align=right>File I/O (secs)<br>
+		Create, read and update <br>
+		10000 records</TD> <TD align=right>129</TD> <TD align=right>92</TD>
+	</TR>
+</TABLE>
+
+<p>NS Basic/Palm outperformed AF in all tests. Perhaps the most significant result is that the NSB program ran up to 5 times faster than the AF version in the processing speed test. This is important for more than execution time: it also affects battery life. Tests were run on a Palm TX.
+
+<p><a name="ide"></a><B><font face="helvetica" size=4>Development Interface</font></b>
+
+<p>NS Basic's IDE has the same look and feel as Visual Studio's Visual Basic, but only has options that apply to NS Basic/Palm. The feature set is similar. The Help menu is NS Basic/Palm specific. Visual Basic does not have to be installed on the system for NS Basic to work, which makes for a much simpler installation. NS Basic's installer is less than 5 megs. NS Basic's IDE installer is standalone: no other software needs to be installed for it to work.
+
+<p>NSB has a nice feature: the "drag and drop" form image that shows in in the IDE can be magnified from 160x160 (too small on a desktop) to double the size.
+
+<p>AF runs as a plug in to Visual Basic (part of Visual Studio). However, since AF is a subset of Visual Basic, not all the options that show are available. For example, the first 20 objects that appear in the IDE's ToolBox are not usable from AF. On a 1024 by 768 screen, a number of the objects are not accessible as a result. Another example is Intellisense: It will give prompts for VB, suggesting options that won't actually work in AF. Yet another is menu items that don't do anything for AF projects. The Help function is for regular VB. To see help for AF, you need to go under the MobileVB menu. AF's installer is around 60 megs, not including Visual Studio which needs to be present.
+
+<p><a name="cross"></a><B><font face="helvetica" size=4>Cross Platform Compatibility</font></b>
+
+<p>NS Basic/Palm applications can be run on Windows CE using StyleTap. We have no plans for a Symbian version.
+
+<p><a name="palmos"></a><B><font face="helvetica" size=4>Palm OS Compatibility</font></b>
+
+<p>NSB Programs run without change on all Palm OS 3.0 devices and later (in some cases, even on older devices). Since NSB makes use of the native Palm API functions, we are usually able to run on new versions with little or no change. It took just a couple of days to update NS Basic to run on Palm OS 5. NS Basic users did not have to make any change to their code at all to run on the new OS.
+
+<p>Since the API functions in Palm OS 5 have been recompiled to StrongArm native code, NSB picks up a lot of speed on the new devices: about 6 times faster than on a Palm III.
+
+
+
+<p><a name="external"></a><B><font face="helvetica" size=4>External Libraries</font></b>
+
+<p>NSB uses Shared Libraries for external libraries. AF uses Ingots.
+
+<p>NS Basic's Shared Libraries are standard Palm OS Shared Libraries. A simple text file, called an INF file is used by the IDE to set up the calls to the Shared Library. The format of a Palm OS Shared Library is publicly available. They can be developed using a variety of tools, including CodeWarrior, Falch and PRC-Tools. NS Basic can use shared libraries that have been developed for use with other tools.
+
+<p>AF Ingots are developed using the proprietary AppForge Piedmont Framework, which is only available to AppForge's partners. The price of the toolkit and the conditions to become a partner are not disclosed. AF Ingots can only be used with AF. 
+
+<p>NSB can also work with a number of standard utilities, such as PalmPrint. Its AppLaunch command uses the standard Palm OS mechanism to launch other apps. AF cannot do this.
+
+<p>One other useful feature that is unique to NSB: The <A HREF="http://www.nsbasic.com/palm/info/technotes/TN06.htm">SysTrap</A> function allows the NSB programmer to call many of the Palm OS API functions directly from his program. It's a quick way to get at the internals of the Palm OS.
+
+<p><a name="international"></a><B><font face="helvetica" size=4>Internationalization</font></b>
+
+<p>NSB has always offered full support for double byte characters during development and runtime, allowing its use by Asian and Western languages. Full documentation is available in English, Japanese and German. The IDE is available in English, Japanese, Chinese, German and Spanish. Other languages are easy to add by end users. Apps that are written in English will easily accommodate other languages, including Japanese and Chinese.
+
+<p>AF has support for English only.
+
+<p><a name="memory"></a><B><font face="helvetica" size=4>Runtime Memory Requirements</font></b>
+
+<p><a name="runtime"></a><B><font face="helvetica" size=2>Runtime Code</font></b>
+
+<p>Both NSB and AF create a bytecode file with the program code that runs in conjunction with some fixed runtime code. NS Basic's Runtime is currently under 150k (350K for the Native code version) and can be combined with the app to make a single executable. If the Runtime is kept as a separate file, it can be shared by multiple NSB apps. The NSB Runtime is stored as a library on the device and does not appear on the Applications Launcher.
+
+<p>AF's runtime code is called the CrossFire Client. It uses 1500k.  The CrossFire appears in the Applications Launcher as "AppForge".
+
+<p>By contrast, there is no way for the end user to determine that an app was developed using NS Basic/Palm. In a recent contest by Palm Japan, NS Basic programs <A HREF="http://www.nsbasic.com/palm/PR/PR.011003.html">won half the awards</A>, including the CodeWarrior category (!).
+
+<p>
+<a name="code"></a><B><font face="helvetica" size=2>Application Code</font></b>
+
+<p>NS Basic programs are smaller than the equivalent AF program, due to more compact bytecode and less code being needed.
+
+<p><a name="testing"></a><B><font face="helvetica" size=4>Testing and Debugging</font></b>
+
+
+<p>NS Basic/Palm is integrated with the Palm OS Emulator (POSE) and the Simulator. After a program is compiled, it immediately starts running on the desktop in a real Palm OS environment, making for a fast compile/download/test cycle. Compile and download to a device can also be done in a single step.
+
+<p>AF has a compile/test option, but it runs in the desktop VB environment. As a result, many functions will work on the test environment that do not run on an actual device. POSE is not integrated with the IDE, so there is no automatic load and run to POSE. Downloading to a device is a separate step.
+
+<p><a name="licensing"></a><B><font face="helvetica" size=4>Licensing and Royalties</font></b>
+
+
+<p>A single programmer license to NSB is $149.95. To license all the programmers at a singe site, an Enterprise license can be purchased for $449.95. Upgrades have been priced at $49.95. There is no royalty or per unit charge for apps you distribute.
+
+<p>AF's standard license is $1070, with an Enterprise license costing $1870. The most recent upgrade cost $495.95. There is also a royalty for each unit of $25.00 for each device you want to run on. There are also additional charges for support.
+
+<p><a name="conversion"></a><B><font face="helvetica" size=4>Conversion Tips</font></b>
+
+<p><a name="variables"></a><B><font face="helvetica" size=2>Variable Types</font></b>
+
+<p>Both AF and NSB support most common VB Data Types, with the following differences:
+<p><TABLE border>
+	<TR>
+		<TD>Boolean</TD> <TD>Not present in NSB. Use an Integer instead.</TD>
+	</TR>
+	<TR>
+		<TD>Long</TD> <TD>Not present in NSB. Use a Float/Double instead.</TD>
+	</TR>
+	<TR>
+		<TD>Currency</TD> <TD>Not present in NSB. Use Dim curr as float*12,2</TD>
+	</TR>
+	<TR>
+		<TD>Time</TD> <TD>Not present in AF.</TD>
+	</TR>
+	<TR>
+		<TD>Float/Double</TD> <TD>Not present in AF.</TD>
+	</TR>
+	<TR>
+		<TD>Short</TD> <TD>Not present in AF.</TD>
+	</TR>
+</TABLE>
+<p><a name="codeconversion"></a><B><font face="helvetica" size=2>Program Code</font></b>
+
+	
+<p>Both NSB and AF implement a subset of the functions in VB, plus add a few of their own. NSB has 112 functions, AF has 102. As always, the devil is in the details: the one missing function might be one vital to your app. If you encounter such a function in your conversion that NS Basic is missing, please contact us. We may be able to help!
+
+<p><a name="objects"></a><B><font face="helvetica" size=2>Objects</font></b>
+
+<p>NSB's objects are based on the standard Palm OS objects that are in ROM. Nearly all Palm apps (other than AF) use these for their user interface, giving all Palm apps a similar look and feel.
+
+<p>In most cases, there is an NSB object that does the same as the AF one. The properties, methods and events will be different: NS Basic exposes the objects as implemented in the Palm OS. In many cases, the Palm OS objects are much simpler than the AF equivalent. For example, the Palm OS Field Object has just a Change event. The AF TextBox also has Click, GotFocus, LostFocus and Validate events.
+
+
+<TABLE border>
+	<TR>
+		<TD>Alarm</TD> <TD>Supported. Use the Alarm feature in <A HREF="http://www.nsbasic.com/palm/info/technotes/TN14.htm#Alarm%20Functions">NSBSystemLib</A></TD>
+	</TR>
+	<TR>
+		<TD>Button</TD> <TD>Supported. </TD>
+	</TR>
+	<TR>
+		<TD>Checkbox</TD> <TD>Supported. </TD>
+	</TR>
+	<TR>
+		<TD>ClientSocket</TD> <TD>Supported. <A HREF="http://www.nsbasic.com/palm/info/technotes/TN18.htm">Use TcpIPLib</A></TD>
+	</TR>
+	<TR>
+		<TD>ComboBox</TD> <TD>Supported</TD>
+	</TR>
+	<TR>
+		<TD>DatePicker</TD> <TD>Supported. Use PopUpDate function</TD>
+	</TR>
+	<TR>
+		<TD>FilmStrip</TD> <TD>Not supported</TD>
+	</TR>
+	<TR>
+		<TD>FormSlider</TD> <TD>Not supported</TD>
+	</TR>
+	<TR>
+		<TD>Graphic</TD> <TD>Supported. Use Bitmap object.</TD>
+	</TR>
+	<TR>
+		<TD>GraphicButton</TD> <TD>Supported. Use Bitmap Object</TD>
+	</TR>
+	<TR>
+		<TD>Grid</TD> <TD>Supported.</TD>
+	</TR>
+	<TR>
+		<TD>HScrollbar</TD> <TD>Supported. </TD>
+	</TR>
+	<TR>
+		<TD>INetHTTP</TD> <TD>Supported. <A HREF="http://www.nsbasic.com/palm/info/technotes/TN18.htm">Use TcpIPLib</A></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>Label</TD> <TD>Supported. </TD>
+	</TR>
+	<TR>
+		<TD>ListBox</TD> <TD>Supported. </TD>
+	</TR>
+	<TR>
+		<TD>Movie</TD> <TD>Not Supported. </TD>
+	</TR>
+	<TR>
+		<TD>OwnerDrawGrid</TD> <TD>Supported.</TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>RadioButton</TD> <TD>Not Supported. RadioButtons are not a normal part of the Palm User Interface. NSB supports the PushButton object, which is the recommended way to do this.</TD>
+	</TR>
+	<TR>
+		<TD>Scanner</TD> <TD>Supported. Use <A HREF="http://www.nsbasic.com/palm/info/technotes/TN09.htm">NSBSymbolLib</A>.</TD>
+	</TR>
+	<TR>
+		<TD>Serial</TD> <TD>Supported - built into base language.</TD>
+	</TR>
+	<TR>
+		<TD>Shape</TD> <TD>Supported. Use Draw statements.</TD>
+	</TR>
+	<TR>
+		<TD>SignatureCapture</TD> <TD>Supported. Use Gadget object.</TD>
+	</TR>
+	<TR>
+		<TD>Slider</TD> <TD>Supported. Use Scrollbar object</TD>
+	</TR>
+	<TR>
+		<TD>SoundFX</TD> <TD>Not supported.</TD>
+	</TR>
+	<TR>
+		<TD>SoundTrack</TD> <TD>Not supported</TD>
+	</TR>
+	<TR>
+		<TD>SpriteField</TD> <TD>Not supported</TD>
+	</TR>
+	<TR>
+		<TD>SpriteTemplate</TD> <TD>Not supported</TD>
+	</TR>
+	<TR>
+		<TD>TextBox</TD> <TD>Supported. Use the Field object.</TD>
+	</TR>
+	<TR>
+		<TD>TimePicker</TD> <TD>Supported. Use PopUpTime function</TD>
+	</TR>
+	<TR>
+		<TD>Timer</TD> <TD>Supported.</TD>
+	</TR>
+	<TR>
+		<TD>Tone</TD> <TD>Supported. Use Sound statement.</TD>
+	</TR>
+	<TR>
+		<TD>UpDown</TD> <TD>Supported. Use ScrollBar object.</TD>
+	</TR>
+	<TR>
+		<TD>VScrollBar</TD> <TD>Supported. Use ScrollBar object.</TD>
+	</TR>
+	<TR>
+		<TD>Widget</TD> <TD>Not supported.</TD>
+	</TR>
+</TABLE>
+
+<P>In addition, NSB has the following standard Palm OS objects. These are missing in AF.
+<TABLE border>
+	<TR>
+		<TD>Gadget</TD> <TD>An invisible object</TD>
+	</TR>
+	<TR>
+		<TD>PopUp</TD> <TD>A standard Palm OS popup object</TD>
+	</TR>
+	<TR>
+		<TD>Repeater</TD> <TD>A button that fires repeatedly when pressed</TD>
+	</TR>
+	<TR>
+		<TD>Selector</TD> <TD>A button that brings up a specialized popup</TD>
+	</TR>
+	<TR>
+		<TD>Shift Indicator</TD> <TD>Appears if Grafitti keyboard is in shift mode</TD>
+	</TR>
+</TABLE>
+
+<p><a name="colors"></a><B><font face="helvetica" size=2>Colors</font></b>
+
+<p>AF and NSB have a very different approaches to colors. Support for colors was not originally in the Palm OS. When it was added, it was implemented as a palette of colors that would apply to all objects on the form. For example, setting the ObjectFrame property to Red will mean that all objects drawn from that point on will have red frames.
+
+<p>Since AF implemented their own objects, they are able to control the colors of each object individually. 
+
+<p>To read how to control the color palette from NS Basic, see the Tech Notes on <A HREF="http://www.nsbasic.com/palm/info/technotes/TN04.htm">Using Color Objects and Graphics</A> and <A HREF="http://www.nsbasic.com/palm/info/technotes/TN13.htm">ScreenLib</A>.
+
+<p><a name="databases"></a><B><font face="helvetica" size=2>Databases</font></b>
+
+<p>The Palm OS has a simple but effective file system which is called a Palm Database (PDB). NSB allows you to read and write directly with the Palm database format. The functions are put into wrappers that make calling them easier. Virtually any Palm database format can be used, including databases that were created by other apps (provided the layout is known). This allows easy implementation of unstructured data formats.
+
+<p>AF takes a higher level approach. The database schema must be defined in the IDE. This makes some things easier, but reduces flexibility. Most of the commands in AF's PDB support have directly equivalent functions in NSB.
+
+<p><a name="sorted"></a><B><font face="helvetica" size=2>Sorted Databases</font></b>
+
+<p>The Palm OS Database model supports sorted and unsorted databases. If you have a sorted database, lookups are almost instantaneous. If the data is not sorted, you need to do a sequential search to find your data, which is impractical on a large database.
+
+<p>NSB allows you to add records to a database, maintaining the sorted order. New records may be looked up immediately. 
+
+<p><a name="conduits"></a><B><font face="helvetica" size=2>Conduits</font></b>
+
+<p>AF has a standard conduit, called the AppForge Universal Conduit. It is not really "Universal": it allows you to created conduits between ODBC aware desktop databases to AF format Palm databases.
+
+<p>NS Basic/Palm does not have a conduit of its own. Instead, we make it easy to use the large number of third party conduits that are available for the Palm OS. This allows NS Basic developers to target a wider array of databases and file systems on the desktop and have more flexibility in structuring of the Palm database. Here is a <A HREF="http://www.nsbasic.com/palm/info/technotes/TN02.htm#conduits">list of conduits</A> that work with NS Basic.
+
+<p><a name="misc"></a><B><font face="helvetica" size=2>Miscellaneous</font></b>
+
+<p>Here are some tips for converting submitted by others who have done the conversion. If you have a tip to add, send it to us at <A HREF="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</A>.
+
+<h4>How To Enable/Disable Field Controls in NSB.</h4><br>
+<i>Submitted by Oscar De Leon</i>
+ 
+<p>Sometimes it is needed to enable/disable fields objects.
+For example, I have and "Orders" app, and I use the same form to allow the user to enter the customer data when he is creating the order and to display it.
+Later, when I have backed-up the Orders PDB to the Desktop, I set a bit on a record field to tell the application this record is blocked and could not be changed.
+<p>This allow me to keep some historical data on the handheld device while preserving data of being changed once it has been hotsync...
+ 
+<p>Since Editable property is a design time property, it could not be used to enable/disable fields. I found NSBSystemLib has almost all I needed to implement each facility not implemented in NSB (Nice library!).
+Here's the code: 
+<pre> 
+In the Start Up code section, reference the library:
+ 
+    LoadLibrary "NSBSystemLib", "NSL"
+ 
+In a code module, create this sub:
+ 
+Sub EnableField(objID as Integer, Enable as Integer)
+ 
+    Dim nAttr as Integer
+    nAttr = NSL.FieldGetAttributes(objID)
+    nAttr = NSL.SetBitValue(nAttr, 13, Enable)     'Bit 13 = Editable Flag.
+    NSL.FieldSetAttrbutes(objID, nAttr)
+ 
+End Sub
+ 
+For example, if you have Field objects Field1010 and Field1020, 
+to enable or disable any of them, just call:
+
+ 
+EnableField(1010, True)
+EnableField(1020, 1)
+ 
+or
+ 
+EnableField(1010, False)
+EnableField(1020, 0)
+</pre>
+
+<p>Depending of where you call these Subs (before of after the Form_After code), you should call REDRAW to repaint the controls enabled or disabled, and turn the cursor on/off.
+ 
+<p>See the excellent documentation for FieldGetAttributes, FieldSetAttributes and SetBitValue in <A HREF="http://www.nsbasic.com/palm/info/technotes/TN14.htm">TN14</A>.
+
+<H4>Public and Global variables</h4>
+<i>Submitted by Mike Trainor</i>
+<p>In AppForge, you declare variables that need to be available anywhere in the project as Public. You can do the same in NS Basic by defining as Global.
+
+
+
+<p><a name="nsbasic"></a><B><font face="helvetica" size=4>NS BASIC Corporation</font></b>
+
+<p><a name="company"></a><B><font face="helvetica" size=2>Company</font></b>
+
+<p>NS BASIC Corporation has been producing development tools for handheld devices since 1993. Each generation of handheld devices has been released by manufacturers with powerful, low level tools for programming. While these are suitable for full time professional developers, there at many people who need something higher level and easier to use.
+
+<p>The company's tools have always been grounded in BASIC, the most commonly used programming language. Virtually all programmers are familiar with the language: it's always been a reliable way of getting from point A to point B. It has a gentle learning curve as well, making it suitable for new or rusty programmers.
+
+<p>NS Basic for Palm, released in 2000, is by no means the only development tool released by the company. It is complemented by NS Basic/CE, for Windows CE and Pocket PC devices. The company was also responsible for NS Basic/Newton and for Newtcard, a Hypercard-like product for the now defunct Newton.
+
+<p>All of the company's products come with complete and concise hardcopy documentation. The products are well supported with regular updates. Support is offered directly by the company (support&copy; nsbasic.com) and by very active web boards on Yahoo Groups.
+
+
+<p>&copy; 2009 NS BASIC Corporation. All rights reserved.

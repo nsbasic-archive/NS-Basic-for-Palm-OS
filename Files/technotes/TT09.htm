@@ -1,0 +1,179 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tutorial 09: Bitmaps, Gradient Buttons and Pictures</TITLE>
+<link rel="stylesheet" href="/style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+		
+    <TD WIDTH="17%" VALIGN="TOP"> 
+      <P><img src="images/BigIcon.GIF" width="86" height="101" alt="">
+    	</TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tutorial 09: Bitmaps, Gradient Buttons and Pictures</h2>
+	  <h3>January 19, 2009</h3>
+      		  
+	  <h5>Copyright 2009 NS BASIC Corporation
+		</h5>
+		
+	</TD>
+	</TR>
+</TABLE>
+<HR>
+
+<h3>Contents</h3>
+
+<OL>
+	<LI><a href="#introduction">Introduction</a> 
+	<LI><a href="#bitmaps">Using Bitmap Images</a> 
+	<LI><a href="#pictures">Using Pictures</a>
+	<LI><a href="captions">Captions and Gradients</a>
+	<li><a href="#buttons">Buttons</a>
+	<LI><a href="#bigimages">Images bigger than 64K</a>
+</OL>
+
+
+<h3><a name="introduction">1. Introduction</H3>
+
+The Bitmap object is an extremely powerful tool to help you create good looking applications. It has the following features:
+
+<ul>
+	<li>It can display text.</li>
+	<li>It can display pictures.</li>
+	<li>It can display fonts not installed on the device.  </li>
+	<li>It can have graduated colors.</li>
+	<li>It can resize images.</li>
+	<li>It can act as a Button.</li>
+	<li>It can act as a Label.</li>
+</ul>
+
+<p>There are 3 different ways to use a Bitmap object:
+<ol>
+<li>To display a Bitmap: A bitmap image from a file is displayed exactly as it is.
+<li>To create a Picture: An image is imported from a file, then modified to display as you want.
+<li>To display a Caption with a colored background, which can be a gradient.
+</ol>
+
+This tutorial will take you through each of these options.
+
+<P>One thing to keep in mind is that is not possible to have images which are greater than 64K in a bitmap. See "<a href="#bigimages">Images Bigger than 64K"</a> for techniques to work around this.
+
+<P>Let's get started. Open a new project, and add a Bitmap object to it:
+<p><img src="TT09.images/TT09.01.gif" height="677" width="611" alt="">
+
+<p>You will see there are quite a few properties that can be set in the Bitmap object. Don't worry about trying to understand them all right now. As we work through the Tutorial, you will see what each one can do. If you are in a hurry to find out about one in particular, use the Seach function on this page to find it.
+
+<h3><a name="bitmaps">2. Using Bitmap Images</H3>
+
+There are two ways to put an image on a bitmap: You can set it as a Bitmap, or set it as a Picture. When you set it as a Bitmap, you add the image to the project as a resource, where it gets displayed. When you set it as a Picture, a new resource gets created with the image. 
+
+<p>Bitmaps give you the most control over the final appearance. You can specify different images for different sized screens, with different bit depths. 
+
+<p>Pictures offer more flexibility. You can stretch or shrink the image to a precise size. Read more about them in the next section, "<a href="#pictures">Using Pictures</a>".
+
+<p>The first step is to add the image to the project. 
+<p><img src="TT09.images/TT09.02.gif" height="228" width="235" alt="">
+
+<p>
+
+<p><img src="TT09.images/TT09.03.gif" height="416" width="563" alt="">
+
+<p>Select Dino160wide8bit.gif and click on Open. Images can be gif, jpg, bmp or  ico.
+
+<p><img src="TT09.images/TT09.04.gif" height="428" width="361" alt="">
+
+<p>Now the bitmap is added to the project. Notice that it has several paths. Regular paths (the ones that do not say "Hi Res") are images designed for screens that are 160x160. HiRes images are designed for 320x320. If the actual screen size is something else, the pictures will be appropriately scaled at Runtime.
+
+<p>The Bit Depth (8 and 16 in this case) determines how many colors are displayed. Most devices can handle 16 bit color these days. However, a lower bit depth image will use less memory. A Bitmap may have multiple images, each optimized for devices of different screensize and bit depth: this is useful if the application requires that you be fussy about appearance.
+
+<p>Depending on whether you're running on a Symbian or Palm device, you may have a different set of path options.
+
+<p>The images for one bitmap consitute a family. The total size of all the images in a family must be less that 64K. See  "<a href="#bigimages">Images Bigger than 64K"</a> for techniques to work around this.
+
+<p>With this particular image, we know (from the name) that it is 160 pixels wide with a bit depth of 8. Let's set it up in the "Path, 8-bit" property. 
+<p><img src="TT09.images/TT09.05.gif" height="29" width="306" alt="">
+
+<p>Next, we have to associate the bitmap image (Bitmap1006) with the Bitmap Object on the screen (Bitmap1005). To do this, we click on the bitmap on the Design Screen, and change its Bitmap property to 1006.
+
+<p><img src="TT09.images/TT09.06.gif" height="518" width="735" alt="">
+
+<p>(You may need to close the Design Screen and reopen it, by clicking on the form name in the Project Explorer, to get the image to show.)
+
+<p>You now see the image, as well as the area it will take up on the form. The Design Screen normally displays double size, so it is easy to see. The image does not get scaled, so it does not fill the whole area in the Design Screen. On an actual device, it will. For the same reason, the "Image Size" shown at the bottom left of the IDE is not correct in this case. (Yes, Support at NS Basic says they are working on this.)
+
+<p>That's it for using Bitmaps.
+
+
+<h3><a name="pictures">3. Using Pictures</H3>
+
+Pictures allow you to stretch your images in the Design Screen to just the size you want. The image will be dynamically resized to fit the size of the box you give it. 
+
+<p>Let's start with a new project, and add a Bitmap object.
+
+<p><img src="TT09.images/TT09.01.gif" height="677" width="611" alt="">
+<p>Next, let's set the Picture property to our image:
+<p><img src="TT09.images/TT09.07.gif" height="262" width="361" alt="">
+<p><img src="TT09.images/TT09.08.gif" height="416" width="563" alt="">
+<p>We choose the 16 bit version of the picture - it will give us more accurate colors. 
+<p><img src="TT09.images/TT09.09.gif" height="518" width="735" alt="">
+<p>The picture is 160 pixels wide: it shows actual size. Let's make it bigger by dragging the bottom right corner. First, we have to set the Stretch property to True:
+<p><img src="TT09.images/TT09.10.gif" height="80" width="347" alt="">
+<p>Now we do the drag...
+<p><img src="TT09.images/TT09.11.gif">
+<p>You can see, on the bottom left of the IDE, the size in bytes of the image. Take care that it does not exceed 65,512 bytes: it will not compile. See "<a href="#bigimages">Images Bigger than 64K"</a> for techniques to work around this.
+<p>Also, notice that the quality of the picture has gone down. There just isn't enough information in the original photo to have higher quality. The solution is simple: Start with a bigger picture. The size of the picture you start with doesn't matter. It is the final Image Size that counts.
+
+<p>When working with Pictures, there are a couple of other properties which can be useful. BorderStyle lets you specify a 1 pixel wide black border around the edge of the picture: the default is no border. Appearance, normally flat, allows you to create a 3D appearance to the picture. In both cases, setting Stretch to true allows the image size to be adjusted for the additional pixels that are needed for these options.
+
+<h3><a name="captions">4. Captions and Gradients</H3>
+
+Captions let you put text on a bitmap. Gradients allow you to specify the color of the bitmap: by specifying two different colors, you can have a bitmap with a smooth transition from one color to the other.
+
+<p>Let's play around with these features. Start a new project and add a bitmap object:
+<p><img src="TT09.images/TT09.12.gif">
+<p>Let's make it a bit more interesting. Change the Font Name, Font Size and FontBold. You will see the changes right away on the Design Screen. Put a border on it (BorderStyle), and make it 3D (Appearance). The Alignment of the Caption can be Left, Right or Center. Change the Caption Color to change the color of the text:
+<p><img src="TT09.images/TT09.13.gif">
+<p><img src="TT09.images/TT09.14.gif">
+<p><b>Setting a Gradient</b>
+<p>Let's set Gradient Color 1 to Blue and Gradient Color 2 to yellow:
+<p><img src="TT09.images/TT09.15.gif">
+<p>Wow, that's eye popping ugly!
+<p>There's one more useful feature: the Gradient Style. It can be 1 (top to bottom) or 2 (left to right). Changing it to 2 actually makes this image uglier!
+<p><img src="TT09.images/TT09.16.gif">
+<p>While this bitmap certainly is not attractive, you can make very nice looking bitmaps if you use a bit of good taste and patience. 
+<p>Here is a good example, done in the style of Apple's iPhone. An easy to read screen font (Ariel, which looks a lot like Helvetica) is used. The color transitions are gentle and subtle. This image is actually made up of 3 bitmaps: The "Edit" and "+" buttons are bitmaps on top of a full width bitmap with the Caption of "Favorites". On an actual device and in the IDE, the color transitions are more gradual than can be rendered in this document.
+<p><img src="TT09.images/TT09.17.gif">
+
+<p>Cool stuff!
+
+<h3><a name="buttons">5. Buttons</H3>
+
+In the last section, "Captions and Gradients", we saw how a nice looking menu bar can be made using Bitmaps. Now, let's show how these bitmaps can act as buttons. Let's start by adding a field:
+<p><img src="TT09.images/TT09.18.gif">
+
+<p>Next, let's put a message in the TextBox when the plus sign is clicked. (Do the same for the Edit Bitmap.)
+<p><img src="TT09.images/TT09.19.gif">
+
+<p>Here is how the app looks when it is running and the two buttons are clicked:
+
+<p><img src="TT09.images/TT09.20.gif">
+
+
+<h3><a name="bigimages">6. Images bigger than 64K</H3>
+
+<p>Images have a limit of 64K. The actual formula is<pre>
+	width * height * bitdepth + 23 < 65535
+</pre>
+What do you do if your image is larger?
+
+<p>The method used is called Tiling. You cut the image up into smaller pieces, then display them next to each other to make a larger image. Let's start another project, with a bitmap in the top left:
+<p><img src="TT09.images/TT09.21.gif">
+<p>Set the picture property to Dino320width16bit-01-01.bmp
+<p><img src="TT09.images/TT09.22.gif">
+<p>See the image size? 64,000 bytes, just about as big as is allowed. Now, set up another bitmap just underneath, with image Dino320width16bit-01-02.bmp
+<p><img src="TT09.images/TT09.23.gif">
+<p>There we go! We have made what will look like a single picture out of the two images.

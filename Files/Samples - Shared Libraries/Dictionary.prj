@@ -1,0 +1,90 @@
+"mdl"
+9
+"Project1","appl","Test",1009,505,0
+"Sub Project_Startup()
+	Global ref as Integer
+	loadlibrary ~NSDictLib~,~NSDL~
+End Sub"
+0
+0
+""
+""
+""
+""
+""
+""
+"..\..\themes\Classic.pdb"
+""
+"resfile"
+1
+"Classic"
+1008
+"DBIM"
+"..\..\themes\Classic.pdb"
+"resfile"
+1
+"NSDictLib"
+1009
+"DBIM"
+"..\..\Lib\NSDictLib.prc"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form1"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,12,32,12,104,#TRUE#,0,"Create a Dictionary",0,0,0
+"Sub object1004()
+	Dim in as String
+	Dim s as String
+	
+	in=~key1=Monday|key2=Tuesday|key3=Wednesday|key4=Thursday|key5=Friday|key6=Saturday|key7=Sunday~
+	
+	ref = NSDL.NewDict()
+	NSDL.fromString(ref, in, ~|~)
+	
+	'change one of the keys
+	s = NSDL.getKeyVal(ref, ~Key5~)
+	NSDL.setKeyVal(ref, ~Key5~, ~Freitag~)
+	
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1005",1005,12,56,12,104,#TRUE#,0,"Do some lookups",0,0,0
+"Sub object1005()
+	Dim c as Integer
+	Dim s as String
+	
+	c = NSDL.count(ref)
+	s = NSDL.getKeyVal(ref, ~Key5~)
+	
+	MsgBox ~There are ~ & str(c) & ~ Records. Key5 is ~ & s
+	
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1006",1006,12,80,12,104,#TRUE#,0,"Close the Dictionary",0,0,0
+"Sub object1006()
+
+'We could delete all the keys if we wanted to start over
+NSDL.clear(ref)
+
+'But normally, we would just get rid of the dictionary
+NSDL.FreeDict(ref)
+
+End Sub"
+"end"

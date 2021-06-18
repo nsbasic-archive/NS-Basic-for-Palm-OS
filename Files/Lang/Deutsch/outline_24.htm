@@ -1,0 +1,108 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Asc </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Asc                                                                                                            Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>ASC(<i>theString</i> as String)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>liefert eine Ganzzahl mit dem ASCII Wert für das erste
+Zeichen des übergebenen String. Das Ergebnis ist im Bereich von 0-255.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b> </p>
+
+<p class=Code>Dim s as String</p>
+
+<p class=Code>Dim i as Integer</p>
+
+<p class=Code>s=“a”</p>
+
+<p class=Code>i=Asc(s) ‘i hat
+nun den wert 97</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>oder</p>
+
+<p class=Code>Dim s as String</p>
+
+<p class=Code>Dim i(5) as Integer</p>
+
+<p class=Code>Dim j as Integer</p>
+
+<p class=Code>s=&quot;Hello&quot;</p>
+
+<p class=Code>for i=1 to 5 </p>
+
+<p class=Code>  i(j)=Asc(Mid(s,i,1))</p>
+
+<p class=Code>next</p>
+
+<p class=ManualBody>Dies speichert die ASCII Werte für &quot;Hello&quot; in
+eine Liste, wobei &quot;i&quot; folgende Werte annimmt:</p>
+
+<p class=Code>i(1)=72 ‘ASCII
+Wert für ‘H’</p>
+
+<p class=Code>i(2)=101 ‘ASCII
+Wert für ‘e’</p>
+
+<p class=Code>usw. für i(3),i(4), und i(5)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

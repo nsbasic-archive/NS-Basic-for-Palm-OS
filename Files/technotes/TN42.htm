@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 42: Using the Dictionary Library</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="19%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="81%" VALIGN="TOP">
+	  <h2>Tech Note 42: Using the Dictionary Library</h2>
+	  <h3>January 19, 2009</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+<i>This library kindly contributed by Bobby Kolov of <a href="http://www.beiks.com" target="_top">BEIKS LLC</a>.</i>
+<P>NSBDictLib implements a key/value dictionary container object. It is useful for storing named variables, preferences, limited user input etc., so they can be rapidly accessed.  All stored entries are in the Dynamic Heap, so they can't be too big.
+
+<p>This can be useful for storing values between forms or loading initial settings. Another use would be to keep a set of string values depending on language (English, German, Japanese, etc), and use it to load captions and titles in your app. 
+
+
+<P>To use it, add NSBDictLib.prc to your project as a resource. It is a small file, about 4k in size. Initialise it in your Startup code as follows:
+
+<pre>
+     loadLibrary "NSDictLib", "NSDL"   'case is important
+</pre>
+To see how each of these functions works, see the NSBDictLib sample project.
+
+<p>Files included:
+<TABLE>
+	<TR>
+		<TD>NSBDictLib.INF</TD> <TD>The info file for NSBDictLib. Put this in your \nsbasic\lib folder.</TD>
+	</TR>
+	<TR>
+		<TD>NSBDictLib.prc</TD> <TD>The library. Put this into your \nsbasic\lib folder and add it to your project.</TD>
+	</TR>
+	<TR>
+		<TD>NSBDictLib.prj</TD> <TD>A sample project that demonstrates the functions.</TD>
+	</TR>
+</TABLE>
+
+<hr>
+
+
+<h4>NewDict()</h4>
+
+Returns a reference to a new dictionary. Use this value in subsequent calls to the library. When you are done using a dictionary, use FreeDict to release it.<pre>
+' Create a new dictionary object; the library can produce and operate over multiple dictionaries
+' which is very convenient
+Dim ref as Integer
+ref = NSDL.NewDict()
+</pre>
+
+<h4>FreeDict(ref)</h4>
+
+Get rid of the dictionary and free up the memory it used. This needs to be doen for each dictionary that is created, or you will get an error when closing the program.<pre>
+NSDL.FreeDict(ref)</pre>
+
+<h4>SetKeyVal(ref, keyname, value)</h4>
+
+Set a value in the dictionary to a string. If keyname does not exist, it is created. KeyName can be any string.<pre>
+NSDL.SetKeyVal(ref, "Key1", "Value1")</pre>
+
+<h4>GetKeyVal(ref, keyname)</h4>
+
+Returns a value from the dictionary. <pre>
+varpref = NSDL.GetKeyVal(ref, "Key1")
+</pre>
+<h4>DelKey(ref, keyname)</h4>
+
+Delete a key from the dictionary.<pre>
+NSDL.DelKey(ref, "Key1")</pre>
+
+<h4>Count(ref)</h4>
+
+Returns the number of keys in the dictionary.<pre>
+NumberOfKeys = NSDL.count(ref)</pre>
+
+<h4>GetKeyAt(ref, pos)</h4>
+
+Returns the key at item 'pos' in the dictionary.<pre>
+key12 = NSDL.GetKeyAt(ref, 12)</pre>
+
+<h4>GetValAt(ref, pos)</h4>
+
+Returns the value at item 'pos' in the dictionary.<pre>
+val12 = NSDL.GetValAt(ref, 12)</pre>
+
+<h4>Clear(ref)</h4>
+
+Clear out all keys and values from a dictionary.<pre>
+NSDL.Clear(ref)</pre>
+
+<h4>FromString(ref, in, delimiter)</h4>
+
+Create a number of keys from a string of values. This lets you set a up a series of values in one step. A handy trick is to store the 'in' string in a database.<pre>
+Dim in as String
+in = "A=Cartman|B=Kenny|C=Chef"
+NSDL.FromString(ref, in, "|")</pre>
+
+This sample creates 3 keys ("A", "B", "C") with the values "Cartman", "Kenny" and "Chef" respectively.
+
+<h4>ToString(ref, delimiter)</h4>
+
+Return a string of all the keynames and values in the dictionary.<pre>
+Dim out as String
+out = NSDL.ToString(ref, "|")</pre>
+
+The string, out, will now have the value "A=Cartman|B=Kenny|C=Chef"
+
+
+</html>
+
+

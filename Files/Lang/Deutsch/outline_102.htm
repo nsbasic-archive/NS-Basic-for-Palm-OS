@@ -1,0 +1,243 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Grid </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>Grid                                                                                                                Objekt</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Mit dem Grid (Raster) Objekt können Sie Daten, die per
+Programm oder durch automatisches Laden aus einer Datenbank erzeugt wurden, in
+Tabellenform anzeigen. Der grundsätzliche Aufbau des Rasters wird während der
+Programmierung festgelegt und zur Laufzeit mit Daten gefüllt.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Wenn eine Zelle des Rasters angeklickt wird, werden die
+Zeilen- und Spaltenangaben bereitgestellt und können von Ihrem Programm
+ausgewertet werden. Zwar können die Zellen eines Grid nicht direkt vom Anwender
+bearbeitet werden, aber Sie können deren Inhalt mittels der Parameter
+TextMatrix und ValuesMatrix für Strings bzw. numerische Werte ändern. Text und
+Value können auf die gerade ausgewählte Zelle des Rasters angewendet werden.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Lesen Sie auch Abschnitt 9 dieses Handbuches, der eine
+detaillierte Beschreibung dieses Objektes enthält.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Spezifische
+Eigenschaften und Methoden dieses Objektes</b></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;'>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span lang=EN-GB>.BINDTODATABASE</span> <i><span lang=EN-GB>dbName</span></i><span lang=EN-GB>, <i>dbFieldNameList</i> [Where <i>condition</i>]</span></p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Füllt ein Grid automatisch mit Daten aus einer Datenbank.
+  <i>dbName</i> ist der Variablenname einer
+  Datenbank, der zuvor mittels DIM WITH RECORD Anweisung festgelegt wurde. <i>dbFieldNameList</i> enthält eine Liste von
+  Feldnamen oder den Namen einer TYPE-Struktur der Datenbank. <i>Condition</i> ist ein optionales Argument,
+  das festlegt, welche Datensätze angezeigt werden. Das Format entspricht dem
+  einer IF Anweisung</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COL</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze die aktuelle Spalte. Liegt zwischen 1 und
+  COLS.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COLS</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese die Anzahl der Spalte.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COLTYPE <i>colNo</i>, <i>type</i>, <i>formatString</i></p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Setzt den Typ und das Format einer Spalte. Der
+  Vorgabewert für Spalten ist Text ohne Inhalt. Wenn Sie den Datentyp einer
+  Spalte ändern wollen, müssen Sie dazu zur Laufzeit diese Methode verwenden. <i>ColNo</i> ist eine existierende Spaltennummer
+  im Raster. <i>Type</i> ist entweder
+  &quot;text&quot;,&quot;numeric&quot; oder &quot;checkbox&quot;. <i>FormatString</i> hängt von <i>type</i> ab: für &quot;text&quot;, stellt
+  es den Vorgabewert der Zelle dar, für &quot;numeric&quot;, ist es ein
+  Formatstring, wie er beim FORMAT Befehl verwendet wird. Bei
+  &quot;checkbox&quot; wird der <i>formatString</i>
+  rechts neben der Checkbox angezeigt. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.COLWIDTH(<i>colNo</i>) </p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span lang=EN-GB>Lese
+  oder setze die Breite der Spalte <i>columnNo.
+  </i></span>Zum Ausblenden einer Spalte auf -1 setzen.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span lang=EN-GB>.FONTMATRIX(<i>rowNo</i>, <i>ColNo</i>)</span></p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze die Font-Nummer (0-7) für eine Zelle.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span lang=EN-GB>.HIDEGRIDLINES</span></p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span lang=EN-GB>Gitterlinien
+  ausblenden.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.ROW</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze die aktuelle Zeilenummer. Liegt zwischen
+  1 und ROWS. Auf 0 setzen, um die Gitterauswahl zurückzusetzen.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.ROWDATA</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze den Wert rowdata der Zeile.
+  (Benutzerdefinierter Wert)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.ROWS</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze die Anzahl der Zeilen.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.SHOWGRIDLINES</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><span lang=EN-GB>Gitterlinien
+  anzeigen</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.TEXT</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze den Text der aktuellen Zelle.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.TEXTMATRIX(<i>rowNo</i>, <i>ColNo</i>)</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze den Text der Zelle an Position <i>rowNo</i>, <i>ColNo</i>.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.TOPROW</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze die erste anzuzeigende Zeile</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.VALUE</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze den numerischen Wert der aktuellen Zelle.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=115 valign=top style='width:1.2in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>.VALUEMATRIX(<i>rowNo</i>, <i>ColNo</i>)</p>
+  </td>
+  <td width=427 valign=top style='width:4.45in;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Lese oder setze den numerischen Wert der Zelle an
+  Position <i>rowNo</i>, <i>ColNo</i>.</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Unterstütze
+Eigenschaften</b> (beim Programmieren festlegen)</p>
+
+<p class=ManualBody>Cols, Has Scrollbar, Height, Left, Top, Visible Rows, Width</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Andere unterstütze
+Methoden</b> (Siehe auch &quot;Methoden&quot;)</p>
+
+<p class=ManualBody>Add, Clear, Hide, Redraw, Remove, Show</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

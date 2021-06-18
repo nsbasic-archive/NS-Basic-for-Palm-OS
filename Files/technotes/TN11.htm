@@ -1,0 +1,830 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 11: Using Handera Devices</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 11: Using HandEra Devices</h2>
+	  <h3>Jun 12, 2001</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<P>(Special thanks to Ron Glowka)
+
+<P>Starting with NS Basic/Palm 1.12, the NSBHandEra Shared Library provides support for the HandEra's high resolution screen, virtual silkscreen, and audio features. This document describes the functions in this library.  The HandEra 330 Programmer's Companion and Programmer's Reference Manual should also be referenced in order to fully understand the purpose and use of this shared library's functions.  These manuals are part of the HandEra SDK which can be downloaded from:
+
+<P><A HREF="http://www.Handera.com/support/developsupport.asp">http://www.Handera.com/support/developsupport.asp</A>
+
+<P>The NSBHandEra Shared Library provides a subset of the HandEra SDK functions.  For the most part, the functions of this library are simply "wrappers" that allow the HandEra API functions to be called from NSBasic.  The functions that have not yet been implemented, include the functions which support the customization of the HandEra's virtual silkscreen bitmaps and the audio record and play features.
+
+<P>To test your programs, it is not necessary to have an actual HandEra 330. Most of the functions (except for some the audio ones) will work using a specially modified version of POSE that is available from HandEra, along with the HandEra ROM image. Both files are available from the HandEra Developer Support page.
+
+<h2>Using the HandEra functions in your program</h2>
+
+<P>1. The HandEra.INF file is put into \NSBasic\Lib by the NS Basic Palm installer. HandEra.prc is put into \NSBasic\download and should be downloaded to your device or POSE.
+
+<P>2. The library must be loaded using the NSBasic LoadLibrary statement.  This statement should be located in the program's Startup code so that the functions will be available throughout the program.  The LoadLibrary statement has an optional second parameter to allow you to specify an abbreviated reference name for the library's functions.  The examples in this document use "NSBH" for this reference name.  Example:
+
+<P>Program's Startup code:
+
+<pre>Sub main() 
+	LoadLibrary "NSBHandera", "NSBH" 
+End Sub</pre>
+
+<p>3. If your application is using High-Res mode, turn on the checkbox in Build...Options.
+
+<p>4. If you have High-res icons, use PalmRI to add them to your .prc file after you compile it. Instructions on using PalmRI are contained in <A HREF="http://nsbasic.com/palm/info/technotes/TN04.htm">Tech Note 04</A>. PalmRI is located in \program files\nsbasic. 
+
+<p>The new ResType and Res IDs you need to create are as follows:
+<TABLE BORDER CELLSPACING=1>
+	<TR>
+		<TD>ResType</TD> <TD>Res ID</TD> <TD>Notes</TD>
+	</TR>
+	<TR>
+		<TD>2000</TD> <TD>tAIB</TD> <TD>large Icons: 32x32 images</TD>
+	</TR>
+	<TR>
+		<TD>2001</TD> <TD>tAIB</TD> <TD>small icons: 24x14 image</TD>
+	</TR>
+	<TR>
+		<TD>2002</TD> <TD>tAIB</TD> <TD>Inverse large icons: 32x32</TD>
+	</TR>
+</TABLE>
+
+<p>5. Additional HandEra Events: The HandEra 330 has 4 additional button functions: the Jog dial and the Aux button. According to the UI guidelines, pushing in the Jog button is the same as hitting the return key on keyboard. The Aux button is the escape key. It is used to exit the current form.
+<P>In addition, the HandEra sends an event to your program if the arrows  are used to mimimize or maximize the Silkscreen.
+
+<TABLE BORDER CELLSPACING=1>
+	<TR>
+		<TD>HandEra Button</TD> <TD>GetEventType()</TD> <TD>GetKey()</TD>
+	</TR>
+	<TR>
+		<TD>Aux</TD> <TD>1</TD> <TD>27 (escape)</TD>
+	</TR>
+	<TR>
+		<TD>Jog Right</TD> <TD>1</TD> <TD>13 (return)</TD>
+	</TR>
+	<TR>
+		<TD>Jog Up</TD> <TD>5</TD> <TD>12</TD>
+	</TR>
+	<TR>
+		<TD>Jog Down</TD> <TD>5</TD> <TD>3</TD>
+	</TR>
+	<TR>
+		<TD>Silkscreen Changed</TD> <TD>24574</TD> <TD></TD>
+	</TR>
+</TABLE>
+
+<h2>NSBHandEra Shared Library Function Reference</h2>
+
+<P>Except for the Version() function, all the parameter and return data types are either "Integer" or "String".  A return value of -1 indicates that the device is not a HandEra device.  All functions check to ensure that the HandEra features are available before a HandEra API is used. This should allow you to use the NSBHandEra Shared Library on any device - even if it is not a HandEra device.  Of course, the library function will not perform as desired, but it should not crash.
+
+<h4>Version</h4>
+
+<pre>VersionNbr = NSBHandEra.Version()</pre>
+
+<p>Returns the version number of the NSBHandEra Shared Library.
+
+<p>Parameters: None
+
+<p>Returns:	VersionNbr as Double
+
+<p><i>Example</i>
+<pre>
+	Dim VersionNbr as Double
+	VersionNbr = NSBH.Version()</pre>
+
+<h4>CompileInfo</h4>
+
+<pre>NSBHandEra.CompileInfo CompileDate, CompileTime</pre>
+
+<p>Returns the date and time that the NSBHandEra Shared Library 
+was compiled. The CompileDate and CompileTime string variables must be initialized prior to calling CompileInfo.  
+
+<p>Parameters: CompileDate as String
+		CompileTime as String
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim CompileDate as String
+	Dim CompileTime as String
+
+	CompileDate = "mmm dd yyyy"	'11 characters
+	CompileTime = "hh:mm:ss"	'8 characters
+
+	NSBH.CompileInfo CompileDate, CompileTime</pre>
+
+<h4>AudioAdjVolumeSupported</h4>
+
+<pre>AdjVolumeSupported = NSBHandEra.AudioAdjVolumeSupported()</pre>
+
+<p>Returns 1 if the HandEra device supports the Adjust Volume
+	feature.  If it doesn't, it returns 0.
+
+<p>Parameters:	None
+
+<p>Returns:	Answer as Integer.
+
+<p><i>Example</i>
+<pre>
+	Dim Answer as Integer
+	Answer = NSBH.AudioAdjVolumeSupported()</pre>
+
+<h4>AudioDTMFSupported</h4>
+
+<pre>DTMFSupported = NSBHandEra.AudioDTMFSupported()</pre>
+
+<p>Returns 1 if the HandEra device supports the DTMF Play
+	features.  If it doesn't, it returns 0.
+
+<p>Parameters:	None
+
+<p>Returns:	Answer as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim Answer as Integer
+	Answer = NSBH.AudioDTMFSupported()</pre>
+
+<h4>AudioGetMasterVolume</h4>
+
+<pre>Volume = NSBHandEra.AudioGetMasterVolume()</pre>
+
+<p>Returns the HandEra volume setting.
+
+<p>Parameters:	None
+
+<p>Returns:	Volume as Integer(0 to 255)
+
+<p><i>Example</i>
+<pre>
+	Dim Volume as Integer
+	Volume = NSBH.AudioGetMasterVolume()</pre>
+
+<h4>AudioGetMute</h4>
+
+<pre>Muted = NSBHandEra.AudioGetMute()</pre>
+
+<p>Returns the mute setting of the HandEra device.
+
+<p>Parameters:	None
+
+<p>Returns:	Muted as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim Muted as Integer
+	Muted = NSBH.AudioGetMute()</pre>
+
+<h4>AudioPlayDTMFChar</h4>
+
+<pre>NSBHandEra.AudioPlayDTMFChar DTMFString, ToneLength</pre>
+
+<p>Plays a 1 character DTMF (Dual Tone Multi Frequency) sound.
+	Telephone "Touch Tones" are DTMF sounds.  This function can
+	be used to implement a phone dialer. The HandEra POSE currently does not properly support the
+	DTMF functions.
+
+<p>Parameters:<br>
+DTMFString as String (Only the first character is used)<br>
+ToneLength as Integer (presumably in "ticks")
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim ToneLength as Integer
+	Dim DTMFString as String
+
+	DTMFString = "*"
+	ToneLength = 25
+
+	NSBH.AudioPlayDTMFChar DTMFString, ToneLength</pre>
+
+<h4>AudioPlayDTMFStr</h4>
+
+<pre>NSBHandEra.AudioPlayDTMFStr DTMFString, ToneLength, GapLength</pre>
+
+<p>Plays a string of DTMF (Dual Tone Multi Frequency) sounds. Telephone "Touch Tones" are DTMF sounds.  This function can be used to implement a phone dialer.  The HandEra POSE currently does not properly support the DTMF functions.  In fact, this particular function seems to cause the HandEra POSE to enter an infinite loop.
+
+<p>Parameters:<br>
+DTMFString as String<br>
+ToneLength as Integer (presumably in "ticks")<br>
+GapLength as Integer (presumably in "ticks")<br>
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim ToneLength as Integer
+	Dim GapLength as Integer
+	Dim DTMFString as String
+
+	DTMFString = "555-2121"
+	ToneLength = 25
+	GapLength = 10
+
+	NSBH.AudioPlayDTMFStr DTMFString, ToneLength, GapLength</pre>
+
+<h4>AudioPlayWaveSupported</h4>
+
+<pre>PlayWaveSupported = NSBHandEra.AudioPlayWaveSupported()</pre>
+
+<p>Returns 1 if the HandEra device supports the Play Wave
+	features.  If it doesn't, it returns 0.
+
+<p>Parameters:	None
+
+<p>Returns:	Answer as Integer
+		(1 = True)
+		(0 = False)
+		(-1 = Not a HandEra device)
+
+<p><i>Example</i>
+<pre>
+	Dim Answer as Integer
+	Answer = NSBH.AudioPlayWaveSupported()</pre>
+
+<h4>AudioRecordWaveSupported</h4>
+
+<pre>RecordWaveSupported = NSBHandEra.AudioRecordWaveSupported()</pre>
+
+<p>Returns 1 if the HandEra device supports the Record Wave
+	features.  If it doesn't, it returns 0.
+
+<p>Parameters:	None
+
+<p>Returns:	Answer as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim Answer as Integer
+	Answer = NSBH.AudioRecordWaveSupported()</pre>
+
+<h4>AudioSetMasterVolume</h4>
+
+<pre>NSBHandEra.AudioSetMasterVolume Volume</pre>
+
+<p>Sets the master volume level of the HandEra device.
+
+<p>Parameters:	Volume as Integer (0 to 255)
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim Volume as Integer
+	Volume = 127
+	NSBH.AudioSetMasterVolume Volume</pre>
+
+<h4>AudioSetMute</h4>
+
+<pre>NSBHandEra.AudioSetMute Muted</pre>
+
+<p>Sets the muted setting of the HandEra device.
+
+<p>Parameters:	Mute as Integer (1 = True, 0 = False)
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim Muted as Integer
+	Muted = 1
+	NSBH.AudioSetMute Muted</pre>
+
+<h4>AudioVolumeDlg</h4>
+
+<pre>NSBHandEra.AudioVolumeDlg TitleString</pre>
+
+<p>Displays a dialog that allows the user to select the
+	volume and muting settings.
+
+<p>Parameters:	TitleString as String
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim TitleString as String
+	TitleString = "Adjust the Volume"
+	NSBH.AudioVolumeDlg TitleString</pre>
+
+<h4>SilkGetGraffitiPersistence</h4>
+
+<pre>Persistence = NSBHandEra.SilkGetGraffitiPersistence()</pre>
+
+<p>Returns the GraffitiPersistence setting in ticks.  
+	Graffiti Persistence is the amount of time that a
+	graffiti stroke is displayed in the HandEra
+	virtual silkscreen area.
+
+<p>Parameters:	None
+
+<p>Returns:	Persistence as Integer (as ticks)  
+
+<p><i>Example</i>
+<pre>
+	Dim Persistence as Integer	
+	Persistence = NSBH.SilkGetGraffitiPersistence</pre>
+
+<h4>SilkMaximizeWindow</h4>
+
+<pre>NSBHandEra.SilkMaximizeWindow()</pre>
+
+<p>Maximize the HandEra virtual silkscreen.
+
+<p>Parameters:	None
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	NSBH.SilkMaximizeWindow()</pre>
+
+<h4>SilkMinimizeWindow</h4>
+
+<pre>NSBHandEra.SilkMinimizeWindow()</pre>
+
+<p>Minimize the HandEra virtual silkscreen.
+
+<p>Parameters:	None
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	NSBH.SilkMinimizeWindow()</pre>
+
+<h4>SilkSetGraffitiPersistence</h4>
+
+<pre>NSBHandEra.SilkSetGraffitiPersistence Persistence</pre>
+
+<p>Sets the GraffitiPersistence setting in ticks.  
+	Graffiti Persistence is the amount of time that a
+	graffiti stroke is displayed in the HandEra
+	virtual silkscreen area.
+
+<p>Parameters:	Persistence as Integer (in ticks)
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim Persistence as Integer
+	Persistence = 100
+	NSBH.SilkSetGraffitiPersistence Persistence</pre>
+
+<h4>SilkWindowMinimized</h4>
+
+<pre>Minimized = NSBHandEra.SilkWindowMinimized()</pre>
+
+<p>Return 1 if the HandEra virtual silkscreen window is minimized.
+	It returns 0, if it is not.
+
+<p>Parameters:	None
+
+<p>Returns:	Answer as Integer
+
+<h4>SizeForm</h4>
+
+<pre>NSBHandEra.SizeForm()</pre>
+
+<p>This function resets the form's window bounds using the current
+	window display extent.  It is used after calling a function
+	that changes the screen mode.  This function erases the screen,
+	so a "Redraw" is required after calling SizeForm().
+
+<p>Parameters:	None
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	NSBH.SizeForm()
+	Redraw</pre>
+
+<h4>VgaBaseToVgaFont</h4>
+
+<pre>VGAFontID = NSBHandEra.VgaBaseToVgaFont(BaseFontID)</pre>
+
+<p>Returns the High Resolution (VGA) font id that is equivalent
+	to the supplied Base (Palm) font id.
+
+<p>Parameters:	BaseFontID as Integer
+
+<p>Returns:	VGAFontID as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim BaseFontID as Integer
+	Dim VGAFontID as Integer
+
+	BaseFontId = 0
+	VGAFontId = NSBH.VgaBaseToVgaFont(BaseFontID)</pre>
+
+<h4>VgaFontSelect</h4>
+
+<pre>FontID = NSBHandEra.VgaFontSelect(FontType, DefaultFontID)</pre>
+
+<p>Display a dialog to allow the user to select a font.  The
+	FontType parameter specifies whether to display only the
+	Base (Palm) fonts or the Base and VGA (High Resolution)
+	fonts.
+
+<p>Parameters:	FontType as Integer
+<UL COMPACT>
+	<LI>0 = Base fonts only
+	<LI>1 = Base and VGA fonts
+	<LI>DefaultFontID as Integer - FontID to highlight as default
+</UL>
+
+<p>Returns:	FontID as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim FontID as Integer
+	Dim FontType as Integer
+	Dim DefaultFontID as Integer
+
+	FontType = 1
+	DefaultFontId = 224
+	FontID = NSBH.VgaFontSelect(FontType, DefaultFontID)</pre>
+
+<h4>VgaFrmModify</h4>
+
+<pre>Error = NSBHandEra.VgaFrmModify()</pre>
+
+<p>Changes the screen mode to "1 to 1", if necessary, and
+	modifies the form's objects by expanding their size by
+	1.5 times.  This allows a 160x160 pixel form to display
+	normally, in "1 to 1" mode, on a 240x240 pixel screen.  
+	Each time this function is called, the forms objects are 
+	expanded, so this function should be called only once.  
+	The form's screen is also erased so a "Redraw" is necessary.
+
+<p>Parameters:	None
+
+<p>Returns:	Error as Integer
+		(-1 = Not a HandEra Device)
+		(-2 = No form is active)
+
+<p><i>Example</i>
+<pre>
+	Dim Error as Integer
+	Error = NSBH.VgaFrmModify()
+	Redraw</pre>
+
+<h4>VgaFrmGetTitleHeight</h4>
+
+<pre>TitleHeight = NSBHandEra.VgaFrmGetTitleHeight()</pre>
+
+<p>Returns the form's title height in pixels.
+
+<p>Parameters:	None
+
+<p>Returns:	TitleHeight as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim TitleHeight as Integer
+	TitleHeight = NSBH.VgaFrmGetTitleHeight()</pre>
+
+<h4>VgaGetScreenMode</h4>
+
+<pre>Mode = NSBHandEra.VgaGetScreenMode()</pre>
+
+<p>Returns the current screen mode.  This function also retrieves
+	the current screen rotation.  The rotation value can be
+	returned by calling VgaGetScreenRotation().
+
+<p>Parameters:	None
+
+<p>Returns:	Mode as Integer
+<UL COMPACT>
+	<LI>		0 = Scale to Fit
+	<LI>		1 = 1 to 1
+	<LI>		-1 = Not a HandEra device
+</UL>
+
+<p><i>Example</i>
+<pre>
+	Dim Mode as Integer
+	Mode = NSBH.VgaGetScreenMode()</pre>
+
+<h4>VgaGetScreenOffset</h4>
+
+<pre>Offset = NSBHandEra.VgaGetScreenOffset()</pre>
+
+<p>Returns the screen offset that was retrieved by a previous
+	VgaGetScreenState() function call.
+
+<p>Parameters:	None
+
+<p>Returns:	Offset as Integer
+<UL COMPACT>
+	<LI>		0 = offsetModeTopLeft
+	<LI>		1 = offsetModeTopCenter
+	<LI>		2 = offsetModeTopRight
+	<LI>		3 = offsetModeCenterLeft
+	<LI>		4 = offsetModeCenterCenter
+	<LI>		5 = offsetModeCenterRight
+	<LI>		6 = offsetModeBottomLeft
+	<LI>		7 = offsetModeBottomCenter
+	<LI>		8 = offsetModeBottomRight
+	<LI>		-1 = Not a HandEra device
+</UL>
+
+<p><i>Example</i>
+<pre>
+	Dim Mode as Integer
+	Dim Offset as Integer
+
+	Mode = NSBH.VgaGetScreenState()
+	Offset = NSBH.VgaGetScreenOffset()</pre>
+
+<h4>VgaGetScreenRotation</h4>
+
+<pre>Rotation = NSBHandEra.VgaGetScreenRotation()</pre>
+
+<p>Returns the screen rotation that was retrieved by a previous
+	VgaGetScreenMode() or VgaGetScreenState() function call.
+
+<p>Parameters:	None
+
+<p>Returns:	Rotation as Integer
+<UL COMPACT>
+	<LI>		0 = rotateModeNone
+	<LI>		1 = rotateMode90
+	<LI>		2 = rotateMode180
+	<LI>		3 = rotateMode270
+	<LI>		-1 = Not a HandEra device
+</UL>
+
+<p><i>Example</i>
+<pre>
+	Dim Mode as Integer
+	Dim Rotation as Integer
+
+	Mode = NSBH.VgaGetScreenMode()
+	Rotation = NSBH.VgaGetScreenRotation()</pre>
+
+<h4>VgaGetScreenState</h4>
+
+<pre>Mode = NSBHandEra.VgaGetScreenState()</pre>
+
+<p>Returns the current screen mode.  This function also retrieves
+	the current screen rotation and offset.  The rotation value can
+	be returned by calling VgaGetScreenRotation().  The offset value
+	can be returned by calling VgaGetScreenOffset().
+
+<p>Parameters:	None
+
+<p>Returns:	Mode as Integer
+<UL COMPACT>
+	<LI>		0 = Scale to Fit
+	<LI>		1 = 1 to 1
+	<LI>		-1 = Not a HandEra device
+</UL>
+
+<p><i>Example</i>
+<pre>
+	Dim Mode as Integer
+	Mode = NSBH.VgaGetScreenState()</pre>
+
+<h4>VgaIsVgaFont</h4>
+
+<pre>Answer = NSBHandEra.VgaIsVgaFont(FontID)</pre>
+
+<p>Returns 1 if the specified FontID is a High Resolution (VGA)
+	Font.  It returns 0, if it is not.
+
+<p>Parameters:	FontID as Integer
+
+<p>Returns:	Answer as Integer
+		(1 = True)
+		(0 = False)
+		(-1 = Not a HandEra device)
+
+<p><i>Example</i>
+<pre>
+	Dim FontID as Integer
+	Dim Answer as Integer
+
+	FontID = 224
+	Answer = NSBH.VgaIsVgaFont(FontID)</pre>
+
+<h4>VgaRestoreScreenState</h4>
+
+<pre>Error = NSBHandEra.VgaRestoreScreenState()</pre>
+
+<p>Restores the screen state that was saved by a previous call
+	to VgaSaveScreenState().  This function erases the form's
+	screen, and as such, should be followed with a Redraw statement.
+
+<p>Parameters:	None
+
+<p>Returns:	Error as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim Error as Integer
+
+	Error = NSBH.VgaRestoreScreenState()
+	Redraw</pre>
+
+<h4>VgaRotateSelect</h4>
+
+<pre>Rotation = NSBHandEra.VgaRotateSelect(DefaultRotation)</pre>
+
+<p>Displays a dialog to allow the user to select a screen rotation.
+	The DefaultRotation parameter specifies a rotation to highlight
+	as the default.  This function does not actually rotate the
+	screen.  You must call the VgaSetScreenMode() or
+	VgaSetScreenState() function with the returned Rotation to 
+	actually rotate the screen.
+
+<p>Parameters:	DefaultRotation as Integer
+<UL COMPACT>
+	<LI>		0 = rotateModeNone
+	<LI>		1 = rotateMode90
+	<LI>		2 = rotateMode180
+	<LI>		3 = rotateMode270
+</UL>
+
+<p>Returns:	Rotation as Integer
+<UL COMPACT>
+	<LI>		0 = rotateModeNone
+	<LI>		1 = rotateMode90
+	<LI>		2 = rotateMode180
+	<LI>		3 = rotateMode270
+	<LI>		-1 = Not a HandEra device
+</UL>
+
+<p><i>Example</i>
+<pre>
+	Dim DefaultRotation as Integer
+	Dim Rotation as Integer
+
+	DefaultRotation = 2
+	Rotation = NSBH.VgaRotateSelect(DefaultRotation)</pre>
+
+<h4>VgaSaveScreenState</h4>
+
+<pre>NSBHandEra.VgaSaveScreenState()</pre>
+
+<p>Saves the current screen state.  The saved screen state may be
+	restored by calling VgaRestoreScreenState().
+
+<p>Parameters:	None
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	NSBH.VgaSaveScreenState()</pre>
+
+<h4>VgaSetScreenMode</h4>
+
+<pre>Error = NSBHandEra.VgaSetScreenMode(Mode, Rotation)</pre>
+
+<p>Sets the screen mode and rotation.  This function erases the
+	form's screen, and as such, should be followed with a Redraw
+	statement.
+
+<p>Parameters:	Mode as Integer
+<UL COMPACT>
+	<LI>		0 = Scale to Fit
+	<LI>		1 = 1 to 1
+</UL>
+
+		Rotation as Integer
+<UL COMPACT>
+	<LI>		0 = rotateModeNone
+	<LI>		1 = rotateMode90
+	<LI>		2 = rotateMode180
+	<LI>		3 = rotateMode270
+</UL>
+
+<p>Returns:	Error as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim Mode as Integer
+	Dim Rotation as Integer
+	Dim Error as Integer
+
+	Mode = 1
+	Rotation = 0
+	Error = NSBH.VgaSetScreenMode(Mode, Rotation)
+	Redraw</pre>
+
+<h4>VgaSetScreenState</h4>
+
+<pre>Error = NSBHandEra.VgaSetScreenState(Mode, Rotation, Offset)</pre>
+
+<p>Sets the screen mode, rotation, and (presumably) offset.  
+	This function erases the form's screen, and as such, should 
+	be followed with a Redraw statement.
+
+<p>Parameters:	Mode as Integer
+<UL COMPACT>
+	<LI>		0 = Scale to Fit
+	<LI>		1 = 1 to 1
+</UL>
+
+		Rotation as Integer
+<UL COMPACT>
+	<LI>		0 = rotateModeNone
+	<LI>		1 = rotateMode90
+	<LI>		2 = rotateMode180
+	<LI>		3 = rotateMode270
+</UL>
+
+		Offset as Integer
+<UL COMPACT>
+	<LI>		0 = offsetModeTopLeft
+	<LI>		1 = offsetModeTopCenter
+	<LI>		2 = offsetModeTopRight
+	<LI>		3 = offsetModeCenterLeft
+	<LI>		4 = offsetModeCenterCenter
+	<LI>		5 = offsetModeCenterRight
+	<LI>		6 = offsetModeBottomLeft
+	<LI>		7 = offsetModeBottomCenter
+	<LI>		8 = offsetModeBottomRight
+</UL>
+
+<p>Returns:	Error as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim Mode as Integer
+	Dim Rotation as Integer
+	Dim Offset as Integer
+	Dim Error as Integer
+
+	Mode = 1
+	Rotation = 0
+	Offset = 0
+	Error = NSBH.VgaSetScreenState(Mode, Rotation, Offset)
+	Redraw</pre>
+
+<h4>VgaVgaToBaseFont</h4>
+
+<pre>BaseFontID = NSBHandEra.VgaVgaToBaseFont(VGAFontID)</pre>
+
+<p>Returns the Base (Palm) font id that is equivalent
+	to the supplied High Resolution (VGA) font id.
+
+<p>Parameters:	VGAFontID as Integer
+
+<p>Returns:	BaseFontID as Integer
+
+<p><i>Example</i>
+<pre>
+	Dim VGAFontID as Integer
+	Dim BaseFontID as Integer
+
+	VGAFontId = 224
+	BaseFontId = NSBH.VgaVgaToBaseFont(VGAFontID)</pre>
+
+<h4>VgaWinDrawBitmapExpanded</h4>
+
+<pre>NSBHandEra.VgaWinDrawBitmapExpanded ObjectID, X, Y</pre>
+
+<p>Expands a bitmap by 1.5 times and draws it at the specified
+	X and Y coordinates.  The bitmap is specified by it's object
+	id.  This object id is the same id that appears when you look
+	at a bitmap's properties in the NSBasic IDE.
+
+<p>Parameters:<br>	
+	ObjectID as Integer<br>
+		X as Integer<br>
+		Y as Integer<br>
+
+<p>Returns:	None
+
+<p><i>Example</i>
+<pre>
+	Dim ObjectID as Integer
+	Dim X as Integer
+	Dim Y as Integer
+
+	ObjectID = 1155
+	X = 120
+	Y = 105
+	NSBH.VgaWinDrawBitmapExpanded ObjectID, X, Y
+
+</pre></BODY> </HTML>
+

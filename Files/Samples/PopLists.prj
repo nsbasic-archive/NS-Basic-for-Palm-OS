@@ -1,0 +1,315 @@
+"mdl"
+8
+"PopLists","appl","Test",1022,505,0
+"sub main()
+
+GLOBAL swtInfo as integer       'info page control (0=off, 1-3=page)
+GLOBAL pageInfo(3) as string    'info contents by page (3 pages)
+GLOBAL getTaps as integer       'pen event handling switch (0=no, 1=handle pen up&down)
+
+' page 1 of info
+pageInfo(1)=~This program demonstrates the use of POPUP LISTS, compliments of John Kelly.~
+pageInfo(1)=pageInfo(1)+&h0a+&h0a+~It uses two inter-related popup lists to specify a hypothetical mode of travel and calculate a (phoney) estimated travel time (ETT).~
+pageInfo(1)=pageInfo(1)+&h0a+&h0a+~It also demonstrates the control of popup lists using two buttons, one that makes a selection and one that only 'suggests' a selection.~
+' page 2 of info
+pageInfo(2)=~Also demonstrated is the use of .HIDE and .SHOW to do different things with a single screen. (This could be done using separate screens but would involve a screen re-initialization.)~
+pageInfo(2)=pageInfo(2)+&h0a+&h0a+~The fact you are viewing this textbox means you found the Info icon in the top-right corner of the screen. Tapping that icon hides the other objects and shows this textbox.~
+' page 3 of info
+pageInfo(3)=~It also triggers pen event handlng to allow you to close this textbox by tapping it.~
+pageInfo(3)=pageInfo(3)+&h0a+&h0a+~(Tapping the icon a second time also does the same thing.)~
+pageInfo(3)=pageInfo(3)+&h0a+&h0a+~So it also demonstrates the simple use of pen event handling and control.~
+pageInfo(3)=pageInfo(3)+&h0a+&h0a+~                       by John Kelly~+&h0a+~       <JKelly00M@som.llu.edu>~
+
+' declare subroutines for use by any module
+
+DEFINE subList as integer           'populates sub-list based on main list selection
+DEFINE clsInfo as integer           'closes info textbox and shows normal screen objects
+
+' declare arrays as global for use by any module
+
+GLOBAL aList(5,5) as string
+GLOBAL lList(5) as integer
+
+' fill the array with list contents (this could be done by reading from a database...)
+' aList(5,5) contains the popup list contents
+' lList(5) contains the number of items in the sub-list
+
+aList(1,1)=~Auto~
+aList(1,2)=~Private~    '1st item in Auto sub-list
+aList(1,3)=~Rental~     '2nd item in Auto ...
+aList(1,4)=~Taxi~       '3rd item ...
+lList(1)=3              'Auto sub-list contains 3 items
+aList(2,1)=~Plane~
+aList(2,2)=~Private~
+aList(2,3)=~UnitedAir~
+aList(2,4)=~DeltAir~
+aList(2,5)=~AlaskAir~
+lList(2)=4
+aList(3,1)=~Bus~
+aList(3,2)=~Private~
+aList(3,3)=~Greyhound~
+aList(3,4)=~Trailways~
+lList(3)=3
+aList(4,1)=~Train~
+aList(4,2)=~Amtrak~
+aList(4,3)=~Santa Fe~
+aList(4,4)=~NorfolkWestern~
+lList(4)=3
+aList(5,1)=~Other~
+aList(5,2)=~on foot~
+aList(5,3)=~hitch hike~
+aList(5,4)=~hotair balloon~
+aList(5,5)=~telekinesis~
+lList(5)=4
+
+end sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000121"
+"sub project_termination_9915()
+
+end sub"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"PopList Example"
+"Screen1"
+"sub Screen1004_before()
+
+  popList.Clear     'Clear both lists
+  popList2.Clear
+  fldInfo.Hide      'hide the info box
+  swtInfo=0         'set info switch OFF (0=Off, 1-3=on)
+  getTaps=0         'set pen event handling control to OFF (0=Off, 1=On)
+
+end sub"
+0
+"sub Screen1004_after()
+
+  lblInfo.Label=&h04        'place info icon symbol
+  lblD.Label=&h07           'place page-down symbol
+  lblD.Hide                 ' and the paging controls
+
+  dim n as integer
+
+  for n=1 to 5              'populate main list from array (n,1)
+    popList.Add aList(n,1) 
+  next
+
+  popList.Label=~Category~  'set initial list labels
+  popList2.Label=~Description~
+
+  fld1.Text=~~              'clear ETT hrs
+  fldInfo.Text=~~           'clear info text
+
+end sub"
+"sub Screen1004_events()
+
+  dim n as integer
+  dim px as integer
+  dim py as integer
+
+  if getTaps=0 then exit sub   'check for event handling control (0=Off, 1=On)
+  n=GetEventType()              'find out what event happened
+  if n=2 or n=3 then            'was it pen down or pen up
+    GetPen px,py,n              'if pen over textbox
+    if px<150 and py>15 then
+      SetEventHandled           ' then handle event
+      n=clsInfo()               ' using subroutine to close textbox
+    end if
+  end if
+
+end sub"
+0,0,0,0
+"pop"
+2
+#TRUE#,0,5
+""
+"obj"
+3
+"pop","PopList",1005,17,68,10,52,#TRUE#,0,"?popup",0,0,0
+"sub object1005()
+
+  dim n as integer
+
+  n=subList(2)              'use subroutine to populate sub-list and select item 2
+
+end sub
+
+' this code is made a subroutine so it can be executed by multiple modules
+function subList(item as integer) as integer
+
+  popList2.Clear            'clear list before populating
+
+  dim n as integer
+
+  for n=2 to lList(popList.Selected)+1 'populate description list from sub-array
+    popList2.Add aList(popList.Selected,n)
+  next
+
+  popList2.Selected=item    'caller-specifies item in list for 'auto' selection
+  popList2.Redraw           'redraw to show changes
+
+  fld1.Text=str(((popList.Selected-1)*10)+popList2.Selected)+~ hrs~ 'display calc'd hrs
+  subList=0                 'return code=0 'okay'
+
+end function"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1",1007,10,32,20,61,#TRUE#,0,"Select One",0,0,0
+"sub object1007()
+
+  dim n as integer
+
+  n=1+int(5*rand())         'generate random selection
+  popList.Selected=n        'select random item
+
+' both of the following statements put the selected item in as .Text, but
+' .Redraw has the advantage of not using the source of the popup list
+' both statements are used for illustrative purposes, but either may be eliminated
+
+  popList.Text=aList(n,1)   'set selection as list Text from source array
+  popList.Redraw            'redraw poplist object (puts selection as Text)
+
+  n=subList(1)              'populate sub-list and pre-select item#1
+
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But2",1008,84,32,20,63,#TRUE#,0,"Suggest One",0,0,0
+"sub object1008()
+
+  dim n as integer
+
+  n=1+int(5*rand())                 'make random selection 1-5
+  popList.Selected=n                'use as suggested item
+  popList.Text=&h8d+aList(n,1)      'set .Text to suggestion preceded by special 'flag'
+
+' we DO NOT want to use popList.Redraw because desired .Text is different from selected
+' item; we clear the sub-list since we are only making a 'suggested' selection
+
+  popList2.Clear                    'depopulate sub-list
+  popList2.Text=~Description~       'display sub-list title
+  fld1.Text=~~                      'clear ETT
+
+end sub"
+"pop"
+2
+#TRUE#,0,4
+""
+"obj"
+3
+"pop","PopList2",1009,79,68,10,77,#TRUE#,0,"?popup",0,0,0
+"sub object1009()
+
+  fld1.Text=str(((popList.Selected-1)*10)+popList2.Selected)+~ hrs~ 'display calc'd hrs
+
+end sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#TRUE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Fld1",1011,58,106,14,37,#TRUE#,2,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1",1013,14,90,12,117,#TRUE#,0,"Your ETT (est travel time) is:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","LblInfo",1014,148,1,12,5,#TRUE#,4,"4",0,0,0
+"sub object1014()
+
+  dim n as integer
+
+  if swtInfo=0 then
+    swtInfo=1                       'set to page 1
+    fldInfo.Text=pageInfo(swtInfo)  'place page 1 in textbox
+    but1.Hide                       'hide normal screen contents
+    but2.Hide
+    but3.Hide
+    popList.Hide
+    popList2.Hide
+    lbl1.Hide
+    fld1.Hide
+    fldInfo.Show                    'show info textbox
+    lblD.Label=&h07                 'set page-down symbol
+    lblD.Show                       'show paging symbol
+    getTaps=1                       'turn ON pen event handling
+  else
+    n=clsInfo()                     'use subroutine to close info textbox
+  end if
+  exit sub
+
+end sub
+
+' the following code is made a subroutine for use by multiple modules
+function clsInfo() as integer
+
+  swtInfo=0                       'reset control switch
+  fldInfo.Text=~~                 'clear info textbox
+  fldInfo.Hide                    'hide info textbox
+  lblD.Hide                       ' and paging symbol
+  getTaps=0                       'turn OFF pen event handling
+  but1.Show                       ' and show normal screen contents
+  but2.Show
+  but3.Show
+  popList.Show
+  popList2.Show
+  lbl1.Show
+  fld1.Show
+
+end function"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#TRUE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","FldInfo",1019,2,16,143,149,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","LblD",1021,150,16,12,5,#TRUE#,3,"7",0,0,0
+"sub object1021()
+
+  if lblD.Label=&h07                    'are we paging down?
+    swtInfo=1+swtInfo                   ' increment to next page
+    if swtInfo=3 then lblD.Label=&h08   'on last page (#3), change to page-up symbol
+  else
+    swtInfo=swtInfo-1                   'decrement to previous page
+    if swtInfo=1 then lblD.Label=&h07   'on first page (#1), change to page-down symbol
+  end if
+  fldInfo.Text=pageInfo(swtInfo)        'place new page in info textbox
+
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But3",1022,22,140,13,108,#TRUE#,0,"Stop This Nonsense",0,0,0
+"sub object1022()
+
+  drawchars ~ That's all folks!! ~,40,120,NSBInverted   'say g'bye
+  delay 0.5                                             'delay 1/2 sec for registration
+  stop                                                  'terminate execution
+
+end sub"
+"end"

@@ -1,0 +1,374 @@
+"mdl"
+8
+"SpecEvnt","appl","SpEv",1043,505,0
+"Sub main()
+     Global firstTime as Integer
+     Global shuttingDown as Integer
+     firstTime=0
+     shuttingDown=0
+End Sub"
+0
+0
+"SpecEventExample"
+"1,0,0"
+""
+"Installat."
+""
+"E10000E5"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"Special Keys Example"
+"Screen1"
+""
+0
+""
+"Sub Screen1004_events()
+  Dim key as String
+  Dim skey as String
+  Dim t as String
+  If shuttingDown<>0 Then Exit Sub
+  
+  key=getkey()
+  If getEventType()=nsbPenUp Or getEventType()=nsbPenDown Then Exit Sub
+  
+  skey=str(getEventType()) + ~ ~ + str(asc(key))
+  If getEventType()=7 Then
+    Select Case asc(key)
+    Case 200    
+          t=skey + ~ ~ + ~Palm 5Way released~
+    Case 204    
+          t=skey + ~ ~ + ~Palm 5Way Left~
+    Case 208    
+          t=skey + ~ ~ + ~Palm 5Way Right~
+    Case 216    
+          t=skey + ~ ~ + ~Palm 5Way Select~
+    Case 29
+         t=skey + ~ ~ + ~Alpha Keyboard~
+    Case 30
+         t=skey + ~ ~ + ~Numeric Keyboard~
+    Case 31
+         t=skey + ~ ~ + ~Contrast~
+    Case 32    
+          t=skey + ~ ~ + ~Silkscreen Clock~
+    Case 33    
+          t=skey + ~ ~ + ~Virtual Clock~
+    Case 34    
+          t=skey + ~ ~ + ~Brightness~
+    Case 40    
+          t=skey + ~ ~ + ~Camera Shutter~
+    Case Else
+          t=skey + ~ ~ + ~Palm key code~
+    End Select
+    fldWhat.text=t + chr(10) + fldWhat.text
+    SetEventHandled
+    Exit Sub
+   End If   
+
+  Select Case asc(key)
+    Case 1    'hard button #1 on bottom of case
+          t=skey + ~ ~ + ~Hard button 1~
+    Case 2    'hard button #2 on bottom of case
+          t=skey + ~ ~ + ~Hard button 2~
+    Case 3    'hard button #3 on bottom of case
+          t=skey + ~ ~ + ~Hard button 3~
+    Case 4    'hard button #4 on bottom of case
+          t=skey + ~ ~ + ~Hard button 4~
+    Case 5    'menu key on silkscreen area
+          t=skey + ~ ~ + ~Menu Key~
+    Case 17    'Application key on silkscreen area
+          t=skey + ~ ~ + ~Application Key~
+    Case 7    'Find launch menu key on silkscreen area
+          t=skey + ~ ~ + ~Find Key~
+    Case 16    'Calculator key on silkscreen area
+          t=skey + ~ ~ + ~Calculator Key~
+    Case 11   'up button
+          t=skey + ~ ~ + ~Up Button~
+    Case 12   'down button
+          t=skey + ~ ~ + ~Down Button~              
+    Case 14    'power on/off button
+          t=skey + ~ ~ + ~Power On/Off Button~
+    Case 15    'cradle hotsync button
+          t=skey + ~ ~ + ~Hotsync Button~
+    Case Else
+          t=skey + ~ ~ + ~Other Button~
+  End Select
+  fldWhat.text=t + chr(10) + fldWhat.text
+  SetEventHandled
+End Sub"
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1005",1005,4,20,12,126,#TRUE#,0,"This screen demonstrates the ",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1006",1006,4,32,12,113,#TRUE#,0,"recognition of special keys.",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1007",1007,84,144,12,40,#TRUE#,0,"GetPen",0,0,0
+"Sub object1007()
+  NextForm ~Screen2~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1014",1014,4,44,12,127,#TRUE#,0,"EventType, Key & Description:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1025",1025,128,144,12,28,#TRUE#,0,"Clear",0,0,0
+"Sub object1025()
+    fldWhat.text=~~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1027",1027,4,144,12,36,#TRUE#,0,"Done",0,0,0
+"Sub object1027()
+    shuttingDown=1
+    stop
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1028",1028,44,144,12,36,#TRUE#,0,"SysInfo",0,0,0
+"Sub object1028()
+    NextForm ~Screen3~
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,30000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldWhat",1042,4,56,80,152,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1009,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Penup / PenDown processing"
+"Screen2"
+""
+0
+""
+"sub Screen1009_events()
+  dim res as integer
+  dim curX as integer
+  dim curY as integer
+  global saveX as integer
+  global saveY as integer
+  dim upOrDown as integer
+
+   if firstTime = 0 then
+' msgbox ~1~
+      firstTime=1
+      exit sub
+   endif
+   res=getEventType()
+   if res=1 then
+'msgbox ~1a~
+      exit sub    'ignore keyboard chars
+  endif
+' msgbox ~2~
+   if res=2 then      'pen down
+
+     getPen(saveX,saveY, upOrDown)   'get pen coords
+     fieldSetText  ~fldStartX~, str(saveX)
+     fieldSetText  ~fldStartY~, str(saveY)
+     exit sub
+  endif
+ 
+'msgbox ~3~+ ~  ~+str(res)
+ if res=3 then  'penup
+         getPen(  curX, curY,upOrDown)
+         fieldSetText  ~fldEndX~, str(curX)
+         fieldSetText  ~fldEndY~, str(curY)
+         redraw
+ endif
+  
+  
+end sub"
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1010",1010,8,16,11,138,#TRUE#,0,"Press the stylus to the screen and",0,0,0
+"sub object1010()
+
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1011",1011,60,140,12,96,#TRUE#,0,"Back to screen 1",0,0,0
+"sub object1011()
+  nextscreen ~Screen1~
+end sub
+"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1012",1012,20,28,11,116,#TRUE#,0,"and drag it to a new location.",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","lblStartx",1015,8,44,11,73,#TRUE#,0,"Starting x coord=",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1016",1016,8,56,11,73,#TRUE#,0,"Starting y coord=",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1017",1017,8,68,11,65,#TRUE#,0,"Ending x coord=",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1018",1018,8,80,11,65,#TRUE#,0,"Ending y coord=",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldStartX",1019,88,44,12,64,#TRUE#,0,"     ",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldStartY",1020,88,56,12,64,#TRUE#,0,"      ",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldEndX",1021,88,68,12,64,#TRUE#,0,"      ",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,10,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldEndY",1022,88,80,12,64,#TRUE#,0,"     ",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1024",1024,12,140,12,40,#TRUE#,0,"Done",0,0,0
+"sub object1024()
+  stop
+end sub"
+"vew"
+4,1030,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"SysInfo Values"
+"Screen3"
+""
+0
+""
+"Sub Form1030_Event()
+  Dim key as String
+  Dim skey as String
+  Dim t as String
+  If shuttingDown<>0 Then Exit Sub
+  If getEventType()=2 Or getEventType()=3 Then Exit Sub 'pen up or down
+  
+  fldSysInfo9.text=str(SysInfo(9))+chr(10)+fldSysInfo9.text
+  fldSysInfo10.text=str(SysInfo(10))+chr(10)+fldSysInfo10.text
+  fldSysInfo11.text=str(SysInfo(11))+chr(10)+fldSysInfo11.text
+  
+  SetEventHandled
+End Sub"
+0,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Label1031",1031,4,20,11,44,#TRUE#,0,"SysInfo(9)",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1032",1032,56,20,11,49,#TRUE#,0,"SysInfo(10)",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1033",1033,108,20,11,49,#TRUE#,0,"SysInfo(11)",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#FALSE#,1000,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSysinfo9",1034,4,32,116,48,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#FALSE#,1000,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSysinfo10",1036,56,32,116,48,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#FALSE#,1000,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSysinfo11",1038,108,32,116,48,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1040",1040,128,144,12,28,#TRUE#,0,"Clear",0,0,0
+"Sub object1040()
+    fldSysinfo9.text=~~
+    fldSysinfo10.text=~~
+    fldSysinfo11.text=~~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1041",1041,4,144,12,36,#TRUE#,0,"Done",0,0,0
+"Sub object1041()
+    shuttingDown=1
+    stop
+End Sub"
+"end"

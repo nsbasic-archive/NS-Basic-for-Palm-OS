@@ -1,0 +1,129 @@
+"mdl"
+9
+"StockQuote","appl","NSBd",1018,505,0
+"Sub Project_Startup()
+    Global fd as Integer
+    Global timeout as Integer
+    Global CR as String
+    Global lf as String
+    Global CrLf as String
+    Global err as Integer
+    Global count as Integer
+    
+    loadLibrary ~TcpIpLib~,~tcp~
+    CRLF = chr(13) + chr(10)
+    LF = chr(10)
+    CR = chr(13)
+
+End Sub
+
+Function send(msg as String) as Integer 'send through open TCP/IP connection
+    err=tcp.tcpWrite(fd,msg + crlf)
+    If err<0 Then MsgBox ~Write error ~ + str(err)
+    send=err
+End Function
+
+Function readLine() as String 'read a line from open TCP/IP connection
+    Dim buf as String
+    buf=tcp.tcpRead(fd, count, LF, timeout)
+    If buf=~~ Then
+        MsgBox ~No response~
+        err=-1
+    End If
+    readline=buf
+End Function"
+1017
+0
+"Get Quote"
+"2.0"
+""
+""
+""
+""
+"..\..\themes\Classic.pdb"
+"Sub Project_Termination()
+    tcp.tcpclose(fd)
+End Sub"
+"resfile"
+1
+"TcpIpLib"
+1012
+"DBIM"
+"..\..\Lib\TcpIplib.prc"
+"resfile"
+1
+"Classic"
+1018
+"DBIM"
+"..\..\themes\Classic.pdb"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Stock Quote"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+	fldSymbol.text = ~AAPL~
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,32,36,12,80,#TRUE#,0,"Get Stock Quote",0,0,0
+"Sub object1004()
+    Dim timeout as Integer
+    Dim hostname as String
+    Dim port as Integer
+    Dim buf as String
+    Dim msg as String
+    Dim cmd as String
+      
+    hostname=~download.finance.yahoo.com~
+    port=80
+    timeout=5000
+    count=250
+
+    fd=tcp.tcpOpen(hostname, port, timeout)
+    If fd<0 Then
+        MsgBox ~Open error ~ & str(fd)
+    End If
+    
+    cmd=~GET /d/quotes.cvs?f=sl1&e=.cvs&s=~ & fldSymbol.text  & CRLF
+    tcp.tcpFlush(fd) 			'flush old data
+    err=tcp.tcpWrite(fd,cmd)
+    If err<0 Then
+        MsgBox ~Write error ~ & str(err)
+    Else 
+        buf=~a~ 				'fill buff with a char
+        Do until buf=~~         'read until closed or timeout
+            buf=tcp.tcpRead(fd, count, LF, timeout)
+            msg=msg+buf  		'add lines to msg
+        Loop
+        fldResult.Text=left(msg, len(msg)-2) & LF & fldResult.text  'display result
+    End If
+    tcp.tcpClose(fd)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,5000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldResult",1005,4,52,108,148,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSymbol",1013,64,20,12,60,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1015",1015,16,20,12,42,#TRUE#,0,"Symbol: ",0,0,0
+""
+"end"

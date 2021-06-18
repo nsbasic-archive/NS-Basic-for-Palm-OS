@@ -1,0 +1,27 @@
+[General]
+ExtensionName=NSDL
+PrcName=NSDictLib.prc
+Version=2.1
+Manufacturer=BEIKS LLC
+InfVers=2.0
+
+=HelpStart=
+""
+"String dictionary object"
+""
+=HelpEnd=
+
+[GlobalMethods]
+NewDict=1, func, 0, "NewDict() as int32"
+FreeDict=2, sub, 1, "FreeDict(in fd as int32)"
+SetKeyVal=3, sub, 3, "SetKeyVal(in dict as int32, in key as string, in v as string)"
+GetKeyVal=4, func, 2, "GetKeyVal(in dict as int32, in key as string) as string"
+DelKey=5, sub, 2, "DelKey(in dict as int32, in key as string)"
+Count=6, func, 1, "Count(in dict as int32) as int16"
+GetKeyAt=7, func, 2, "GetKeyAt(in dict as int32, in pos as int16) as string"
+GetValAt=8, func, 2, "GetValAt(in dict as int32, in pos as int16) as string"
+Clear=9, proc, 1, "Clear(in dict as int32)"
+FromString=10, proc, 3, "FromString(in dict as int32, in s as string, in delimiter as string)"
+ToString=11, func, 2, "ToString(in dict as int32, in delimiter as string) as string"
+
+

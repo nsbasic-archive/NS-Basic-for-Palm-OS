@@ -1,0 +1,26 @@
+'PDB Converter Pro NSB
+'by Michael J. Verive, MD
+'last revised 05-27-07
+
+'rev list
+'1.0.0 - initial release 9/17/06
+'1.0.1 - added support for web table header and title from command line
+'        added "Enter Registration Information" to Help menu
+'1.0.2 - fixed bug writing subset of records to PDBs and files
+'        added error handler for config file reading
+'        added code to save window state upon closing for next open
+'1.0.3 - modified code to save window state to use windows registry
+'
+'1.0.4 - fixed bug reading csv/text with more than 32 columns
+'
+'1.0.5 - fixed cosmetic bug with decryption message boxes
+'
+'1.0.6 - Added ability to add user defined number of rows/columns
+'
+'1.0.7 - removed buggy registration option from help menu
+'
+'1.0.8 - added functions to convert lf to crlf pair, and to strip carriage returns
+'
+'1.0.9 - Created PDB Converter Pro NSB from PDB Converter Pro, removing DES and Blowfish encryption/decryption, command-line support
+'
+'1.1.0 - Change to registry settings for saving window information, changed executable for the Tools menu item in NSB to PDB Converter Pro NSB (from pdbcvtpronsb), and removed dependency information for unused controls

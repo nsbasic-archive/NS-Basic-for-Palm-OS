@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 25b: Using Table</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="/images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 25b: Using Tables</h2>
+	  <h3>Jan 7, 2003</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<p><TABLE align="center" BORDE="0" WIDTH="80%" BGCOLOR="#9DBF8D" CELLPADDING="10">
+<TR>
+<TD>
+<p>In this document, I will introduce how to display a table nicely.
+	  <p>Tables are used quite often in applications for many kinds. In a word processor, for example, you may draw lines to create table for organizing data on the screen. That is, a table is a collection of cells, which is arranged in both  horizontal and vertical directions, but Palm doesn't have such a table object for developers. You can draw lines to create a table but the table doesn't let you select or scroll cells. The method I will explain here is to draw lines on the screen while letting users to get data from the table.
+<BR>
+<p>Look at the screen below. <A HREF="TN25.images/testsheet_code.zip">This application</a> (Creator ID: TEST), made only by NS Basic, is able to scroll the cells vertically and select data.<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1601.gif"><BR>
+<BR>
+It looks like it is using a grid object, but look at the IDE window below:<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1602.gif"><BR>
+<BR>
+The project have a bitmap but there are only three buttons on the screen.<br>
+This bitmap is <br> 
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1603.gif"><BR>
+<BR>Texts are drawn directly on the bitmap using the DrawChars command.
+<BR>
+	  <p>The program works  as follows:<br>
+It first defines an array that stores date, content and price. I prepared the following user-defined variable by using Type:<br>
+<PRE>
+    Type SheetData
+        sWhen as String       'when
+        sWhat as String       'what
+        sHow as Integer       'how much
+    End Type
+    
+    Global ShDat(30) as SheetData     'array for display
+</PRE>
+
+<p>The difference between VB and NS Basic is the place of braces "()".
+<pre>
+     In NS Basic:
+          ShDat.sWhat(i)
+     In Visual BASIC:
+          ShDat(i).sWhat
+</pre>
+
+<p>Now, we put dummy data in the variable. The date field contains just a number "day" because I assume that "year" and "month" would be displayed somewhere else. The data here doesn't mean anything.<br>
+<PRE>
+Sub Project_Startup()
+    
+    Type SheetData
+        sWhen as String       'when
+        sWhat as String       'what
+        sHow as Integer       'how much
+    End Type
+    
+    Global ShDat(30) as SheetData     'array for display
+    
+    'make dummy data here
+    Dim i as Integer
+    
+    For i=1 to 25
+        ShDat.sWhen(i) = Trim(Str(Int(i/3)+1))
+        ShDat.sWhat(i) = "Data" + str(Int(i/3))
+        ShDat.sHow(i) = 100*Rand()*100
+    Next
+    
+End Sub
+</PRE>
+
+<p>Actually, even though there are 30 elements in the array, there are 25 records. <BR>
+<BR>
+<p>Now, we display the data on the bitmap. The idea is like this:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1604.gif"><BR>
+<BR>
+<p>The important point is which record comes to the top of the table. If we find it, we can display 8 records from that record. So we need a variable to keep track of the record.<BR>
+<PRE>
+    Global iTop as Integer          'top record data
+
+    'initialization
+    iTop=1
+</PRE>
+<p>The initial value for the variable is 1.<br>
+If you pay attention to the coordinates, writing character data is not difficult. The size of the table I prepared is:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1605.gif"><BR>
+<BR>
+Then, the vertical coordinate of <i>i</i>th record is:<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i * 14 + Py<br><br>
+
+where Py is the vertical coordinate of the top field. The code is:<br>
+
+<PRE>
+    Dim iSt as Integer
+    Dim iEd as Integer
+    
+    DrawBitmap 1004,0,16
+
+    iSt=iTop
+    iEd=iTop+7
+    
+    For j=iSt to iEd
+        jy= (j-iSt) * 14 + 31
+
+         .....
+
+    Next
+</PRE>
+<p>You have to consider the following things:<BR>
+<UL>
+<LI>If iTop becomes greater than prepared elements of array.
+<LI>How to represent the selected record. (highlighting)
+</UL>
+
+<p>You have probably understood the outline of the table creation. Please check the source code for details. You can download the project file <A HREF="TN25.images/testsheet_code.zip">here</a>. 
+<p>As you know from the sample, the process is quite fast, so you don't need to use a character object such as Label, drawing characters by DrawChars are very practical. Although non-object program seems old-fashioned, in some case,
+it may be better to use graphics window than using objects. 
+
+<BR><BR>
+
+</TD>
+</TR>
+</TABLE>
+<HR WIDTH="80%">
+</BODY>
+</HTML>

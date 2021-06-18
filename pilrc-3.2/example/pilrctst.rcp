@@ -1,0 +1,140 @@
+/*
+ * @(#)pilrctst.rcp
+ *
+ * Copyright 2000, Aaron Ardiri (mailto:aaron@ardiri.com)
+ * All rights reserved.
+ *
+ * This file was generated as part of the "pilrctst" program developed for 
+ * the Palm Computing Platform designed by Palm: http://www.palm.com/ 
+ *
+ * The contents of this file are to be used for educational purposes
+ * only in understanding the PilRC application.  Redistribution or 
+ * modification without prior consent of the original author is prohibited. 
+ */
+
+#include "resource.h"
+
+FONT ID font128 FONTID 128 "5x11.txt"
+
+FORM ID infoForm AT (2 2 156 156) MODAL
+BEGIN
+  TITLE "About PilRC"
+
+  FORMBITMAP AT (8 16) BITMAP bitmapIcon
+  LABEL "http://www.ardiri.com/" AUTOID AT (52 PrevTop+4)
+
+  LABEL "aaron@ardiri.com" AUTOID AT (54 PrevTop+11) FONT 1
+  LABEL "PilRC" AUTOID AT (15 PrevTop+8)
+
+  FORMBITMAP AT (88 PrevTop+14) BITMAP bitmapPalm
+
+  LABEL "Copyright 2000" AUTOID AT (8 PrevTop+10)
+  LABEL "Aaron Ardiri" AUTOID AT (8 PrevTop+12)
+  LABEL "All rights reserved" AUTOID AT (8 PrevTop+12)
+
+  LABEL "PilRC demo" AUTOID AT (8 PrevTop+20) FONT 1
+  LABEL "version 0.2beta" AUTOID AT (8 PrevTop+12) FONT 1
+
+  BUTTON "Ok" ID infoFormOkButton AT (CENTER 138 40 AUTO)
+END
+
+FORM ID deviForm AT (2 2 156 156) MODAL
+BEGIN
+  TITLE "Incompatability"
+
+  LABEL "the device is incompatible" AUTOID AT (CENTER 20)
+  LABEL "Palm Operating System 3.0+ only" AUTOID AT (CENTER PrevTop+11)
+
+  LABEL "http://www.ardiri.com/" AUTOID AT (CENTER PrevTop+15) FONT 1
+  LABEL "Copyright 2000" AUTOID AT (8 PrevTop+20)
+  FORMBITMAP AT (88 PrevTop) BITMAP bitmapPalm
+
+  LABEL "Aaron Ardiri" AUTOID AT (8 PrevTop+12)
+  LABEL "All rights reserved" AUTOID AT (8 PrevTop+12)
+
+  LABEL "PilRC demo" AUTOID AT (8 PrevTop+20) FONT 1
+  LABEL "version 0.1beta" AUTOID AT (8 PrevTop+12) FONT 1
+
+  BUTTON "Ok" ID deviFormOkButton AT (CENTER 138 40 AUTO)
+END
+
+FORM ID mainForm AT (0 0 160 160) NOSAVEBEHIND
+MENUID mainMenu
+BEGIN
+  TITLE "PilRC"
+
+  BUTTON "" ID globalFormAboutButton AT (147 1 12 12) NOFRAME
+  FORMBITMAP AT (PrevLeft PrevTop) BITMAP bitmapAbout
+
+  LABEL "PilRC v2.7" AUTOID AT (0 PrevBottom+4) FONT 1
+  LABEL "Copyright 1997-1999 Wes Cherry" AUTOID AT (0 PrevBottom) FONT 128
+  LABEL "Copyright 2000-2001 Aaron Ardiri" AUTOID AT (0 PrevBottom) FONT 128
+END
+
+MENU ID mainMenu
+BEGIN
+  PULLDOWN "Demo"
+  BEGIN
+    MENUITEM "tSTL resource" menuItemtSTL
+  END
+  PULLDOWN "Help"
+  BEGIN
+    MENUITEM "About" menuItemAbout
+  END
+END
+
+FORM ID tSTLForm AT (2 2 156 156) MODAL
+BEGIN
+  TITLE "tSTL demo"
+
+  FIELD ID tSTLFormTypeField AT (16 PrevTop+16 140 AUTO) NONEDITABLE
+  LIST "" ID tSTLFormList AT (CENTER PrevBottom+4 140 AUTO) VISIBLEITEMS 5 USABLE
+  BUTTON "Metric" ID tSTLFormMetricButton AT (CENTER@50 PrevBottom+8 40 AUTO)
+  BUTTON "Imperial" ID tSTLFormImperialButton AT (CENTER@110 PrevTop 40 AUTO)
+
+  LABEL "StringTable Demonstration" AUTOID AT (CENTER PrevBottom+8) FONT 1
+
+  BUTTON "Ok" ID tSTLFormOkButton AT (CENTER 138 40 AUTO)
+END
+
+VERSION "0.2 beta"
+
+ICONFAMILY 
+  "images/icon1bpp.bmp" "images/icon2bpp.bmp" 
+  "images/icon4bpp.bmp" "images/icon8bpp.bmp" TRANSPARENCY 255 0 0
+
+SMALLICONFAMILY 
+  "images/smic1bpp.bmp" "images/smic2bpp.bmp" 
+  "images/smic4bpp.bmp" "images/smic8bpp.bmp" TRANSPARENCY 255 0 0
+
+BITMAPFAMILY bitmapIcon   
+  "images/icon1bpp.bmp" "images/icon2bpp.bmp"
+  "images/icon4bpp.bmp" "images/icon8bpp.bmp" TRANSPARENCY 255 0 0 COMPRESS
+
+BITMAPFAMILY bitmapPalm
+  "images/palm1bpp.bmp" "images/palm2bpp.bmp" 
+  ""                    "images/palm8bpp.bmp" COMPRESS
+
+STRINGTABLE stringTableMetric   
+  "" "Litres" "Meters" "Celsius"    "Newtons"     "Kilograms"
+STRINGTABLE stringTableImperial 
+  "" "Quarts" "Feet"   "Fahrenheit" "Foot Pounds" "Pounds"
+STRINGTABLE stringTableType 
+  "Units are: " "Metric" "Imperial"
+
+HEX "junk" ID 1000 0x20 32 "Hello World" 0x10 0x50
+
+BITMAP bitmapAbout "images/info1bpp.bmp" COMPRESS
+
+#define list_form 1000
+
+WORDLIST ID list_form
+BEGIN
+         1
+         1+1
+         1 + 1 + 1
+         list_form
+         4352
+         42 * 19
+END
+

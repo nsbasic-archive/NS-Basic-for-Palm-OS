@@ -1,0 +1,57 @@
+"'code module for global extension functions
+'about box for the extension
+Sub JPG_About()
+    Dim result as Integer
+    result = AppLaunch(0, ExtFileName, JPGCmdAbout, ~~)
+End Sub
+
+'show JPG image
+' NOTE: imgX, imgY, imgW, imgH are based on standard density screen coords (160x160 form)
+'USAGE: result = JPG_ShowJPG( filename, card, x, y, w, h )
+Function JPG_ShowJPG( filename as String, card as Integer, imgX as Integer, imgY as Integer, imgW as Integer, imgH as Integer ) as Integer
+    Dim JPGCmdShowJPG as Integer
+    Dim paramstr as String
+    JPGCmdShowJPG = JPGCmdAbout + 1  'function reference number
+    'build comma separated param string
+    paramstr = filename +~,~ +str(card) +~,~ +str(imgX) +~,~ +str(imgY) +~,~ +str(imgW) +~,~ +str(imgH)
+    'MsgBox(paramstr)
+    JPG_ShowJPG = AppLaunch(0, ExtFileName, JPGCmdShowJPG, paramstr)
+End Function
+
+'test if JPG file exists
+'USAGE: result = JPG_ExistsJPG( filename, card )
+Function JPG_ExistsJPG( filename as String, card as Integer ) as Integer
+    Dim JPGCmdExistsJPG as Integer
+    Dim paramstr as String
+    JPGCmdExistsJPG = JPGCmdAbout + 2  'function reference number
+    'build comma separated param string
+    paramstr = filename +~,~ +str(card)
+    'MsgBox(paramstr)
+    JPG_ExistsJPG = AppLaunch(0, ExtFileName, JPGCmdExistsJPG, paramstr)
+End Function
+
+'test if Palm has VFS support
+'USAGE: result = JPG_HasVFS()
+Function JPG_HasVFS() as Integer
+    Dim JPGCmdHasVFS as Integer
+    JPGCmdHasVFS = JPGCmdAbout + 3  'function reference number
+    JPG_HasVFS = AppLaunch(0, ExtFileName, JPGCmdHasVFS, ~~)
+End Function
+
+'test if Palm has ARM processor
+'USAGE: result = JPG_IsARM()
+Function JPG_IsARM() as Integer
+    Dim JPGCmdIsARM as Integer
+    JPGCmdIsARM = JPGCmdAbout + 4  'function reference number
+    JPG_IsARM = AppLaunch(0, ExtFileName, JPGCmdIsARM, ~~)
+End Function
+
+'set Palm to 16 bit screen depth required for JPG images
+'USAGE: result = JPG_SetScreenDepth16()
+Function JPG_SetScreenDepth16() as Integer
+    Dim JPGCmdSetScreenDepth16 as Integer
+    JPGCmdSetScreenDepth16 = JPGCmdAbout + 5  'function reference number
+    JPG_SetScreenDepth16 = AppLaunch(0, ExtFileName, JPGCmdSetScreenDepth16, ~~)
+End Function
+
+"

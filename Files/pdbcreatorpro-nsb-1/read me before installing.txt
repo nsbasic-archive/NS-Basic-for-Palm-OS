@@ -1,0 +1,13 @@
+Installing PDB Creator Pro NSB:
+
+PDB Creator Pro NSB is a version of PDB Creator Pro designed to be distributed by NSBasic for use by NSBasic/Palm users.  When running the NSBasic/Palm IDE, PDB Creator Pro NSB will be placed automatically in the "Tools" menu, if you install it in the NSBasic/Tools folder.  The default installation location for this folder (and PDB Creator Pro NSB) is:
+
+c:\nsbasic\tools
+
+If your NSBasic/Palm installation places the Tools folder in a different location, be sure to install PDB Creator Pro NSB in that directory.
+
+
+
+Please contact me at support@pdbconverterpro.com if you have any questions.
+
+Michael Verive

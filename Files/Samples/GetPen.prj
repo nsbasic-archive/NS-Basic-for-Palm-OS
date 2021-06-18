@@ -1,0 +1,43 @@
+"mdl"
+8
+"GetPen","appl","Getp",1007,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100006A"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Tap to see output of GetPen"
+"Screen1004"
+""
+0
+""
+""
+0,0,0,0
+"gad"
+1
+"obj"
+3
+"gad","Gad1005",1005,0,12,120,160,#TRUE#,0,"Gad1005",0,0,0
+"sub object1005()
+    dim lastx as integer
+    dim lasty as integer
+    dim penStatus as integer
+    getpen lastx, lasty, penstatus
+    output.text = ~lastx=~ + str(lastx) + ~ lasty=~ + str(lasty) + ~ penStatus=~ + str(penstatus)
+end sub
+"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,100,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","output",1006,0,132,28,156,#TRUE#,0,"",0,0,0
+""
+"end"

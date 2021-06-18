@@ -1,0 +1,135 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>PopUp </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>PopUp                                                                                                           Object</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><img width=157 height=61
+src="./outline_138_files/image003.gif" align=left hspace=12>A
+POPUP object displays a text label with a graphic element
+[down-triangle] on its left. When tapped, multiple text strings (items) are
+displayed with each text string (item) on a separate line. One item in the list
+may be highlighted (selected) and will be printed in reverse video (white
+letters on a black background). The box size is set at compilation-time (cannot
+be changed during program execution), and when not large enough to display all
+items will contain page-up/page-down controls. List contents may be entered at
+design time in the List property, or at execution time using the .Add method.
+The best place to do this is in the form's &quot;After&quot; code. The Selected
+method is used to identify the selected item in the list. The Text method is
+used to set the text. The text may differ from the selected item until the
+Redraw method is used.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Properties Supported</b>
+(Set at design time)</p>
+
+<p class=ManualBody>Label, Font ID, Anchor Left, Visible, List</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Methods Supported</b>
+(See &quot;Methods&quot;)</p>
+
+<p class=ManualBody>Left, Top, Width, Height, Hide, Show, Redraw, Add, Remove,
+Clear, Text, Selected, NoItems, ItemText, ItemNo, ID, Index, Type</p>
+
+<p class=ManualBody><b>&nbsp;</b></p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Dim ItemsInList as Integer</p>
+
+<p class=Code>Dim selectedName as String</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>'clear the list and populate it - do in Form After code</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>PopListCity.Clear                     </p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>PopListCity.Add &quot;New York&quot; 'Populate the list</p>
+
+<p class=Code>PopListCity.Add &quot;Boston&quot;</p>
+
+<p class=Code>PopListCity.add &quot;New Orleans&quot;</p>
+
+<p class=Code>PopListCity.Selected=2                'Select item#2 (Boston)</p>
+
+<p class=Code>PopListCity.Text=&quot;What City?&quot;            'Set text</p>
+
+<p class=Code>PopListCity.Redraw                       'Show
+selected item in text</p>
+
+<p class=Code>PopListCity.Remove 3                     'Delete
+item#3 (New Orleans)</p>
+
+<p class=Code>ItemsInList=PopListCity.NoItems          'Get number items in
+list</p>
+
+<p class=Code>selectedName=PopListCity.ItemText(PopListCity.Selected) ' get
+text of currently selected item.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

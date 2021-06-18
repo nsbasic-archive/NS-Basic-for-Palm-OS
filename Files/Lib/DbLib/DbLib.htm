@@ -1,0 +1,1479 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note ??: Using the DbLib Shared Library</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <P>Tech Note ??: Using the DbLib Shared Library</P>
+      <P>June 6, 2005</P>
+</FONT><FONT FACE="Helvetica" SIZE=4><P>&nbsp;</P>
+</FONT><FONT FACE="Helvetica" SIZE=2><P>Copyright 2005 Douglas Handy</font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Function Index and Quick Reference</a>
+    <a href="#fullRef">Function Reference</a>
+</pre>
+
+<a name="intro"><h2>Introduction:</h2>
+<P>The DbLib shared library contains functions that manipulate a Palm OS database or the directory contents of internal memory or an external memory card.  Most of the functions work at the database or directory level, not on specific records in a database.
+
+<P>In order to use the DbLib Shared Library, the library must be loaded using the NSBasic LoadLibrary statement. This statement should be located in the program's Startup code so that the functions will be available throughout the program. The LoadLibrary statement has an optional second parameter to allow you to specify an abbreviated reference name for the library's functions. The examples in this document use "Db" for this reference name. Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "DbLib", "Db"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the DbLib Shared Library, the DbLib.INF file must be present in your "nsbasic\lib" directory and the DbLib.prc file should be added to your project as a resource, with the type changed from the default of DBIM to libr (must be all lowercase).
+
+<P>Except for the functions that return version numbers, all the parameter 
+and return data types are either "Integer" or "String".  Version numbers
+are returned as a "Double".
+
+This library is released as no-nag shareware.  It is fully functional, but if you find it 
+useful, a contribution of $10 or more would be appreciated.  It can be made via PayPal by sending the funds to dhandy1@bellsouth.net or by contacting the same email for further information.
+
+
+<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+
+<a href="#Version Information">Version Information</a>
+    <a href="#Version">Version</a>            version = Version()
+    <a href="#CompileInfo">CompileInfo</a>        compileDateTime = CompileInfo()
+    <a href="#Register">Register</a>           Register part1, part2
+
+<a href="#Database Level Functions">Database Level Functions</a>
+    <a href="#KeySort">KeySort</a>            err = KeySort(dbName, keyType)
+    <a href="#KeyInsSort">KeyInsSort</a>         err = KeyInsSort(dbName, keyType)
+    <a href="#LoadDirToDB">LoadDirToDB</a>        err = LoadDirToDB(dbName, Dir)
+    <a href="#LoadDbListToDB">LoadDbListToDB</a>     err = LoadDbListToDB(dbName, dbType, dbCreator, dbLike)
+    <a href="#BeamDatabase">BeamDatabase</a>       err = BeamDatabase(dbName, dbDesc)
+    <a href="#SendDatabase">SendDatabase</a>       err = SendDatabase(dbName, dbDesc, method)
+    <a href="#CopyDatabase">CopyDatabase</a>       err = CopyDatabase(dbName, dbNewName, PreserveDates)
+    <a href="#MoveAllRecords">MoveAllRecords</a>     err = MoveAllRecords(dbName, dbNewName)
+    <a href="#DeleteDatabase">DeleteDatabase</a>     err = DeleteDatabase(dbName)
+    <a href="#ClearDatabase">ClearDatabase</a>      err = ClearDatabase(dbName)
+    <a href="#RenameDatabase">RenameDatabase</a>     err = RenameDatabase(dbName, dbNewName)
+
+<a href="#Database Info Functions">Database Info Functions</a>
+    <a href="#GetDBAttribute">GetDBAttribute</a>     result = GetDBAttribute(dbName, attrMask)
+    <a href="#SetDBAttribute">SetDBAttribute</a>     err = SetDBAttribute(dbName, attrMask, newVal)
+    <a href="#GetDBType">GetDBType</a>          dbType = GetDBType(dbName)
+    <a href="#SetDBType">SetDBType</a>          err = SetDBType(dbName, dbType)
+    <a href="#GetDBCreator">GetDBCreator</a>       dbCreator = GetDBCreator(dbName)
+    <a href="#SetDBCreator">SetDBCreator</a>       err = SetDBCreator(dbName, dbCreator)
+
+<a href="#Open Database Functions">Open Database Functions</a>
+    <a href="#FindOpenDB">FindOpenDB</a>         dbRef = FindOpenDB(dbName)
+
+<a href="#Record Key Functions">Record Key Functions</a>
+    <a href="#RrnStringKey">RrnStringKey</a>       dbRrn = RrnStringKey(dbRef, dbKey)
+    <a href="#RrnByteKey">RrnByteKey</a>         dbRrn = RrnByteKey(dbRef, dbKey)
+    <a href="#RrnShortKey">RrnShortKey</a>        dbRrn = RrnShortKey(dbRef, dbKey)
+    <a href="#RrnIntegerKey">RrnIntegerKey</a>      dbRrn = RrnIntegerKey(dbRef, dbKey)
+    <a href="#RrnSingleKey">RrnSingleKey</a>       dbRrn = RrnSingleKey(dbRef, dbKey)
+    <a href="#RrnDoubleKey">RrnDoubleKey</a>       dbRrn = RrnDoubleKey(dbRef, dbKey)
+    <a href="#RrnDateKey">RrnDateKey</a>         dbRrn = RrnDateKey(dbRef, dbKey)
+    <a href="#RrnTimeKey">RrnTimeKey</a>         dbRrn = RrnTimeKey(dbRef, dbKey)
+
+<a href="#Record Level Functions">Record Level Functions</a>
+    <a href="#ArchiveRecord">ArchiveRecord</a>      result = ArchiveRecord(dbRef, dbRrn)
+    <a href="#DeleteRecord">DeleteRecord</a>       result = DeleteRecord(dbRef, dbRrn)
+    <a href="#RemoveRecord">RemoveRecord</a>       result = RemoveRecord(dbRef, dbRrn)
+    <a href="#NewRecord">NewRecord</a>          at = NewRecord(dbRef, dbRrn)
+    <a href="#MoveRecord">MoveRecord</a>         result = MoveRecord(dbRef, dbFrom, dbTo)
+    <a href="#IsRecordBusy">IsRecordBusy</a>       result = IsRecordBusy(dbRef, dbRrn)
+    <a href="#IsRecordDeleted">IsRecordDeleted</a>    result = IsRecordDeleted(dbRef, dbRrn)
+    <a href="#IsRecordDirty">IsRecordDirty</a>      result = IsRecordDirty(dbRef, dbRrn)
+    <a href="#IsRecordPrivate">IsRecordPrivate</a>    result = IsRecordPrivate(dbRef, dbRrn)
+    <a href="#RecordUniqueID">RecordUniqueID</a>     result = RecordUniqueID(dbRef, dbRrn)
+    <a href="#RecordCategoryID">RecordCategoryID</a>   category = RecordCategoryID(dbRef, dbRrn)
+    <a href="#RecordSize">RecordSize</a>         size = RecordSize(dbRef, dbRrn)
+</pre>
+<a name="fullRef"><h2>DbLib Function Reference:</h2>
+<a name="Version Information"><h3 align="center"><i>Version Information</i></h3>
+<blockquote>
+The version information functions provide information about
+the version of the DbLib Shared Library.
+</blockquote>
+<a name="Version"><h4>Version</h4>
+
+<pre>	version = Db.Version()</pre>
+
+<blockquote>
+	Returns the version number of the DbLib Shared Library.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	version as Double<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim version as Double
+
+	version = Db.Version()
+</pre>
+<a name="CompileInfo"><h4>CompileInfo</h4>
+
+<pre>	compileDateTime = Db.CompileInfo()</pre>
+
+<blockquote>
+	Returns the date and time that the DbLib was compiled.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	compileDateTime as String<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim compileDateTime as String
+
+	compileDateTime = Db.CompileInfo()
+</pre>
+<a name="Register"><h4>Register</h4>
+
+<pre>	Db.Register part1, part2</pre>
+
+<blockquote>
+	Validates the registration code.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	part1 as String<i>
+	       Registration Code part one (case sensitive).
+</i>
+	part2 as String<i>
+	       Registration Code part two (case sensitive).
+</i>
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim part1 as String
+	Dim part2 as String
+
+	Db.Register part1, part2
+</pre>
+<blockquote>
+This function is deprecated and no longer required, though it is included 
+for backward compatibility with previous releases.
+</blockquote>
+<a name="Database Level Functions"><h3 align="center"><i>Database Level Functions</i></h3>
+<blockquote>
+The database level functions operate on the entire database
+as a whole, as opposed to record level access.
+</blockquote>
+<a name="KeySort"><h4>KeySort</h4>
+
+<pre>	err = Db.KeySort(dbName, keyType)</pre>
+
+<blockquote>
+	Sorts a database into key order.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be sorted.</i>
+	keyType as String<i>
+	       Type of key field.  Must be one of the following values,
+	       but may be given in either upper or lowercase:
+	         B = Byte, a 8-bit character value
+	         D = Date, a 8-byte float in NSB's format
+	         F = Float, a 8-byte float
+	         H = sHort, a 16-bit short integer
+	         I = Integer, a 32-bit long integer
+	         N = siNgle, a 4-byte float
+	         S = String, a null terminated string
+	         T = Time, a 8-byte float in NSB's format</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim keyType as String
+
+	err = Db.KeySort(dbName, keyType)
+</pre>
+<blockquote>
+The database may be open or closed, but must exist on card 0.
+</blockquote>
+<a name="KeyInsSort"><h4>KeyInsSort</h4>
+
+<pre>	err = Db.KeyInsSort(dbName, keyType)</pre>
+
+<blockquote>
+	Sorts a database into key order.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be sorted.</i>
+	keyType as String<i>
+	       Type of key field.  Must be one of the following values,
+	       but may be given in either upper or lowercase:
+	         B = Byte, a 8-bit character value
+	         D = Date, a 8-byte float in NSB's format
+	         F = Float, a 8-byte float
+	         H = sHort, a 16-bit short integer
+	         I = Integer, a 32-bit long integer
+	         N = siNgle, a 4-byte float
+	         S = String, a null terminated string
+	         T = Time, a 8-byte float in NSB's format</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim keyType as String
+
+	err = Db.KeyInsSort(dbName, keyType)
+</pre>
+<blockquote>
+The database may be open or closed, but must exist on card 0.
+</blockquote>
+<a name="LoadDirToDB"><h4>LoadDirToDB</h4>
+
+<pre>	err = Db.LoadDirToDB(dbName, Dir)</pre>
+
+<blockquote>
+	Loads a VFS directory contents into a database and sorts it.  Each
+	database record will consist of 6 string fields:
+	   Filename
+	   Type (Vol, Dir, File, or Link)
+	   Unused (empty string)
+	   File creation date and time
+	   File modification date and time
+	   File last accessed date and time
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to contain directory entries.</i>
+	Dir as String<i>
+	       Full path to desired directory.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       Error code indicator:
+	           0 = No error
+	           1 = VFS not supported
+	           2 = No card detected
+	       other = Another error occured.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim Dir as String
+
+	err = Db.LoadDirToDB(dbName, Dir)
+</pre>
+<blockquote>
+The database may be opened or closed.  If it does not exist,
+it will be created with the type 'data' and a creator ID
+matching the current application.
+</blockquote>
+<a name="LoadDbListToDB"><h4>LoadDbListToDB</h4>
+
+<pre>	err = Db.LoadDbListToDB(dbName, dbType, dbCreator, dbLike)</pre>
+
+<blockquote>
+	Loads a database with a list of databases in internal memory
+	limited by database type, creator ID, and / or filename pattern.
+	Each database record will consist of 6 string fields:
+	   Database name
+	   Type (eg data, appl, libr, ...)
+	   Creator ID
+	   DB creation date and time
+	   DB modification date and time or "Never"
+	   DB backup date and time or "Never"
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to contain directory entries.</i>
+	dbType as String<i>
+	       String containing type of databases to include, or "" for all</i>
+	dbCreator as String<i>
+	       String containing creator ID of database to include, or "" for all</i>
+	dbLike as String<i>
+	       String containing name pattern to match, or "" for all names
+	       
+	           Pattern matching special characters:
+	       
+	           ? - any single character
+	           * - zero or more characters
+	           # - any single digit (0-9)
+	           [list] - any single character in list
+	           [!list] - any single character not in list
+	       
+	               "list" matches a group of characters in pattern to a single
+	               character in string and can contain almost all available
+	               characters, including digits.
+	       
+	               Use a hyphen (-) in "list" to create a range of characters to
+	               match a character in string; for example [A-D] matches A,B,C,
+	               or D in that character position in string.
+	       
+	               Multiple ranges of characters can be included in "list"
+	               without the use of a delimiter.  For example:  [A-CX-Z]
+	       
+	               Ranges of characters must appear in sort order; example: [c-k]
+	       
+	               Use an exclamation mark before a character or range of
+	               characters in "list" to match all but that character.  For
+	               example, [!A-G] matches all characters except those from A to G.
+	       
+	               To use any special character as a matching character, enclose it
+	               in brackets.  For example:  [?]</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       Error code indicator:
+	           0 = No error
+	       other = Som error occured.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbType as String
+	Dim dbCreator as String
+	Dim dbLike as String
+
+	err = Db.LoadDbListToDB(dbName, dbType, dbCreator, dbLike)
+</pre>
+<blockquote>
+The database may be opened or closed.  If it does not exist,
+it will be created with the type 'data' and a creator ID
+matching the current application.
+</blockquote>
+<a name="BeamDatabase"><h4>BeamDatabase</h4>
+
+<pre>	err = Db.BeamDatabase(dbName, dbDesc)</pre>
+
+<blockquote>
+	Beams a database to another device via IR.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be beamed.</i>
+	dbDesc as String<i>
+	       Description to be displayed during beaming.  If an empty
+	       string is supplied, the database name is used.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       Completion status.  A (perhaps) partial list of codes possible:
+	          0 = Successful
+	        519 = Database not found
+	       5379 = Canceled by sender, or beam interrupted
+	       5380 = Could not find receiving computer
+	       5388 = Beam disconnected
+	       5392 = Receiver currently busy and cannot receive now (this can
+	              happen if the sender starts a second beam prior to the
+	              receiver approving or declining the first beam)
+	       5394 = Not enough power to perform requested operation</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbDesc as String
+
+	err = Db.BeamDatabase(dbName, dbDesc)
+</pre>
+<blockquote>
+Only one database at a time may be sent with this method.  The
+receiver does not need any special application, and in fact does
+not even need to be at the application launcher provided the
+database to be beamed is not already open on the receiver.  That
+is, they cannot receive a copy of the program they are currently
+executing, nor any database it happens to have open at the time.
+</blockquote>
+<a name="SendDatabase"><h4>SendDatabase</h4>
+
+<pre>	err = Db.SendDatabase(dbName, dbDesc, method)</pre>
+
+<blockquote>
+	Sends a database to another device using Bluetooth, SMS, etc.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be sent</i>
+	dbDesc as String<i>
+	       Description to be displayed during exchange.  If an empty
+	       string is supplied, the database name is used.</i>
+	method as String<i>
+	       Method to send database.  Should be one of the following:
+	         empty string = Prompt for method, based on device capabilities.
+	         BT or bt	 = Send via Bluetooth
+	         SMS or sms   = Send via SMS</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       Completion status.  A partial list of codes possible:
+	           0 = Successful
+	           1 = OS Version is prior to OS 4.0; send is not supported
+	         519 = Database not found
+	        5377 = Memory error
+	        5379 = Canceled by sender, or send was interrupted
+	        5380 = Could not find receiving device
+	        5383 = Operation not allowed
+	        5388 = Send disconnected
+	        5392 = Receiver currently busy and cannot receive now
+	        5394 = Not enough power to perform requested operation
+	       12583 = No bluetooth devices found</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbDesc as String
+	Dim method as String
+
+	err = Db.SendDatabase(dbName, dbDesc, method)
+</pre>
+<blockquote>
+Requires a minimum of OS 4.0, or a result of 1 is returned.  With
+OS 4.0 or higher, the method(s) supported depend on the capability
+of the device.  Typically you would leave the third argument empty
+and let the OS decide.  If the device only has one method available
+it will be used automatically.  If more than one is possible, a
+list will be presented and the user may select their preference.
+If no methods are available, a result of 5383 is returned.
+</blockquote>
+<a name="CopyDatabase"><h4>CopyDatabase</h4>
+
+<pre>	err = Db.CopyDatabase(dbName, dbNewName, PreserveDates)</pre>
+
+<blockquote>
+	Creates a copy of a database with a new name.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be copied.  It is left unchanged.</i>
+	dbNewName as String<i>
+	       New name of database copy.</i>
+	PreserveDates as Integer<i>
+	       0 to assign current dates; 1 = preserve original dates</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbNewName as String
+	Dim PreserveDates as Integer
+
+	err = Db.CopyDatabase(dbName, dbNewName, PreserveDates)
+</pre>
+<blockquote>
+Destination database must not exist yet.  The destination
+will be given the same creator ID and type as the source.
+</blockquote>
+<a name="MoveAllRecords"><h4>MoveAllRecords</h4>
+
+<pre>	err = Db.MoveAllRecords(dbName, dbNewName)</pre>
+
+<blockquote>
+	Moves all records from one database to the end of another database.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database with records to be moved.  Upon completion, the
+	       database will still exist but will be empty.</i>
+	dbNewName as String<i>
+	       Name of database to receive the records.  This database must
+	       exist.  Records are added to the end of existing records.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbNewName as String
+
+	err = Db.MoveAllRecords(dbName, dbNewName)
+</pre>
+<blockquote>
+Both databases must exist, and neither can be open at the time
+this routine is called.
+<br><br>
+After completion, you may want to delete the original database,
+sort the receiving database, or whatever else is appropriate for
+the purpose records are being moved.
+<br><br>
+One use for this function is to merge records to create a larger
+database.  For example, two databases under 64K may be stored in
+application resources when the program is compiled, then each
+extracted via NSB's DbCreateDatabaseFromResource() function.  The
+second may then have the records moved to the end of the first,
+creating a single database over 64K.  Another possibility may be
+to create a database with a subset of records meeting some criteria,
+beam it to another device, and have that device merge it with other
+records already on the device in another database.
+</blockquote>
+<a name="DeleteDatabase"><h4>DeleteDatabase</h4>
+
+<pre>	err = Db.DeleteDatabase(dbName)</pre>
+
+<blockquote>
+	Deletes a database from internal memory.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be deleted</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+
+	err = Db.DeleteDatabase(dbName)
+</pre>
+<blockquote>
+An open database can not be deleted.
+</blockquote>
+<a name="ClearDatabase"><h4>ClearDatabase</h4>
+
+<pre>	err = Db.ClearDatabase(dbName)</pre>
+
+<blockquote>
+	Removes all records from a database, leaving it empty.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be cleared</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+
+	err = Db.ClearDatabase(dbName)
+</pre>
+<blockquote>
+The database may be open or closed, but must exist on card 0.
+</blockquote>
+<a name="RenameDatabase"><h4>RenameDatabase</h4>
+
+<pre>	err = Db.RenameDatabase(dbName, dbNewName)</pre>
+
+<blockquote>
+	Deletes a database from internal memory.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be renamed.</i>
+	dbNewName as String<i>
+	       New name of the database.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbNewName as String
+
+	err = Db.RenameDatabase(dbName, dbNewName)
+</pre>
+<blockquote>
+The new name must not already be used on some other database.
+</blockquote>
+<a name="Database Info Functions"><h3 align="center"><i>Database Info Functions</i></h3>
+<blockquote>
+The database information functions provide or alter information on
+a specific database, as opposed to a specific record.
+</blockquote>
+<a name="GetDBAttribute"><h4>GetDBAttribute</h4>
+
+<pre>	result = Db.GetDBAttribute(dbName, attrMask)</pre>
+
+<blockquote>
+	Retrieve specific attribute bit(s) for a database.  Generally used
+	to obtain a single attribute at a time, or all of them collectively.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be have attributes return.</i>
+	attrMask as Integer<i>
+	       Combination of attribute bits to retrieve.  Add together the
+	       values below for each attribute to be returned.
+	       	0	Obtain all attributes as a composite value
+	          	1	Resource database
+	       	2	Read only database
+	       	4	AppInfo block is dirty
+	       	8	Backup to desktop using system conduit
+	          16	OK to install newer even while DB is open
+	          32	Force reset after installing this database
+	          64	Copy Prevention (disallow beaming from app launcher)
+	         128	File Stream (cannot be used as general database)
+	         256	Hidden (disallow app display by launcher, or record count)
+	         512	Launchable Data (not applicable to NSB/Palm)
+	        1024	Recyclable (on OS4+, database will get deleted by OS)
+	        2048	Bundle (on OS4+, app launcher will beam with application)
+	       32768	Open (database now open, or previously not closed properly)</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       When the attribute mask (parameter 2) is zero, the complete set of
+	       attributes for the database is returned.  This is useful for saving
+	       and restoring later, or applying to a different database.  When the
+	       attribute mask is not zero, only the values one or zero can be
+	       returned.  The value one inidicates the each attribute bit requested
+	       is on.  If any of the attribute bit(s) requested are off, a zero
+	       value is returned.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbName as String
+	Dim attrMask as Integer
+
+	result = Db.GetDBAttribute(dbName, attrMask)
+</pre>
+<blockquote>
+You may combine more than one attribute value if all you care about
+is whether all the specified attributes are set, and not whether any
+given one is set.  For example, 320 will tell you if the database is
+BOTH copy protected and hidden, but not if it is copy protected OR
+hidden.
+<br><br>
+Some attributes only have meaning on OS4 or later.
+</blockquote>
+<a name="SetDBAttribute"><h4>SetDBAttribute</h4>
+
+<pre>	err = Db.SetDBAttribute(dbName, attrMask, newVal)</pre>
+
+<blockquote>
+	Sets or clears specific attribute bit(s) for a database, or all
+	atributes at once.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to be have attributes changed.</i>
+	attrMask as Integer<i>
+	       Combination of attribute bits to change.  Add together the values
+	       below for each attribute to be changed, or specify 0 for all.
+	       	0	Change all attributes
+	          	1	Resource database (never change this one)
+	       	2	Read only database
+	       	4	AppInfo block is dirty
+	       	8	Backup to desktop using system conduit
+	          16	OK to install newer even while DB is open (rare!)
+	          32	Force reset after installing this database
+	          64	Copy Prevention (disallow beaming from app launcher)
+	         128	File Stream (cannot be used as general database)
+	         256	Hidden (disallow app display by launcher, or record count)
+	         512	Launchable Data (not applicable to NSB/Palm)
+	        1024	Recyclable (on OS4+, database will get deleted by OS)
+	        2048	Bundle (on OS4+, app launcher will beam with application)
+	       32768	Open (database now open, or previously not closed properly)
+	       
+	       Values can be combined.  For example, 8 + 256 = 264 so 264 means
+	       to change both the backup and hidden attribute bits.</i>
+	newVal as Integer<i>
+	       New value for attribute.  When the attribute mask (above) is zero,
+	       this value represents the composite attribute value and completely
+	       replaces the existing attributs.  When the attribute mask (above)
+	       is not zero, the mask identifies which attributes to change and
+	       this value should be 1 to set the attribute(s) on, or 0 to clear
+	       the specified attribute(s).</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim attrMask as Integer
+	Dim newVal as Integer
+
+	err = Db.SetDBAttribute(dbName, attrMask, newVal)
+</pre>
+<blockquote>
+The resource vs data attribute bit is ignored and not modified by
+this call because changing it with existing databases causes fatal
+errors and memory corruption, potentially leading to a hard reset
+as the only recourse.  Some attributes only have meaning on OS4
+or later.
+</blockquote>
+<a name="GetDBType"><h4>GetDBType</h4>
+
+<pre>	dbType = Db.GetDBType(dbName)</pre>
+
+<blockquote>
+	Retrieve the "type" of a database.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to check.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbType as String<i>
+	       When an empty string if the database does not exist, or the type
+	       of the database if it does exist.  Example types are "appl", "libr",
+	       "data", etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbType as String
+	Dim dbName as String
+
+	dbType = Db.GetDBType(dbName)
+</pre>
+<blockquote>
+Types under Palm OS are case sensitive, 4-character values typically
+comprised of letters or digits but which may include other symbols as
+well.
+</blockquote>
+<a name="SetDBType"><h4>SetDBType</h4>
+
+<pre>	err = Db.SetDBType(dbName, dbType)</pre>
+
+<blockquote>
+	Changes the "type" of a database.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to alter.</i>
+	dbType as String<i>
+	       New database type.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbType as String
+
+	err = Db.SetDBType(dbName, dbType)
+</pre>
+<blockquote>
+Types under Palm OS are case sensitive, 4-character values typically
+comprised of letters or digits but which may include other symbols as
+well.
+</blockquote>
+<a name="GetDBCreator"><h4>GetDBCreator</h4>
+
+<pre>	dbCreator = Db.GetDBCreator(dbName)</pre>
+
+<blockquote>
+	Retrieve the "creator ID" of a database.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to check.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbCreator as String<i>
+	       When an empty string if the database does not exist, or the creator
+	       ID of the database if it does exist.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbCreator as String
+	Dim dbName as String
+
+	dbCreator = Db.GetDBCreator(dbName)
+</pre>
+<blockquote>
+Creator IDs under Palm OS are case sensitive, 4-character values
+typically comprised of letters or digits but which may include other
+symbols as well.
+</blockquote>
+<a name="SetDBCreator"><h4>SetDBCreator</h4>
+
+<pre>	err = Db.SetDBCreator(dbName, dbCreator)</pre>
+
+<blockquote>
+	Changes the "creator ID" of a database.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database to alter.</i>
+	dbCreator as String<i>
+	       New database creator ID.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	err as Integer<i>
+	       0 if successful, 519 if not found, etc.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim err as Integer
+	Dim dbName as String
+	Dim dbCreator as String
+
+	err = Db.SetDBCreator(dbName, dbCreator)
+</pre>
+<blockquote>
+Creator IDs under Palm OS are case sensitive, 4-character values
+typically comprised of letters or digits but which may include other
+symbols as well in the range of ASCII 33 to 127.  Use of all lowercase
+letters is reserved for Palm OS.
+</blockquote>
+<a name="Open Database Functions"><h3 align="center"><i>Open Database Functions</i></h3>
+<blockquote>
+The FindOpenDB() function is a prerequisite to using either the
+record key functions or record level functions described below.
+It's purpose is to allow the library to interoperate with NSB by
+sharing a database already opened with NSB's DbOpen() statement.
+This allows it to circumvent the Palm OS limitation of only
+permitting a database to be opened once at a time for update.
+</blockquote>
+<a name="FindOpenDB"><h4>FindOpenDB</h4>
+
+<pre>	dbRef = Db.FindOpenDB(dbName)</pre>
+
+<blockquote>
+	Find the reference number of a database already open.  Typically,
+	this will be due to use of DbOpen() in the underlying NSB/Palm
+	application.  This reference number is required for the other
+	record level functions in this library.  The reference number will
+	remain valid until the database is closed (e.g., DbClose).
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	dbName as String<i>
+	       Name of database previously opened.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database; which will be a positive
+	       number.  A negative number indicates an error condition, such as
+	       the value -519 indicating a database was not found.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRef as Integer
+	Dim dbName as String
+
+	dbRef = Db.FindOpenDB(dbName)
+</pre>
+<a name="Record Key Functions"><h3 align="center"><i>Record Key Functions</i></h3>
+<blockquote>
+This group of functions allows you to find the record number which
+contains a given key value in a database, or the position where the
+would occur if it were present.  All the functions are identical
+except for the data type of the key for the database.  Use the proper
+function for the type of key in the database, for example a string.
+<br><br>
+The record number can then be used for additional operations, such
+as NSB's DbPostion() followed by DbGet() or DbPut(), or for other
+operations in this library as described later.
+<br><br>
+Each of the following record key functions, Rrn...Key(), returns a
+record number which may be positive, negative, or zero as follows:
+ positive number = Key match found at specified record
+				   (comparable to DbRead() result code of 0)
+ negative number = No exact match, absolute value has next key
+				   (comparable to DbRead() result code of 2)
+ zero			 = Key is higher than any if database, or error
+				   (comparable to DbRead() result code of 1)
+<br><br>
+To find the record number of an existing key, treat any positive
+number as valid and a zero or negative number as an error.  To
+find the record number of a key which is greater than or equal to
+the specified key, treat only zero as an error and use the absolute
+value of the record number returned as the desired record.  That is
+use Abs( rrn ) as the desired record number.
+</blockquote>
+<a name="RrnStringKey"><h4>RrnStringKey</h4>
+
+<pre>	dbRrn = Db.RrnStringKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a string key data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as String<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as String
+
+	dbRrn = Db.RrnStringKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnByteKey"><h4>RrnByteKey</h4>
+
+<pre>	dbRrn = Db.RrnByteKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a byte key data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Integer<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Integer
+
+	dbRrn = Db.RrnByteKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnShortKey"><h4>RrnShortKey</h4>
+
+<pre>	dbRrn = Db.RrnShortKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a short key (16-bit) data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Integer<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Integer
+
+	dbRrn = Db.RrnShortKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnIntegerKey"><h4>RrnIntegerKey</h4>
+
+<pre>	dbRrn = Db.RrnIntegerKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a integer key (32-bit) data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Integer<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Integer
+
+	dbRrn = Db.RrnIntegerKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnSingleKey"><h4>RrnSingleKey</h4>
+
+<pre>	dbRrn = Db.RrnSingleKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a single float key (4-byte) data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Integer<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Integer
+
+	dbRrn = Db.RrnSingleKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnDoubleKey"><h4>RrnDoubleKey</h4>
+
+<pre>	dbRrn = Db.RrnDoubleKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a double float (8-byte) key data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Double<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Double
+
+	dbRrn = Db.RrnDoubleKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnDateKey"><h4>RrnDateKey</h4>
+
+<pre>	dbRrn = Db.RrnDateKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a date key data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Double<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Double
+
+	dbRrn = Db.RrnDateKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="RrnTimeKey"><h4>RrnTimeKey</h4>
+
+<pre>	dbRrn = Db.RrnTimeKey(dbRef, dbKey)</pre>
+
+<blockquote>
+	Find the relative record number for a time key data type.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbKey as Double<i>
+	       Key value to search for.  Must be a string.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	dbRrn as Integer<i>
+	       Record number as described above.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim dbRrn as Integer
+	Dim dbRef as Integer
+	Dim dbKey as Double
+
+	dbRrn = Db.RrnTimeKey(dbRef, dbKey)
+</pre>
+<blockquote>
+See explanation under Record Key Functions above.
+</blockquote>
+<a name="Record Level Functions"><h3 align="center"><i>Record Level Functions</i></h3>
+<blockquote>
+The record level functions allow you to manipulate a complete
+record in a database.  They do not work at the field level.  In
+general, these routines will be used in combination with field
+aware database operations such as NSB's DbGet() or DbPut(), or
+with another library which provides field level access to data.
+<br><br>
+To use any of the record level functions, the database should
+first be opened in NSB/Palm using the standard DbOpen() operation.
+This allows NSB to open the database in update mode so that changes
+to the database will be allowed from your project using regular
+DbXxx() operations.  After the DB has been opened in NSB, use this
+library's FindOpenDB() call to obtain a "reference" to the DB.  The
+value thus obtained is required for the other record level functions
+in this library so that they can share the open already performed by
+NSB/Palm's DbOpen() operation.  This method is utilized because under
+Palm OS, a database can only be opend for update by one process at a
+time.  To get around that limitation and allow updates from both the
+application itself and this library, this library locates and then
+"references" the open previously performed using DbOpen().
+</blockquote>
+<a name="ArchiveRecord"><h4>ArchiveRecord</h4>
+
+<pre>	result = Db.ArchiveRecord(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Marks a record as archived for the next sync by setting the delete
+	bit but leaving the data intact.  Used by some conduits to save the
+	record data on the PC before permanently removing the record entry
+	and data from the device database.  Contrast with DeleteRecord() and
+	RemoveRecord() below.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to archive.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       Result codes as documented under NSB's DbOpen(), e.g. 0 is success.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.ArchiveRecord(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code.
+</blockquote>
+<a name="DeleteRecord"><h4>DeleteRecord</h4>
+
+<pre>	result = Db.DeleteRecord(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Marks a record as deleted for the next sync by setting the delete
+	bit and removes the record data.  Used by some conduits to inform
+	the PC a record has been deleted on the device.  The conduit then
+	removes the record on the PC, and removes the database header entry
+	on the device.  Note that this is NOT the same as NSB's DbDelete()
+	operation, which is similar to RemoveRecord() below.  Contrast with
+	DeleteRecord() above and RemoveRecord() below.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to delete.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       Result codes as documented under NSB's DbOpen(), e.g. 0 is success.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.DeleteRecord(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code.
+</blockquote>
+<a name="RemoveRecord"><h4>RemoveRecord</h4>
+
+<pre>	result = Db.RemoveRecord(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Removes a record from a database, including the data and the header
+	entry for the record.  Typically used when a conduit does not need
+	to archive the record contents, or be informed the record has been
+	deleted on the device.  RemoveRecord() is similar to NSB's DbDelete(),
+	except RemoveRecord() takes a record number and DbDelete() takes a
+	record key.  Contrast with ArchiveRecord() and DeleteRecord() above.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to remove.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       Result codes as documented under NSB's DbOpen(), e.g. 0 is success.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.RemoveRecord(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code.
+</blockquote>
+<a name="NewRecord"><h4>NewRecord</h4>
+
+<pre>	at = Db.NewRecord(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Creates a new record in a database where requested, and returns
+	the record number of the location assigned.  The new record
+	consists of only a single null character.  Operations like NSB's
+	DbPosition() and DbPut() may be used to add data to the record.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number desired.  See also Rrn...Key functions above.  If
+	       less than the existing record count, the remaining records are
+	       all shuffled down one position.  Pass 65535 to add the record to
+	       the end of the database.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	at as Integer<i>
+	       Record number added.  Primarily useful when parameter 2 is
+	       given as 65535 to add to the end of the database.  A negative
+	       number indicates an error condition.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim at as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	at = Db.NewRecord(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="MoveRecord"><h4>MoveRecord</h4>
+
+<pre>	result = Db.MoveRecord(dbRef, dbFrom, dbTo)</pre>
+
+<blockquote>
+	Moves a record from one position to another.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbFrom as Integer<i>
+	       Record number to be moved.  See also Rrn...Key functions above.</i>
+	dbTo as Integer<i>
+	       Where to move the record.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       0 if successful or an error code if it fails (see NSB DbOpen).</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbFrom as Integer
+	Dim dbTo as Integer
+
+	result = Db.MoveRecord(dbRef, dbFrom, dbTo)
+</pre>
+<blockquote>
+Inserts the record at the TO location (parameter 3), and moves any
+remaining records down.  The TO location may be up to one greater
+than the current number of records in the database, which moves the
+record to the end of the database.  In cases where TO is greater
+than FROM, the new record number of the record becomes TO - 1 after
+the move is complete.
+</blockquote>
+<a name="IsRecordBusy"><h4>IsRecordBusy</h4>
+
+<pre>	result = Db.IsRecordBusy(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Determines whether a given record in a database is "busy" and thus
+	not available for update.  In normal operations, this should not
+	return a 1 (true) value.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       0 if record is not busy; 1 if record is busy; or an error number.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.IsRecordBusy(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="IsRecordDeleted"><h4>IsRecordDeleted</h4>
+
+<pre>	result = Db.IsRecordDeleted(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Determines whether a given record in a database is marked as deleted.
+	Contrast ArchiveRecord(), DeleteRecord(), and RemoveRecord() for
+	information on how a record may be deleted yet still have a valid
+	record number within the database.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       0 if record is not deleted; 1 if record is deleted; or an error code.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.IsRecordDeleted(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="IsRecordDirty"><h4>IsRecordDirty</h4>
+
+<pre>	result = Db.IsRecordDirty(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Determines whether a given record in a database is "dirty", that is
+	whether the record has changed since the last sync backup.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       0 if not dirty; 1 if record is dirty; or an error code.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.IsRecordDirty(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="IsRecordPrivate"><h4>IsRecordPrivate</h4>
+
+<pre>	result = Db.IsRecordPrivate(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Determines whether a given record in a database is "private" or
+	"secret".
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       0 if not private; 1 if record is private; or an error code.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.IsRecordPrivate(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="RecordUniqueID"><h4>RecordUniqueID</h4>
+
+<pre>	result = Db.RecordUniqueID(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Returns the unique ID for a given record in a database.  Under
+	Palm OS, each record is assigned an arbitrary number useful to
+	conduits to synchronize data between the desktop and the device.
+	The number is generally unique within the database, but is not
+	guaranteed to necessarily be so.  The number should be considered
+	artitrarily assigned, but a given record will retain the same unique
+	ID value even as the data contents are changed.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       1 - 16777215 if no error occurs; negative numbers are errors</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	result = Db.RecordUniqueID(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="RecordCategoryID"><h4>RecordCategoryID</h4>
+
+<pre>	category = Db.RecordCategoryID(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Returns the category number for a given record in a database.  The
+	category number is always between 0 and 15, where 0 typically means
+	"unfiled".  The names of values 1 - 15 may vary with the database.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	category as Integer<i>
+	       Category ID as a value from 0 - 15.  Negative numbers are errors.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim category as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	category = Db.RecordCategoryID(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+<a name="RecordSize"><h4>RecordSize</h4>
+
+<pre>	size = Db.RecordSize(dbRef, dbRrn)</pre>
+
+<blockquote>
+	Returns the length in bytes of a given record in a database.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	dbRef as Integer<i>
+	       Reference number of an open database.  See FindOpenDB() above.</i>
+	dbRrn as Integer<i>
+	       Record number to test.  See Rrn...Key functions above.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	size as Integer<i>
+	       0 - 65535 if no error occurs; negative numbers are errors</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim size as Integer
+	Dim dbRef as Integer
+	Dim dbRrn as Integer
+
+	size = Db.RecordSize(dbRef, dbRrn)
+</pre>
+<blockquote>
+Some OS releases may display a fatal error message instead of
+returning an error code if invalid input is detected.
+</blockquote>
+</html>
+

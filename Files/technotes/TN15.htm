@@ -1,0 +1,462 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 15: Using the NSBStringLib Shared Library</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="19%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="81%" VALIGN="TOP">
+	  <h2>Tech Note 15: Using the NSBStringLib Shared Library</h2>
+	  <h3>Oct 27, 2003</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+<P>NSBStringLib adds a number of handy functions to NS Basic/Palm for doing string manipulation and data formatting. 
+
+<P>To use it, download NSBStringLib.prc to your device. It is a small file, about 5k in size. Initialise it in your Startup code as follows:
+
+<pre>
+     loadLibrary "NSBStringLib","STR"   'case is important
+</pre>
+To see how each of these functions works, see the StringLibUse sample project.
+
+<p>Files included:
+<TABLE>
+	<TR>
+		<TD>NSBStringLib.INF</TD> <TD>The info file for StringLib. Put this in your \nsbasic\lib folder.</TD>
+	</TR>
+	<TR>
+		<TD>NSBStringLib.prc</TD> <TD>The library. Put this into your \nsbasic\lib folder and download it to your device (or POSE).</TD>
+	</TR>
+	<TR>
+		<TD>StringLibUse.prj</TD> <TD>A sample project that demonstrates the functions.</TD>
+	</TR>
+</TABLE>
+
+<hr>
+<h4>Version()</H4>
+Returns the version of NSBStringLib as a string
+
+<h4>Replace(str,find,replace,count)</H4>
+Returns a string in which a specified substring has been replaced with another substring a specified number of times. Do not assign the result to  str - it needs to be a different variable.<br><br>
+      
+<TABLE>
+	<TR>
+		<TD>str</TD> <TD>Required. String containing substring to replace.  </TD>
+	</TR>
+	<TR>
+		<TD>find</TD> <TD>Required. Substring being searched for. </TD>
+	</TR>
+	<TR>
+		<TD>replace</TD> <TD>Required. Replacement substring. If replace string is longer than find string, then str should be padded in advance to be long enough to handle the increased length.</TD>
+	</TR>
+	<TR>
+		<TD>count</TD> <TD>Optional. Number of substring substitutions to perform. Must be used in conjunction with start. Must be a short variable.</TD>
+	</TR>
+</TABLE>
+
+
+<h4>StrReverse(String)</H4>
+Returns a string in which the character order of a specified string is 
+reversed.
+
+
+<h4>Space(num)</H4>
+Returns a string consisting of the specified number of spaces. Num must be a Short variable.
+
+
+<h4>CreateString(number, ch)</h4>
+Returns a repeating character string of the length specified. Number must be a Short variable.
+
+
+<h4>MonthName(month, abbreviate)</h4>
+Returns a string indicating the specified month.
+
+<TABLE>
+	<TR>
+		<TD>monthRequired.</TD> <TD>The numeric designation of the month. For example, January is 1, February is 2, and so on. </TD>
+	</TR>
+	<TR>
+		<TD>abbreviate</TD> <TD>Optional. Boolean value that indicates if the month name is to be abbreviated. If omitted, the default is False, which means that the month name is not abbreviated. </TD>
+	</TR>
+</TABLE>
+
+<H4>WeekdayName(weekday, abbreviate,firstdayofweek)</h4>
+Returns a string indicating the specified day of the week.
+<br><br>
+
+<TABLE CELLSPACING="0" CELLPADDING="1">
+	<TR>
+		<TD VALIGN=TOP>weekday</TD>
+		<TD>Required. The numeric designation for the day of the week. Numeric value of each day depends on setting of the firstdayofweek setting. </TD>
+	</TR>
+	<TR>
+		<TD VALIGN=TOP>abbreviate</TD>
+		<TD>Optional. Boolean value that indicates if the weekday name is to be abbreviated. </TD>
+	</TR>
+	<TR>
+		<TD VALIGN=TOP>firstdayofweek</TD>
+		<TD>Optional. Numeric value indicating the first day of the week.<PRE> 
+		0 Use preferences settings.
+		1 Sunday (default) 
+		2 Monday3 Tuesday
+		4 Wednesday
+		5 Thursday
+		6 Friday
+		7 Saturday <PRE></pre></pre></TD>
+	</TR>
+</TABLE>
+
+<h4>InstrRev(str, find, start)</h4>
+Returns the position of an occurrence of one string within another, from the end of string.
+<p>InStrRev returns the following values:
+<TABLE>
+	<TR>
+		<TD>find is zero-length</TD> <TD>0 </TD>
+	</TR>
+	<TR>
+		<TD>find is Null </TD> <TD>Null </TD>
+	</TR>
+	<TR>
+		<TD>str is zero-length</TD> <TD>start </TD>
+	</TR>
+	<TR>
+		<TD>str is Null</TD> <TD>Null </TD>
+	</TR>
+	<TR>
+		<TD>str is not found</TD> <TD>0 </TD>
+	</TR>
+	<TR>
+		<TD>str is found within find</TD> <TD>Position at which match is found </TD>
+	</TR>
+	<TR>
+		<TD>start > Len(str)</TD> <TD>0 </TD>
+	</TR>
+</TABLE>
+
+
+<h4>LSet(str1, str2)</h4>
+LSet left aligns the string str1 within the string str2. If str2 is shorter than str1, str1 is truncated. If str1 is longer, str2 is padded to the same length with spaces.
+
+<TABLE>
+	<TR>
+		<TD>str1</TD> <TD>Required. Name of variable for result. </TD>
+	</TR>
+	<TR>
+		<TD>str2</TD> <TD>Required. String expression to be left-aligned within str1. </TD>
+	</TR>
+</TABLE>
+
+
+<h4>RSet(str1, str2)</h4>
+RSet right aligns the string str1 within the string str2. If str2 is shorter than str1, str1 is truncated. If str1 is longer, str2 is padded to the same length with spaces.
+
+<TABLE>
+	<TR>
+		<TD>str1</TD> <TD>Required. Name of string variable. </TD>
+	</TR>
+	<TR>
+		<TD>str2</TD> <TD>Required. String expression to be right-aligned within str1. </TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+</TABLE>
+
+<h4>FormatNumber(expr, numDig, format)</h4>
+Returns a string formatted as a number.
+<br><br>
+<TABLE>
+	<TR>
+		<TD>expr</TD> <TD>Required. Expression to be formatted. </TD>
+	</TR>
+	<TR>
+		<TD>numDigNumeric</TD> <TD>value indicating how many places to the right of the decimal are displayed. </TD>
+	</TR>
+	<TR>
+		<TD>format</TD> <TD>IncludeLeadingDigit+UseParensForNegativeNumbers+GroupDigits</TD>
+	</TR>
+	<TR>
+		<TD>IncludeLeadingDigit</TD> <TD>Tristate constant that indicates whether or not a leading zero is displayed for fractional values.  </TD>
+	</TR>
+	<TR>
+		<TD>UseParensForNegativeNumbers</TD> <TD>Tristate constant that indicates whether or not to place negative values within parentheses. </TD>
+	</TR>
+	<TR>
+		<TD>GroupDigits</TD> <TD>Tristate constant that indicates whether or not numbers are grouped using the group delimiter specified in the control panel.  </TD>
+	</TR>
+</TABLE>
+
+Values for Format
+<TABLE>
+	<TR>
+		<TD>0</TD> <TD>ALL_DEFAULT (IncludeLeadingDigit = true, UseParensForNegativeNumbers = false, GroupDigits = false)</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>1</TD> <TD>INCLUDE_LEADING_DIGIT_FALSE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>2</TD> <TD>INCLUDE_LEADING_DIGIT_TRUE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>4</TD> <TD>USE_PARENTS_FOR_NEGATIVE_NUMBER_FALSE</TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>8</TD> <TD>USE_PARENTS_FOR_NEGATIVE_NUMBER_TRUE</TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>16</TD> <TD>GROUP_DIGIT_FALSE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>32</TD> <TD>GROUP_DIGIT_TRUE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+</TABLE>
+
+
+<h4>FormatTime(time, format)</h4>
+Returns an expression formatted as a time. Time must be float. <br>
+Values for format:
+<TABLE>
+	<TR>
+		<TD></TD> <TD>0</TD> <TD>tfColon</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>1</TD> <TD>tfColonAMPM</TD> <TD>1:00 pm</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>2</TD> <TD>tfColon24h</TD> <TD>13:00</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>3</TD> <TD>tfDot</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>4</TD> <TD>tfDotAMPM</TD> <TD>1.00 pm</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>5</TD> <TD>tfDot24h</TD> <TD>13.00</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>6</TD> <TD>tfHoursAMPM</TD> <TD>1 pm</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>7</TD> <TD>tfHours24h</TD> <TD>13</TD>
+	</TR>
+	<TR>
+		<TD></TD> <TD>8</TD> <TD>tfComma24h</TD> <TD>13,00</TD>
+	</TR>
+	<TR>
+		<TD>64</TD> <TD>is for preference settings</TD>
+	</TR>
+</TABLE>
+
+
+<h4>FormatDate(date, format)</h4>
+Returns a string formatted as a date.
+Date must be float. Format is one of the following:
+
+<TABLE>
+	<TR>
+		<TD>0</TD> <TD>dfMDYWithSlashes</TD> <TD>12/31/95</TD>
+	</TR>
+	<TR>
+		<TD>1</TD> <TD>dfDMYWithSlashes</TD> <TD>31/12/95</TD>
+	</TR>
+	<TR>
+		<TD>2</TD> <TD>dfDMYWithDots</TD> <TD>31.12.95</TD>
+	</TR>
+	<TR>
+		<TD>3</TD> <TD>dfDMYWithDashes</TD> <TD>31-12-95</TD>
+	</TR>
+	<TR>
+		<TD>4</TD> <TD>dfYMDWithSlashes</TD> <TD>95/12/31</TD>
+	</TR>
+	<TR>
+		<TD>5</TD> <TD>dfYMDWithDots</TD> <TD>95.12.31</TD>
+	</TR>
+	<TR>
+		<TD>6</TD> <TD>dfYMDWithDashes</TD> <TD>95-12-31</TD>
+	</TR>
+	<TR>
+		<TD>7</TD> <TD>dfMDYLongWithComma</TD> <TD>Dec 31, 1995</TD>
+	</TR>
+	<TR>
+		<TD>8</TD> <TD>dfDMYLong,</TD> <TD>31 Dec 1995</TD>
+	</TR>
+	<TR>
+		<TD>9</TD> <TD>dfDMYLongWithDot</TD> <TD>31. Dec 1995</TD>
+	</TR>
+	<TR>
+		<TD>10</TD> <TD>dfDMYLongNoDay</TD> <TD>Dec 1995</TD>
+	</TR>
+	<TR>
+		<TD>11</TD> <TD>dfDMYLongWithComma</TD> <TD>Dec, 1995</TD>
+	</TR>
+	<TR>
+		<TD>12</TD> <TD>dfYMDLongWithDot</TD> <TD>1995.12.31</TD>
+	</TR>
+	<TR>
+		<TD>13</TD> <TD>dfYMDLongWithSpace</TD> <TD>1995 Dec 31</TD>
+	</TR>
+	<TR>
+		<TD>14</TD> <TD>dfMYMed</TD> <TD>Dec '95</TD>
+	</TR>
+	<TR>
+		<TD>15</TD> <TD>dfMYMedNoPost</TD> <TD>Dec 95</TD> <TD></TD> <TD>(added for French 2.0 ROM)</TD>
+	</TR>
+	<TR>
+		<TD>From preferences:</TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>64</TD> <TD>is for short date</TD>
+	</TR>
+	<TR>
+		<TD>65</TD> <TD>is for long date</TD>
+	</TR>
+</TABLE>
+
+
+<h4>FormatPercent(expression, numDig, format)</h4>
+Returns a string formatted as a percentage (multiplied by 100) with a trailing % character. 
+<br><br>
+<TABLE>
+	<TR>
+		<TD>expression </TD> <TD>Expression to be formatted. </TD>
+	</TR>
+	<TR>
+		<TD>numDig</TD> <TD>Numeric value indicating how many places to the right of the decimal are displayed.</TD>
+	</TR>
+	<TR>
+		<TD>format</TD> <TD>IncludeLeadingDigit+UseParensForNegativeNumbers+GroupDigits</TD>
+	</TR>
+</TABLE>
+
+<p>Values for Format:
+
+<TABLE>
+	<TR>
+		<TD>IncludeLeadingDigit</TD> <TD>Tristate constant that indicates whether or not a leading zero is displayed for fractional values.  </TD>
+	</TR>
+	<TR>
+		<TD>UseParensForNegativeNumbers</TD> <TD>Tristate constant that indicates whether or not to place negative values within parentheses. </TD>
+	</TR>
+	<TR>
+		<TD>GroupDigits</TD> <TD>Tristate constant that indicates whether or not numbers are grouped using the group delimiter  specified in the control panel.  </TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>0</TD> <TD>ALL_DEFAULT (IncludeLeadingDigit = true, UseParensForNegativeNumbers = false, GroupDigits = false)</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>1</TD> <TD>INCLUDE_LEADING_DIGIT_FALSE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>2</TD> <TD>INCLUDE_LEADING_DIGIT_TRUE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>4</TD> <TD>USE_PARENTS_FOR_NEGATIVE_NUMBER_FALSE</TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>8</TD> <TD>USE_PARENTS_FOR_NEGATIVE_NUMBER_TRUE</TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>16</TD> <TD>GROUP_DIGIT_FALSE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>32</TD> <TD>GROUP_DIGIT_TRUE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+</TABLE>
+
+
+<h4>FormatCurrency(expression, numDig, format)</h4>
+Returns a string formatted as a currency value using the currency symbol $. <br><br>
+
+<TABLE>
+	<TR>
+		<TD>expression</TD> <TD>Expression to be formatted. </TD>
+	</TR>
+	<TR>
+		<TD>numDig</TD> <TD>Numeric value indicating how many places to the right of the decimal are displayed.</TD>
+	</TR>
+	<TR>
+		<TD>format</TD> <TD>IncludeLeadingDigit+UseParensForNegativeNumbers+GroupDigits</TD>
+	</TR>
+</TABLE>
+
+<p>Values for Format:
+<TABLE>
+	<TR>
+		<TD>IncludeLeadingDigit</TD> <TD>Tristate constant that indicates whether or not a leading zero is displayed for fractional values.  </TD>
+	</TR>
+	<TR>
+		<TD>UseParensForNegativeNumbers</TD> <TD>Tristate constant that indicates whether or not to place negative values within parentheses. </TD>
+	</TR>
+	<TR>
+		<TD>GroupDigits</TD> <TD>Tristate constant that indicates whether or not numbers are grouped using the group delimiter specified in the control panel.  </TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>0</TD> <TD>ALL_DEFAULT (IncludeLeadingDigit = true, UseParensForNegativeNumbers = false, GroupDigits = false)</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>1</TD> <TD>INCLUDE_LEADING_DIGIT_FALSE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>2</TD> <TD>INCLUDE_LEADING_DIGIT_TRUE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>4</TD> <TD>USE_PARENTS_FOR_NEGATIVE_NUMBER_FALSE</TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>8</TD> <TD>USE_PARENTS_FOR_NEGATIVE_NUMBER_TRUE</TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>16</TD> <TD>GROUP_DIGIT_FALSE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+	<TR>
+		<TD>32</TD> <TD>GROUP_DIGIT_TRUE</TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD> <TD></TD>
+	</TR>
+</TABLE>
+
+
+
+</html>
+
+

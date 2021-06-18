@@ -1,0 +1,92 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SerialReceive </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>SerialReceive                                                                                         Function</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SERIALRECEIVE(<i>buffer</i> as string or integer arrray , <i>numChars</i> as integer, <i>timeout</i>
+as double)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Receives incoming data from the serial port and places it
+into <i>buffer</i>. It can be used to wait
+for data to arrive, or to get data once a program has been notified of incoming
+data by an NsbSerialIn event. It stops after receiving at least <i>numChars</i> characters and cancels further receipt of data if more
+characters are received than the BufferSize set with the SerialSet() function. This function
+returns a result code: see SerialOpen for a list of result codes. To clear the
+receive buffer, do a SerialSend(&quot;&quot;,0).</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>If SerialReceive is called as a result of an NsbSerialIn
+event, it will return when all the characters are read, even if <i>numChars</i> has not yet been received. The
+timeout argument is ignored. To find out how many characters are in the serial
+receive queue, using the SysInfo(5) function.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>If SerialReceive is not called after an NsbSerialEvent, it
+will return when <i>numChars</i> are
+received or no characters are received in the <i>timeout</i> period in seconds. Fractions of a second are allowed. In
+the event of a timeout, the function will return 773, along with any data that
+was received in buffer.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>If buffer is an integer array, the ASCII value of each byte
+(including null) will be put into an element of the array.  This allows you to receive null characters.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=MsoNormal>Err=SerialReceive(inputString, 200, .5) 'non event case</p>
+
+</div>
+
+</body>
+
+</html>

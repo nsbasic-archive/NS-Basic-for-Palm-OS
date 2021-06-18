@@ -1,0 +1,390 @@
+"mdl"
+8
+"EasyCalc+","appl","Ecl+",1046,505,0
+""
+1042
+1044
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000C1"
+""
+"bmpfile"
+1
+"Bitmap1042"
+1042
+"..\..\Bitmaps\EASYCLC1.BMP"
+"bmpfile"
+1
+"Bitmap1044"
+1044
+"..\..\Bitmaps\EASYCLC2.BMP"
+"bmpfile"
+1
+"Bitmap1046"
+1046
+"..\..\Bitmaps\SQRT.BMP"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"EasyCalc+"
+"Screen1004"
+""
+0
+"Sub Screen1004_after()
+'EasyCalc+ by Michael Verive
+'2/15/2002
+'Modified from EasyCalc by NSBasic
+'Memory keys added, converted to simpler syntax,
+' and code module incorporated into form ~after~ code
+
+Global Amount as Float*18,6
+Global MemValue as Float
+Global Operator as String
+Global firstDigit as Integer
+'initialize variables
+Amount=0
+MemValue=0
+Operator=~+~
+firstDigit=1
+
+fldAmount.text=~0~
+butSqrt.text=~~ ' clear the text from the button
+DrawBitmap 1046,85,45 ' and place the square root symbol
+End Sub
+Sub UpdateDisplay()
+Dim intWk as Integer
+Dim wk as String
+'if it's a fraction, remove trailing zeroes
+If int(Amount)=amount Then
+    'it's a whole number, so display it as such
+    intWk=amount
+    fldAmount.text=ltrim(str(intWk))
+else
+	wk=str(Amount)
+	If amount <> 0 Then
+ 	   Do while right(wk,1)=~0~
+    		wk=left(wk,len(wk)-1)
+    	Loop
+	Else
+		fldAmount.text=ltrim(wk)
+	End If
+End If
+End Sub
+Sub ProcessKey(key as String ) 
+Dim i as Integer
+Dim wk as String
+If firstDigit = 1 Then
+   firstDigit=0
+   wk=key
+Else
+   If key=~.~ Then
+        If instr(1,fldAmount.text,~.~,0)<>0 Then
+            MsgBox ~Already have a decimal point in the amount.~
+            Exit Sub
+        End If
+    EndIf
+    wk=fldAmount.text
+    wk=wk+key
+End If
+fldAmount.text=wk
+End Sub
+
+Sub UpdateAmount ( )
+If firstDigit=1 Then Exit Sub
+Select Case Operator
+    Case ~+~
+        Amount=Amount + val(fldAmount.text)
+    Case ~-~
+        Amount=Amount - val(fldAmount.text)
+    Case ~*~
+        Amount=Amount * val(fldAmount.text)
+    Case ~/~
+        If val(fldAmount.text) = 0 Then
+            MsgBox ~Can't divide by 0~
+        Else
+            Amount=Amount / val(fldAmount.text)
+        EndIf  
+End Select 
+UpdateDisplay 
+firstDigit=1
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1005",1005,8,44,20,20,#TRUE#,7,"1",0,0,0
+"sub object1005()
+  ProcessKey  ~1~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1006",1006,33,44,20,20,#TRUE#,7,"2",0,0,0
+"sub object1006()
+   ProcessKey  ~2~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1007",1007,58,44,20,20,#TRUE#,7,"3",0,0,0
+"sub object1007()
+   ProcessKey  ~3~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1008",1008,8,72,20,20,#TRUE#,7,"4",0,0,0
+"sub object1008()
+   ProcessKey  ~4~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1009",1009,33,72,20,20,#TRUE#,7,"5",0,0,0
+"sub object1009()
+    ProcessKey  ~5~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1010",1010,58,72,20,20,#TRUE#,7,"6",0,0,0
+"sub object1010()
+   ProcessKey  ~6~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1011",1011,8,100,20,20,#TRUE#,7,"7",0,0,0
+"sub object1011()
+   ProcessKey  ~7~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1012",1012,33,100,20,20,#TRUE#,7,"8",0,0,0
+"sub object1012()
+   ProcessKey  ~8~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1013",1013,58,100,20,20,#TRUE#,7,"9",0,0,0
+"sub object1013()
+   ProcessKey  ~9~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1014",1014,8,128,20,20,#TRUE#,7,"0",0,0,0
+"sub object1014()
+   ProcessKey  ~0~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1015",1015,33,128,20,20,#TRUE#,7,".",0,0,0
+"sub object1015()
+   '  key is period
+   ProcessKey  ~.~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1016",1016,58,128,20,20,#TRUE#,7,"=",0,0,0
+"sub object1016()
+   ' key is = sign
+  UpdateAmount
+  Operator=~~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1017",1017,108,44,20,20,#TRUE#,7,"C",0,0,0
+"Sub object1017()
+  Amount=0
+  Operator=~+~
+  UpdateDisplay
+  firstDigit=1 
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1018",1018,108,72,20,20,#TRUE#,7,"CE",0,0,0
+"Sub object1018()
+   
+ 
+ If firstDigit=1 Then
+     Operator=~~
+ Else
+      firstDigit=1
+      fldAmount.text=~~
+ EndIf
+ 
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1019",1019,83,72,20,20,#TRUE#,7,"+/-",0,0,0
+"Sub object1019()
+   If firstDigit = 0 Then
+         MsgBox ~+/- key only works against the accumulated amount and not on the amount being entered.~
+         Exit Sub
+   EndIf
+   Amount=-Amount
+   UpdateDisplay  
+   Operator=~~
+   firstDigit=1
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1020",1020,83,100,20,20,#TRUE#,7,"-",0,0,0
+"sub object1020()
+   UpdateAmount  
+   Operator=~-~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1021",1021,108,100,20,20,#TRUE#,7,"*",0,0,0
+"sub object1021()
+   UpdateAmount  
+   Operator=~*~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1022",1022,83,128,20,20,#TRUE#,7,"+",0,0,0
+"sub object1022()
+   UpdateAmount  
+   Operator=~+~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1023",1023,108,128,20,20,#TRUE#,7,"/",0,0,0
+"sub object1023()
+   UpdateAmount  
+   Operator=~/~
+   firstDigit=1
+end sub
+"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#FALSE#,10,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","fldAmount",1024,8,20,20,144,#TRUE#,7," ",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1036",1036,132,44,20,20,#TRUE#,7,"MC",0,0,0
+"Sub object1036()
+MemValue=0
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1037",1037,132,100,20,20,#TRUE#,7,"M+",0,0,0
+"Sub object1037()
+MemValue=MemValue+val(fldAmount.text)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1038",1038,132,72,20,20,#TRUE#,7,"MR",0,0,0
+"Sub object1038()
+fldAmount.text=str(MemValue)
+UpdateAmount  
+firstDigit=0
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1040",1040,132,128,20,20,#TRUE#,7,"M-",0,0,0
+"Sub object1040()
+MemValue=MemValue-val(fldAmount.text)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","butSqrt",1045,84,44,20,20,#TRUE#,7,"sqt",0,0,0
+"Sub object1045()
+  Amount=val(fldAmount.text)
+  Amount=sqrt(Amount)
+  fldAmount.text=str(Amount)
+  UpdateDisplay
+  Operator=~~  
+DrawBitmap 1046,86,46
+End Sub"
+"end"

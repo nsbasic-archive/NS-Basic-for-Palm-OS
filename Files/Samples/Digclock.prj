@@ -1,0 +1,51 @@
+"mdl"
+8
+"Digclck2","appl","Dck2",1010,505,0
+"sub main()
+
+end sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000010"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#FALSE#
+"Screen1004"
+"Screen1004"
+""
+0
+"sub Screen1004_after()               
+	DrawLine 0,15,159,15,nsbGray                ' draws line to separate date and time from rest of screen
+	sysinfoset(~Timer~, 1000) 'send a timer event in 1 second
+end sub"
+"Sub Form1004_Event()
+	Dim CurTime as String                       ' use this if you are displaying the seconds
+	If geteventtype()=nsbtimer Then
+	    fldDate.text=Datemmddyy(Today())
+	    'fldCurrentTime.text=HourMinAMPM(now)   ' use this if you don't need to display seconds
+	    CurTime=HourMinAMPM(now())              ' omit this and the next line if hour, minute, and am/pm display are sufficient
+	    fldCurrentTime.text=left(CurTime,5)+~:~+format(second(now()),~00~)+right(CurTime,3) ' adds seconds display
+	    sysinfoset(~Timer~, 1000) 'send a timer event in 1 second again
+	End If
+End Sub"
+0,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,20,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCurrentTime",1005,80,0,16,72,#TRUE#,7,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,255,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDate",1009,0,0,16,72,#TRUE#,7,"",0,0,0
+""
+"end"

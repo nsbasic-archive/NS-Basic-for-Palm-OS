@@ -1,0 +1,106 @@
+; GENERAL PROPERTIES
+;
+; All extensions must have a [General] section. Some keys are optional.
+;
+;	ExtensionName:	User visible name of extension (required)
+;	PrcName:	Name of .PRC file of extension (required)
+;	Version:	Version of extension (can contain chars) (required)
+;	Manufacturer:	Name of manufacturer of extension. (required)
+;       =HelpStart=      This key marks the beginning of the help text
+;			shown in the extension's properties. Enclose
+;			each line in double quotes and terminate the
+;			help section with the key =HelpEnd=. (optional,
+;			default = "No help available.")
+;
+
+[General]
+
+ExtensionName=ScreenLib
+PrcName=ScreenLib.prc
+Version=1.1
+Manufacturer=GlowkaWare
+InfVers=2.0
+
+;
+; EXTENSION HELP
+;
+
+=HelpStart=
+""
+"Screen Functions Shared Library"
+""
+"This library provides Screen Function support for use with NSBasic."
+""
+"Written by Ron Glowka, August 2001"
+""
+=HelpEnd=
+
+;
+; METHOD PROPERTIES
+;
+; This section is organized as follows:
+;       section:        [GlobalMethods]
+;                       name=index, type, numparams, helpstring
+;
+; where:
+;
+;	name:		Name of method
+;	index:		Index of function. Index will be passed as the
+;			first parameter on the evaluation stack.
+;	type:		Either "func" or "sub".  Funcs are methods
+;			that push a return value onto the interpreter's
+;			evaluation stack. Subs are methods that do
+;			not push return values.
+;	numparams:	Number of parameters required by this method.
+;       helpstring:	Descriptive text about method. (Optional)
+;
+;
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as flt32"
+CompileInfo= 2, sub, 2, "CompileInfo(inout compileDateStr as string, inout compileTimeStr as string)"
+GetSupportedDepths= 3, func, 0, "GetSupportedDepths() as int32"
+DepthSupported= 4, func, 1, "DepthSupported(in depth as int32) as int32"
+ColorSupported= 5, func, 0, "ColorSupported() as int32"
+SetDepth= 6, sub, 1, "SetDepth(in depth as int32)"
+SetColor= 7, sub, 1, "SetColor(in yesNo as int32)"
+SetWidth= 8, sub, 1, "SetWidth(in width as int32)"
+SetHeight= 9, sub, 1, "SetHeight(in height as int32)"
+SaveScreenMode= 10, sub, 0, "SaveScreenMode()"
+RestoreScreenMode= 11, sub, 0, "RestoreScreenMode()"
+CurrentDepth= 12, func, 0, "CurrentDepth() as int32"
+CurrentColor= 13, func, 0, "CurrentColor() as int32"
+CurrentWidth= 14, func, 0, "CurrentWidth() as int32"
+CurrentHeight= 15, func, 0, "CurrentHeight() as int32"
+SetToDefaults= 16, sub, 0, "SetToDefaults()"
+DefaultDepth= 17, func, 0, "DefaultDepth() as int32"
+DefaultColor= 18, func, 0, "DefaultColor() as int32"
+DefaultWidth= 19, func, 0, "DefaultWidth() as int32"
+DefaultHeight= 20, func, 0, "DefaultHeight() as int32"
+GetTableEntryIndex= 21, func, 1, "GetTableEntryIndex(in which as int32) as int32"
+GetTableEntryRGB= 22, func, 1, "GetTableEntryRGB(in which as int32) as int32"
+GetRGBIndex= 23, func, 0, "GetRGBIndex() as int32"
+GetRGBRed= 24, func, 0, "GetRGBRed() as int32"
+GetRGBGreen= 25, func, 0, "GetRGBGreen() as int32"
+GetRGBBlue= 26, func, 0, "GetRGBBlue() as int32"
+SetTableEntryIndex= 27, sub, 2, "SetTableEntryIndex(in which as int32, in index as int32)"
+SetTableEntryRGB= 28, sub, 4, "SetTableEntryRGB(in which as int32, in red as int32, in green as int32, in blue as int32)"
+BrightnessAdjust= 29, sub, 0, "BrightnessAdjust()"
+ContrastAdjust= 30, sub, 0, "ContrastAdjust()"
+PickColorIndex= 31, func, 2, "PickColorIndex(in index as int32, in title as string) as int32"
+PickColorRGB= 32, func, 4, "PickColorRGB(in red as int32, in green as int32, in blue as int32, in title as string) as int32"
+IndexToRGB= 33, sub, 1, "IndexToRGB(in index as int32)"
+RGBToIndex= 34, func, 3, "RGBToIndex(in red as int32, in green as int32, in blue as int32) as int32"
+SetForeColor= 35, func, 1, "SetForeColor(in newIndex as int32) as int32"
+SetBackColor= 36, func, 1, "SetBackColor(in newIndex as int32) as int32"
+SetTextColor= 37, func, 1, "SetTextColor(in newIndex as int32) as int32"
+DrawLine= 38, sub, 4, "DrawLine(in x1 as int32, in y1 as int32, in x2 as int32, in y2 as int32)"
+DrawGrayLine= 39, sub, 4, "DrawGrayLine(in x1 as int32, in y1 as int32, in x2 as int32, in y2 as int32)"
+EraseLine= 40, sub, 4, "EraseLine(in x1 as int32, in y1 as int32, in x2 as int32, in y2 as int32)"
+InvertLine= 41, sub, 4, "InvertLine(in x1 as int32, in y1 as int32, in x2 as int32, in y2 as int32)"
+DrawPixel= 42, sub, 2, "DrawPixel(in x as int32, in y as int32)"
+ErasePixel= 43, sub, 2, "ErasePixel(in x as int32, in y as int32)"
+InvertPixel= 44, sub, 2, "InvertPixel(in x as int32, in y as int32)"
+GetPixel= 45, func, 2, "GetPixel(in x as int32, in y as int32) as int32"
+ScreenLock= 46, func, 1, "ScreenLock(in mode as int32) as int32"
+ScreenUnlock= 47, sub, 0, "ScreenUnlock()"                       

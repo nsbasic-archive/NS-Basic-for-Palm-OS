@@ -1,0 +1,21 @@
+<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+
+<a href="#Version Information">Version Information</a>
+    <a href="#Version">Version</a>                         version = Version()
+    <a href="#CompileInfo">CompileInfo</a>                     compileDateTime = CompileInfo()
+    <a href="#PINMgrAPIVersion">PINMgrAPIVersion</a>                version = PINMgrAPIVersion()
+    <a href="#PINMgrAPIMajorMinor">PINMgrAPIMajorMinor</a>             PINMgrAPIMajorMinor major, minor
+    <a href="#RegisterNotifyEvents">RegisterNotifyEvents</a>            RegisterNotifyEvents displayResized, DIAOpened, DIAClosed
+    <a href="#WinGetDisplayExtent">WinGetDisplayExtent</a>             WinGetDisplayExtent x, y
+    <a href="#WinSetDisplayExtent">WinSetDisplayExtent</a>             WinSetDisplayExtent size
+    <a href="#FrmGetDIAPolicy">FrmGetDIAPolicy</a>                 value = FrmGetDIAPolicy()
+    <a href="#FrmSetDIAPolicy">FrmSetDIAPolicy</a>                 FrmSetDIAPolicy value
+    <a href="#PINGetDIAState">PINGetDIAState</a>                  value = PINGetDIAState()
+    <a href="#PINSetDIAState">PINSetDIAState</a>                  PINSetDIAState value
+    <a href="#PINGetInputTriggerState">PINGetInputTriggerState</a>         value = PINGetInputTriggerState()
+    <a href="#PINSetInputTriggerState">PINSetInputTriggerState</a>         PINSetInputTriggerState value
+    <a href="#SysGetOrientation">SysGetOrientation</a>               value = SysGetOrientation()
+    <a href="#SysSetOrientation">SysSetOrientation</a>               status = SysSetOrientation(value)
+    <a href="#SysGetOrientationTriggerState">SysGetOrientationTriggerState</a>   value = SysGetOrientationTriggerState()
+    <a href="#SysSetOrientationTriggerState">SysSetOrientationTriggerState</a>   status = SysSetOrientationTriggerState(value)
+</pre>

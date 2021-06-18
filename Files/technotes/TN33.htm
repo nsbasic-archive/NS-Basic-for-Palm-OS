@@ -1,0 +1,243 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 33: Using the Grid Control</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY bgcolor=#ffffff>
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+  <TR>
+	<TD WIDTH="22%" VALIGN="TOP" class="Normal">
+	  <P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+	</TD>
+	<TD WIDTH="78%" VALIGN="TOP" class="Normal">
+      <h2>Tech Note 33: Using the Grid Control</h2>
+	  <h3>January 04, 2006</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	 </TD>
+  </TR>
+</TABLE>
+<HR>
+
+
+  
+<p>The Grid control provides an easy way to display your data
+in a formatted table. It is made up of horizontal rows and vertical columns.
+The intersection of a row and a column is called a cell. Have a look at the
+sample &quot;Grid.prj&quot; in the Samples project to see how this control
+works. In the description below, the words in bold below are properties and
+methods of the grid control. To use them, preface them by the name of your
+control followed by a period.</p>
+
+<h2>A. Setting up the Grid in the IDE</h2>
+<p>To place a Grid on a form in your project, select the Grid
+object and click in the Palm Screen at the top right hand corner where you want
+it to be placed. Set the number of <b>Cols</b>
+and <b>Visible Rows</b> you wish to
+have. Changing the number of <b>Visible Rows</b> will increase the <b>Height</b>
+of the grid with rows the same size. Change the <b>Height</b> of the Grid to change the size of each row. The
+columns are all equally spaced at Grid creation time: you can change the width
+at runtime. You cannot have the grid automatically hidden when the form is
+loaded.</p>
+<p>If you choose the <b>Has Scrollbar</b> option, make sure the <b>Width</b> leaves room for the scrollbar to appear to the
+right of the object. Allow about 10 pixels for this.</p>
+<h2>B. Initializing the Grid at Runtime</h2>
+<p>You can complete the setup of your grid at runtime in the
+Form After code. It's a good idea to start by doing a <b>Hide</b>, so the updates you do to the table do not
+constantly update the screen. You can then set the column widths, types and initial
+values for the grid before doing a <b>Show</b>.</p>
+<p>Set the column widths by using the <b>ColWidth</b>(<i>colNo</i>)=<i>p</i> function, where <i>colNo</i> is the column number and <i>p</i> is the number of pixels the column should be wide. &nbsp;Columns can hold text, number or check
+boxes. </p>
+<p>To set the type of each columns, use the <b>ColType</b> <i>colNo</i>, <i>type</i>, <i>formatString</i> call. Type can be &quot;text&quot;,&quot;numeric&quot; or
+&quot;checkbox&quot;. </p>
+<p>If the <i>type</i> of a
+column is &quot;text&quot;, you can put string values into it. The <i>formatString</i> is used for the initial value of any new rows that
+you <b>Add</b>. It is normally &quot;&quot;, an empty string.
+&quot;text&quot; is the default column type. Data is left justified in a text
+column.</p>
+<p>If the <i>type</i> of a
+column is &quot;numeric&quot;, the <i>formatString</i> defines how numbers are shown in it, using the same
+conventions as the FORMAT statement. For example, a <i>formatString</i> of &quot;nnn&quot; will display a 3 digit right
+justified number. The default value of a new row is 0.</p>
+<p>If the <i>type</i> of a
+column is &quot;checkbox&quot;, the <i>formatString</i> is used for an optional string value that is shown
+to the right of the checkbox. The default value is &quot;&quot;, an empty
+string. For checkboxes without any text, a <b>colWidth</b> is 12 works
+well. String or numeric values can be assigned to a checkbox column cell. If
+the value assigned is 0 or &quot;0&quot;, the checkbox is unchecked; otherwise
+it is checked. The default is that a column is unchecked.</p>
+
+<h5>Example</h5>
+<pre>
+'set up a grid with 3 columns: text, numeric and checkbox
+grid1.hide
+grid1.colwidth(1)=121
+grid1.ColType 1,&quot;text&quot;,&quot;&quot;
+grid1.colwidth(2)=14
+grid1.ColType 2,&quot;numeric&quot;,&quot;nnn&quot;
+grid1.colWidth(3)=12
+grid1.ColType 3,&quot;checkbox&quot;,&quot;&quot;
+displayGrid 'call another function to set initial values
+grid1.show
+</pre>
+
+<h2>C. Populating a Grid with your own data </h2>
+<p>Once you have the grid set up, you can populate the cells
+with data using the <b>Text</b>, <b>Value</b>, <b>TextMatrix</b> and <b>ValueMatrix</b>
+functions. <b>Text</b> and <b>Value</b> set string and numeric values respectively to the
+current cell. The current cell is defined as the cell that is at row <b>Row</b> and column <b>Col</b>. You can change the current cell by assigning new values to the grid's
+<b>Row </b>and <b>Col</b> properties.</p>
+<p>A quicker way to do this is to use the <b>TextMatrix</b> and <b>ValueMatrix</b> functions. These take the row and column values as
+arguments and do not require you to set the <b>Row</b> and <b>Col</b>
+properties separately. The <b>Redraw</b> method can then be used after all cells are
+updated.</p>
+<p>To add a row, use the <b>Add</b> method. The <b>RowData</b>
+property can be used to store a unique value for each row, that does not get
+displayed. To get rid of all the rows in a grid, use the <b>Clear</b> method. The value of <b>Rows</b> will then be 0. You can also add or delete rows to
+a grid by changing the value of <b>Rows</b>. To get rid of one particular row, use the <b>Remove</b> method.</p>
+
+<h5>Example</h5>
+<pre>
+MyGrid.Clear
+For r=1 to 10
+&nbsp;&nbsp; MyGrid.add
+&nbsp;&nbsp; Grid.TextMatrix(r,1)=&quot;some data&quot;
+&nbsp;&nbsp; Grid.ValueMatrix(r,2)=2
+&nbsp;&nbsp; Grid.ValueMatrix(r,3)=1
+Next
+</pre>
+<h2>D. Populating a Grid from a Database</h2>
+<p>You can also populate your grid with information from a
+database. To do this, you'll need to do a bit of preparation. First, you will
+need to DIM a database variable to identify which database will be loading from.
+Use the DIM AS DATABASE statement. Here's an example:</p>
+<pre>
+Dim blueKey as Integer
+Type dbBluesLayout
+&nbsp;&nbsp;&nbsp; Name as String
+&nbsp;&nbsp;&nbsp; age as Integer
+&nbsp;&nbsp;&nbsp; active as Integer
+End Type
+Dim dbBlues1 as Database &quot;Blues&quot;, DbBluesRec, dbBluesLayout, BlueKey
+</pre>
+
+<p>We want to read in data from a database on our Palm called
+&quot;Blues&quot;. The database variable (we will refer to the database using
+this) is called dbBlues1. Each record in the database has the field in
+dbBluesLayout. When we read a record in, it will be put into the variable
+dbBluesRec. The key to the database Is blueKey, an integer. This statement
+should be done in the same routine that you do your <b>BindToDatabase</b> call, since dbBluesRec is automatically dimensioned
+as a regular variable (not a global).</p>
+<p class=MsoToc1>Now that we have defined
+our database, we can copy the information directly into our grid using the
+BindToDatabase call</p>
+<pre>
+Grid1.bindToDatabase(dbBlues1, dbBluesRec.name, dbBluesRec.Age, _
+&nbsp;dbBluesRec.active) Where dbBluesRec.age&gt;=70
+</pre>
+
+<p>This statement copies data from the database referred to by
+dbBlues1 into our grid, Grid1.&nbsp; The
+next three arguments list the fields in the database record which go into each
+of the columns. The columns do not need to be in the same order as the fields in
+the record layout (dbBluesLayout), nor do you need to use all the fields. The
+optional WHERE clause allows you to select which records to copy to the grid.
+You may use any expression that you could put into a normal IF statement.</p>
+<p>If there are more records in the database selected than <b>Visible
+Rows</b> and you have <b>Has ScrollBar</b> set, a scrollbar will appear allowing you to see
+all the rows. Keep in mind that if you have a large number of rows, the scroll
+arrows do not work very precisely. Records are only copied into the grid as
+they are displayed, so there is no speed penalty for displaying large
+databases.</p>
+<p>As the records are read into each row, the <b>rowData</b> value of each row is set to the record number in
+the database. &nbsp;This is useful if
+you want to recall a database record for a selected row in the grid:</p>
+<pre>
+Dim recNo as integer
+Dim err as integer
+recNo=Grid1.rowData(Grid1.Row) 'get rowData for the selected row
+err=dbPosition(dbBlues, recNo)
+err=dbRead(dbBlues, dbBluesLayout)
+</pre>
+
+<h2>E. Interacting with a Grid</h2>
+<p>When a user taps on a grid, the code for the grid object is
+executed. Data cannot be typed directly into a cell. There are several useful
+variables that can be checked in that routine to determine what to do. The <b>Row
+</b>and <b>Col</b> properties will have the current row and column.
+You can use <b>Row</b> to get the <b>RowData</b> value to get back to the original database record
+(if it is a bound grid) or to access other data.</p>
+<p>You can modify the values in a grid using Text, Value,
+TextMatrix and RowMatrix. However, changing these values will not update the
+database automatically in a grid that is bound to a database. To update the
+database, use the rowData property to locate the database record, read it in,
+modify it and write it out again using your own code.</p>
+<p><b>TopRow</b> is a useful
+value when dealing with grids which scroll. It gives the row number of the top
+row that is currently displayed. You can also force a grid to scroll by
+changing the value of <b>TopRow</b>.</p>
+<br>
+  
+
+  
+<h4>Grid Object</h4>
+<p>The Grid&nbsp;object allows you display a table of data, supplied either
+from your program or automatically loaded from a database. You define the basic
+appearance of the grid at design time and populate it with data at runtime.</p>
+<p>When a cell in the grid is tapped, the grid's row and col properties
+are set and can be used in your program. While the fields in the grid cannot be
+directly edited by the user, you can change their values using TextMatrix and
+ValueMatrix for string and numeric fields respectively. Text and Value can be
+used for the currently selected cell.</p>
+<p>Please see the Handbook for a more detailed
+description of the use of this object.</p>
+<p><b>Properties and Methods Specific to this Object</b></p>
+<p>.BINDTODATABASE&nbsp;<i>dbName</i>, <i>dbFieldNameList</i> [Where <i>condition</i>]</p>
+<p>Automatically loads a grid with data from a database. <i>DbName</i> is a database variable, set up by a previous DIM
+AS DATABASE statement. <i>DbFIeldNameList</i> is a list of fieldnames in the database, or the name of a Type
+structure in the database. <i>Condition</i>
+is an optional argument which selects which records to display. The format is
+the same as in an IF statement.</p>
+<p>.COL&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+or set the current column. Range is 1 to COLS.</p>
+<p>.COLS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+the number of columns</p>
+<p>.COLTYPE&nbsp;<i>colNo</i>, <i>type</i>, <i>formatString</i></p>
+<p>Set the type and format of a column. Columns default to text
+with null values. If you want a different type of data in a column, you must
+use this method to set it at runtime. <i>ColNo</i>
+is an existing column number in the Grid. <i>Type</i> is either &quot;text&quot;,&quot;numeric&quot; or
+&quot;checkbox&quot;. <i>FormatString</i>
+depends on <i>type</i>: for
+&quot;text&quot;, it will be the default value of the cell. For
+&quot;numeric&quot;, it is a format string as used in the FORMAT statement. For&nbsp; &quot;checkbox&quot;, the <i>formatString</i> is displayed to the right of a checkbox. </p>
+<p>.COLWIDTH(<i>colNo</i>)  Get or set
+the width of column <i>columnNo</i></p>
+<p>.ROW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+or set the current row. Range is 1 to ROWS.</p>
+<p>.ROWDATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+or set the rowdata value of the row. This is a user defined value.</p>
+<p>.ROWS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+or set the number of rows.</p>
+<p>.TEXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+or set the value of the current cell with text in it.</p>
+<p>.TEXTMATRIX(<i>rowNo</i>, <i>ColNo</i>)
+Get or set the text value of the cell at <i>rowNo</i>, <i>ColNo</i>.</p>
+<p>.VALUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Get
+or set the value of the current cell with a number in it.</p>
+<p>.VALUEMATRIX(<i>rowNo</i>, <i>ColNo</i>)
+Get or set the numeric value of the cell at <i>rowNo</i>, <i>ColNo</i>.</p>
+<p><b>Properties Supported</b>
+(Set at design time)</p>
+<p>Cols, Has Scrollbar, Height, Left, Top, Visible Rows, Width</p>
+<p><b>Other Methods Supported</b>
+(See &quot;Methods&quot;)</p>
+<p>Add, Clear, Hide, Redraw, Remove, Show</p>
+
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,395 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 09: Sanners: Aceeca, Janam and Symbol</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="19%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="81%" VALIGN="TOP">
+	  <h3>Tech Note 09: Sanners: Aceeca, Janam and Symbol</h3>
+	  <h3>July 16, 2008</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR><BR><BR>
+
+<H1>Symbol Devices</h1>
+
+<p>NS Basic/Palm provides support for Symbol devices starting with version 2.0. The necessary libraries and samples are installed along with NS Basic/Palm: there are no extra files to download.
+
+<p>The Symbol routines work on all Palm OS devices from Symbol, as well as the Symbol Springboard for Visor. Please note that there are a few wrinkles with the Visor version: they are documented further on in this document. If you have a Symbol SPT15xx, it's a good idea to flash Palm OS 3.5 to the device. With older ROM versions, there is a potential error when using the STOP statement.
+
+<p>The routines are very simple to add into a program. Check out the sample called "Symbol" to see how it is done.
+
+<H4>The Easy Way</H4>
+
+<P>1. In your startup code, include the line
+
+<P><CODE>LoadLibrary "NSBSymbolLib"</CODE>
+
+<P>This lets NSBasic know that you will be using the library.
+
+<P>2. Somewhere in the initialization, possibly in the After code of your main form, call the function
+
+<P><CODE>NSBSymbolLib.IsPalmSymbolUnit()</CODE>
+
+<P>This will return 1 if the program is running on a Symbol unit and 0 otherwise.  If it returns 0, do not try to use any further Symbol functions.
+
+<P>3. In the Events code of your main form, when you receive an event type 34815, call this string function to get the scanned value:
+
+<P><CODE>scannedData = NSBSymbolLib.GetLastScanData()</CODE>
+
+<P>The Events code will be called whenever the user pushes the yellow Scan button on the Symbol device.  NSBSymbolLib.GetLastScanData() returns a string giving the last barcode scanned.  Do whatever is appropriate with this bar code.
+
+<P>4. Compile your NSBasic program and download it plus the NSBSymbolLib.prc directory to your Symbol device.  Your program should behave appropriately according to the last settings of the scanner.
+
+<P>The Symbol.prj sample does this. It also gets the bar code type using the integer function NSBSymbolLib.GetBarType().
+
+<H4>The Harder Way</H4>
+
+<H4>1. Events</H4>
+
+The Symbol device produces three separate events. Each of these has two possible values. It's best to check for both in your program so your program will run on all devices.<br><br>
+
+<TABLE BORDER CELLSPACING=1>
+	<TR>
+		<TD>34815 or -30721</TD> <TD>A scan has been decoded.</TD>
+	</TR>
+	<TR>
+		<TD>34816 or -30720</TD> <TD>The battery is low.</TD>
+	</TR>
+	<TR>
+		<TD>34817 or -30719</TD> <TD>When a scan starts.</TD>
+	</TR>
+</TABLE>
+
+<P>You can display a dialog box when you recieve event 34816.  Event 34817 can normally be ignored, as you will get an event 34815 after a second or two anyway.  If no bar code was successfully scanned, NSBSymbolLib.GetLastScanData() returns "NR" and NSBSymbolLib.GetBarType() returns 0.
+
+<H4>2. Functions</H4>
+
+The NSBasic Symbol library provides a number of procedures and functions that you can use to customize the operation of the scanner.
+
+<TABLE BORDER CELLSPACING=1>
+	<TR>
+		<TD>IsPalmSymbolUnit()</TD> <TD>This function returns 1 if this is a symbol unit, 0 otherwise</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdScanEnable()</TD> <TD>This procedure enables the scanner.  Normally, the scanner is always enabled. You can call this to make absolutely sure, or if you also use CmdScanDisable()</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdScanDisable()</TD> <TD>This procedure disables the scanner.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdScanSetTriggeringModes(modes)</TD> <TD>This procedure sets the triggering modes of the scanner.  For more information, consult the Symbol documentation. </TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdScanSetBarcodeEnabled(type, whether)</TD> <TD>This procedure enables or disables a particular barcode.  The type of barcode is given in type as an integer.  If whether is 1, the barcode is enable.  If it is 0, it is disabled. See table below for values.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdSendParams(beep)</TD> <TD>(obsolete) Call this procedure after a series of CmdScanSetTriggeringModes(modes) and CmdScanSetBarcodeEnabled(type, whether).  If the integer beep is 1, the Symbol device will beep when this is called.  If it is 0, the device will not beep. The CmdScanSetTriggeringModes() and CmdScanSetBarcodeEnabled() call this function automatically. </TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdStartDecode()</TD> <TD>This procedure starts a decode.  The effect is the same as pressing the yellow button.  To use this, you must set the triggering mode to 8.  Normally, there is no reason to use this, as the yellow button is the standard way of starting a scan.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdStopDecode()</TD> <TD>This procedure stops a decode in progress.  Normally, it is not used.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>GetDecodedData()</TD> <TD>This function returns a string that contains the raw decoded data.  It is only provided for debugging purposes.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>GetLastScanData()</TD> <TD>This function returns a string that contains that last bar code scanned.  You will normally call this as a response to an event type 34815.  However, you can call it any time up to when the next barcode is scanned.  If the last barcode was invalid, this will return "NR" as the barcode.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>GetBarType()</TD> <TD>This function returns the type of the last scanned barcode as an integer.  If the last barcode was invalid, it returns 0. See table below for return values.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdScanLedOn()</TD> <TD>This procedure turns the green LED on.  Because the LED normally goes on when a scan is started, this is provided just for fun.</TD>
+	</TR>
+	<TR>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CmdScanLedOff()</TD> <TD>This procedure turns the green LED off.  Because the LED normally goes on when a scan is completed, this is provided just for fun.</TD>
+	</TR>
+</TABLE>
+
+
+<H4>3. Barcode Types</H4>
+
+The following table gives the numerical values of the barcode types.  These numbers are defined by Symbol.
+
+<TABLE BORDER CELLSPACING=1>
+	<TR>
+		<TD></TD> <TD>GetBarType()</TD><TD>CmdScanSetBarcodeEnabled()</TD>
+	</TR>
+	<TR>
+		<TD>NOT_APPLICABLE</TD> <TD>0</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>CODE39</TD> <TD>1</TD><td>0</td>
+	</TR>
+	<TR>
+		<TD>CODABAR</TD> <TD>2</TD><td>7</td>
+	</TR>
+	<TR>
+		<TD>CODE128</TD> <TD>3</TD><td>8</td>
+	</TR>
+	<TR>
+		<TD>D2OF5</TD> <TD>4</TD><td>5</td>
+	</TR>
+	<TR>
+		<TD>IATA2OF5</TD> <TD>5</TD>  <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>I2OF5</TD> <TD>6</TD><td>6</td>
+	</TR>
+	<TR>
+		<TD>CODE93</TD> <TD>7</TD><td>9</td>
+	</TR>
+	<TR>
+		<TD>UPCA</TD> <TD>8</TD><td>1</td>
+	</TR>
+	<TR>
+		<TD>UPCE0</TD> <TD>9</TD><td>2</td>
+	</TR>
+	<TR>
+		<TD>EAN8</TD> <TD>10</TD><td>4</td>
+	</TR>
+	<TR>
+		<TD>EAN13</TD> <TD>11</TD><td>3</td>
+	</TR>
+	<TR>
+		<TD>MSI_PLESSEY</TD> <TD>14</TD><td>11</td>
+	</TR>
+	<TR>
+		<TD>EAN128</TD> <TD>15</TD><td>14</td>
+	</TR>
+	<TR>
+		<TD>UPCE1</TD> <TD>16</TD><td>12</td>
+	</TR>
+	<TR>
+		<TD>CODE39_FULL_ASCII</TD> <TD>19</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>TRIOPTIC_CODE39</TD> <TD>21</TD><td>13</td>
+	</TR>
+	<TR>
+		<TD>BOOKLAND_EAN</TD> <TD>22</TD><td>83</td>
+	</TR>
+	<TR>
+		<TD>COUPON_CODE</TD> <TD>23</TD><td>85</td>
+	</TR>
+	<TR>
+		<TD>ISBT128</TD> <TD>25</TD><td>84</td>
+	</TR>
+	<TR>
+		<TD>CODE32</TD> <TD>32</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>UPCA_2SUPPLEMENTALS</TD> <TD>72</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>UPCE0_2SUPPLEMENTALS</TD> <TD>73</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>EAN8_2SUPPLEMENTALS</TD> <TD>74</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>EAN13_2SUPPLEMENTALS</TD> <TD>75</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>UPCE1_2SUPPLEMENTALS</TD> <TD>80</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>UPCA_5SUPPLEMENTALS</TD> <TD>136</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>UPCE0_5SUPPLEMENTALS</TD> <TD>137</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>EAN8_5SUPPLEMENTALS</TD> <TD>138</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>EAN13_5SUPPLEMENTALS</TD> <TD>139</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>UPCE1_5SUPPLEMENTALS</TD> <TD>144</TD> <td>&nbsp;<tr>
+	</TR>
+	<TR>
+		<TD>PDF 417</TD> <TD>&nbsp;</TD> <td>17<tr>
+	</TR>
+</TABLE>
+
+<h2>Special Information for Visor Symbol units</H2>
+
+Here are some differences on the Visor/CSM 150 combo. Special thanks are due to Doug Handy and Ron Glowka for working this out.
+
+<h4>1. Event codes differ on the CSM150 compared to the SPTxxxx</H4>
+
+<PRE>  Use -30721 instead of 34815
+  Use -30720 instead of 34816
+  Use -30719 instead of 34817
+</PRE>
+If you are trying to support both the SPTxxxx and the CSM150 devices, you will need to test for both event codes. This is caused by a bug in Symbol's code.
+
+<H4>2. Avoid making library calls in the project startup and termination</h4>
+
+<P>During project startup and termination, the normal program "event loop" processing is not performed.  While it may seem natural to perform some library calls such as CmdScanEnable in the startup code after the LoadLibrary, in practice is causes events to get queued but not processed and a fatal error results.
+
+<p>If it is necessary to perform a Symbol library call in the project startup or termination, immediately follow the call with the following code:
+
+<Pre>  Dim EventType as Variant
+  SysTrapSub 285, 2, EventType, 1	'EvtGetEvent
+  SysTrapSub 169, 1, EventType		'SysHandleEvent</pre>
+
+<h4>The ScanConfig Utility</h4>
+
+ScanConfig is a small Palm OS application for configuring attributes of a Symbol brand Palm OS based scanner such as the SPTxxxx series or the CSM150 springboard module.  It is intended to aid developers of NSB/Palm applications to allow setting of values not currently exposed by calls in NSBSymbolLib.
+
+<p>ScanConfig is run by using AppLaunch() from within your NSB/Palm program, and supplying both a cmd integer to designate the attribute to be changed plus a data string with the associated desired value(s).
+
+<p>ScanConfig (and its documentation) is available in the Files section of the NS Basic web board. The URL is
+<A HREF="http://groups.yahoo.com/group/nsbasic-palm/files/ScanConfig.zip">http://groups.yahoo.com/group/nsbasic-palm/files/ScanConfig.zip</A> 
+
+
+<h1>Janam Devices</h1>
+
+Janam devices are designed to be compatible with Symbols. You can use the same shared library and functions. 
+
+<p>The critical code is slightly different than in the Symbol: here is how it looks:
+
+<p>Startup Code:
+<pre>
+   LoadLibrary "NSBSymbolLib.inf", "NSBSymbolLib"
+   NSBSymbolLib.cmdScanEnable()
+</pre>
+<p>Form Event Code
+<pre>
+   Dim foo as String
+   Dim bar as Integer
+   
+   If sysInfo(9)=8459 Then 'Janam Scan Button hit
+	   foo = NSBSymbolLib.GetLastScanData()
+	   fldBarCode.Text = foo  
+	   bar = NSBSymbolLib.GetBarType()
+	   fldCodeType.Text = str(bar)
+   End If
+</pre>
+
+
+
+<h1>Aceeca Devices</h1>
+
+<p>Working with an Aceeca Ltd. ID::Verifi PDA API for Scanned Data<br>
+<i>Contributed by Michael Assia SY-CON Systems, Inc.</i>
+
+<p>We found the Aceeca Palm 4.1-based PDA to be an alternative to the Symbol SPT series units.  Included from Aceeca is a very capable "wedge" scanner program to make entering barcoded data into any application an easy matter. Why then would you need anything else for your application?   
+
+<p>The Aceeca wedge software reads a barcode and completes the current field where focus remains on the field.  This occurs for any input field regardless of how the data is entered including the Symbol SPT series with the NSBSymbolLib.  The user must tap into the next field before entering or scanning the next value.  It was our desire, however, to make barcode input an intuitive process with little to no tapping, just scan to complete the field and automatically move to the next input field ready for the next scan.   You may also want to perform a different operation or display messages based on the data obtained from the scan immediately after it is received.   You can also get the desired results using the Aceeca wedge API by intercepting the events and characters generated by the software as it decodes the barcode characters read.
+
+<p>The behavior of the Aceeca API within an NSBasic written application differs from that described in the BCS2 write-up and C/C++ example.   Within an NSBasic application you will need to use the GetEvent call from the NSSystemLib to detect the KeyDown event (4) that occurs for each character scanned.  The GetEvent must be called in the form's Event code to handle this process.   The actual decoded character is obtained by calling another NSSystemLib function, KeyEventChr.  
+
+<p>The Aceeca API continues to generate the KeyDown event for each character it decodes until the barcode is fully decoded.  However programmatically there is no way to know how many characters are to be received.  To signify the end of a barcode string, you will need to use the Advanced setup for the Aceeca wedge software on the PDA and add a CR LF (carriage return & line feed) or some other special characters (2) to the end of the character string representing the barcode data read.  Make sure the characters you choose are not found in any barcode symbology you are using. 
+
+<p><b>Project Startup</b>
+<pre>
+' Define several key fields so their value exists thorough out the program
+'
+Global dataread as String         'to hold scanned characters until all are received
+Global Cr as String	   
+Global Lf as String
+.
+.
+	Cr = Chr(13)
+	Lf = Chr(10)
+	LoadLibrary "NSBSystemLib", "NSL"	
+</pre>
+
+<b>Form Code  (Event)  for any forms with barcode input</b>
+<pre>
+Sub Form1047_Event()
+Dim evnt as Integer
+'
+    evnt = NSL.GetEvent(500,0,0)
+    If evnt <> 4 Then Exit Sub
+'
+'   Event was keydown from Aceeca PDA
+'   Get each character one-by-one read by scanner 
+'
+    keychr = NSL.KeyEventChr()
+    If chr(keychr) <> Cr And chr(keychr) <> Lf Then 
+       dataread = dataread + Chr(keychr)
+       Else
+       If chr(keychr) = Lf Then Exit Sub
+'
+' After getting Cr, put string into appropriate input field.
+' 
+       Select Case statecode
+             Case 1
+                statecode = 2
+                in1.text = dataread
+                In2.Setfocus
+                in2.text = ""
+            Case 2
+                statecode = 3
+                in2.text = dataread
+                In3.Setfocus
+                in3.text = ""
+            Case 3
+                in3.text = dataread
+                statecode = 4
+                In4.SetFocus
+                in4.text = ""
+            Case 4
+                in4.text = dataread
+                statecode = 1
+                in1.SetFocus
+                in1.text = ""
+            Case Else
+            End Select 
+            dataread = "" 
+    End If             
+End Sub
+</pre>
+</BODY> </HTML>
+

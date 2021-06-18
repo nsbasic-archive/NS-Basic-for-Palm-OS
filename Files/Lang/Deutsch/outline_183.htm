@@ -1,0 +1,177 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SysInfoSet </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>SysInfoSet                                                                                              Funktion</span></h4>
+
+<p class=ManualBody>SYSINFOSET(<i>characteristic</i> as string, <i>value</i>
+as integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Setzt den Wert einer System- Charakteristik. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=130 valign=top style='width:97.55pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+  <td width=366 valign=top style='width:274.4pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+  <td width=46 valign=top style='width:34.85pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>default</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=130 valign=top style='width:97.55pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>CoordinateSystem</p>
+  </td>
+  <td width=366 valign=top style='width:274.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Für LoRes auf 72 setzen, auf 144 für HiRes. Siehe
+  Abschneitt 10.J</p>
+  </td>
+  <td width=46 valign=top style='width:34.85pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=130 valign=top style='width:97.55pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>HeapVariableCount</p>
+  </td>
+  <td width=366 valign=top style='width:274.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Setzt die Anzahl der numerischen Variablen, für die im
+  Dynamischen Speicherbereich Platz reserviert werden soll. (Default ist 200.)
+  Die Programmausführung wird dadurch beschleunigt, da der Zugriff auf die
+  Variablen schneller erfolgen kann. Variablen werden diesem Bereich in ihrer
+  Reihenfolge bei der Kompilierung zugeordnet. Jede Variable benötigt 22 Byte
+  des dynamischen Speichers. Informieren Sie sich in der Dokumentation des
+  Herstellers, um herauszufinden, wie viel dynamischer Speicher in Ihrem Gerät
+  zur Verfügung steht. Es wird jeweils nur die tatsächlich genutzte Anzahl von
+  Variablen zugeordnet. Die volle Anzahl des 
+  HeapVariableCount wird nur dann benutzt, wenn Sie auch tatsächlich
+  diese Anzahl von Variablen verwenden. Diese Funktion sollte in Ihrem Programm
+  Startup Code implementiert werden.</p>
+  </td>
+  <td width=46 valign=top style='width:34.85pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>200</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=130 valign=top style='width:97.55pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Timer</p>
+  </td>
+  <td width=366 valign=top style='width:274.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Die Timer Funktion erlaubt es Ihnen zeitgesteuert, eigene
+  Events auszulösen. Dies ist hilfreich in Situationen, in den Sie innnerhalb
+  eines bestimmten Zeitraumes eine Antwort erwarten und reagieren möchten,
+  falls die Antwort ausbleibt. Sie könnten zum Beispiel bei der Kommunikation
+  mit anderen Computern von Zeit zu Zeit testen, ob irgendwelche Daten
+  angekommen sind. Zum Setzen des Timers nutzen Sie folgenden Befehl:</p>
+  <p class=ManualBody>&nbsp;</p>
+  <p class=ManualBody><span lang=EN-GB style='font-family:"Courier New";'>SysInfoSet(&quot;Timer&quot;,
+  3000)   'Set a timer in 3 seconds.</span></p>
+  <p class=ManualBody><span lang=EN-GB>&nbsp;</span></p>
+  <p class=ManualBody>Zum Auswerten Ihres Timer Events innerhalb des Programms,
+  sollten Sie in Ihrem Event Script etwa so vorgehen:</p>
+  <p class=ManualBody>&nbsp;</p>
+  <p class=ManualBody><span lang=EN-GB style='font-family:"Courier New";'>If
+  getEevent()=nsbTimer then</span></p>
+  <p class=ManualBody><span lang=EN-GB style='font-family:"Courier New";'>  MsgBox &quot;Timer Event Received&quot;
+  'respond to event</span></p>
+  <p class=ManualBody><span lang=EN-GB style='font-family:"Courier New";'>  SysInfoSet(&quot;Timer&quot;, 3000)     'set another timer</span></p>
+  <p class=ManualBody><span lang=EN-GB style='font-family:"Courier New";'>End If</span></p>
+  <p class=ManualBody><span lang=EN-GB>&nbsp;</span></p>
+  <p class=ManualBody>Einen gerade aktiven Timer beenden Sie mit <span
+  lang=EN-GB style='font-family:"Courier New";'>SysInfoSet(“Timer”, 0).</span>Beim
+  Verlassen des Programms wird der Timer beendet. Für dieses Event muss nicht
+  SETEVENTHANDLED genutzt werden. Verwenden Sie zunächst das Timer Beispiel für
+  eigene Versuche.</p>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+  <td width=46 valign=top style='width:34.85pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>SysInfoSet(“HeapVariableCount”,200)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

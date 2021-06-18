@@ -1,0 +1,43 @@
+PalmSource, Inc. Endnutzer Software-Evaluierungs-Lizenzvertrag
+
+WICHTIG—BITTE AUFMERKSAM LESEN:  Dieser Endnutzer Software-Evaluierungs-Lizenzvertrag (dieser „Vertrag“) ist ein Vertrag zwischen Ihnen („Sie“ oder „Lizenznehmer“) und PalmSource, Inc. („PalmSource“) für die Evaluierungs-Versionen der beigefügten Software und allen zu dieser gehörenden Datenträgern, Druckschriften und Online- oder elektronischen Dokumentationen (gemeinsam die „Software“). Die Software wird im Rahmen eines Leihvertrages überlassen, der durch Anklicken der untenstehenden Schaltfläche mit den Worten „Ich bin einverstanden“ abgeschlossen wird. Durch Anklicken dieser Schaltfläche erklären Sie sich mit den Bedingungen dieses Vertrages einverstanden. Falls Sie mit den Bedingungen dieses Vertrages nicht einverstanden sind, dürfen Sie die Software nicht installieren, kopieren oder anderweitig benutzen und Sie werden gebeten, die untenstehende Schaltfläche mit den Worten „Ich bin nicht einverstanden“ anzuklicken.
+
+1. 	Erteilte Lizenz.  Die Software wird im Rahmen eines Leihvertrages lizenziert, sie wird nicht verkauft. PalmSource erteilt hiermit dem Lizenznehmer ein beschränktes, nicht ausschließliches, nicht übertragbares Recht, die Software zu nutzen, und zwar nur in der Objektcodeform und allein für den Zweck der Evaluierung und Erprobung der Software für den eigenen Nutzen und Gebrauch des Lizenznehmers. Der Lizenznehmer darf eine (1) Kopie der Software für jeden Personal-Computer, auf dem diese Software benutzt wird, vervielfältigen. Darüber hinaus darf der Lizenznehmer die Software nicht lizenzieren, verkaufen, abtreten oder anderweitig übertragen. Die Software ist “nicht für die gewerbliche Nutzung” bestimmt und darf nur zu den vorstehend genannten Zwecken genutzt werden. Der Lizenznehmer darf die Software nicht in einer Betriebsumgebung nutzen, in der ein gewerblich freigegebenes Produkt genutzt werden dürfte oder mit Daten, die nicht ausreichend gesichert sind. Da die Software Änderungen unterliegt, behält sich PalmSource das Recht vor, die Software jederzeit zu verändern.
+
+2.	Unterstützungsleistungen.  PalmSource ist nicht verpflichtet, technische oder andere Unterstützung für die Software zu erbringen. PalmSource ist ferner nicht verpflichtet, Updates oder Überarbeitungen der Software zu entwickeln oder bereit zu stellen.
+
+3.	Verpflichtungen des Lizenznehmers.  Alle Berichte über Ideen, Benutzbarkeit und Fehler sowie alle anderen Rückmeldungen, die PalmSource von dem Lizenznehmer hinsichtlich der Software erhält („unterstützende Informationen“), gehen in das Eigentum von PalmSource oder deren Lizenzgebern über und können von PalmSource zu jedem Zweck genutzt werden. Der Lizenznehmer tritt hiermit alle Rechte, die weltweit an den unterstützenden Informationen bestehen, an PalmSource ab und wird PalmSource auf deren Kosten bei der Geltendmachung und Durchsetzung dieser Rechte unterstützen. PalmSource nimmt hiermit dieses Angebot an.
+
+4. 	Geheimhaltung.  Der Lizenznehmer erkennt hiermit an, dass die Struktur, Sequenz und Organisation der Software, in welcher Form auch immer, vertrauliche Geschäfts- und Betriebsgeheimnisse von PalmSource oder deren Lieferanten darstellen und verpflichtet sich, diese Geschäfts- und Betriebsgeheimnisse und die Software mit strikter Vertraulichkeit zu behandeln und diese weder zu nutzen noch offenzulegen, es sei denn, es ist nach diesem Vertrag gestattet. 
+
+5.   	Eigentumsrechte.  Das Eigentum, die gewerblichen Schutzrechte und alle Kopien der Software gehören PalmSource und deren Lieferanten. Der Lizenznehmer wird die Software und alle Kopien von dieser in einer Weise sichern und schützen, die die Rechte von PalmSource und deren Lieferanten wahrt und geeignete Maßnahmen zur Erfüllung seiner Verpflichtungen unter diesem Vertrag ergreifen, insbesondere wird er Arbeitnehmern oder Vertretern, denen der Zugang zu der Software gestattet ist, Anweisungen erteilen oder mit ihnen Vereinbarungen schließen.
+
+6.	Kein Recht, die Software zu bearbeiten oder zu disassemblieren.  Der Lizenznehmer darf die Software oder Teile der Software ohne das vorherige schriftliche Einverständnis von PalmSource oder ohne dass die Voraussetzungen des § 69 e Urheberrechtsgesetz vorliegen, nicht rückübersetzen, verändern, bearbeiten, disassemblieren oder dekompilieren. Der Lizenznehmer ist verpflichtet, PalmSource schriftlich über die vorstehend genannten Handlungen zu informieren.
+
+7.	Gewährleistung.  Die Software wird unter Ausschluss jeglicher Gewährleistung überlassen.
+
+8.	Vertragslaufzeit.  Die Laufzeit dieses Vertrages beginnt mit dem Zeitpunkt, in dem der Lizenznehmer die Schaltfläche „Ich bin einverstanden“ anklickt und endet ein (1) Jahr nach diesem Zeitpunkt. Unbeschadet anderer Rechte kann PalmSource diesen Vertrag beenden, falls der Lizenznehmer die Vorschriften dieses Vertrages nicht einhält. Nach Beendigung dieses Vertrages, egal aus welchem Grund, muss der Lizenznehmer alle Kopien der Software und alle ihre Teile vernichten. Die Bestimmungen und Verpflichtungen der Parteien unter den Ziffern 3 bis 15 gelten auch nach Beendigung oder Ablauf dieses Vertrages fort.
+ 
+9.	Haftungsbeschränkung.  PalmSource haftet nur für Vorsatz und grobe Fahrlässigkeit, außer in Fällen zwingender gesetzlicher Haftung, insbesondere nach dem Produkthaftungsgesetz sowie bei Übernahme einer Garantie oder schuldhaft verursachter Körperschäden. Der Lizenznehmer unternimmt alle erforderlichen Maßnahmen, um Schäden zu verhindern und zu beschränken. Er ist insbesondere verpflichtet, in regelmäßigen Abständen Sicherungskopien seiner Daten anzulegen.
+
+10.	Regierung der Vereinigten Staaten; Hinweise.  Ist der Lizenznehmer eine Regierungsbehörde der Vereinigten Staaten von Amerika wird die Software und die Dokumentation gemäß den nachfolgenden Einschränkungen überlassen: 
+
+Die Software, die als Teil der “Software” geliefert wird, ist kommerzieller Natur und wurde ausschließlich auf eigene Kosten entwickelt. Diese Software wird als „Gewerbliche Computer Software“ gemäß der Definition in DFARS 252.227-7014 (Juni 1995) oder als ein gewerblicher Gegenstand im Sinne des DFARS 2.101 (a) geliefert; als solche wird sie nur mit den in diesem Vertrag, der PalmSources Standard Lizenzvertrag für Software ist, genannten Rechten zur Verfügung gestellt. Technische Daten werden nur mit beschränkten Rechten wie, je nach Anwendbarkeit, in DFAR 252.227-7015 (November 1995) oder FAR 52.227-14 (Juni 1987) vorgesehen, zur Verfügung gestellt. 
+
+11.	Verzicht. 	Ein Verzicht auf die Geltendmachung einer Rechtsverletzung oder einer der Vorschriften dieses Vertrages, stellt keinen generellen Verzicht oder einen Verzicht auf die Geltendmachung einer Rechtsverletzung oder einer der Vorschriften dieses Vertrages dar, sondern bezieht sich nur auf den speziellen Umstand, auf den der Verzicht gerichtet ist. 
+
+12.	Abtretung; Trennbarkeit. 	Der Lizenznehmer wird die Rechte unter diesem Vertrag weder freiwillig noch kraft Gesetzes oder auf andere Weise abtreten. Jede versuchte Abtretung führt zur Beendigung dieses Vertrages. Falls ein Teil dieses Vertrages unwirksam oder undurchsetzbar ist, berührt diese Unwirksamkeit oder Undurchsetzbarkeit nicht die Wirksamkeit oder Durchsetzbarkeit eines anderen Teils oder einer anderen Vorschrift dieses Vertrages, vielmehr bleiben diese gültig.   
+
+13.	Anwendbares Recht.  Dieser Vertrag unterliegt dem Recht des Staates Kalifornien, mit Ausnahme der Vorschriften des kalifornischen Internationalen Privatrechts. Das UN-Kaufrecht wird ausdrücklich ausgeschlossen.
+
+14.	Gerichtsstand. 	 Die Parteien einigen sich darauf, dass das Landgericht des Landkreises Santa Clara und/oder das für den Regierungsbezirk Nord-Kalifornien zuständige Bundesgericht zuständiges Gericht für alle Streitigkeiten im Zusammenhang mit diesem Vertrag ist.
+ 
+15.	Gesamter Vertrag. Dieser Vertrag stellt die gesamte Vereinbarung zwischen den Parteien hinsichtlich des Vertragsgegenstandes dar und geht allen anderen Vereinbarungen, ob schriftlich oder mündlich, hinsichtlich des Vertragsgegenstandes zwischen den Parteien vor. Änderungen oder Ergänzungen dieses Vertrages bedürfen einer schriftlichen Vereinbarung der Parteien. 
+
+PalmSource, Inc.
+1240 Crossman Avenue
+Sunnyvale, California 94089
+United States of America
+(408) 400-3000
+www.palmsource.com
+September 25, 2002

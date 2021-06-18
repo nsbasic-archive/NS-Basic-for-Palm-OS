@@ -1,0 +1,36 @@
+Release notes for NSBasic Symbol library              Jul 18, 2001
+
+1) There was a problem with the Visor and the old library which caused a fatal error
+on exit.  This has been fixed.  The new library should work equally well on the Symbol
+device and the Visor with the Symbol expansion, with one provision: If you ever need to
+install a new version of the Palm operating system, do a soft reset first.
+
+2) Some calls, such as CmdScanSetTriggeringModes and CmdScanSetBarcodeEnabled
+were required to be followed by a CmdSendParams call, or else they would not result
+in changes to the scanner.  This is required by the built-in Symbol software.  However,
+BASIC is supposed to be simple, so the new library calls CmdSendParams automatically.
+
+3) The arguments to CmdScanSetBarcodeEnabled are different from the barcode types
+returned when a barcode is scanned.  This is built into the Symbol software and would
+probably be unsafe to adjust for, given that Symbol may change the numbers at any time.
+The numbers in the current Symbol API for CmdScanSetBarcodeEnabled are as follows:
+
+	barUPCA			= 0x01,
+	barUPCE 			= 0x02,
+	barEAN13			= 0x03,
+	barEAN8			= 0x04,
+	barD25			= 0x05,
+	barI2OF5			= 0x06,
+	barCODABAR		= 0x07,
+	barCODE128		= 0x08,
+	barCODE93		= 0x09,
+	barTRIOPTIC39 	= 0x0D,
+	barUCC_EAN128	= 0x0E,
+	barMSI_PLESSEY = 0x0B,
+	barUPCE1			= 0x0C,
+	barBOOKLAND_EAN= 0x53,
+	barISBT128		= 0x54,
+	barCOUPON		= 0x55
+
+4. The name of the library has been changed to NSBSymbolLib.inf. If you have existing 
+programs, you will need to change them to use the new library name.

@@ -1,0 +1,99 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>SerialReceive </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>SerialReceive                                                                                         Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SERIALRECEIVE(<i>buffer</i> as string or integer arrray , <i>numChars</i> as integer, <i>timeout</i>
+as double)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Empfängt eingehende Daten vom seriellen Port und speichert
+diese in <i>buffer</i>. Diese Funktion kann
+verwendet werden, um auf Dateneingänge zu warten oder um Daten abzuholen, wenn
+das Programm durch den NsbSerialIn Event informiert worden ist. Die Funktion stoppt, nachdem sie
+wenigstens ein <i>numChars</i> Zeichen empfangen hat und sie stoppt den
+weiteren Datentransfer, wenn die Anzahl der empfangenen Zeichen größer ist, als
+die Puffergröße, die mittels SerialSet Funktion eingestellt wurde. Der ganzzahlige Fehlercode wird bei
+SerialOpen näher beschrieben. Zum Löschen des Empfangspuffers, verwenden Sie
+SerialSend(„“,0).</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Wird SerialReceive als Ergebnis eines NsbSerialIn Events
+aufgerufen, beendet es seine Ausführung, nachdem alle Zeichen eingelesen worden
+sind, auch dann, wenn noch kein <i>numChars</i> Zeichen empfangen wurde. Der
+Timeout-Wert wird ignoriert. Um festzustellen, wie viele Zeichen im seriellen
+Eingabepuffer  stehen, kann die Funktion
+SysInfo verwendet
+werden.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Wenn die Funktion SerialReceive nicht als Ergebnis eines
+NsbSerialEvent aufgerufen wird, kehrt sie zum Hauptprogramm zurück, sobald <i>numChars</i>
+empfangen wird oder die Timeout Zeitspanne (in Sekunden) abgelaufen ist. Die
+Timeout Zeitspanne kann auch Bruchteile von Sekunden umfassen. Im Falle eines
+Timeouts gibt die Funktion den Code 773 zurück, zusammen mit allen Zeichen, die
+bis zu diesem Zeitpunkt im Buffer aufgelaufen sind.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Ist der Puffer als Integer Array definiert, so wird der
+ASCII Wert jedes Bytes in einem Element des Arrays abgelegt. Auf diese Weise
+lassen sich auch Null Charakter (hex 00) empfangen.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Beispiel</p>
+
+<p class=MsoNormal>Err=SerialReceive(inputString, 200, .5) 'non event case</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 25c: Fewer Objects</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="/images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 25c: Fewer Objects</h2>
+	  <h2>Jan 7, 2003</h2>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+<p><TABLE align="center" BORDE="0" WIDTH="80%" BGCOLOR="#9DBF8D" CELLPADDING="10">
+<TR>
+    <TD>
+	  <p>In this document, I will talk about an (old-fashioned) programming technique, using my program "<a href="http://members.tripod.co.jp/mizuno_ami/palmware/amisol/index.html">AmiSol</a>" as an example, that doesn't use many objects.
+"AmiSol" is a kind of board game and was created by NS Basic 1.x.
+You can look it at NS Basic Programming Contests 2's entry.
+	  <p>The screen of Amisol looks like this:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1201.gif" WIDTH="320" HEIGHT="320"><BR>
+<BR>
+<p>With exception of the Screen object, objects on the screen are "Sound ON/OFF<IMG SRC="TN25.images/1202.gif">", "Undo<IMG SRC="TN25.images/1203.gif">" and "Restart<IMG SRC="TN25.images/1204.gif">", nothing else on the main board. The board is drawn by DrawBitmap, but it is wasteful at the startup to arrange the pieces on the board, so I prepared two bitmaps:<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1205.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1206.gif"><BR>
+<BR>
+<p>Since Palm processes bitmap drawing quite fast, this is a good way. You can see the difference since the pieces are drawn one by one.<BR>
+<BR>
+	  <p>To find out the coordinates of each piece, the program picks the coordinates the user clicks. Thus, it is done by the form's event. At the initial state, the borad bitmap is drawn at (12,16).
+<pre>
+      DrawBitmap 1016,12,16
+</pre>
+<p>This locates the top left corner of the bitmap at (12,16). For the structure of the board, the empty space of each cell is a 19x19 pixel square; ie. you can see each cell as 20x20 pixels including the right and bottom lines.<br> 
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1207.gif" WIDTH="168" HEIGHT="134"><BR>
+<BR>
+<p>When the user taps on the screen, an event occurs for the form -- NsbPanDown. We can detect it by using GetEventType(). Then we use the GetPen command to get the coordinates of the tapped position.<br>
+	  <PRE>
+          Dim X1 as Integer
+          Dim Y1 as Integer
+
+          If GetEventType()=NsbPenDown Then
+                  GetPen X1,Y1,NsbPenDown
+
+          End if
+</PRE>
+<p>We now get the tapped coordinates (X1,Y1) which are within the form whose top left corner is at (0,0) and bottom right corner at (159,159). Next, we have to find the cell position the coordinates are in:<br>
+<PRE>
+        x = (X1-13)/20 + 3
+        y = (Y1-17)/20 + 3
+</PRE>
+<p>13 in (X1-13) is the horizontal coordinate of the board's top left corner (12,16) plus 1 for the line thickness. (X1-13) divided by 20, the cell width, draws the cell number in the horizontal direction. Therefore, tapping the blue cell gives us 0 as the first cell. Likewise, the second formula finds the vertical position of the tapped cell.<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1208.gif"><BR>
+<BR>
+<p>Since adding 3 in each formula, the cell coordinates of <FONT COLOR="#0000FF"><B>the blue cell</B></FONT> becomes (3,3). Why not (0,0) or (1,1)? Because it is related to AmiSol's board data.<BR>
+<BR>
+<p>The rule of Amisol allows the following red piece move into the blue cell.<BR>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1210.gif"><BR>
+<BR>
+<p>AmiSol stores pieces' information in the array Sol(i,j). The value "0" of the array elements represents the "empty cell" and "1" the "occupied". For example, suppose that the red cell is (X,Y), then<br>
+<pre>
+        Sol( X ,Y)=1     red cell<BR>     
+        Sol(X+1,Y)=1     cell next to red cell<BR>
+        Sol(X+2,Y)=0     blue cell<BR>
+</pre>
+<p>In this condition, it is able to move. To the right direction, add X the value "-1", "-2", and so on. To the up direction, add Y the value "-1", "-2", and so on. The situation in which a piece in (Xi,Yi) can't move to left is that Sol(Xi+2,Yi) is not 0. So the size of array is 11x11, not 7x7.<BR>
+<BR>
+<p>The 11x11 array looks like the picture below. Sol(1,1) is for <FONT COLOR="#FF0000"><B>the red cell</B></FONT>, and the cell coordinates of <FONT COLOR="#0000FF"><B>the blue cell</B></FONT> is (3,3). The index of the first cell (top left corner) is (1,1) because the index of NS Basic's array starts with 1.<br>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="TN25.images/1209.gif"><BR>
+<BR>
+	  <p>In the initial state, the value of the occupied cells is 1. The value of the yellow cell is 0. And other cells are set to 9. In this way, when a piece on the right edge such as the green one tries to move right, but it can't move because the value of the pink cell is not 0, Sol(i,j)<>0. So adding 3 to cell coordinates makes the condition statement determine if the cell is available to be moved in, regardless of in or out of bounds. <BR>
+<BR>
+	  <p>Like this example, picking tapped coordinates and applying them to array data is easy to understand. With no extra objects, the code is simple and the program may be
+small. In NS Basic, you  normally put objects on the screen, and write code for events from the objects. It is an event-driven programming language, which is similar to Visual BASIC. However, with relatively fast bitmap drawing, simple screen structure, and tapped coordinate capture, you can program in old style without using many objects.
+
+<BR>
+		<BR>
+
+</TD>
+</TR>
+</TABLE>
+<HR WIDTH="80%">
+</BODY>
+</HTML>

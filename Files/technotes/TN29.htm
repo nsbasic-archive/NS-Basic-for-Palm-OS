@@ -1,0 +1,133 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 29: NS Basic/Palm Goes Native!</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+		
+    <TD WIDTH="17%" VALIGN="TOP"> 
+      <P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103>
+    	</TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tech Note 29: NS Basic/Palm Goes Native!</h2>
+	  <h3>December 22, 2003</h3>
+      		  
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.
+		</h5>
+	</TD>
+	</TR>
+</TABLE>
+<HR>
+
+<p>The Palm OS was originally written for the Motorola 68000 processor, often referred to as the 68K. With Palm OS 5, the operating system moved to the StrongARM processor, available from a number of manufacturers. The new processor has a number of features that make it much, much faster than the 68K chip could ever be.
+
+<p>To maintain compatibility with the huge base of software for the Palm OS, PalmSource created a 68k emulator that could run on the StrongARM processors, called PACE ("Palm Application Compatibility Environment"). The result is that apps written for the 68K could run, without modification, on the new devices. The speed of the new processors was so good that software (including programs written in NS Basic/Palm) ran faster on the new device even while emulating a 68K.
+
+<p>This left an opportunity to get some dramatic speed improvements if the 68K emulation could be eliminated. NS Basic/Palm 4.1 is fully ARM Native, meaning that programs written in NS Basic will run in native ARM code and not in PACE.
+
+<p>The speed improvement is dramatic - up to 25 times faster. NS Basic is now practical to use for all kinds of applications that would have been too slow before.
+
+<p>Speed is not the only benefit. There is a corresponding savings in battery usage, making NS Basic much more efficient in that respect as well. 
+
+<h3>Using ARM Native NS Basic/Palm</h3>
+
+<p>Any NS Basic/Palm program that works in 68K mode will work in ARM Native mode, with no changes to your code. The only difference is which version of the Runtime you use. You'll have to compile your program using NS Basic/Palm 4.0 or later, otherwise the program will only run in 68K mode.
+
+<p>You can control which runtime is used by installing the appropriate one on your device, or by selecting which version to include as a Fat App in Tools...Options...Compile/Download in the NS Basic/Palm IDE.
+
+<p>ARM Native code is larger than 68k code. Instructions are 32 bit instead of 16, and alignment must be on 4 byte boundaries. The result is that the ARM Native Runtime is substantially larger. NS Basic programs themselves remain the same size.
+
+<P>There are 2 options you can choose from:
+<UL>
+	<LI><B>NSBRuntime.prc</B> - 68K code only. This is the same runtime as has been used up to NS Basic 4.1. It is the smallest in size, runs on all devices, but has no speed advantage on Palm OS 5 devices.
+	<LI><B>NSRuntimeARM68K.prc</B> - Includes ARM Native runtime for OS5 devices and 68k runtime for older devices. It takes up the most memory, but is the best of all worlds: it will work on all devices and deliver improved performance on OS5 devices.
+</UL>
+
+<h2>Benchmarks</h2>
+
+We compared the 68K runtime to the ARM Native Runtime in a variety of tests. Be sure to read the notes at the end to understand the results fully.
+
+<H3>68k Results - using NSBRuntime</H3>
+<TABLE border=1 >
+	<TR ALIGN=right>
+		<TD>Device</TD> <TD>Bench1</TD> <TD>Bench2</TD> <TD>Bench3</TD> <TD>FormBench</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Palm IIIx</TD> <TD>453</TD> <TD>492</TD> <TD>112</TD> <TD>268</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Tungsten T</TD> <TD>137</TD> <TD>153</TD> <TD>458</TD> <TD>41</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Zire 71</TD> <TD>125</TD> <TD>132</TD> <TD>539</TD> <TD>38</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Zire 21</TD> <TD>141</TD> <TD>150</TD> <TD>454</TD> <TD>33</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Sony NX70</TD> <TD>82</TD> <TD>88</TD> <TD>867</TD> <TD>21</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Zodiac2</TD> <TD>66</TD> <TD>70</TD> <TD>1065</TD> <TD>32</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Tungsten T3</TD> <TD>41</TD> <TD>154</TD> <TD>1731</TD> <TD>15</TD>
+	</TR>
+</TABLE>
+
+<H3>ARM Native Results - using NSBRuntimeARM68K</H3>
+<TABLE border=1 >
+	<TR ALIGN=right>
+		<TD>Device</TD> <TD>Bench1</TD> <TD>Bench2</TD> <TD>Bench3</TD> <TD>FormBench</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Palm IIIx</TD> <TD>488</TD> <TD>533</TD> <TD>102</TD> <TD>270</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Tungsten T</TD> <TD>5</TD> <TD>24</TD> <TD>5040</TD> <TD>31</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Zire 71</TD> <TD>5</TD> <TD>23</TD> <TD>5574</TD> <TD>29</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Zire 21</TD> <TD>6</TD> <TD>27</TD> <TD>5821</TD> <TD>22</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Sony NX70</TD> <TD>5</TD> <TD>18</TD> <TD>9876</TD> <TD>17</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Zodiac2</TD> <TD>4</TD> <TD>13</TD> <TD>14099</TD> <TD>29</TD>
+	</TR>
+	<TR ALIGN=right>
+		<TD>Tungsten T3</TD> <TD>2</TD> <TD>8</TD> <TD>23138</TD> <TD>13</TD>
+	</TR>
+</TABLE>
+
+<H3>Notes vital to understanding these results</H3>
+
+<UL>
+	<LI>Bench1 is a simple loop.
+
+	<LI>Bench2 is a simple loop with some calculations and conditional logic.
+
+	<LI>Bench3 is the number of times a simple loop can execute per second, with a couple of system calls each time through. A high score is better on this one.
+
+	<LI>FormBench is an app with two forms, with a button, listbox, popup and a field that gets updated 20 times. The loop goes through the forms 100 times, so there is a lot of screen updating.
+
+	<LI>There most dramatic speed differences are for apps that have pure user code. NS Basic/Palm has been completely rewritten be ARM Native, so full advantage can be taken of the speed improvement. This can be seen in Bench1 and Bench2, with improvements of 20 times (and more).
+
+	<LI>System Calls are already ARM Native in Palm OS 5. Code that spends a lot of time doing system calls will only be faster in the NS Basic code - the system calls will run at the same speed. Still, there is a big improvement of 10 times.
+
+	<LI>FormBench has a lot of system calls in it, but runs into another constraint. Notice that the Tungsten 3's time is almost the same in 68K and ARM Native. The limitation here is how fast the screen can be updated. There isn't much processing in FormBench, but quite a bit of screen updating. The Tungsten 3 is so fast that the processing time doesn't matter: it is all screen updating.
+
+	<LI>The cheapest way to make your program run fast is to get a Zire 21 with NS Basic/Palm ARM Native.
+
+</UL>
+How much faster will your app run? It depends. NS Basic code, system calls and screen updates are each affected differently in ARM Native code. The mix wil determine what the net gain will be.
+</BODY>
+</html>

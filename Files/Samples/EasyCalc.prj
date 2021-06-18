@@ -1,0 +1,266 @@
+"mdl"
+8
+"EasyCalc","appl","Eclc",1037,505,0
+"Sub main()
+Global Amount as Float*18,6
+Global MemString as String
+Global Operator as String
+Global firstDigit as Integer
+
+Amount=0
+Operator=~+~
+firstDigit=1
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E100009A"
+""
+"mod"
+" 2"
+1037
+".\EASYCALC.cod"
+"EASYCALC.cod"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"EasyCalc"
+"Screen1004"
+""
+0
+"Sub Screen1004_after()
+  fldAmount.text=~0~
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1005",1005,8,44,20,24,#TRUE#,7,"1",0,0,0
+"sub object1005()
+  ProcessKey  ~1~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1006",1006,41,44,20,24,#TRUE#,7,"2",0,0,0
+"sub object1006()
+   ProcessKey  ~2~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1007",1007,73,44,20,24,#TRUE#,7,"3",0,0,0
+"sub object1007()
+   ProcessKey  ~3~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1008",1008,8,72,20,24,#TRUE#,7,"4",0,0,0
+"sub object1008()
+   ProcessKey  ~4~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1009",1009,41,72,20,24,#TRUE#,7,"5",0,0,0
+"sub object1009()
+    ProcessKey  ~5~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1010",1010,73,72,20,24,#TRUE#,7,"6",0,0,0
+"sub object1010()
+   ProcessKey  ~6~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1011",1011,8,100,20,24,#TRUE#,7,"7",0,0,0
+"sub object1011()
+   ProcessKey  ~7~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1012",1012,41,100,20,24,#TRUE#,7,"8",0,0,0
+"sub object1012()
+   ProcessKey  ~8~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1013",1013,73,100,20,24,#TRUE#,7,"9",0,0,0
+"sub object1013()
+   ProcessKey  ~9~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1014",1014,8,128,20,24,#TRUE#,7,"0",0,0,0
+"sub object1014()
+   ProcessKey  ~0~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1015",1015,41,128,20,24,#TRUE#,7,".",0,0,0
+"sub object1015()
+   '  key is period
+   ProcessKey  ~.~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"but","But1016",1016,73,128,20,24,#TRUE#,7,"=",0,0,0
+"sub object1016()
+   ' key is = sign
+  UpdateAmount
+  Operator=~~
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1017",1017,107,44,20,44,#TRUE#,7,"Clear",0,0,0
+"sub object1017()
+  Amount=0
+  Operator=~+~
+  UpdateDisplay
+  firstDigit=1
+  
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1018",1018,132,72,20,20,#TRUE#,7,"CE",0,0,0
+"Sub object1018()
+   
+ 
+ If firstDigit=1 Then
+     Operator=~~
+ Else
+      firstDigit=1
+      fldAmount.text=~~
+ EndIf
+ 
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1019",1019,107,72,20,20,#TRUE#,7,"+ -",0,0,0
+"sub object1019()
+   
+   if firstDigit = 0 then
+         msgbox ~+/- key only works against the accumulated amount and not on the amount being entered.~
+         exit sub
+   endif
+   Amount=-Amount
+   UpdateDisplay  
+   Operator=~~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1020",1020,107,100,20,20,#TRUE#,7,"-",0,0,0
+"sub object1020()
+   UpdateAmount  
+   Operator=~-~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1021",1021,132,100,20,20,#TRUE#,7,"*",0,0,0
+"sub object1021()
+   UpdateAmount  
+   Operator=~*~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1022",1022,107,128,20,20,#TRUE#,7,"+",0,0,0
+"sub object1022()
+   UpdateAmount  
+   Operator=~+~
+   firstDigit=1
+end sub
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1023",1023,132,128,20,20,#TRUE#,7,"/",0,0,0
+"sub object1023()
+   UpdateAmount  
+   Operator=~/~
+   firstDigit=1
+end sub
+"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#FALSE#,10,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","fldAmount",1024,8,20,20,144,#TRUE#,6," ",0,0,0
+""
+"end"

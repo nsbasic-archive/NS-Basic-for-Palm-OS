@@ -1,0 +1,653 @@
+<html><head>
+<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<title>Tech Note 22: Printing using PalmPrint/SCSPrint</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor=white lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+  <table border=0 cellspacing=0 cellpadding=0 width=550>
+    <tr>
+  	  <td>
+  		<p><img width=86 height=103 id="_x0000_i1025" src="images/BigIcon.GIF"></p>
+	  </td>
+	  <td>
+  		<h2>Tech Note 22: Printing using PalmPrint/SCSPrint</h2>
+		<h3>September 17 2003</h3>
+		<h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	  </td>
+	</tr>
+  </table>
+  <div class=MsoNormal align=center style='text-align:center'>
+
+    <hr size=2 width="100%" align=center>
+
+  </div>
+  <p><i>Contributed by <a href="mailto:mverive&copy; peoplepc.com">Michael J. Verive</a>,
+author of <a
+href="http://www.nsbasic.com/palm/info/NSBasicProgrammingForPalm.html">NS BASIC
+Programming for Palm OS</a></i> </p>
+  <h3>Printing in NS Basic using PalmPrint/SCSPrint</h3>
+  <p class=MsoBodyText>Storing information in your Palm device is
+great, and HotSync allows
+you to transfer this data to your desktop computer, where you&#8217;re likely
+to do most of your printing.  However,
+you may need to print directly from your Palm device, either through the serial
+port or to an IR-enabled printer.  NS
+Basic doesn&#8217;t have any built-in print routines, so currently the only way
+to print from NS Basic is to do so using the serial I/O functions, or through
+the use of third-party applications such as SCSPrint or PalmPrint (available
+from Stevens Creek Software at <a href="http://www.stevenscreek.com/">www.stevenscreek.com</a>).  Printing through PalmPrint in NS Basic is
+somewhat different from how you may be used to printing in other dialects of
+Basic (printing using SCSPrint is handled using the same code as PalmPrint, so
+I&#8217;ll just refer to PalmPrint for either PalmPrint or SCSPrint).  </p>
+  <p class=MsoBodyText>The easiest way to print to PalmPrint in NS Basic is through the use of the
+AppLaunch statement.  Since it&#8217;s
+not always easy to remember the syntax of this statement or the launch code
+used, you can use this subroutine in a code module for your applications
+:</p>
+
+<pre>
+Sub PalmPrint(PrintString as String)
+    Dim CardNo as Integer
+    Dim LaunchCode as Integer
+    Dim result as Integer
+    CardNo=0
+    LaunchCode=32768
+    result=AppLaunch(CardNo,&quot;PalmPrint&quot;,LaunchCode,PrintString)
+    If result&lt;&gt;0 Then
+        result=alert(&quot;PalmPrint&quot;,&quot;Error printing to PalmPrint&quot;,3,&quot;OK&quot;)
+    End If
+End Sub
+</pre>
+<p class=MsoBodyText>If you load this code module into your
+application, when you need to print to PalmPrint from any of your forms or
+objects, all you need to provide is the name of the subroutine and the string
+to be printed:</p>
+<p class=MsoNormal><code>PalmPrint &quot;This is the print string&quot;</code></p>
+<p class=MsoBodyText>or</p>
+<p class=MsoNormal><code>Call PalmPrint(&quot;This is the print string&quot;)</code></p>
+  <p class=MsoBodyText>This is fine if all you want to do is
+print a single line of text.  Most of the
+time, however, you&#8217;ll need to print multiple lines (or pages) of
+information.  Using the PalmPrint
+statement with each individual line will work, but with an undesirable side
+effect &#8211; each line will be printed on a separate page!  The PalmPrint subroutine runs PalmPrint as a
+separate &quot;print job&quot; each time it&#8217;s called, so PalmPrint
+faithfully ejects the page after each job. 
+</p>
+  <p class=MsoBodyText>To print multiple lines on the same page,
+you&#8217;ll need to modify your string so that it contains all of the lines to
+be printed PLUS the necessary codes to tell the printer to move to the next
+line as needed (or, use line-by-line printing, discussed later).  If you are concatenating lines to create a
+single &quot;print string&quot;, you're in luck; the code for moving to the
+next line when printing is the same as the code for moving to a new line in a
+field &#8211; the Chr(10), or &quot;line feed&quot; character:</p>
+<pre>
+Dim PrintString as string
+PrintString=&quot;This is the first line.&quot;
+PrintString=PrintString+chr(10)+&quot;This is the next line.&quot;
+PrintString=PrintString+chr(10)+&quot;and so on&#8230;&quot;
+PalmPrint PrintString
+</pre>
+<p class=MsoBodyText>PalmPrint allows you to determine whether
+you want a line feed, a &quot;carriage return&quot; (the ASCII code Chr(13)), or both at the end of a line (even if your lines
+end with the line feed alone, as above). 
+Most printers will print properly if the line feed and carriage return
+pair is used (but you may have to experiment with your printer).  PalmPrint also allows you to select from a
+wide variety of printers, and knows which codes to send to tell the printer to
+print using different fonts, point sizes, and other settings.</p>
+  <p class=MsoBodyText>Printing with PalmPrint is easy with
+supported IR-enabled printers, and printing through the serial port is only
+slightly more complicated.  Your
+application won&#8217;t need to handle printing any differently, but you&#8217;ll
+need to make sure that PalmPrint and your printer are set to use the same baud
+rate and other serial parameters.  You
+may also need to use a &quot;null modem&quot; cable or adapter, depending on
+your printer, if you are printing through the Palm serial port connected
+directly to a printer.</p>
+  <h3>Advanced Printing &#8211; Formatting with Control Codes</h3>
+  <p class=MsoBodyText>For most purposes, PalmPrint works well
+&quot;out of the box&quot;, since it knows internally how to print to many different printers. 
+In fact, PalmPrint was written to be &quot;printer independent&quot;, so
+that if you have something that you print on one type of printer, then switch
+to another type of printer, you&#8217;ll still get the same (or very similar)
+output. However, there may be times that you&#8217;ll want to &quot;spice
+up&quot; your output with bold, double-wide, condensed, or other print
+formatting.  PalmPrint makes this easy by
+allowing you to embed special &quot;escape&quot; codes to tell your printer
+what formatting you&#8217;d like to use. 
+Not all of the special formatting codes work the same with all printers,
+however, so you end up trading printer independence for this added formatting
+power.</p>
+  <p class=MsoBodyText>Formatting codes are inserted in strings
+sent to PalmPrint as one to three digit numeric values surrounded by the
+&quot;double-less-than&quot; and &quot;double-greater-than&quot;
+(&quot;&lt;&lt;&quot; and &quot;&gt;&gt;&quot;) characters.  Note that these refer to ASCII 171 and 187,
+NOT merely two less-than or two greater-than signs together, but the characters
+found in the lower right corner of the &quot;Int'l&quot; portion of the popup
+keyboard on the Palm (normal and shifted). 
+</p>
+  <p class=MsoBodyText>Many of the formatting codes use the
+&quot;ESC&quot; (ASCII 27) character to tell the printer that formatting
+commands follow, so only the value 27 needs to be in the
+&quot;&lt;&lt;&gt;&gt;&quot; string.  For
+example, &quot;ESC&quot;W1 turns on a special &quot;double-wide&quot; mode on a
+Canon printer, and &quot;ESC&quot;W0 turns it off.  So, the following code will print with a
+special &quot;double wide&quot; string (27 is the numeric value of the ESC
+character), followed by normal text:</p>
+<pre>
+Dim EscStart as byte
+Dim EscEnd as byte
+EscStart=chr(171)
+EscEnd=chr(187)
+Msg=EscStart+&quot;27&quot;+EscEnd+&quot;W1This is double-wide&quot;
+Msg=msg+chr(10)+EscStart+&quot;27&quot;+EscEnd+&quot;W0And this is back to normal&quot;
+PalmPrint Msg
+</pre>
+  <p class=MsoBodyText>As an added &quot;bonus&quot;, PalmPrint
+expects only numeric values between the &quot;&lt;&lt;&gt;&gt;&quot;
+characters, so non-numeric strings are ignored, and can be used to embed
+comments in the string:</p>
+<pre>
+Msg=&quot;&lt;&lt;This text is double-wide&gt;&gt;&quot;+EscStart+&quot;27&quot;+EscEnd+&quot;W1 Profits 2nd Quarter&quot;
+Msg=msg+chr(10)+&quot;&lt;&lt;Back to normal&gt;&gt;&quot;+EscStart+&quot;27&quot;+EscEnd+&quot;W0Region: Northwest&quot;
+PalmPrint Msg
+</pre>
+  <p class=MsoBodyText>For some printers, you may need to enter
+the ESC character without the &quot;&lt;&lt;&gt;&gt;&quot; delimiters:</p>
+<pre>
+Dim EscChar as string
+EscChar=chr(27)
+Msg=EscChar +&quot;W1 Profits 2nd Quarter&quot;
+Msg=msg+chr(10)+EscChar +&quot;W0Region: Northwest&quot;
+PalmPrint Msg
+</pre>
+
+<p class=MsoBodyText>Remember that these &quot;escape
+sequences&quot; are printer-dependent, although many printers have
+&quot;Epson-compatible&quot; or &quot;HP-compatible&quot; modes, allowing you
+to use standard Epson or Hewlett-Packard codes. 
+Consult your printer manual for the specific codes to use.  The following table gives common escape
+sequences and their functions for most Epson (and Epson-compatible) printers:</p>
+  <p class=BodyTextFirstChar><b style='mso-bidi-font-weight:normal'><i
+style='mso-bidi-font-style:normal'>Epson Printer Control Codes (Esc=chr(27)).</i></b></p>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none;mso-border-alt:
+ solid black .75pt;mso-yfti-tbllook:32;mso-padding-alt:0in 5.4pt 0in 5.4pt;
+ mso-border-insideh:.75pt solid black;mso-border-insidev:.75pt solid black'>
+    <tr style='mso-yfti-irow:0'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  mso-border-alt:solid black .75pt;background:black;mso-shading:white;
+  mso-pattern:solid black;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Code String</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border:solid black 1.0pt;
+  border-left:none;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  background:black;mso-shading:white;mso-pattern:solid black;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Effect</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:1'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc &copy; </p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Reset Printer</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:2'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc -1</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Turns
+  underlining on</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:3'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc -0</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Turns
+  underlining off</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:4'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc E</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Turns
+  emphasized (bold) on</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:5'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc F</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Cancels
+  emphasized mode</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:6'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc G</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Starts
+  double-strike mode</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:7'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc H</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Cancels
+  double-strike mode</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:8'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc P</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>10 character
+  per inch (CPI) mode (pica)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:9'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc M</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>12 CPI mode
+  (elite)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:10'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>chr(15)</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Condensed
+  print</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:11'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc S0</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Starts
+  superscript mode (S0)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:12'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc S1</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Starts
+  subscript mode (S1)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:13'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc T</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Cancels
+  subscript/superscript modes</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:14'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc W1</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Starts
+  double-wide mode</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:15;mso-yfti-lastrow:yes'>
+  	  <td width=88 valign=top style='width:66.2pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Esc W0</p>
+	  </td>
+	  <td width=240 valign=top style='width:2.5in;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Cancels
+  double-wide mode</p>
+	  </td>
+	</tr>
+  </table>
+  <h3>Advanced Printing - using AppLaunch and Launch Codes</h3>
+  <p class=MsoBodyText>Starting with version 2.0, PalmPrint provides
+yet another way to control print formatting, and this method maintains
+printer-independence.  It&#8217;s a
+little more involved, and sacrifices a little printer control (e.g., you
+don&#8217;t have the ability to select printer-specific fonts), but it may work
+better for routine formatting when you don&#8217;t have control over which
+printer will be used.</p>
+  <p class=MsoBodyText>The secret to this method of formatting is
+the fact that PalmPrint can accept various different launch codes in the
+AppLaunch statement (like the 32768 used to tell PalmPrint to print the string
+passed to it):</p>
+  <p class=MsoNormal><code>result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32768,PrintString)</code></p>
+  <p class=MsoBodyText>The following table gives the Launch codes
+that are available from within NS Basic (there are other codes available, but
+require pointers not available using the AppLaunch statement in NSBasic):</p>
+  <p class=BodyTextFirstChar><b style='mso-bidi-font-weight:normal'><i
+style='mso-bidi-font-style:normal'>PalmPrint Launch Codes available using NS Basic</i></b></p>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none;mso-border-alt:
+ solid black .75pt;mso-yfti-tbllook:32;mso-padding-alt:0in 5.4pt 0in 5.4pt;
+ mso-border-insideh:.75pt solid black;mso-border-insidev:.75pt solid black'>
+    <tr style='mso-yfti-irow:0'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  mso-border-alt:solid black .75pt;background:black;mso-shading:white;
+  mso-pattern:solid black;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Launch Code</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border:solid black 1.0pt;
+  border-left:none;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  background:black;mso-shading:white;mso-pattern:solid black;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Description</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:1'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32768</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Print string,
+  then eject page when finished</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:2'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32770</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Marks the start
+  of a series of print commands (&quot;print job&quot;)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:3'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32774</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Marks the end
+  of a series of print commands</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:4'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32771</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Marks the
+  start of a series of transmit commands</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:5'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32775</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Marks the end
+  of a series of transmit commands</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:6'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32772</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Sends a string
+  of characters to the printer (without ending the &quot;print job&quot; like
+  code 32768)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:7'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32773</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Transmits a
+  string of characters</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:8'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32800</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Sends a form
+  feed to the printer (ejects the page)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:9'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32802</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Sets plain
+  printing</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:10'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32804</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Sets bold
+  printing</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:11'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32828</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Sets printer
+  into portrait mode (PCL and Postscript only)</p>
+	  </td>
+	</tr>
+    <tr style='mso-yfti-irow:12;mso-yfti-lastrow:yes'>
+  	  <td width=108 valign=top style='width:81.0pt;border:solid black 1.0pt;
+  border-top:none;mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>32830</p>
+	  </td>
+	  <td width=360 valign=top style='width:3.75in;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0in 5.4pt 0in 5.4pt'>
+  		<p class=MsoBodyText>Sets printer
+  into landscape mode (PCL and Postscript only)</p>
+	  </td>
+	</tr>
+  </table>
+  <p class=MsoBodyText>As seen in the above table, you can tell
+PalmPrint to start a &quot;print job&quot; (series of print commands), send the
+necessary formatting commands, use 32772 instead of 32768 to print your text,
+then tell PalmPrint to end the print job. 
+Here&#8217;s an example of printing the same report as in the previous
+example, but using the different launch codes rather than escape sequences:</p>
+<pre>
+result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32770,&quot;&quot;) ' start print job
+result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32804,&quot;&quot;) ' set bold
+result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32772,&quot;Profits 2nd Quarter&quot;)
+result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32802,&quot;&quot;) ' set default print
+result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32772,&quot; Region: Northwest&quot;)
+result=AppLaunch(CardNo,&quot;PalmPrint&quot;,32774,&quot;&quot;) ' end print job
+</pre>
+  <p class=MsoBodyText>You&#8217;ll also notice in the table
+above that there are launch codes for controlling character transmission.  PalmPrint allows you to send output to
+terminal programs like HyperTerm, as well
+as to printers.  By using codes 32771
+(start transmission), 32773 (transmit line), and 32775 (end transmission) you
+can send your output to a serial program for capture, rather than a
+printer.  You will most likely need a
+null-modem adapter, and will also need to make sure that PalmPrint and your
+receiving application are set to the same baud rate (PalmPrint&#8217;s other
+serial parameters: 8 data bits, 1 stop bit, no parity, hardware flow
+control).  If you are using PalmPrint for
+this feature, consult its documentation for more specifics.</p>
+  <p class=MsoBodyText>One last point
+about printing using PalmPrint.  You may have certain applications that
+require you to send a null (chr(0)) as a character
+embedded in the print string.  However,
+the Palm OS uses the null character to mark the end of a string, so using the
+actual null character will cause the output to be cut off past the null.  If you need to use the null character, use chr(255) instead &#8211; PalmPrint will translate it into
+the null character for output (however, this means that you won&#8217;t be able
+to send a chr(255) to your printer).</p>
+  <p class=MsoBodyText>PalmPrint is a very flexible application,
+so study its documentation thoroughly, and check at <a
+href="http://www.stevenscreek.com/">www.stevenscreek.com</a> to see if your
+specific printer is supported.  PalmPrint
+may work with printers not specifically mentioned, but you risk causing
+compatibility problems that might be difficult to debug.</p>
+</div>
+
+<h3>Using Non-IRDA printers wirelessly</h3>
+Photologic sells a black box that lets you receive IRDA signals to drive most standard printers. <A HREF="http://www3.sympatico.ca/photologic/sr.htm">Get details here</A>.
+</body>
+
+</html>
+

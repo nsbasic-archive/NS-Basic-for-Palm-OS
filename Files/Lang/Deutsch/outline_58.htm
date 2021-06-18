@@ -1,0 +1,471 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbOpen </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>DbOpen                                                                                                   Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBOPEN(<i>dbName</i> as Database, <i>fileName</i> as String, <i>cardNo</i>
+as Integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Öffnet eine bestehende Datenbank auf der angegebenen
+Speicherkarte des Palm OS Gerätes. Liefert einen ganzzahligen Fehlercode
+zurück.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>DbName</i> ist die
+Referenz auf die Datenbank innerhalb des Programms. Alle Datenbankaktionen
+werden durch diesen Namen identifiziert. <i>FileName</i>
+beinhaltet den Dateinamen, mit dem die Datenbank im Palm OS Speicher
+registriert wurde. <i>CardNo</i> bezeichnet
+die Speicherkarte, auf der die Datenbank existiert. Normalerweise ist dies 0.
+Ein Datenbankname muss durch <span style='font-family:Monaco'>DIM</span> <i>dbname</i> as Database definiert werden, bevor er durch die <i>dbOpen</i> Funktion verwendet werden kann.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Ein Aufruf von <i>dbOpen</i>
+ist Grundvoraussetzung für alle weiteren Datenbankaufrufe.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Database Ergebnis
+Codes</b></p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>-1</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>EOF, Ende des Datenbankfiles erreicht durch <i>dbGet</i></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>0</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Aktion erfolgreich</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>1</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Aktion fehlgeschlagen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>2</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Schlüssel nicht gefunden – nächst höherer Schlüssel
+  zurückgeliefert</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>3</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datei nur zum Lesen geöffnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>513</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Speicherfehler</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>514</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Index außerhalb des erlaubten Bereiches</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>515</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ungültiger Parameter</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>516</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Nur Lesezugriff</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>517</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datenbank ist bereits geöffnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>518</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kann nicht Öffnen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>519</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kann nicht Finden</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>520</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datensatz auf falsche Speicherkarte</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>521</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Die Datenbank ist kaputt.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>522</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datensatz gelöscht</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>523</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datensatz archiviert</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>524</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Keine Datensatz Datenbank</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>525</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Keine Resource Datenbank</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>526</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>ROM basierter oder ungültiger Datenbankname</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>527</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datensatz bereits in Bearbeitung</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>528</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Resource konnte nicht gefunden werden</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>529</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Keine geöffnete Datenbank</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>530</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ungültige Kategorie</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>531</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Kein gültiger Datensatz</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>532</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Schreibzugriff außerhalb des erlaubten Bereiches</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>533</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Positionierung fehlgeschlagen</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>534</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Bereits für den Schreibzugriff geöffnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>535</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Durch einen anderen Prozess bereits geöffnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>536</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Eindeutige ID nicht gefunden</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>537</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Existiert bereits</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>538</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Ungültiger Datenbankname</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>539</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datenbank geschützt</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=79 valign=top style='width:59.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>540</p>
+  </td>
+  <td width=463 valign=top style='width:347.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Datenbank nicht geschützt</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim result as integer</p>
+
+<p class=Code>Dim CustomerDb as database</p>
+
+<p class=Code>Result=DbOpen(CustomerDb, “Company-Test”, 0)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

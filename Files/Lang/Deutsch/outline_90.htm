@@ -1,0 +1,101 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>For </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>For                                                                                                                 Befehl</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>FOR <i>varName</i>=<i>startValue</i> TO <i>endValue</i> [STEP <i>stepValue</i>]</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Definiert den Beginn einer Serie von zu wiederholenden
+Ausdrücken. Das Ende der zu wiederholenden Ausdrücke wird durch das <i>NEXT</i> markiert. <i>VarName</i> wird durch <i>startValue</i>
+initialisiert, und wird durch den optionalen Parameter <i>stepValue</i> erhöht. Wenn dieser Parameter nicht angegeben ist, so
+wird als Standard in Inkrement von 1 angenommen. Die Ausführung der zu wiederholenden
+Ausdrücke endet, sofern der Wert von <i>varName</i>
+größer ist, als <i>endValue</i>. An diesem
+Punkt wird der nächste Ausdruck nach dem <i>NEXT</i>
+ausgeführt. Wenn innerhalb der zu wiederholenden Ausdrücke das Kommando <i>Exit For</i> auftaucht, so wird die Schleife
+sofort verlassen, und die Ausführung wird mit den nächsten Ausdruck nach dem <i>NEXT</i> weitergeführt. <i>StepValue</i> kann entweder positiv oder negativ sein. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>For i=1 to 5</p>
+
+<p class=Code>  .........</p>
+
+<p class=Code>Next</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>For cnt=cntMax to 1 step -1</p>
+
+<p class=Code>  .........</p>
+
+<p class=Code>  if total &gt; 5000 then</p>
+
+<p class=Code>    Exit For</p>
+
+<p class=Code>  End if</p>
+
+<p class=Code>  .........</p>
+
+<p class=Code>next</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+
+<a href="#Version Information">Version Information</a>
+    <a href="#Version">Version</a>                         version = Version()
+    <a href="#CompileInfo">CompileInfo</a>                     compileDateTime = CompileInfo()
+    <a href="#SystemVersion">SystemVersion</a>                   version = SystemVersion()
+
+<a href="#Access To Shared Library Global Variables">Access To Shared Library Global Variables</a>
+    <a href="#GlobalVersionMajor">GlobalVersionMajor</a>              gblMajor = GlobalVersionMajor()
+    <a href="#GlobalVersionMinor">GlobalVersionMinor</a>              gblMinor = GlobalVersionMinor()
+    <a href="#GlobalX">GlobalX</a>                         x = GlobalX()
+    <a href="#GlobalY">GlobalY</a>                         y = GlobalY()
+    <a href="#GlobalStartX">GlobalStartX</a>                    startX = GlobalStartX()
+    <a href="#GlobalStartY">GlobalStartY</a>                    startY = GlobalStartY()
+    <a href="#GlobalEndX">GlobalEndX</a>                      endX = GlobalEndX()
+    <a href="#GlobalEndY">GlobalEndY</a>                      endY = GlobalEndY()
+    <a href="#GlobalStartPos">GlobalStartPos</a>                  startPos = GlobalStartPos()
+    <a href="#GlobalEndPos">GlobalEndPos</a>                    endPos = GlobalEndPos()
+    <a href="#GlobalWidth">GlobalWidth</a>                     width = GlobalWidth()
+    <a href="#GlobalHeight">GlobalHeight</a>                    height = GlobalHeight()
+    <a href="#GlobalHour">GlobalHour</a>                      gblHour = GlobalHour()
+    <a href="#GlobalMinute">GlobalMinute</a>                    gblMinute = GlobalMinute()
+
+<a href="#Alarm Functions">Alarm Functions</a>
+    <a href="#SetAlarmReset">SetAlarmReset</a>                   SetAlarmReset resetTime, resetLimit
+    <a href="#SetAlarm">SetAlarm</a>                        status = SetAlarm(alarmPgm, alarmTime, alarmCmd, alarmMsg)
+    <a href="#CancelAlarm">CancelAlarm</a>                     status = CancelAlarm(alarmPgm)
+    <a href="#GetAlarm">GetAlarm</a>                        alarmTime = GetAlarm(alarmPgm, alarmCmd, alarmMsg)
+    <a href="#GetAlarmTime">GetAlarmTime</a>                    alarmTime = GetAlarmTime(alarmPgm)
+    <a href="#GetAlarmResetTime">GetAlarmResetTime</a>               resetTime = GetAlarmResetTime(alarmPgm)
+    <a href="#GetAlarmResetLimit">GetAlarmResetLimit</a>              resetLimit = GetAlarmResetLimit(alarmPgm)
+    <a href="#GetAlarmCommand">GetAlarmCommand</a>                 alarmCmd = GetAlarmCommand(alarmPgm)
+    <a href="#GetAlarmMessage">GetAlarmMessage</a>                 alarmMsg = GetAlarmMessage(alarmPgm)
+    <a href="#AlarmLog">AlarmLog</a>                        alarmTime = AlarmLog(alarmPgm, alarmCmd, alarmMsg)
+    <a href="#AlarmLogAlarmTime">AlarmLogAlarmTime</a>               alarmTime = AlarmLogAlarmTime(alarmPgm)
+    <a href="#AlarmLogResetTime">AlarmLogResetTime</a>               resetTime = AlarmLogResetTime(alarmPgm)
+    <a href="#AlarmLogResetLimit">AlarmLogResetLimit</a>              resetLimit = AlarmLogResetLimit(alarmPgm)
+    <a href="#AlarmLogResetCount">AlarmLogResetCount</a>              resetCount = AlarmLogResetCount(alarmPgm)
+    <a href="#AlarmLogCommand">AlarmLogCommand</a>                 alarmCmd = AlarmLogCommand(alarmPgm)
+    <a href="#AlarmLogMessage">AlarmLogMessage</a>                 alarmMsg = AlarmLogMessage(alarmPgm)
+    <a href="#ClearAlarmLog">ClearAlarmLog</a>                   alarmPgm = ClearAlarmLog()
+
+<a href="#Database Functions">Database Functions</a>
+    <a href="#FindDatabase">FindDatabase</a>                    dbID = FindDatabase(cardNo, dbName)
+    <a href="#DatabaseInfo">DatabaseInfo</a>                    dbName = DatabaseInfo(cardNo, dbID)
+    <a href="#DatabaseName">DatabaseName</a>                    dbName = DatabaseName()
+    <a href="#DatabaseAttributes">DatabaseAttributes</a>              dbAttributes = DatabaseAttributes()
+    <a href="#DatabaseVersion">DatabaseVersion</a>                 dbVersion = DatabaseVersion()
+    <a href="#DatabaseCreationDate">DatabaseCreationDate</a>            dbCreationDate = DatabaseCreationDate()
+    <a href="#DatabaseModificationDate">DatabaseModificationDate</a>        dbModificationDate = DatabaseModificationDate()
+    <a href="#DatabaseBackupDate">DatabaseBackupDate</a>              dbBackupDate = DatabaseBackupDate()
+    <a href="#DatabaseModificationNumber">DatabaseModificationNumber</a>      dbModificationNumber = DatabaseModificationNumber()
+    <a href="#DatabaseAppInfoID">DatabaseAppInfoID</a>               dbAppInfoID = DatabaseAppInfoID()
+    <a href="#DatabaseSortInfoID">DatabaseSortInfoID</a>              dbSortInfoID = DatabaseSortInfoID()
+    <a href="#DatabaseType">DatabaseType</a>                    dbType = DatabaseType()
+    <a href="#DatabaseCreatorID">DatabaseCreatorID</a>               dbCreatorID = DatabaseCreatorID()
+    <a href="#DatabaseTotalSize">DatabaseTotalSize</a>               dbTotalSize = DatabaseTotalSize(cardNo, dbID)
+    <a href="#DatabaseNumRecords">DatabaseNumRecords</a>              dbNumRecords = DatabaseNumRecords()
+    <a href="#DatabaseDataSize">DatabaseDataSize</a>                dbDataSize = DatabaseDataSize()
+    <a href="#DeleteDatabase">DeleteDatabase</a>                  status = DeleteDatabase(cardNo, dbID)
+    <a href="#GetNextDatabaseByTypeCreator">GetNextDatabaseByTypeCreator</a>    dbID = GetNextDatabaseByTypeCreator(newSearch, dbType, dbCreatorID, onlyLatestVersion)
+    <a href="#DatabaseCardNo">DatabaseCardNo</a>                  dbCardNo = DatabaseCardNo()
+    <a href="#NumDatabases">NumDatabases</a>                    nbr = NumDatabases(cardNo)
+    <a href="#NumCards">NumCards</a>                        nbr = NumCards()
+    <a href="#GetDatabase">GetDatabase</a>                     dbID = GetDatabase(cardNo, index)
+    <a href="#SetDatabaseName">SetDatabaseName</a>                 status = SetDatabaseName(cardNo, dbID, dbName)
+    <a href="#SetDatabaseAttributes">SetDatabaseAttributes</a>           status = SetDatabaseAttributes(cardNo, dbID, dbAttributes)
+    <a href="#SetDatabaseVersion">SetDatabaseVersion</a>              status = SetDatabaseVersion(cardNo, dbID, dbVersion)
+    <a href="#SetDatabaseCreationDate">SetDatabaseCreationDate</a>         status = SetDatabaseCreationDate(cardNo, dbID, dbCreationDate)
+    <a href="#SetDatabaseModificationDate">SetDatabaseModificationDate</a>     status = SetDatabaseModificationDate(cardNo, dbID, dbModificationDate)
+    <a href="#SetDatabaseBackupDate">SetDatabaseBackupDate</a>           status = SetDatabaseBackupDate(cardNo, dbID, dbBackupDate)
+    <a href="#SetDatabaseModificationNumber">SetDatabaseModificationNumber</a>   status = SetDatabaseModificationNumber(cardNo, dbID, dbModificationNumber)
+    <a href="#SetDatabaseAppInfoID">SetDatabaseAppInfoID</a>            status = SetDatabaseAppInfoID(cardNo, dbID, dbAppInfoID)
+    <a href="#SetDatabaseSortInfoID">SetDatabaseSortInfoID</a>           status = SetDatabaseSortInfoID(cardNo, dbID, dbSortInfoID)
+    <a href="#SetDatabaseType">SetDatabaseType</a>                 status = SetDatabaseType(cardNo, dbID, dbType)
+    <a href="#SetDatabaseCreatorID">SetDatabaseCreatorID</a>            status = SetDatabaseCreatorID(cardNo, dbID, dbCreatorID)
+
+<a href="#Event Functions">Event Functions</a>
+    <a href="#GetEvent">GetEvent</a>                        eventType = GetEvent(timeoutTicks, consumePenEvents, returnVirtualEvents)
+    <a href="#SysHandleEvent">SysHandleEvent</a>                  SysHandleEvent()
+    <a href="#FlushEvents">FlushEvents</a>                     FlushEvents()
+    <a href="#KeyEventChr">KeyEventChr</a>                     keyChr = KeyEventChr()
+    <a href="#KeyEventKeyCode">KeyEventKeyCode</a>                 keyCode = KeyEventKeyCode()
+    <a href="#KeyEventModifiers">KeyEventModifiers</a>               modifiers = KeyEventModifiers()
+
+<a href="#Field and Form Functions">Field and Form Functions</a>
+    <a href="#ControlHitControl">ControlHitControl</a>               ControlHitControl objID
+    <a href="#FieldCopy">FieldCopy</a>                       FieldCopy objID
+    <a href="#FieldCut">FieldCut</a>                        FieldCut objID
+    <a href="#FieldInsert">FieldInsert</a>                     FieldInsert objID, insString
+    <a href="#FieldPaste">FieldPaste</a>                      FieldPaste objID
+    <a href="#FieldUndo">FieldUndo</a>                       FieldUndo objID
+    <a href="#FieldGetInsPtPosition">FieldGetInsPtPosition</a>           pos = FieldGetInsPtPosition(objID)
+    <a href="#FieldGetSelection">FieldGetSelection</a>               startPos = FieldGetSelection(objID)
+    <a href="#FieldAnyDirty">FieldAnyDirty</a>                   dirty = FieldAnyDirty()
+    <a href="#FieldDirty">FieldDirty</a>                      dirty = FieldDirty(objID)
+    <a href="#FieldSetDirty">FieldSetDirty</a>                   FieldSetDirty objID, dirty
+    <a href="#FieldSetAllDirty">FieldSetAllDirty</a>                FieldSetAllDirty dirty
+    <a href="#FieldSetSelection">FieldSetSelection</a>               FieldSetSelection objID, startPos, endPos
+    <a href="#FieldSetInsertionPoint">FieldSetInsertionPoint</a>          FieldSetInsertionPoint objID, pos
+    <a href="#FieldSetInsPtPosition">FieldSetInsPtPosition</a>           FieldSetInsPtPosition objID, pos
+    <a href="#FieldGetAttributes">FieldGetAttributes</a>              attributes = FieldGetAttributes(objID)
+    <a href="#FieldSetAttributes">FieldSetAttributes</a>              FieldSetAttributes objID, attributes
+    <a href="#FieldGetFont">FieldGetFont</a>                    fontId = FieldGetFont(objID)
+    <a href="#FieldSetFont">FieldSetFont</a>                    FieldSetFont objID, fontId
+    <a href="#FieldGetScrollPosition">FieldGetScrollPosition</a>          position = FieldGetScrollPosition(objID)
+    <a href="#FieldSetScrollPosition">FieldSetScrollPosition</a>          FieldSetScrollPosition objID, position
+    <a href="#FieldGetScrollValues">FieldGetScrollValues</a>            totalLines = FieldGetScrollValues(objID)
+    <a href="#FieldGetVisibleLines">FieldGetVisibleLines</a>            lines = FieldGetVisibleLines(objID)
+    <a href="#FieldGetNumberOfBlankLines">FieldGetNumberOfBlankLines</a>      lines = FieldGetNumberOfBlankLines(objID)
+    <a href="#FieldScrollable">FieldScrollable</a>                 yesNo = FieldScrollable(objID, direction)
+    <a href="#FieldScrollField">FieldScrollField</a>                FieldScrollField objID, nbrLines, direction
+    <a href="#FieldSetBounds">FieldSetBounds</a>                  FieldSetBounds objID, topLeftX, topLeftY, width, height
+    <a href="#FormGetNumberOfObjects">FormGetNumberOfObjects</a>          nbr = FormGetNumberOfObjects()
+    <a href="#FormGetObjectBounds">FormGetObjectBounds</a>             x = FormGetObjectBounds(objID)
+    <a href="#FormGetObjectPosition">FormGetObjectPosition</a>           x = FormGetObjectPosition(objID)
+    <a href="#FormGetObjectType">FormGetObjectType</a>               type = FormGetObjectType(objID)
+    <a href="#FormSetObjectPosition">FormSetObjectPosition</a>           FormSetObjectPosition objID, x, y
+    <a href="#FormSetObjectBounds">FormSetObjectBounds</a>             FormSetObjectBounds objID, topLeftX, topLeftY, width, height
+    <a href="#FormGetTitle">FormGetTitle</a>                    title = FormGetTitle()
+    <a href="#FormReplaceTitle">FormReplaceTitle</a>                FormReplaceTitle title, forceLength
+    <a href="#ListGetTopItem">ListGetTopItem</a>                  topItem = ListGetTopItem(objID)
+    <a href="#ListSetTopItem">ListSetTopItem</a>                  ListSetTopItem objID, topItem
+    <a href="#ListGetVisibleItems">ListGetVisibleItems</a>             visibleItems = ListGetVisibleItems(objID)
+    <a href="#ListScrollList">ListScrollList</a>                  result = ListScrollList(objID, direction, nbrItems)
+
+<a href="#Font Support">Font Support</a>
+    <a href="#FontGetFont">FontGetFont</a>                     fontId = FontGetFont()
+    <a href="#FontSetFont">FontSetFont</a>                     oldFontId = FontSetFont(fontId)
+    <a href="#FontSelect">FontSelect</a>                      fontId = FontSelect()
+    <a href="#FontCharWidth">FontCharWidth</a>                   width = FontCharWidth(charString)
+    <a href="#FontCharsWidth">FontCharsWidth</a>                  width = FontCharsWidth(charString, optionalLen)
+    <a href="#FontWidthToOffset">FontWidthToOffset</a>               offset = FontWidthToOffset(charString, optionalLen, width)
+    <a href="#FontCharsInWidth">FontCharsInWidth</a>                length = FontCharsInWidth(charString, optionalLen, width)
+    <a href="#FontWordWrap">FontWordWrap</a>                    length = FontWordWrap(charString, width)
+
+<a href="#HotSync Data">HotSync Data</a>
+    <a href="#SyncUserName">SyncUserName</a>                    userName = SyncUserName()
+    <a href="#SuccessfulSync">SuccessfulSync</a>                  syncDate = SuccessfulSync()
+    <a href="#LastSync">LastSync</a>                        syncDate = LastSync()
+
+<a href="#Localization Functions">Localization Functions</a>
+    <a href="#LocalizeNumber">LocalizeNumber</a>                  localNbrStr = LocalizeNumber(stdNbrStr)
+    <a href="#DelocalizeNumber">DelocalizeNumber</a>                stdNbrStr = DelocalizeNumber(localNbrStr)
+    <a href="#LocalizeDate">LocalizeDate</a>                    localDateStr = LocalizeDate(stdDateStr, ToDateFormat, longDateFormat)
+
+<a href="#Preference Functions">Preference Functions</a>
+    <a href="#GetAppPreferences">GetAppPreferences</a>               data = GetAppPreferences(pgmName, prefId, saved)
+    <a href="#SetAppPreferences">SetAppPreferences</a>               status = SetAppPreferences(pgmName, prefId, data, saved)
+    <a href="#GetSysPreference">GetSysPreference</a>                data = GetSysPreference(prefID)
+    <a href="#SetSysPreference">SetSysPreference</a>                SetSysPreference prefID, data
+
+<a href="#Progress Manager Functions">Progress Manager Functions</a>
+    <a href="#ProgressStartDialog">ProgressStartDialog</a>             ProgressStartDialog title
+    <a href="#ProgressStopDialog">ProgressStopDialog</a>              ProgressStopDialog force
+    <a href="#ProgressUpdateDialog">ProgressUpdateDialog</a>            ProgressUpdateDialog error, message
+    <a href="#ProgressUserCancel">ProgressUserCancel</a>              canceled = ProgressUserCancel()
+    <a href="#ProgressPercent">ProgressPercent</a>                 percent = ProgressPercent(current, count)
+    <a href="#ProgressPercentString">ProgressPercentString</a>           strValue = ProgressPercentString(percent, resolution, completeChar, incompleteChar)
+
+<a href="#String Functions">String Functions</a>
+    <a href="#String4ToInt">String4ToInt</a>                    intValue = String4ToInt(fourByteString)
+    <a href="#IntToString4">IntToString4</a>                    fourByteString = IntToString4(intValue)
+    <a href="#DelimitedItem">DelimitedItem</a>                   item = DelimitedItem(inputStr, delimiter, nbr)
+    <a href="#FixedWidthString">FixedWidthString</a>                fixedStr = FixedWidthString(origStr, width, options)
+    <a href="#NormalSpacedString">NormalSpacedString</a>              normalStr = NormalSpacedString(origStr)
+
+<a href="#System Time Functions">System Time Functions</a>
+    <a href="#SelectOneTime">SelectOneTime</a>                   newTimeSelected = SelectOneTime(defHour, defMinute, title)
+    <a href="#IncrementSystemTime">IncrementSystemTime</a>             newSysTime = IncrementSystemTime(oldSysTime, hours, minutes, seconds)
+    <a href="#SystemTime">SystemTime</a>                      sysTime = SystemTime(strDate, strTime, seconds, ToDateFormat)
+    <a href="#StringDateTime">StringDateTime</a>                  strDateTime = StringDateTime(sysTime, ToDateFormat, ToTimeFormat, AMPMFormat)
+    <a href="#StringDate">StringDate</a>                      strDate = StringDate(sysTime, ToDateFormat)
+    <a href="#StringTime">StringTime</a>                      strTime = StringTime(sysTime, ToTimeFormat, AMPMFormat)
+
+<a href="#Version 1.4 Changes and Additions">Version 1.4 Changes and Additions</a>
+    <a href="#PostEvent">PostEvent</a>                       PostEvent eventNbr
+    <a href="#FormGetFocus">FormGetFocus</a>                    objID = FormGetFocus()
+    <a href="#FieldGetTextLength">FieldGetTextLength</a>              txtLen = FieldGetTextLength(objID)
+    <a href="#RandomNumber">RandomNumber</a>                    nbr = RandomNumber(seed, minNbr, maxNbr)
+    <a href="#ResetAutoOffTimer">ResetAutoOffTimer</a>               ResetAutoOffTimer()
+    <a href="#SetAutoOffTime">SetAutoOffTime</a>                  oldSeconds = SetAutoOffTime(newSeconds)
+    <a href="#ProgramVersionString">ProgramVersionString</a>            verStr = ProgramVersionString(cardNbr, pgmName)
+    <a href="#DynamicHeapSize">DynamicHeapSize</a>                 heapSize = DynamicHeapSize()
+    <a href="#DynamicHeapFree">DynamicHeapFree</a>                 freeSize = DynamicHeapFree()
+    <a href="#DynamicHeapMaxChunk">DynamicHeapMaxChunk</a>             maxChunkSize = DynamicHeapMaxChunk()
+    <a href="#SortInit">SortInit</a>                        error = SortInit(maxItems, itemType)
+    <a href="#SortAddString">SortAddString</a>                   error = SortAddString(strItem)
+    <a href="#SortAddInteger">SortAddInteger</a>                  error = SortAddInteger(intItem)
+    <a href="#SortAddDouble">SortAddDouble</a>                   error = SortAddDouble(dblItem)
+    <a href="#SortGetString">SortGetString</a>                   strItem = SortGetString(index)
+    <a href="#SortGetInteger">SortGetInteger</a>                  intItem = SortGetInteger(index)
+    <a href="#SortGetDouble">SortGetDouble</a>                   dblItem = SortGetDouble(index)
+    <a href="#SortQSort">SortQSort</a>                       numItems = SortQSort(reverseSort, caselessSort)
+    <a href="#SortInsertionSort">SortInsertionSort</a>               numItems = SortInsertionSort(reverseSort, caselessSort)
+    <a href="#ListQSort">ListQSort</a>                       numItems = ListQSort(objID, reverseSort, caselessSort)
+    <a href="#ListInsertionSort">ListInsertionSort</a>               numItems = ListInsertionSort(objID, reverseSort, caselessSort)
+
+<a href="#Version 2.0 Changes and Additions">Version 2.0 Changes and Additions</a>
+    <a href="#FormGetAllObjectTypes">FormGetAllObjectTypes</a>           type = FormGetAllObjectTypes(objID)
+    <a href="#FieldClearAll">FieldClearAll</a>                   FieldClearAll()
+    <a href="#ObjectWithPoint">ObjectWithPoint</a>                 obj = ObjectWithPoint(x, y, returnType, searchOption)
+    <a href="#ANDInt">ANDInt</a>                          result = ANDInt(int1, int2)
+    <a href="#ORInt">ORInt</a>                           result = ORInt(int1, int2)
+    <a href="#XORInt">XORInt</a>                          result = XORInt(int1, int2)
+    <a href="#OnesComplement">OnesComplement</a>                  result = OnesComplement(intValue)
+    <a href="#BitValue">BitValue</a>                        result = BitValue(intValue, bitNumber)
+    <a href="#BitsValue">BitsValue</a>                       result = BitsValue(intValue, startBit, endBit)
+    <a href="#SetBitValue">SetBitValue</a>                     result = SetBitValue(intValue, bitNumber, bitValue)
+    <a href="#SetBitsValue">SetBitsValue</a>                    result = SetBitsValue(intValue, bitsValue, startBit, endBit)
+    <a href="#IntToHex">IntToHex</a>                        hexValue = IntToHex(intValue, trimLeading)
+    <a href="#HexToInt">HexToInt</a>                        intValue = HexToInt(hexValue)
+    <a href="#IntToBin">IntToBin</a>                        binValue = IntToBin(intValue, trimLeading)
+    <a href="#BinToInt">BinToInt</a>                        intValue = BinToInt(binValue)
+
+<a href="#Screen and Color Functions">Screen and Color Functions</a>
+    <a href="#GetSupportedDepths">GetSupportedDepths</a>              depths = GetSupportedDepths()
+    <a href="#DepthSupported">DepthSupported</a>                  boolean = DepthSupported(depth)
+    <a href="#ColorSupported">ColorSupported</a>                  boolean = ColorSupported()
+    <a href="#SetDepth">SetDepth</a>                        SetDepth depth
+    <a href="#SetColor">SetColor</a>                        SetColor boolean
+    <a href="#SaveScreenMode">SaveScreenMode</a>                  SaveScreenMode()
+    <a href="#RestoreScreenMode">RestoreScreenMode</a>               RestoreScreenMode()
+    <a href="#CurrentDepth">CurrentDepth</a>                    depth = CurrentDepth()
+    <a href="#CurrentColor">CurrentColor</a>                    boolean = CurrentColor()
+    <a href="#SetToDefaults">SetToDefaults</a>                   SetToDefaults()
+    <a href="#DefaultDepth">DefaultDepth</a>                    depth = DefaultDepth()
+    <a href="#DefaultColor">DefaultColor</a>                    boolean = DefaultColor()
+    <a href="#GetTableEntryIndex">GetTableEntryIndex</a>              index = GetTableEntryIndex(which)
+    <a href="#GetTableEntryRGB">GetTableEntryRGB</a>                index = GetTableEntryRGB(which)
+    <a href="#GetRGBIndex">GetRGBIndex</a>                     index = GetRGBIndex()
+    <a href="#GetRGBRed">GetRGBRed</a>                       red = GetRGBRed()
+    <a href="#GetRGBGreen">GetRGBGreen</a>                     green = GetRGBGreen()
+    <a href="#GetRGBBlue">GetRGBBlue</a>                      blue = GetRGBBlue()
+    <a href="#SetTableEntryIndex">SetTableEntryIndex</a>              SetTableEntryIndex which, index
+    <a href="#SetTableEntryRGB">SetTableEntryRGB</a>                SetTableEntryRGB which, red, green, blue
+    <a href="#BrightnessAdjust">BrightnessAdjust</a>                BrightnessAdjust()
+    <a href="#ContrastAdjust">ContrastAdjust</a>                  ContrastAdjust()
+    <a href="#PickColorIndex">PickColorIndex</a>                  changed = PickColorIndex(index, title)
+    <a href="#PickColorRGB">PickColorRGB</a>                    changed = PickColorRGB(red, green, blue, title)
+    <a href="#IndexToRGB">IndexToRGB</a>                      IndexToRGB index
+    <a href="#RGBToIndex">RGBToIndex</a>                      index = RGBToIndex(red, green, blue)
+    <a href="#SetForeColor">SetForeColor</a>                    oldIndex = SetForeColor(newIndex)
+    <a href="#SetBackColor">SetBackColor</a>                    oldIndex = SetBackColor(newIndex)
+    <a href="#SetTextColor">SetTextColor</a>                    oldIndex = SetTextColor(newIndex)
+    <a href="#DrawLine">DrawLine</a>                        DrawLine x1, y1, x2, y2
+    <a href="#DrawGrayLine">DrawGrayLine</a>                    DrawGrayLine x1, y1, x2, y2
+    <a href="#EraseLine">EraseLine</a>                       EraseLine x1, y1, x2, y2
+    <a href="#InvertLine">InvertLine</a>                      InvertLine x1, y1, x2, y2
+    <a href="#DrawPixel">DrawPixel</a>                       DrawPixel x, y
+    <a href="#ErasePixel">ErasePixel</a>                      ErasePixel x, y
+    <a href="#InvertPixel">InvertPixel</a>                     InvertPixel x, y
+    <a href="#GetPixel">GetPixel</a>                        index = GetPixel(x, y)
+    <a href="#ScreenLock">ScreenLock</a>                      success = ScreenLock(mode)
+    <a href="#ScreenUnlock">ScreenUnlock</a>                    ScreenUnlock()
+    <a href="#WinSaveBits">WinSaveBits</a>                     WinSaveBits index, x, y, width, height
+    <a href="#WinRestoreBits">WinRestoreBits</a>                  WinRestoreBits index, x, y
+
+<a href="#Sleep and Wake Event Functions">Sleep and Wake Event Functions</a>
+    <a href="#SetSleepEvent">SetSleepEvent</a>                   SetSleepEvent eventNbr
+    <a href="#SetWakeEvent">SetWakeEvent</a>                    SetWakeEvent eventNbr
+    <a href="#GetSleepEvent">GetSleepEvent</a>                   eventNbr = GetSleepEvent()
+    <a href="#GetWakeEvent">GetWakeEvent</a>                    eventNbr = GetWakeEvent()
+    <a href="#GetSleepEventTime">GetSleepEventTime</a>               eventTime = GetSleepEventTime()
+    <a href="#GetWakeEventTime">GetWakeEventTime</a>                eventTime = GetWakeEventTime()
+
+<a href="#String Encryption and Decryption Functions">String Encryption and Decryption Functions</a>
+    <a href="#EncryptDESString">EncryptDESString</a>                encryptedStr = EncryptDESString(decryptedStr)
+    <a href="#DecryptDESString">DecryptDESString</a>                decryptedStr = DecryptDESString(encryptedStr)
+    <a href="#SetDESKey">SetDESKey</a>                       SetDESKey keyStr
+</pre>

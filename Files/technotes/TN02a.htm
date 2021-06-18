@@ -1,0 +1,521 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 02a: NS Basic/Palm PDB File Structure</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 02: NS Basic/Palm PDB File Structure</h2>
+	  <h3>Oct 27, 2002</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+
+
+<i>Contributed by <A HREF="mailto:mizuno-ami&copy; aimnet.ne.jp">mizuno-ami</A> and <A HREF="mailto:jvande&copy; shaw.ca">Jeffrey VanderWal</A>.</i>
+
+<TABLE cellPadding=10 width="80%" BORDE="0">
+
+  <TBODY>
+
+  <TR>
+
+    <TD><TT>"PDB" is the abbreviation of "Palm Database".&nbsp; It is not a difficult structure 
+
+    to understand and figure out with the correct tools. Once you 
+
+      know this structure, you can easily make pdb files using VB or 
+
+      other tools.<br>
+
+    <BR>In this short Tech note, I'll explain the structure of the most 
+
+      simple PDB file. Once you understand this, you will be able to understand other, 
+
+    more advanced 
+
+      cases more easily.<BR><BR><b><u>Getting Started</u></b></TT><p><TT>We will 
+
+    be using a Non-keyed database in NS Basic/Palm.<BR>This database is created 
+
+    using the NSBasic commands DbPut() and DbGet().<BR>Here is the code used to 
+
+    make a simple PDB file:<BR></tt></p><TT>
+
+    <PRE>    Dim Db as Database
+    Dim res as Integer
+
+    res=DbCreate(Db,"DB-CREATE-TEST",0,"Test")    'Creator ID is &quot;Test&quot;
+    If res=0 then				  'Created successfully
+        res=DbOpen(Db,"DB-CREATE-TEST",0)
+        res=DbPosition(Db,1,0)			  'Position pointer to record 1
+        res=DbPut(Db,"NS BASIC")		  'Write it
+        res=DbPosition(Db,2,0)			  'Position pointer to record 2
+        res=DbPut(Db,"mizuno-ami")
+        res=DbPosition(Db,3,0)
+        res=DbPut(Db,"Simple Sample")
+        res=DbClose(Db)
+    End if
+
+</PRE>Reading the database can be done through this code:<BR>(Field1008 shows the data which specified record at 
+
+      Field1006.)<BR><PRE>    Dim Db as Database
+    Dim res as Integer
+    Dim intSet as Integer
+    Dim strData as String
+
+    intSet=Val(Field1006.Text)
+    res=DbOpen(Db,"DB-CREATE-TEST",0)
+    res=DbPosition(Db,intSet,0)		'Position pointer to the value in field1006
+    res=DbGet(Db,strData)
+    res=DbClose(Db)
+    Field1008.text=strData		'Display your db data
+
+</PRE>After inputting this code into a sample project, you can create a sample 
+
+    database.<BR>(A very simple example is included in this ZIP file)<BR><BR>After compiling, and 
+
+    running the program, create a database by clicking on &quot;Create&quot;<BR>Now 
+
+    &quot;Export the database&quot; by right clicking on POSE and selecting &quot;Export 
+
+    Database&quot;.&nbsp; Select the file we created, called &quot;DB-CREAT-TEST&quot;, and 
+
+    export it to a location that we can easily find (the desktop).&nbsp; To 
+
+    check to ensure the database has been made correctly, type in &quot;1&quot; in the 
+
+    &quot;Record&quot; field and then read.&nbsp; We created 3 records.<BR><BR>
+
+    <IMG height=160 src="TN02a.images/screen1.gif" width=160>
+
+    <BR><BR>To see the &quot;inside&quot; of the PDB file you will need a hex 
+
+    editor.&nbsp; I will be using Hex Workshop 3.11 (actually another hex editor 
+
+    is shown, but Hex Workshop works well for this purpose), but any hex or 
+
+    binary editor will do.&nbsp; <BR><BR>
+
+    <IMG height=268 src="TN02a.images/2000.gif" width=587>
+    <BR><BR>A PDB file is split up into 3 sections:<UL>
+
+        <LI>Header (Database Header - &quot;Title Page)<LI>Location information (Record 
+
+        Header - &quot;Table of Contents&quot;)<LI>Record Data (Actual data)</LI></UL>
+
+    <p><u><b>The Header</b></u></p>
+
+    <p>Let's look at the Database header.<BR>The size of this is 78bytes and this 
+
+      structure is following:<BR>
+
+      </p>
+
+      <TABLE bgColor=#ffffff border=1>
+
+        <TBODY>
+
+        <TR bgColor=#c0ffc0>
+
+          <TH>Offset</TH>
+
+          <TH>size<BR>(byte)</TH>
+
+          <TH>name</TH>
+
+          <TH>explanation</TH></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+0000H</TH>
+
+          <TH>32</TH>
+
+          <TH>Database Name</TH>
+
+          <TD>Database name on Palm (Not file name on PC)</TD></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+0020H</TH>
+
+          <TH>2</TH>
+
+          <TH>flags</TH>
+
+          <TD>attribute of this database</TD></TR>
+
+        <TR>
+
+          <TH>+0022H</TH>
+
+          <TH>2</TH>
+
+          <TH>version</TH>
+
+          <TD>version number</TD></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+0024H</TH>
+
+          <TH>4</TH>
+
+          <TH>create time</TH>
+
+          <TD rowSpan=3>the number of seconds since '1904-01-01 
+
+00:00:00'</TD></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+0028H</TH>
+
+          <TH>4</TH>
+
+          <TH>modified time</TH></TR>
+
+        <TR>
+
+          <TH>+002CH</TH>
+
+          <TH>4</TH>
+
+          <TH>backup time</TH></TR>
+
+        <TR>
+
+          <TH>+0030H</TH>
+
+          <TH>4</TH>
+
+          <TH>modified number</TH>
+
+          <TD>the number of modified times</TD></TR>
+
+        <TR>
+
+          <TH>+0034H</TH>
+
+          <TH>4</TH>
+
+          <TH>application info size</TH>
+
+          <TD rowSpan=2>The simplest database sets "00 00 00 00"</TD></TR>
+
+        <TR>
+
+          <TH>+0038H</TH>
+
+          <TH>4</TH>
+
+          <TH>sort info size</TH></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+003CH</TH>
+
+          <TH>4</TH>
+
+          <TH>type</TH>
+
+          <TD>File type. database is "data"</TD></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+0040H</TH>
+
+          <TH>4</TH>
+
+          <TH>creatorID</TH>
+
+          <TD>creator ID</TD></TR>
+
+        <TR>
+
+          <TH>+0044H</TH>
+
+          <TH>4</TH>
+
+          <TH>unique id seed</TH>
+
+          <TD>Unique seed number (Don't mind!)</TD></TR>
+
+        <TR>
+
+          <TH>+0048H</TH>
+
+          <TH>4</TH>
+
+          <TH>next record list</TH>
+
+          <TD>Next record number (Don't mind!)</TD></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+004CH</TH>
+
+          <TH>2</TH>
+
+          <TH>number of records</TH>
+
+          <TD>number of records</TD></TR></TBODY></TABLE>There will be some data 
+
+      fields you had known already.<BR>Let's look up these data in 
+
+      order.<BR><BR>The database name is typically 32 byte data, followed by a 
+
+    null terminator &quot;00&quot; (Each field we see will be terminated by null). In most 
+
+    cases, you will find other unusal strings (like "ANL") after the null that you 
+
+      did not write.&nbsp; This is perfectly normal, depending on how the 
+
+    database was made.&nbsp; Palm ignores data after 
+
+      "00".<BR><BR><BR>
+      <IMG height=151 
+
+      src="TN02a.images/2001.gif" 
+
+      width=587><BR><BR>The next 2 bytes, you can find "00 08", this is the attribute of 
+
+      the file.<BR>If it is set to "00 
+
+      08", then this file will be backed to your PC at Hotsync.<BR>Usually, you 
+
+    must manually set this flag &quot;00 08&quot;.<BR><BR>The next 2 bytes, is the version 
+
+      number.&nbsp; This is the same number you would see by going to the info 
+
+    screen on the Palm and checking the version number there.&nbsp; In our 
+
+    example, "00 00" is written here, so our version number is the decimal 
+
+    equivalent of "00 00" hex, also &quot;0&quot;.<BR><br>
+
+    The next bit of information is the create time, the modify time and the 
+
+    backup time, all measured in seconds data (4 bytes)&nbsp; Palm uses a unique 
+
+    format for all times, measured in seconds since '1904-01-01 
+
+      00:00:00'.&nbsp; We won't have to worry about this, so we'll skip it here.&nbsp; 
+
+    You can find ample information on the internet about this if you wish. When doing Hotsync, this data is 
+
+    updated.<BR><BR><IMG height=151 
+
+      src="TN02a.images/2002.gif" 
+
+      width=587><BR><BR>The next bit of&nbsp; data is the 'modification number' 
+
+    a number that counts the numbe rof times a modification has been done.&nbsp; When you will make a new PDB file, you can write "00 
+
+      00 00 00" it.<BR><BR>The application info size and sort info size, is also 
+
+    something we need not worry about.&nbsp; For our case, this is "00 00 00 00", 
+
+    simply meaning that this information is not 
+
+      present. The simplest database does not need this information.<BR><BR>The 
+
+    next 2 
+
+      bytes of data may be familiar to you. The first 4 bytes is file type and 
+
+      next 4 bytes is creator ID. As a database , the type will be usually 
+
+      "data".<BR>The creator ID will be set by you when you create this database 
+
+      file using DbCreate(). In our example case, &quot;Test&quot;.<BR>
+
+      <IMG height=152 src="TN02a.images/2003.gif" width=587>
+
+      <BR><BR>Next 8 bytes , I don't know in detail but I know these 
+
+      are not needed for our purpose.<BR><BR>The last 2 bytes of header is number of 
+
+      records. Records we wrote are 3 records, and so here is "00 03".(written 
+
+    in hex)&nbsp; The data here is 2 bytes, meaning that the maximum number of records is 65535 
+
+      records.<BR><BR>
+
+      <IMG height=164 src="TN02a.images/2004.gif" width=587>
+
+      <BR><BR>Those are the basic details of the header data of 78 bytes.<BR>&nbsp;<p>
+
+    <u><b>Location information (Record Header - &quot;Table of Contents&quot;)</b></u></p>
+
+    <p>After the header, the Palm must know what record to lookup and where to 
+
+    look it up.&nbsp; The Palm uses a technique very similar to a book's table 
+
+    of contents.&nbsp; After knowing what &quot;chapter&quot; to look up, you go to the 
+
+    table of contents to look up the page number and then go quickly to the page 
+
+    number.&nbsp; Can you skip the TOC and go directly to the page?&nbsp; Sure 
+
+    you can, if you know where it is, otherwise you must scan each page 
+
+    for the information you want.&nbsp; This is very slow.&nbsp; It is slow on the 
+
+    Palm as well.&nbsp; </p>
+
+    <p>In our example of 3 records, we should have a table of contents with 3 
+
+    entries (records)in it and 3 page numbers (locations)</p>
+
+    <p>
+
+    <IMG height=310 src="TN02a.images/2005.gif" width=600>
+
+    <BR><BR>Let's look at the location information.<BR><BR>The location 
+
+      data is 8 byte piece of data structured as as follows:<BR><BR>
+
+      </p>
+
+      <TABLE bgColor=#ffffff border=1>
+
+        <TBODY>
+
+        <TR>
+
+          <TH>offset</TH>
+
+          <TH>size<BR>(byte)</TH>
+
+          <TH>name</TH>
+
+          <TH>explanation</TH></TR>
+
+        <TR bgColor=#ffc0c0>
+
+          <TH>+0000H</TH>
+
+          <TH>4</TH>
+
+          <TH>offset</TH>
+
+          <TD>location of this record from the head of file</TD></TR>
+
+        <TR>
+
+          <TH>+0004H</TH>
+
+          <TH>1</TH>
+
+          <TH>attribute<BR>attribute</TH>
+
+          <TD>attribute of this record</TD></TR>
+
+        <TR>
+
+          <TH>+0005H</TH>
+
+          <TH>3</TH>
+
+          <TH>uniquie ID<BR>uniqueID</TH>
+
+          <TD>count number of this record</TD></TR></TBODY></TABLE><BR>It may be helpful 
+
+      for you to understand that this is an index.<BR><BR>Let's start from the 
+
+    beginning. After the header (78bytes) we are at position 78 or in hex 4E.&nbsp; 
+
+    The next four bytes are the location information for the first record 
+
+    number.&nbsp; Reading in the four bytes, we get 00 00 00 68 (hex).&nbsp; 
+
+    This is the address of the first record in our database.&nbsp; If we go to 
+
+    address 68 (the leading zeros drop off), we find our first record, &quot;NS 
+
+    BASIC&quot;.&nbsp; If we want the second record, we read our next table of 
+
+    contents entry starting 4 bytes after our location of record 1 (note, each 
+
+    TOC entry is 8 bytes, so from byte 78, we would skip the first 8 bytes (rec#1) 
+
+    and then read at offset 78+8=86 dec or 56 hex which would read the beginning 
+
+    of record #2 (mizuno...)<p><IMG height=268 
+
+      src="TN02a.images/2006.gif" 
+
+      width=587><BR><BR>The next byte is the attribute of the record. A PDB file has an attribute for 
+
+    the whole of file and an attribute for each record.&nbsp; I belive at 
+
+    Hotsync, this structure is updated, because the Hotsync program can find updated records 
+
+      easily.<BR><BR>The last 3 bytes is the unique ID, this is for assigning a unique number 
+
+      to each record. You'll find these data are unique and continue in 
+
+    increasing progression. 
+
+      i.e.'1E 90 01' , '1E 90 02' ...<BR><u><b><br>
+
+    Record Data (Actual data)</b></u></p>
+
+    <p>Once we know the structure of the PDB header, we can theoretically find 
+
+    any record number we want.&nbsp; All we have to do is a simple calculation 
+
+    and read the table of contents.&nbsp; How?&nbsp; As an example in this case, 
+
+    to read the 3rd record, the header is 78 byte, so 78 + 3 * 8 = 102 -&gt; 066H, is the 
+
+    start of record #3's real data 
+
+      location.<BR><br>
+
+    In some cases, the beginning of real data is 068H and 
+
+      there is a gap of 2 bytes.<BR>This is called "alignment".&nbsp; In our 
+
+    case we don't need to make this alignment, because these 2 bytes are not 
+
+    used, but it may be something to be aware of if reading someone else's PDB.<BR><BR>
+
+    Now that we know how to find the beginning of the data, how to we know the 
+
+    end?&nbsp; As mentioned earlier, each field is null terminated.&nbsp; Null 
+
+    is 00.&nbsp; Each record is also null terminated, so in our sample database, 
+
+    a 00 00 means &quot;end of field, end of record&quot;.&nbsp; This of course, appears 
+
+    after the field (ie NS BASIC)<BR><BR><IMG height=268 
+
+      src="TN02a.images/2009.gif" 
+
+      width=587><BR><BR><BR>All of this information pertains to the the simplest PDB 
+
+    file structure.&nbsp; If you would like to disassemble other databases, a 
+
+    similar procedure would be followed.</p>
+
+    <p>This tutorial was originally made by mizuno-ami and then 
+
+    modified/translated/cleaned up by Jeff VanderWal.</p>
+
+      <DIV align=right><a href="mailto:mizuno-ami&copy; aimnet.ne.jp">mizuno-ami</a></DIV></TT></TD></TR></TBODY></TABLE>
+
+<HR width="80%">
+
+</BODY></HTML>
+

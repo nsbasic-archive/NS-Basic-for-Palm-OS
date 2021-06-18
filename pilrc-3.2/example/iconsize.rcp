@@ -1,0 +1,21 @@
+/* Test bitmap density code.  */
+
+ICONFAMILYEX
+BEGIN
+    BITMAP "images/icon-lg-1.bmp" BPP 1 
+    BITMAP "images/icon-lg-2.bmp" BPP 2 
+    BITMAP "images/icon-lg-8.bmp" BPP 8 TRANSPARENTINDEX 210 COMPRESS
+    BITMAP "images/icon-lg-1-d144.bmp" BPP 1 DENSITY 2
+    BITMAP "images/icon-lg-2-d144.bmp" BPP 2 DENSITY 2
+    BITMAP "images/icon-lg-8-d144.bmp" BPP 8 TRANSPARENTINDEX 210 COMPRESS DENSITY 2
+END
+
+SMALLICONFAMILYEX
+BEGIN
+    BITMAP "images/icon-sm-1.bmp"  BPP 1
+    BITMAP "images/icon-sm-2.bmp"  BPP 2
+    BITMAP "images/icon-sm-8.bmp"  BPP 8 TRANSPARENTINDEX 210 COMPRESS
+    BITMAP "images/icon-sm-1-d144.bmp" BPP 1 DENSITY 2
+    BITMAP "images/icon-sm-2-d144.bmp" BPP 2 DENSITY 2
+    BITMAP "images/icon-sm-8-d144.bmp" BPP 8 TRANSPARENTINDEX 210 COMPRESS DENSITY 2 
+END

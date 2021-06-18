@@ -1,0 +1,109 @@
+"mdl"
+8
+"Modal Form Demo","appl","Test",1015,505,0
+"Sub Project_Startup()
+
+	Global myText as String
+	
+End Sub"
+0
+0
+"Modal Demo"
+"1,0,0"
+""
+"Installat."
+""
+"E10000BB"
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Non Modal Form"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+
+	If myText <> ~~ Then
+		Field1012.Text = chr(34) + myText + chr(34)
+	Else
+		Field1012.Text = ~~
+	EndIf
+		
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1007",1007,36,132,12,88,#TRUE#,0,"Show modal form",0,0,0
+"Sub object1007()
+
+	myText = ~~
+	Dim formID as Short
+	formID=1005
+	SysTrapSub 412,1,formID
+        
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1011",1011,8,48,12,72,#TRUE#,0,"Modal form text =",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1012",1012,88,48,12,50,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1005,#TRUE#,#TRUE#,#TRUE#,0,4,96,152,60,1015,#FALSE#,#TRUE#
+"Modal Form"
+"Form1005"
+""
+1015
+"Sub Form1005_After()
+
+'	DrawBitmap 10004,4,22 'Info icon
+	DrawBitmap 10005,4,22 'Query icon
+'	DrawBitmap 10006,4,22 'Exclamation icon
+'	DrawBitmap 10007,4,22 'Error (~X~) icon
+
+	Field1008.Text = myText
+	
+End Sub"
+""
+"The text entered in this string can be used by Form1."
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1006",1006,8,44,12,36,#TRUE#,0,"Done",0,0,0
+"Sub object1006()
+
+	myText = Field1008.Text
+	NextForm ~Form1003~
+	
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1008",1008,88,24,12,50,#TRUE#,0,"",0,0,0
+"Sub object1008()
+
+	
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1010",1010,40,24,11,45,#TRUE#,0,"Enter text:",0,0,0
+""
+"end"

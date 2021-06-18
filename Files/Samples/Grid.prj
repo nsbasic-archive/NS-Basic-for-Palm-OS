@@ -1,0 +1,205 @@
+"mdl"
+8
+"Grid","appl","Grid",1025,505,0
+"Sub Project_Startup()
+Type dbBluesLayout
+    Name as String
+    age as Integer
+    active as Integer
+End Type
+Type dbBluesLayout1 'same as dbBluesLayout, but with the key field
+    BlueKey as Integer
+    Name as String
+    age as Integer
+    active as Integer
+End Type
+Dim dbBluesRec as dbBluesLayout
+Global dbBluesRec1 as dbBluesLayout1
+Global dbBlues as Database
+Global gAge as Integer
+
+Dim err as Integer
+Dim i as Integer
+
+'create new database if it does not exist
+err=dbOpen(dbBlues, ~Blues~, 0)
+If err=519 Then
+    err=dbCreate(dbBlues, ~Blues~, 0, ~Grid~)
+    If err<>0 Then
+        MsgBox ~Error: could not create Blues ~ + str(err)
+        Exit Sub
+    End If
+
+    err=dbOpen(dbBlues, ~Blues~, 0)
+    If err<>0 Then
+        MsgBox ~Error: could not open Blues ~ + str(err)
+        Exit Sub
+    End If
+
+    For i=1 to 30
+        dbBluesRec.Name=word1.text(rand()*word1.noitems+1) +~ ~+ word2.text(rand()*word2.noitems+1)+~ ~+ word3.text(rand()*word3.noitems+1)
+        dbBluesRec.Age=floor(18+rand()*60)
+        dbBluesRec.Active=floor(rand()*2)
+        err=dbInsert(dbBlues, i, dbBluesRec)
+        If err<>0 Then
+            MsgBox ~Error: writing record ~ + str(err)
+            Exit Sub
+        End If
+    Next
+End If
+End Sub
+
+Sub displayGrid()
+  Dim blueKey as Integer
+  Dim dbBlues1 as Database ~Blues~, dbBluesRec, dbBluesLayout, BlueKey
+  grid1.bindToDatabase (dbBlues1, dbBluesRec.name, dbBluesRec.Age, dbBluesRec.active) Where dbBluesRec.age>=gAge
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000A0"
+"Sub Project_Termination()
+	dbclose(dbBlues)
+End Sub"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Grid"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+fldAge.text=~0~
+grid1.hide
+'rem set up columns
+grid1.colwidth(1)=120
+grid1.ColType 1,~text~,~~
+grid1.colwidth(2)=14
+grid1.ColType 2,~numeric~,~nnn~
+grid1.colWidth(3)=12
+grid1.ColType 3,~checkbox~,~~
+displayGrid
+grid1.hideGridLines
+grid1.show 
+End Sub"
+""
+0,0,0,0
+"grd"
+2
+9,3,#TRUE#
+"obj"
+3
+"grd","Grid1",1013,2,20,108,147,#FALSE#,0,"",0,0,0
+"Sub object1013()
+Dim rowData as Integer
+rowdata=grid1.rowdata(grid1.row)
+
+If rowdata=0 Then
+    Exit Sub
+End If
+
+Select Case grid1.col
+Case 1
+    'do nothing
+Case 2
+  Call readDBRec(rowData)
+  dbBluesRec1.age=dbBluesRec1.age+1
+  Call writeDbRec(rowData)
+  
+Case 3
+  Call readDBRec(rowData)
+  If dbBluesRec1.active=0 Then
+     dbBluesRec1.active=1
+  Else
+     dbBluesRec1.active=0
+  End If
+  Call writeDbRec(rowData)
+  
+End Select
+End Sub
+
+Sub readDbRec(recNo as Integer)
+Dim err as Integer
+err=dbPosition(dbBlues, recNo, 0)
+err=dbGet(dbBlues,dbBluesRec1)
+If err<>0 Then
+    MsgBox ~Read Error ~ + str(err)
+    Exit Sub
+End If
+End Sub
+
+Sub writeDbRec(recNo as Integer)
+Dim err as Integer
+err=dbPosition(dbBlues, recNo, 0)
+err=dbPut(dbBlues,dbBluesRec1)
+If err<>0 Then
+    MsgBox ~Update Error ~ + str(err)
+    Exit Sub
+End If
+displayGrid
+End Sub"
+"lst"
+2
+4
+"Airhead	Ambivalent	Asthmatic	Astral	Big	Blind	Clueless	Cool	Crazy	Digital	Ding Dong	Dyslexic	Fast Track	Fat	Flaming	Guitar	Jumping	Laptop	Left Brain	Lightning	Little	Low Fat	Magic	Micro	Multi Track	Munchkin	Nanosecond	Organic	Outsourced	Overtime	Raving	RightWing	Screaming	Shoeless	Slim	Smokin'	Svengali	Tall	Tofu	U-Turn	Underpaid	Voodoo	Wildman"
+"obj"
+3
+"lst","Word1",1018,132,0,8,8,#FALSE#,0,"",0,0,0
+""
+"lst"
+2
+4
+"Barney	BJ	Brooklyn	CC	Chicago	Clarence	Daddy	Detroit	Earl	Ed	Eddie	Etta	Freddy	Georgia	Ike	Jake	Jersey	Joe	Johnny	JoJo	Kiwi	Krishna	Larry	Lemon	Liz	Lloyd	Lola	Lulu	Mama	Memphis	Mimi	Mississippi	Pearl	Rhonda	Sarah	Shirley	Sigmund	Southside	Sweet Pea	Texas	Willie	Yolanda	Yukon"
+"obj"
+3
+"lst","Word2",1019,140,0,8,8,#FALSE#,0,"",0,0,0
+""
+"lst"
+2
+4
+"Black	Bluestein	Brooks	Brown	Bush	Chang	Clinton	Davis	Dixon	Eagle Feather	Franklin	Gates	Ginsburg	Gonzales	Honeywell	Hopkins	Huffington	Humperdink	Jackson	Jefferson	Johnson	Jones	King	Kundalini	Latte	Lichtenstein	Lipschitz	Mayflower	McCain	Noodleman	O'Brien	O'Reilly	Patel	Rabinowitz	Scalucci	Schwartz	Smith	Thornton	Wilson	Woo	Yang"
+"obj"
+3
+"lst","Word3",1020,148,0,8,8,#FALSE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1021",1021,3,143,12,46,#TRUE#,0,"Older than:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAge",1022,52,144,12,28,#TRUE#,0,"",0,0,0
+"Sub object1022()
+gAge=val(fldAge.text)
+If gAge<0 Then gAge=0
+fldAge.text=str(gAge)
+displayGrid
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1024",1024,88,142,12,36,#TRUE#,0,"Refresh",0,0,0
+"Sub object1024()
+  displayGrid
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1025",1025,128,144,12,24,#TRUE#,0,"OK",0,0,0
+"Sub object1025()
+	grid1.TopRow=grid1.toprow+10
+	MsgBox str(grid1.TopRow)
+End Sub"
+"end"

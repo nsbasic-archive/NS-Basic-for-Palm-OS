@@ -1,0 +1,35 @@
+[General]
+
+ExtensionName=DocLib
+PrcName=DocLib.prc
+Version=1.2
+Manufacturer=Douglas Handy
+InfVers=2.0
+
+
+=HelpStart=
+""
+"DocLib Shared Library"
+""
+"This library provides features for reading"
+"DOC format databases with NSBasic/Palm."
+""
+"Written by Doug Handy, Jan 2004"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as double"
+CompileInfo= 2, func, 0, "CompileInfo() as string"
+Register= 3, sub, 2, "Register(in part1 as string, in part2 as string)"
+DocVersion= 4, func, 1, "DocVersion(in docName as string) as Integer"
+HeaderSpare= 5, func, 1, "HeaderSpare(in docName as string) as Integer"
+TotalLength= 6, func, 1, "TotalLength(in docName as string) as Integer"
+TextRecordCount= 7, func, 1, "TextRecordCount(in docName as string) as Integer"
+MaxTextRecordSize= 8, func, 1, "MaxTextRecordSize(in docName as string) as Integer"
+CurrentPosition= 9, func, 1, "CurrentPosition(in docName as string) as Integer"
+GetRecordText= 10, func, 2, "GetRecordText(in docName as string, in RRN as Integer) as String"
+Decode= 11, func, 2, "Decode(in input as String, in Options as Integer) as String"
+Encode= 12, func, 2, "Encode(in input as String, in method as Integer) as String"
+ReadDoc= 13, sub, 5, "ReadDoc(in docName as String, in BookMark as string, in Position as Integer, in Font as Integer, in Options as Integer)"

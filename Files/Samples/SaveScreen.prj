@@ -1,0 +1,231 @@
+"mdl"
+8
+"SaveScreen","appl","Prf1",1024,505,0
+"sub main()
+'I have chosen to use a keyed pdb file. You might want to get in this habit
+'so you can save data from multiple forms/screens, using the form/screen number
+'as the key, and all respective screen objects saved in that record
+'-Marlon Koenigsberg, 1/13/2001, using NS-Basic v1.08
+
+global pdb as database          'database variable
+global res as integer           'holds results for error trapping
+global gender as string         'variable to save
+global age as integer           'variable to save
+global occupation as string     'variable to save
+global hobby1 as integer        'variable to save
+global hobby2 as integer        'variable to save
+global hobby3 as integer        'variable to save
+global hobby4 as integer        'variable to save
+end sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000088"
+"sub project_termination_9915()
+dim x as string
+
+'save data to pdb file
+res=dbCreate(pdb,~SaveScrMK~,0,~Prf1~)          'Attempt to create database
+SELECT CASE res                                 'Add or update data, as needed
+    CASE 0 	                                    'pdb successfully created, so add record
+                                                'Write preferences to file MarlonPref.pdb
+	res=dbOpen(pdb,~SaveScrMK~,0)               'open database
+	res=dbinsert(pdb,1,Gender,Age,Occupation,Hobby1,Hobby2,Hobby3,Hobby4)   'save data as record #1 
+    
+    CASE 537 	                                'pdb already exists, so change record
+	res=dbOpen(pdb,~SaveScrMK~,0)               'open database
+	                                            'Update preferences in file MarlonPref.pdb
+	Res=DbRead(pdb,1,x,x,x)                     'find record #1 (discard data in x)
+	Res=DbUpdate(pdb, 1,Gender,Age,Occupation,Hobby1,Hobby2,Hobby3,Hobby4)  'save data
+
+    CASE ELSE	                                'real error!
+        msgbox ~Error #~ + str(res) + ~ Creating Database~
+        exit sub
+END SELECT
+
+res=dbClose(pdb)                                'close datafile
+
+end sub"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"                          Save Screen                        "
+"FrmSavePrefs"
+"sub Form1004_before()
+
+end sub"
+0
+"Sub Form1004_after()
+
+ButInfo.Text = &h04                             'use info icon for btninfo                         '
+
+'Fill Popup field values
+FldAge.Clear
+FldAge.Add ~Too Young~, NoDisplay
+FldAge.Add ~Too Old~, NoDisplay
+FldAge.Add ~Other~
+
+'read saved record from pdb file & set fields to saved status 
+Dim x as String
+res=dbOpen(pdb,~SaveScrMK~,0)                  'Attempt to open database
+Select Case res                                 'read data if available
+    Case 0 	                                    'pdb exists, so read record
+        res=dbOpen(pdb,~SaveScrMK~,0)          'open database
+    	Res=DbRead(pdb,1,gender,age,occupation,Hobby1,Hobby2,Hobby3,Hobby4) 'find record #1
+    	Select Case gender                      'set field to saved gender status
+    	    Case ~Female~
+    	        ChkFemale.status = nsbChecked
+    	    Case ~Male~
+    	        ChkMale.status = nsbChecked
+    	    Case ~Other~                   
+    	        ChkNoSex.status = nsbChecked
+    	End Select
+        FldAge.Selected = Age                   'set field to saved Age status
+        FldOccupation.Text = Occupation         'set field to saved Occupation status\
+
+'****************************************************************
+'SHOULD BE ABLE TO SET THIS DIRECTLY - BUG???
+'ChkHobby1.status = Hobby1
+'ChkHobby2.status = Hobby2
+'ChkHobby3.status = Hobby3
+'ChkHobby4.status = Hobby4
+'****************************************************************
+        If Hobby1 = 1 Then ChkHobby1.status = nsbChecked 'set field to saved Hobby1 status
+        If Hobby2 = 1 Then ChkHobby2.status = nsbChecked 'set field to saved Hobby2 status
+        If Hobby3 = 1 Then ChkHobby3.status = nsbChecked 'set field to saved Hobby3 status
+        If Hobby4 = 1 Then ChkHobby4.status = nsbChecked 'set field to saved Hobby4 status
+        res=dbclose(pdb)       
+    Case 519 	                                'pdb doesn't exists, so continue without setting status
+
+    Case Else	                                'real error!
+        MsgBox ~Error #~ + str(res) + ~ Creating Database~
+        Exit Sub
+
+End Select
+
+DrawRectangle 50,71,100,12,0                    'just for looks!
+
+End Sub"
+"sub Form1004_events()
+
+end sub"
+0,0,0,0
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkFemale",1006,52,32,12,68,#TRUE#,0,"Female",0,0,0
+"sub object1006()
+If ChkFemale.Status = nsbChecked then Gender = ~Female~
+end sub"
+"pop"
+2
+#TRUE#,0,3
+""
+"obj"
+3
+"pop","FldAge",1007,52,56,12,92,#TRUE#,0,"",0,0,0
+"sub object1007()
+ Age = FldAge.selected
+end sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1009",1009,32,56,12,20,#TRUE#,0,"Age:",0,0,0
+""
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkMale",1010,52,20,12,68,#TRUE#,0,"Male",0,0,0
+"sub object1010()
+If ChkMale.Status = nsbChecked then Gender = ~Male~
+end sub"
+"chk"
+1
+#FALSE#,1,#TRUE#
+"obj"
+3
+"chk","ChkNoSex",1011,52,44,12,68,#TRUE#,0,"Other",0,0,0
+"sub object1011()
+If ChkNoSex.Status = nsbChecked then Gender = ~Other~
+end sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1012",1012,16,20,12,34,#TRUE#,0,"Gender:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1013",1013,0,72,12,51,#TRUE#,0,"Occupation:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,30,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","FldOccupation",1014,52,72,12,92,#TRUE#,0,"",0,0,0
+"sub object1014()
+Occupation = FldOccupation.Text
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","ButInfo",1017,144,0,12,12,#TRUE#,4,"?Button",0,0,0
+"sub object1017()
+msgbox ~Run repeatedly to see it save your choices on exit.~ + chr(10) + ~-Marlon Koenigsberg~
+end sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","ChkHobby1",1018,52,92,12,108,#TRUE#,0,"Playing an instrument",0,0,0
+"sub object1018()
+Hobby1 = ChkHobby1.status
+end sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","ChkHobby2",1019,52,104,12,108,#TRUE#,0,"Working out",0,0,0
+"sub object1019()
+Hobby2 = ChkHobby2.status
+end sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","ChkHobby3",1020,52,116,12,108,#TRUE#,0,"Cooking",0,0,0
+"sub object1020()
+Hobby3 = ChkHobby3.status
+end sub"
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+3
+"chk","ChkHobby4",1021,52,128,12,108,#TRUE#,0,"NSB all night",0,0,0
+"sub object1021()
+Hobby4 = ChkHobby4.status
+end sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1022",1022,8,92,12,38,#TRUE#,0,"Hobbies:",0,0,0
+""
+"end"

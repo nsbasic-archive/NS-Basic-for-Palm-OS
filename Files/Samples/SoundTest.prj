@@ -1,0 +1,38 @@
+"mdl"
+8
+"SoundTest","appl","Tsnd",1006,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000082"
+""
+"resfile"
+1
+"Resource1004"
+1004
+"wave"
+"..\..\Bitmaps\Supercalifragilistic.wav"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form1"
+"Form1003"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1005",1005,39,48,12,36,#TRUE#,0,"OK",0,0,0
+"Sub object1005()
+playsound 1004,32767,1
+End Sub"
+"end"

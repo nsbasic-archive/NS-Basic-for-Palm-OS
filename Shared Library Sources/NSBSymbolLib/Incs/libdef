@@ -1,0 +1,34 @@
+# libdef 
+# Eric Pepke
+# 26 February 2001
+# This contains the definitions of the library to be created
+# Put in this file the function definition header for the implementation
+# Then run snip.pl
+#
+# Oct 2 2001 Modified to include barcode length routines
+
+[General]
+ExtensionName=NSB-Symbol-Scan-Manager
+PrcName=NSB_SSMLib.prc
+Version=2.0 Beta
+Manufacturer=NSBasic.com
+
+[GlobalMethods]
+
+Err NSB_SSMLibOpen(UInt16 refNum)   // Open the library
+Err NSB_SSMLibClose(UInt16 refNum)  // Close the library
+Err NSB_SSMLibSleep(UInt16 refNum)  // Sleep (actually does nothing)
+Err NSB_SSMLibWake(UInt16 refNum)   // Wake (actually does nothing)
+func Err NSB_SSMLibIsPalmSymbolUnit(UInt16 refNum, UInt32 *isit) // Return 1 if this is a symbol unit, 0 otherwise
+Err NSB_SSMLibCmdScanEnable(UInt16 refNum)  // Enable the scanner
+Err NSB_SSMLibCmdScanDisable(UInt16 refNum) // Disable the scanner
+Err NSB_SSMLibCmdScanSetTriggeringModes(UInt16 refNum, UInt32 modes) // Set the triggering modes.  For more information, consult Symbol documentation.
+Err NSB_SSMLibCmdScanSetBarcodeEnabled(UInt16 refNum, UInt32 barCode, UInt32 whether) // Enable a specific bar code
+Err NSB_SSMLibCmdSendParams(UInt16 refNum, UInt32 beepo) // Send the parameters set so far.  Call after SetTriggeringModes or and SetBarcodeEnabled
+Err NSB_SSMLibCmdStartDecode(UInt16 refNum) // Start a decode, same as pushing the yellow button
+Err NSB_SSMLibCmdStopDecode(UInt16 refNum) // Stop a decode.  Normally not used.
+func Err NSB_SSMLibGetDecodedData(UInt16 refNum, UInt8 *buffer) // Return the decoded data into a string buffer.  Normally not used
+func Err NSB_SSMLibGetLastScanData(UInt16 refNum, UInt8 *out)  // Get the last scanned bar code into a string
+func Err NSB_SSMLibGetBarType(UInt16 refNum, UInt32 *barType)  // Return the barcode type as an integer
+Err NSB_SSMLibCmdScanLedOn(UInt16 refNum)  // Turn the LED on
+Err NSB_SSMLibCmdScanLedOff(UInt16 refNum)  // Turn the LED off

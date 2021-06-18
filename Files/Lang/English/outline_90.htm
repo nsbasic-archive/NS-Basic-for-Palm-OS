@@ -1,0 +1,101 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>For </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>For                                                                                                          Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>FOR <i>varName</i>=<i>startValue</i> TO <i>endValue</i> [STEP <i>stepValue</i>]</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Defines the beginning of a repeated set of statements. The
+end of the repeated set of statements is defined by the NEXT statement. <i>varName</i> is initially set to the <i>startValue</i> and incremented by the
+optional <i>stepValue</i> on each repetition
+of the sequence. If <i>stepValue</i> is not
+specified, then a <i>stepValue</i> of 1 is
+used. The execution of the set of repeated statements ends when the value of <i>varName</i> is greater than <i>endValue</i>. At that point, the next
+statement executed is the statement following the NEXT statement. In the set of
+repeated statements an EXIT FOR statement immediately cancels the execution of
+the set of repeated statements and transfers control to the statement following
+the NEXT statement. <i>StepVal</i> may be a
+positive or negative value. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>For i=1 to 5</p>
+
+<p class=Code>  .........</p>
+
+<p class=Code>Next</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>For cnt=cntMax to 1 step -1</p>
+
+<p class=Code>  .........</p>
+
+<p class=Code>  if total &gt; 5000 then</p>
+
+<p class=Code>    Exit For</p>
+
+<p class=Code>  End if</p>
+
+<p class=Code>  .........</p>
+
+<p class=Code>next</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

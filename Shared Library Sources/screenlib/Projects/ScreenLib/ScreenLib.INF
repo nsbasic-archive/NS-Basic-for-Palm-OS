@@ -1,0 +1,66 @@
+[General]
+
+ExtensionName=ScreenLib
+PrcName=ScreenLib.prc
+Version=1.1
+Manufacturer=GlowkaWare
+
+=HelpStart=
+""
+"Screen Mode Support Shared Library"
+""
+"This library provides Screen Modes support for use with NSBasic."
+""
+"Written by Ron Glowka, August 2001"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version= 1, func, 0, "version = Version()"
+CompileInfo= 2, func, 1, "compileTime = CompileInfo(compileDate)"
+GetSupportedDepths= 3, func, 0, "depths = GetSupportedDepths()"
+DepthSupported= 4, func, 1, "boolean = DepthSupported(depth)"
+ColorSupported= 5, func, 0, "boolean = ColorSupported()"
+SetDepth= 6, sub, 1, "SetDepth depth"
+SetColor= 7, sub, 1, "SetColor boolean"
+SetWidth= 8, sub, 1, "SetWidth width"
+SetHeight= 9, sub, 1, "SetHeight height"
+SaveScreenMode= 10, sub, 0, "SaveScreenMode()"
+RestoreScreenMode= 11, sub, 0, "RestoreScreenMode()"
+CurrentDepth= 12, func, 0, "depth = CurrentDepth()"
+CurrentColor= 13, func, 0, "boolean = CurrentColor()"
+CurrentWidth= 14, func, 0, "width = CurrentWidth()"
+CurrentHeight= 15, func, 0, "height = CurrentHeight()"
+SetToDefaults= 16, sub, 0, "SetToDefaults()"
+DefaultDepth= 17, func, 0, "depth = DefaultDepth()"
+DefaultColor= 18, func, 0, "boolean = DefaultColor()"
+DefaultWidth= 19, func, 0, "width = DefaultWidth()"
+DefaultHeight= 20, func, 0, "height = DefaultHeight()"
+GetTableEntryIndex= 21, func, 1, "index = GetTableEntryIndex(which)"
+GetTableEntryRGB= 22, func, 1, "index = GetTableEntryRGB(which)"
+GetRGBIndex= 23, func, 0, "index = GetRGBIndex()"
+GetRGBRed= 24, func, 0, "red = GetRGBRed()"
+GetRGBGreen= 25, func, 0, "green = GetRGBGreen()"
+GetRGBBlue= 26, func, 0, "blue = GetRGBBlue()"
+SetTableEntryIndex= 27, sub, 2, "SetTableEntryIndex which, index"
+SetTableEntryRGB= 28, sub, 4, "SetTableEntryRGB which, red, green, blue"
+BrightnessAdjust= 29, sub, 0, "BrightnessAdjust()"
+ContrastAdjust= 30, sub, 0, "ContrastAdjust()"
+PickColorIndex= 31, func, 2, "changed = PickColorIndex(index, title)"
+PickColorRGB= 32, func, 4, "changed = PickColorRGB(red, green, blue, title)"
+IndexToRGB= 33, sub, 1, "IndexToRGB index"
+RGBToIndex= 34, func, 3, "index = RGBToIndex(red, green, blue)"
+SetForeColor= 35, func, 1, "oldIndex = SetForeColor(newIndex)"
+SetBackColor= 36, func, 1, "oldIndex = SetBackColor(newIndex)"
+SetTextColor= 37, func, 1, "oldIndex = SetTextColor(newIndex)"
+DrawLine= 38, sub, 4, "DrawLine x1, y1, x2, y2"
+DrawGrayLine= 39, sub, 4, "DrawGrayLine x1, y1, x2, y2"
+EraseLine= 40, sub, 4, "EraseLine x1, y1, x2, y2"
+InvertLine= 41, sub, 4, "InvertLine x1, y1, x2, y2"
+DrawPixel= 42, sub, 2, "DrawPixel x, y"
+ErasePixel= 43, sub, 2, "ErasePixel x, y"
+InvertPixel= 44, sub, 2, "InvertPixel x, y"
+GetPixel= 45, func, 2, "index = GetPixel(x, y)"
+ScreenLock= 46, func, 1, "success = ScreenLock(mode)"
+ScreenUnlock= 47, sub, 0, "ScreenUnlock()"

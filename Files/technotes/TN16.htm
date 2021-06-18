@@ -1,0 +1,233 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<title>Tech Note 16: Communications</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF"
+vlink="#800080">
+
+<table border="0" cellspacing="0" width="550">
+  <TBODY>    
+  <tr>
+        
+	<td valign="top" width="19%"><img
+        src="http://nsbasic.com/palm/info/technotes/images/BigIcon.GIF"
+        width="86" height="103"></td>
+        
+	<td valign="top" width="81%">
+	  <h2>Tech Note 16 Communications</h2>
+	  <h3>January 13, 2009</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+        </td>
+    </tr>
+</TBODY></table>
+<hr>
+
+This Tech Note gives more information on communications than is contained the Handbook. It concerns itself with Serial, IR, TCP/IP and Bluetooth communications. 
+
+<p>If you have notes or tips to add, please send them to <a href="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</a>.
+
+<h4>Contents</h4>
+<pre>
+    1. <a href="#serial">Serial Communications - RS-232</a>
+    2. <a href="#ir">IR Communications</a>
+       2.A <a href="#ira">SIR</a>
+       2.B <a href="#irb">IRCOMM</a>
+       2.C <a href="#irc">Consumer IR</a>
+    3. <a href="#tcpip">TCP/IP</a>
+    4. <a href="#bluetooth">Bluetooth</a>
+</pre>
+
+
+<hr><a name="serial"><h1>1. Serial Communications - RS-232</h1>
+
+<p>Serial communication over an RS-232 connection is often the easiest way to talk to other devices. Until recently, it was the standard used by almost all devices. This is reflected in devices for Palm OS: older devices have better support for serial communications than newer ones. While the Palm III had an actual DB9 port running RS 232 on its cradle, the very newest Palms have no serial port at all and sometimes broken or non existent RS 232 support.
+
+<p>The best way to test serial communications is hook your device up to the serial port on your PC. Run HyperTerminal on the PC and set it to 9600 baud, local connection. On your device, run the SerTester sample. You'll be able to send and receive data in both directions.
+
+<p>Have a look at the SerialOpen function in your Handbook or in the Help to get the proper port numbers for opening serial communications. In most cases, you will use 0 as the port number.
+
+<p>For information on pinout connections for PalmOne devices, <a href="http://www.palmos.com/dev/tech/hardware/palmhardware/">see this page</a>.
+
+<p>If you want more detailed "how to" information on serial communications, see <a href="http://www.nsbasic.com/palm/info/NSBasicProgrammingForPalm.html">NS Basic Programming for Palm OS</a>, by Michael Verive.
+
+
+<h4>Notes and Warnings</h4>
+
+<b>a. Using Serial Comms on a device with USB port</b>
+
+To do serial communications with a device that has a USB port, you'll need the proper cable.  If you have the right cable, you should be able to open and use the serial port normally.
+
+<p>Here are some sources for cables:
+<UL>
+	<LI><A HREF="http://www.pcables.com">PN Technologies</A>
+	<LI><A HREF="http://www.cablestogo.com/index.asp">Cables To Go</A>
+	<LI><A HREF="http://eforcity.com/">eforcity</A>
+	<LI><A HREF="http://www.boxwave.com/products/minisync/minisync-retractable-cable-palm-os_cat.htm">Boxwave MiniSync - charges too!</A>
+	<LI><A HREF="http://www.serialio.com/products/adaptors/PalmSerial_RS232.htm">Serialio.com</A>
+</UL>
+
+<b>b. Baud Rate and Flow Control Problems on Tungsten T3 and T</b>
+
+<p>Due to incorrect settings in ROM, the Tungsten T and T3 have problems with baud rate and flow control. Larson Computing has a utility called <a href="http://www.handango.com/PlatformProductDetail.jsp?productType=2&optionId=1_1_2&jid=X8X5D9EC89917XBXB336XF2BD554AB1B&platformId=1&siteId=1&productId=64193&sectionId=0&catalog=1&txtSearch=serialfix">SerialFix</a> to correct this.
+
+<p>SerialFix is an OS/5 system extension that corrects a variety of problems with serial support in Tungsten/T and Tungsten/T3 devices.
+
+<p>Version 2 allows the Tungsten/T3 to communicate with devices that do not support hardware flow control, such as GPS units.
+
+<p>Non-standard baud rates are provided on the Tungsten/T. Devices such as MIDI controllers or automotive computer interfaces that require special baud rates can operate normally with SerialFix installed.
+
+<p>If a program fails on the Tungsten/T or Tungsten/T3, but works on other Palm devices, SerialFix may allow that program to operate normally on these devices.
+
+<p>SerialFix enables other programs to operate. It is not something that you need pay attention to once it is installed. The Active status checkbox specifies whether or not it is active. The AutoActivate checkbox specifies whether or not it is automatically made Active after a Soft Reset. These checkboxes are normally both enabled.
+
+<p>Version 2.2 adds support for control of the RTS signal.
+
+<p>Version 2.3 adds support for overriding the connection type to Serial or USB, bypassing the normal detection logic. This can be used with "Y" cables to select the serial connection. It can also be used to improve reliability with connections that are intermittent or incorrectly identified.
+
+<p>Please contact SerialFix&copy; Comcast.net to report problems with an application that works on other Palm devices.
+
+<b><p>c. Serial Comms on Tungsten T and T2</b>
+
+<p>To use serial comms on a Tungsten T and T2 use port 32771 in the SerialOpen 
+statement.  
+
+<b><p>d. Serial Comms on Tungsten T5 and Treo 650</b>
+
+<p>The Universal Connector on older PalmOne devices only supports serial and 
+USB slave data.  The newer Multiconnector on the T5 and Treo 650 has 
+limited serial (no RTS/CTS), USB slave, and audio-out.
+
+<b><p>e. More on Serial Comms on Tungsten T3 (from Andreas Schloegl)</b>
+
+<p>I use port 32771 as follows:
+
+        <p><code>res=serialopen(32771,9600) </code>
+<p>I'm not using SerialFix.
+  
+<p>I'm sending data to a printer and reading data from a device. With 
+this only open statment at the very beginning of my code I can do 
+communication over the serial port well. But be aware of these facts 
+regarding a T3 device: 
+ 
+<ol>
+	<li>Receiving data needs to be done with a polling loop. </li>
+	<li>SerialReceiveWithEvent does not work with this device.
+	<li>The cable I use has PIN 7 and 8 connected. (PIN 11 data 
+	    out, PIN 10 data in, PIN 1 GND). Handshake I do not need in my 
+	    application. </li>
+</ol>
+
+<b><p>f. SerialReceiveWithEvents</b>
+
+<p>This useful feature allows an NS Basic/Palm program to respond to an incoming message with an event, rather than having to poll the serial port continuously to see if data comes through. However, it is not available on all Palm OS devices.
+
+<p>Devices before Palm OS 3.5.0 did not have the "New Serial Manager" modules that are needed for this feature.
+
+<p>On Palm OS 5 devices, it may not work on devices that are not running Palm OS 5.4 or later.
+
+<p>On OS 5, SerialReceiveWithEvents uses the Palm OS SrmSetWakeupHandler call. According to PalmSource, the Palm Application Compatibility Environment (PACE), which is how most apps run on OS 5,  is not interrupt safe so 68K applications running through PACE may experience problems if they attempt to run during an interrupt. 
+
+<p>Serial Wakeup Handlers set with SrmSetWakeupHandler may work
+inconsistently under different versions of OS 5 and will not work at all
+via the Palm OS 5 Simulator. In general, developers should avoid using
+serial wakeup handlers in OS 5. 
+
+<p>The workaround is to have your program check from time to time to see if data has been received, rather than wait for an event.
+
+
+<hr><a name="ir"<h1>2. IR Communications</h1>
+
+There are several different protocols that are used for IR communications.  They are:
+
+<ul>
+	<li>Simple IR (SIR) is the easiest one. There is no handshaking between the two participants: the character information is simply spewed out of the IR port. It is the responsibility of the programmer to define any error checking.</li>
+
+	<li>IrDA has built in handshaking and error correction. There are many types of protocols within the IrDA specification. NS Basic/Palm supports the IRComm protocol, which is widely used. See the <a href="http://www.irda.org/">IrDA website</a> for more information. </li>
+
+	<li>Consumer IR is used to control TV, VCR and other home electronics devices. It uses a different carrier signal, so it cannot normally be sent or received by Palm OS devices.</li>
+</ul>
+
+More on each follows.
+
+<p><a name="ira"<b>A. Simple IR (SIR)</b>
+
+<p>To open an IR port for serial communications,
+<pre>
+   res=SerialOpen(nsbSIR,9600)  'was 32769 before NS Basic/Palm 7.0
+   res=SerialSet("IR",1) 'to receive data
+   res=SerialSet("IR",2) 'to send data
+</pre>
+
+<p>Remember to do the the SerialSet("IR", mode) before sending and receiving. Prior to OS 5, it was possible to both send and receive in mode 1. The new release tightens this up: you need to be in the proper mode to do SerialSend or SerialRecieve.
+
+<P>Have a look at the IRTest sample that comes with NS Basic to see how this works.
+
+<P>Here is another way of doing it that has been tested on the TC, TE, Zire 71, Zire 72 and Treo 300:
+
+<ol>
+	<li>In the IRTest project that comes with NSBasic comment out all the
+	    SerialSet commands<br>'iError = Serialset("IR", 1)
+	<li>Change the SerialOpen from SerialOpen (32769, 9600) to<br>
+	    SerialOpen(nsbIrCOMM, 9600)   'was 1769104237 before NS Basic/Palm 7.0
+</ol>
+
+
+<p><b>Notes and Warnings</b>
+
+<ol>
+	<li>SIR does not work on devices using OMAP processors (such as the Zire 21, 71 and Treo 600). In these, the IR Chip does the framing for IRComm automatically, so SIR transmissions are impossible.</li>
+	<li>On some Palm OS 5 devices, such as the Tungsten E2, there appears to be a character in the receive buffer already, before any data is sent. To clear this out, execute the following statement to clear the receive buffer on startup:
+<pre>err = serialSend("",0)</pre?
+</ol>
+
+<p><a name="irb"<b>B. IRComm (IRDA)</b>
+
+<p>To open an IR port for IRComm communications,
+<pre>
+   res=SerialOpen(nsbIrCOMM, 9600)   'was 1769104237 before NS Basic/Palm 7.0
+</pre>
+
+
+<p>IRComm is easy to use. It's not as fast as SIR, but much more reliable and runs on all devices. There is no need to do SerialSet("IR", mode) before sending and receiving. The port number (nsbIrCOMM) is simply the 4 byte string 'ircm' expressed as an integer. Baud rate (9600) does not seem to matter: the protocol works out the best rate. 
+
+<p>For sample code, simply take the SerTester sample and change the port number. 
+
+<p><a name="irc"<b>C. Consumer Electronics</b>
+
+<p>Consumer electronics RF sends pulses at a different frequency than data communications. As a result, many IR chips cannot transmit or recieve consumer IR data.
+
+<p>A company named <a href="http://www.pacificneotek.com/">Pacific Neo-Tek</a> has actually hacked a way to do consumer IR on some Palm OS devices. They do not say that their software works on Palm OS 5 devices.
+
+<hr><a name="tcpip"<h1>3. TCP/IP</h1>
+
+<p>TCP/IP is the communications protocol used by the internet. All Palm devices has some capability to use TCP/IP. It's a very flexible protocol, but is more trouble to configure.
+
+<p>First, a TCP/IP connection must be established between the device and the system you want to communicate with. From a hardware perspective, this requires a WiFi card (or perhaps a device with built in WiFi) or a USB or serial cable. Next, you need to configure the Network settings in Prefs. The exact settings will depend on the physical connection, then tap Connect.
+
+<p>If you want to use TCP/IP over a USB cable, note that Palm's USB drivers on the desktop do not come with support for this. You need to get an additional piece of software for the desktop called <a href="http://www.softick.com/ppp/" target="_top">Softick PPP</a> ($24.95) which adds this capability.
+
+<p>NS Basic/Palm communicates with TCP/IP using the TcpIpLib. This is described in <a href="TN18.htm" target="_top">Tech Note 18</a>. Once the connection is established, most standard internet protocols can be used. NS Basic includes the sample Tcp2VB which exchanges messages with a Visual Basic program on the desktop.
+
+
+<hr><a name="bluetooth"<h1>4. Bluetooth</h1>
+
+<p>To open Bluetooth virtual port for serial communications,
+<pre>
+   res=SerialOpen(nsbRFCOMM,9600)  'was 1919312749 before NS Basic/Palm 7.0
+</pre>
+
+<p>Bluetooth is also easy to use. It's not as fast as SIR, but much more reliable and runs on all devices. The port number (nsbIrCOMM) is simply the 4 byte string 'rfcm' expressed as an integer. Baud rate (9600) does not seem to matter. Device discovery is done when the port is opened by prompts to the operator.
+
+<p>For sample code, simply take the SerTester sample and change the port number.  You can test by using HyperTerminal on the desktop and setting up a serial connection. The com port for Hyperterminal will be in the range of 2-6, depending on your system. Baud rate and other connection settings can be ignored.
+
+
+
+</html>
+
+
+

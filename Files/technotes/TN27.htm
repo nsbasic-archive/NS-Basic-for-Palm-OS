@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 27: Using NS Basic/Palm with Microsoft .NET</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 27: Using NS Basic/Palm with Microsoft .NET</h2>
+	  <h3>September 18, 2003
+</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.
+</h5>
+	</TD>
+</TR>
+</TABLE>
+<hr>
+
+This is a three part series of articles written by Robert Chartier for <A HREF="http://www.15seconds.com">15Seconds.com</A>. It's a great step by step tutorial on how to create an NS Basic/Palm app, a conduit to share data on the desktop with the app and how to write an installer so you can ship a complete package. It's all done in the context of Visual Studio .Net.
+
+
+<h3>Creating the Palm Application</h3>
+
+<p>The first part of this three part series walks through the process of creating the actual Palm application to manage a Blog.  The focus is on the actual functionality of the application, its UI, and navigation.  Learn how to create menu systems, pop-ups, buttons and other UI elements, and also some general syntax for creating and editing databases. 
+
+<p><A HREF="http://www.15seconds.com/issue/030624.htm">
+http://www.15seconds.com/issue/030624.htm</A>
+
+<p>The code for this part can also be downloaded. 
+
+<h3>The Synchronization Process</h3>
+
+<p>The second part shows how to establish a connection with the Palm synchronization process in order to upload the Palm Blog application data to various upload destinations, using the WebLogAPI.
+
+<p>The synchronization process is fairly simple to understand.  The Palm itself is connected to a PC or Laptop via a cable.  On the computer, HotSync is running.  A "Conduit", which is essentially  a plug-in for Hotsync, allows the control of the synchronization process for the application. 
+
+<p>During the synchronization process the HotSync Manager determines which conduit it needs to call in order to handle the incoming data.
+
+<p>The conduit is created using the Conduit Developer Kit (CDK), available on the PalmSource website (<A HREF="http://www.palmos.com/dev/tech/conduits/">http://www.palmos.com/dev/tech/conduits/</A> ).  Coding is done in C#, the great new language that is part of .Net.
+
+<p><A HREF="http://www.15seconds.com/issue/030722.htm">
+http://www.15seconds.com/issue/030722.htm</A> 
+
+<p>Once again, the code can be downloaded.
+
+<P>Also included is a small library to help move the Palm database entries into relevant managed classes during the synchronization process, check it out at:
+
+<p><A HREF="http://weblogs.asp.net/rchartier/posts/9017.aspx">
+http://weblogs.asp.net/rchartier/posts/9017.aspx</A>
+
+<h3>Creating a Windows .Net Installer</h3>
+
+<p>Developing an application that is intended to be shipped and distributed to an end user requireds an installer that takes care of all the details required to have that software work perfectly.  Creating such an installer for a Palm conduit is no easy task. This article gives a good run through of  how to do it.  It starts by listing the requirements for the application itself, then covers exactly what needs to be done to install the conduit correctly.  Once that is done, the installer application is added to the solution within VS .NET and tested.
+
+<p><A HREF="http://www.15seconds.com/issue/030903.htm">
+http://www.15seconds.com/issue/030903.htm</A>
+
+Code can be downloaded for this part as well.
+
+<h3>About the Author</h3>
+
+Robert Chartier has developed IT solutions for more than nine years with a diverse background in both software and hardware development. He is internationally recognized as an innovative thinker and leading IT architect with frequent speaking engagements showcasing his expertise. He's been an integral part of many open forums on cutting-edge technology, including the .NET Framework and Web Services. His current position as vice president of technology for Santra Technology ( <A HREF="http://www.santra.com/">http://www.santra.com</A> ) has allowed him to focus on innovation within the Web Services market space. 
+
+<p>He uses expertise with many Microsoft technologies, including .NET, and a strong background in Oracle, BEA Systems, Inc.'s BEA WebLogic, IBM, Java 2 Platform Enterprise Edition (J2EE), and similar technologies to support his award-winning writing. He frequently publishes to many of the leading developer and industry support Web sites and publications. He has a bachelor's degree in Computer Information Systems. 
+
+<p>Robert Chartier can be reached at <A HREF="mailto:rob&copy; santra.com">rob&copy; santra.com</A>.
+
+<p>&copy; 2009 NS BASIC Corporation. All rights reserved.

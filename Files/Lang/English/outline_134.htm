@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>NextForm </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>NextForm                                                                                              Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>NEXTFORM <i>formName</i> as string[,
+CLEAR]</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Hide the current form and transfer to another where <i>formName</i> is a string variable containing
+the name of the form to transfer to. If CLEAR is added to the end of the
+statement, the form is restored to its design time state, eliminating all
+changes made to the form including field values, checkbox and choicebox
+settings, emptying lists and popups, and eliminating any changes to object
+labels or text. If CLEAR is not specified, the form will retain its values if
+you return to it using NEXTFORM. The NEXTFORM statement should be the last
+statement you execute on the current form. Use Global variables to save
+variables that are shared by more than one form.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim form as string</p>
+
+<p class=Code>form=&quot;ShowMortgageRates&quot;</p>
+
+<p class=Code>NextForm form</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

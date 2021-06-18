@@ -1,0 +1,293 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Dim </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Dim                                                                                                         Statement
+</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DIM <i>varname</i> AS <i>type</i></p>
+
+<p class=ManualBody>DIM <i>varArray</i>(<i>nnn</i>) AS <i>type</i></p>
+
+<p class=ManualBody>DIM <i>varname</i> AS <i>type</i>*<i>length
+</i>[,<i>decimalPlaces</i>]</p>
+
+<p class=ManualBody>DIM <i>varArray</i>(<i>nnn</i>) AS <i>type</i>*<i>length</i>[,<i>decimalPlaces</i>]</p>
+
+<p class=ManualBody>DIM varName AS DATABASE dbName, dbRec, dbLayout [, key]</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Defines a variable to be used within a function or
+subroutine. If the variable is an array , then <i>nnn</i> defines the number of elements to be reserved.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<table border=1 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ border:none;'>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody><i>Type</i></p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border:solid windowtext .5pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>&nbsp;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Byte</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>a single character of data. On database input/output, a
+  single character is written.(without the Terminating null character).</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Database</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>used to define a database reference that will be used in
+  database commands. If the database is to be bound to a grid control,
+  additional arguments are needed.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Date</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>used to store date values. This is not the Palm internal
+  format. Database i/o results in a 64-bit floating point number. Dates are
+  stored internally as (year-1900)*10000+month*100+ day</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Double</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Same in all respects to Float</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Float</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>used to store numbers that may have both integer and
+  fractional digits. On input/output to databases, a 64-bit (8-byte) double
+  precision floating point  is used</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Integer</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>used to store whole numbers (no decimal positions to the
+  right of the decimal point). On input/output to databases, a 32-bit(4-byte)
+  integer is used.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Short</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Similar to Integer except that database i/o results in a
+  16-bit(2-byte).</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Single</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Same as Float except database i/o results in a 32-bit(
+  4-byte)single-precision floating point.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>String</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Maximum size is 32767 characters.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Time</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>used to store time values. This is not the Palm internal
+  format. Databae i/o results in a 64-bit floating point number. Times are
+  stored internally as hour*10000+minute*100+seconds</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>UserType</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>see the TYPE and END TYPE statements</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=103 valign=top style='width:77.4pt;border:solid windowtext .5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>Variant</p>
+  </td>
+  <td width=439 valign=top style='width:329.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext .5pt;border-right:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=ManualBody>see SysTrapFunc and SysTrapSub functions</p>
+  </td>
+ </tr>
+</table>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>Length</i>  defines how many digits get displayed. <i>DecimalPlaces</i> is the number of digits to
+the right of the decimal point. This must be at least 2 less than <i>length</i>.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>If we are declaring a database for use in a grid. VarName is the name of the
+variable. <i>DbName</i> is the name of the
+database on the Palm OS device. <i>DbRec</i>
+is a global variable which will be created to contain the contents of the
+current record of the database. It should not be dimensioned already. <i>DbLayout</i> is the layout of the record: it
+should already be defined using a TYPE statement. <i>Key</i> is an optional variable that must already be dimensioned: it is
+the key that is used for the <i>dbName</i>
+database. This form is only used to define <i>Varname</i>  when used as the first argument of a
+BindToDataBase method for a Grid control. </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Dim income as float*12,2</p>
+
+<p class=Code>Dim count as integer</p>
+
+<p class=Code>Dim yesterday as date</p>
+
+<p class=Code>Dim appt as time</p>
+
+<p class=Code>Dim rates(12) as float</p>
+
+<p class=Code>Dim Orders as database </p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>Type dbBluesLayout</p>
+
+<p class=Code>    Name as String</p>
+
+<p class=Code>    age as Integer</p>
+
+<p class=Code>    active as Integer</p>
+
+<p class=Code>End Type</p>
+
+<p class=Code>Dim blueKey as Integer</p>
+
+<p class=Code>Dim dbBlues1 as Database &quot;Blues&quot; Creator
+&quot;Grid&quot; Keyed With Record BlueKey, dbBluesRec as dbBluesLayout</p>
+
+<p class=Code>&nbsp;</p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

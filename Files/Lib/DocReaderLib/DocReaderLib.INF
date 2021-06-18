@@ -1,0 +1,24 @@
+[General]
+
+ExtensionName=DocReaderLib
+PrcName=DocReaderLib.prc
+Version=1.2
+Manufacturer=Douglas Handy
+InfVers=2.0
+
+
+=HelpStart=
+""
+"DocReaderLib Shared Library"
+""
+"This library provides features for reading"
+"DOC format databases with NSBasic/Palm."
+""
+"Written by Doug Handy, Jan 2004"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Register= 1, sub, 2, "Register(in part1 as string, in part2 as string)"
+ReadDoc= 2, sub, 5, "ReadDoc(in docName as String, in BookMark as string, in Position as Integer, in Font as Integer, in Options as Integer)"

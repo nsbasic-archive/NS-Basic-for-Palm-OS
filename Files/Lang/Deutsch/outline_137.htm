@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Playsound</title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=EN-GB>Playsound                                                                                                   Befehl</span></h4>
+
+<p class=ManualBody><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=ManualBody>PlaySound(<i>Resource#,
+ampScale, Flags</i>)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Der PlaySound Befehl ermöglicht es Ihnen, in Ihrem Programm
+kurze Soundstücke abzuspielen, die Sie zuvor aufgenommen haben. Er kann nur mit
+Palm OS 5.0 oder aktuelleren Versionen verwendet werden. <i>Resource</i># ist Resource-Nummer innerhalb Ihres Projekts. Der Sound
+muss im wav-Format vorliegen und kleiner 64k sein. Testen Sie das Stück, das
+Sie verwenden wollen zuvor gut auf Ihrem Palm Gerät. 16 Bit Mono, 8kHz PCM
+kodierte Sounds scheinen gut zu funktionieren. Fügen Sie Ihrem Projekt mittels
+„Add Resource“ das Stück zu und setzen Sie den Resource-Typ auf ‚wave’. <i>AmpScale</i> steht für die Lautstärke. Sie
+kann von 0 bis 32767 eingestellt werden. <i>Flags</i>
+bestimmt, wie der Sound abgespielt werden soll. 0 bedeutet, nicht weitermachen
+bevor das Stück zu Ende gespielt wurde; 1 bedeutet, dass das Programm während
+des Sounds weiterläuft. Sehe Sie dazu auch SoundTest.prj im Beispiel-Ordner.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>PlaySound 1004, 32767, 1</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

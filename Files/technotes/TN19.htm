@@ -1,0 +1,71 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"><meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Tech Note 19: NS Basic Introduction for VB6 Users</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#0000FF"
+vlink="#800080">
+
+<table border="0" cellspacing="0" width="550">
+  <TBODY>    
+  <tr>
+        
+	<td valign="top" width="18%"><img
+        src="http://nsbasic.com/palm/info/technotes/images/BigIcon.GIF"
+        width="86" height="103"></td>
+        
+	<td valign="top" width="82%">
+	  <h2>Tech Note 19: NS Basic Introduction for VB6 Users</h2>
+	  <h3>June 26, 2002
+        </h3>
+	</td>
+    </tr>
+</TBODY></table>
+<hr>
+(Contributed by <a href="mailto:pgabell&copy; twlakes.net">Paul Abell</a>)
+
+<p>This document is being written in an effort to help VB6 programmers learn NSBasic for the Palm personal digital assistant, (PDA). Maybe it will help you ease into it a little faster than I did.
+
+<p>For starters, it is almost a no-brainer. In fact, NSBasic looks almost identical to VB6 at first startup and works almost the same way. What are the differences then?
+
+<p>When you realize that you are programming for a very small screen, actually less than a sixth of the size of a 17 inch monitor, it becomes a little clearer that you are going to be limited in what you can do on one form or screen. That said, the first thing you’ll notice, is that when you run the compiler the output program goes to a Palm Operating System Emulator, called POSE. POSE is great. You don’t need to buy a Palm device in order to program and develop for one. POSE emulates a Palm device on your windows operating system. It is free and has to be downloaded. (at least to get the current version).
+
+<p>Next, you will be familiar with all the controls and buttons, properties, double clicking, etc. What you will be confused by is where you put your code. This is caused by the Palm device not being a Windows device. It is programmed 
+ differently and has a few differences in the way you access different parts of the operating system. 
+
+<p>If you double click on the form to bring up the code as in VB6, you will be surprised to get nothing, no response. Here’s how you have to do it. Click on menu item, “Project”, and select, “Startup Code”. Now you will be on your home turf again, familiar ground. The “Startup code” section is run on program startup and is run first. The “Termination code” is run last, when your program stops or another application menu button is tapped. The button, label, field, gadget, bitmap, popup, etc codes are where you expect them to be. Just double click on them. There are four more places to put code and each one has it’s own reason for being as you will see when you start to program. Right click on the form and you will get a menu with three code sections on it. “Before code”, “After code” and “Event code”. The last code section is the “cod” module and can be used for any code you want to put in it. To access it, select menu item “Project” and select “Add New Module”. Add your code to it. To access it again, after closing the form, you will have to go to the project explorer window and double click on the “Modules” menu item. Select the cod module you want by double clicking on it. (NOTE: Be sure to add this module to your list, whenever sending your project to another user!)
+
+<p>Now to the “Before” code module. This code module is run before the form is created. The “After” code module is run after the form is created and is where the controls are painted on, etc. It is important to note that it is run every time the form is accessed. If you do something on the form
+ and then go to another form, when you come back to that form its “After” code is run again. The “Events code module is special and is used to trap the user pressing any of the buttons on the Palm device, usually the menu or applications buttons. Also the scroll up and down buttons, etc. Any time an “event” occurs this module runs.
+
+<p>There is no debug option currently on the NSB IDE, but someday maybe. There is a debug POSE version, but it is not anything like VB6 and beyond the scope of this article. 
+
+<p>The output file from NSB is complete with all your code, forms, etc. in one nice neat file. You can hotsync it to your Palm with one touch. If you happen to reference any external libraries in your code you will have to supply that library also with your program. You can do almost anything without having to access external libraries, but they are available.
+
+<p>NSB does have some nice touches that mimic VB6 almost identically. You will feel right at home. It has some unique features that are much easier to use than VB6 I think, such as, popup lists and date and time selectors. You do not have much control over your buttons, just basic size, bold, hide and so on. Also, there is very little color support. You can use color graphics up to 8 bits, or 256 colors. Color pictures do not come out well at all, but that is a limitation of NSB and not the Palm. There are several programs available for free that will put your color pictures on the Palm very nicely. 
+ 
+<p>There are some programming items you don’t find out about immediately or at all with the demo version. 
+
+<ol>
+	<li>Line continuation characters. use the underscore at the end of a line.</li>
+
+	<li>To make your program stop and return control back to the program launcher, like it was before you selected it, use the STOP code word. If you use EXIT, your program will just sit there and stare at you until you select another application button.</li>
+
+	<li>To concatenate strings use the plus “+” character.</li>
+
+	<li>Databases are really very simple, but you have to know a couple of their idiosyncrasies. If a database doesn’t exist you have to create it. Makes sense doesn’t it. But what they don’t tell you is, you also have to open it after you create it! That can cause you a lot of trouble. Most of the error messages are rather cryptic and not simple and straightforward. Don’t blame NSB for that. Comes from Palm.</li>
+
+	<li>Although your completed, compiled program, will contain everything needed but any shared libraries, if you upload or transfer your project files to another user, be sure to include any cod files associated with it, including bitmaps, icons, etc.</li>
+</ol>
+
+<p>One last item I will mention, that will get you up and running almost without any help, is bitmaps or graphics. This includes icons. NSB has a unique way of accessing bitmaps and it is not drop and drag; that you will miss! Yes, you do drag and drop the bitmap object, but it is just an object and not the bitmap itself as with VB6. To use any bitmap on NSB you have to first access the “Project” menu and select “Add bitmap”. This lets you pick it out as you would from VB6. This process adds it to the project explorer menu. To use the bitmap you just loaded, go to the project explorer menu and double click on “Bitmaps”. Select the bitmap you loaded and it will bring up the properties window for that bitmap. You will notice it has room for four entries, each a different level of color depth. One bit, through 8 bits. The one bit entry is filled with your bitmaps location. Select the other bitmap color depth levels one at a time and enter the same bitmap name and location until all bitmap color depths have been filled identically. Now you can actually use them! Hears how. Go to the bitmap object on your form and click on it. Now on it’s property menu select, “Resource ID”, and type in the bitmap ID number that was assigned to your bitmap when it was loaded. That’s all there is to it! A little involved, but simple enough when you get the hang of it. Fortunately, NSB has made it simple, in the respect that you don’t have to be too particular about the bitmap file type. It will accept a wide range of common bitmap file types. These are converted automatically at compile time. Icons have to be small, 22x22 or 15x9 pixels, and bitmaps can be up to 160x160 pixels.
+
+
+<p>This should be enough to get you started. You will love how easy it is to use. It is very good about checking for errors before you try to load it. You will come to appreciate that believe me. NSB has it’s own set of little peccadilloes, but don’t all language compilers? They’re working on that.
+
+<p><i>Got more suggestions to help VB6 users come up to speed? Send them to us at <a href="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</a></i>
+</body>
+</html>

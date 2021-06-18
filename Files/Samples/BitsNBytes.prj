@@ -1,0 +1,497 @@
+"mdl"
+6
+"BitsNBytes","Test","Bits",1046,111,0
+"Sub main()
+LoadLibrary ~BitsNbyteslib~,~BNB~
+End Sub"
+""
+""
+""
+""
+""
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"BitsNBytes Demo"
+"BitsNBytes"
+""
+0
+"Sub Form1004_after()
+    MsgBox ~See Tech Note 10 for details on the use of these functions.~
+End Sub"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","FldA",1005,0,16,12,44,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","FldB",1007,50,16,12,48,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","ButI",1011,4,40,12,20,#TRUE#,0,"OR"
+"Sub object1011()
+Dim a as Integer
+ Dim b as Integer
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = INT(VAL(FldB.text))
+ 
+ c = BNB.OrInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","FldC",1012,104,16,14,44,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1014",1014,28,40,12,28,#TRUE#,0,"AND"
+"Sub object1014()
+Dim a as Integer
+ Dim b as Integer
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = INT(VAL(FldB.text))
+ 
+ c = BNB.AndInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1015",1015,60,40,12,28,#TRUE#,0,"XOR"
+"Sub object1015()
+Dim a as Integer
+ Dim b as Integer
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = INT(VAL(FldB.text))
+ 
+ c = BNB.XorInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1016",1016,92,40,12,28,#TRUE#,0,"Not"
+"Sub object1016()
+Dim a as Integer
+
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+
+ c = BNB.NotInteger(a)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1017",1017,124,40,12,36,#TRUE#,0,"Swap16"
+"Sub object1017()
+Dim a as Short
+Dim b as Short
+Dim i as Integer
+Dim s as String
+
+s = FldA.text
+i= BNB.Hex2Dec(s)
+a=i
+b= BNB.Swap16(a)
+i=b
+i=BNB.AndInteger(i,65535)
+s=~12345678901234567890~
+BNB.Dec2Hex(i,s)
+FldC.text= s
+
+a=val(flda.text)
+b=bnb.swap16(a)
+fldb.text=str(b)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1018",1018,4,56,12,30,#TRUE#,0,"Shift"
+"Sub object1018()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.ShiftInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1019",1019,34,56,12,40,#TRUE#,0,"SignShift"
+"Sub object1019()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.SignShiftInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1020",1020,74,56,12,48,#TRUE#,0,"CycleShift"
+"Sub object1020()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.CycleShiftInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1021",1021,4,72,12,32,#TRUE#,0,"GetBit"
+"Sub object1021()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Short
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.GetBitInteger(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1022",1022,34,72,12,40,#TRUE#,0,"SetBit"
+"Sub object1022()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.SetBitInteger(a,b)
+ 
+ FldC.text = str(c)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1023",1023,74,72,12,50,#TRUE#,0,"ResetBit"
+"Sub object1023()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.ResetBitInteger(a,b)
+ 
+ FldC.text = str(c)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1024",1024,4,88,12,54,#TRUE#,0,"Inverse Bit"
+"Sub object1024()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = VAL(FldB.text)
+ 
+ c = BNB.InverseBitInteger(a,b)
+ 
+ FldC.text = str(c)
+
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1025",1025,4,132,12,32,#TRUE#,0,"Mask"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","FldMask",1026,32,132,12,44,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1028",1028,76,132,12,36,#TRUE#,0,"Eqv"
+"Sub object1028()
+Dim a as Integer
+ Dim b as Integer
+ Dim c as Integer
+ Dim mask as Integer
+ a = INT(VAL(FldA.text))
+ b = INT(VAL(FldB.text))
+ mask = INT(VAL(FldMask.text))
+ 
+ c = BNB.EqvInteger(a,b,mask)
+ 
+ FldC.text = str(c)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1029",1029,58,104,12,60,#TRUE#,0,"SetLowWord"
+"Sub object1029()
+Dim a as Integer
+ Dim b as Short
+ Dim c as Integer
+ a = INT(VAL(FldA.text))
+ b = INT(VAL(FldB.text))
+ 
+ c = BNB.SetLowWord(a,b)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1030",1030,4,104,12,54,#TRUE#,0,"GetLoWord"
+"Sub object1030()
+Dim a as Integer
+ Dim c as Short
+ a = INT(VAL(FldA.text))
+ 
+ c = BNB.GetLowWord(a)
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1031",1031,124,96,12,36,#TRUE#,0,"D2H"
+"Sub object1031()
+Dim a as Integer
+Dim s as String
+s=~12345678901234567890~
+a= INT(VAL(FldA.text))
+BNB.Dec2Hex(a,s)
+FldC.text=s
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1032",1032,124,108,12,36,#TRUE#,0,"H2D"
+"Sub object1032()
+Dim a as Integer
+Dim s as String
+s=~12345678901234567890~
+s = FldA.text
+a= BNB.Hex2Dec(s)
+FldC.text=str(a)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1033",1033,124,120,12,36,#TRUE#,0,"B2D"
+"Sub object1033()
+Dim a as Integer
+Dim s as String
+s=~12345678901234567890~
+s = FldA.text
+a= BNB.Bin2Dec(s)
+FldC.text=str(a)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","CRC",1034,124,132,12,36,#TRUE#,0,"D2B"
+"Sub object1034()
+Dim a as Integer
+Dim s as String
+s=~12345678123456781234567812345678~
+a= INT(VAL(FldA.text))
+BNB.Dec2Bin(a,s)
+FldC.text=s
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1035",1035,58,118,12,40,#TRUE#,0,"Version"
+"Sub object1035()
+Dim c as Short
+
+ c = BNB.Version()
+ 
+ FldC.text = str(c)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1036",1036,4,118,12,52,#TRUE#,0,"Crc32"
+"Sub object1036()
+Dim a as String
+
+ Dim b as Short
+ Dim c as Integer
+ a = FldA.text
+ b = Len(a)
+ c = BNB.CRC32(a,b,0)
+ 
+ FldC.text = str(c)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","DEC",1037,4,144,12,56,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","INC",1039,64,144,12,72,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1041",1041,140,144,12,16,#TRUE#,0,"DES"
+"Sub object1041()
+Dim src as String
+Dim dst as String
+Dim res as String
+Dim key as String
+Dim enc as Short
+Dim err as Integer
+
+src = ~ASDFGHJK~
+dst = ~!!!!!!!!~
+res = ~!!!!!!!!~
+key = ~12345678~
+enc=1
+err=BNB.EncryptDES(src,key,dst,enc)
+enc=0
+'key = ~A2345678~
+err=BNB.EncryptDES(dst,key,res,enc)
+
+INC.text=dst
+DEC.text=res
+'FldA.text=src
+'FldB.text=key
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1044",1044,124,56,12,36,#TRUE#,0,"Swap32"
+"Sub object1044()
+Dim a as Integer
+Dim b as Integer
+
+Dim s as String
+
+s = FldA.text
+a= BNB.Hex2Dec(s)
+
+b= BNB.Swap32(a)
+
+s=~12345678901234567890~
+BNB.Dec2Hex(b,s)
+
+FldC.text= s
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1046",1046,124,72,12,36,#TRUE#,0,"Swap64"
+"Sub object1046()
+Dim a as Double
+Dim b as Double
+Dim c as Double
+
+a= val(FldA.text)
+b= BNB.Swap64(a)
+c= BNB.Swap64(b)
+
+'error
+'FldB.text = str(b)
+
+FldC.text = str(b)
+
+End Sub"
+"end"

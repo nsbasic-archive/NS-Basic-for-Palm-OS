@@ -1,0 +1,36 @@
+"mdl"
+8
+"ScrollField","appl","ScrF",1006,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000F1"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Screen1004"
+"Screen1004"
+""
+0
+"sub Screen1004_after()
+   dim i as integer
+   for i=1 to 15
+        myField.text=myField.text + ~This is line ~ + str(i) + chr(10)
+   next
+end sub
+"
+""
+0,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","myField",1005,40,48,92,80,#TRUE#,0,"",0,0,0
+""
+"end"

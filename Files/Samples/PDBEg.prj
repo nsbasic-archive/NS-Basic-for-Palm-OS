@@ -1,0 +1,102 @@
+"mdl"
+8
+"Project2","appl","Test",1013,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000F7"
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Understanding PDB Files"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,100,136,12,36,#TRUE#,0,"Create",0,0,0
+"Sub object1004()
+Dim Db as Database
+    Dim res as Integer
+
+    res=DbCreate(Db,~DB-CREATE-TEST~,0,~Test~)    'Creator ID is ~Test~
+
+    If res=0 Then				  'Created successfully
+
+        res=DbOpen(Db,~DB-CREATE-TEST~,0)
+        res=DbPosition(Db,1,0)			  'Position pointer to record 1
+        res=DbPut(Db,~NS BASIC~)		  'Write it
+
+        res=DbPosition(Db,2,0)			  'Position pointer to record 2
+        res=DbPut(Db,~mizuno-ami~)
+
+        res=DbPosition(Db,3,0)
+        res=DbPut(Db,~Simple Sample~)
+
+        res=DbClose(Db)
+        msgbox ~Successfully created file~
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1005",1005,24,136,12,36,#TRUE#,0,"Read",0,0,0
+"Sub object1005()
+Dim Db as Database
+    Dim res as Integer
+    Dim intSet as Integer
+    Dim strData as String
+
+    intSet=Val(Field1011.Text)
+
+    res=DbOpen(Db,~DB-CREATE-TEST~,0)
+
+    res=DbPosition(Db,intSet,0)		'Position pointer to the value in field1006
+    res=DbGet(Db,strData)
+
+    res=DbClose(Db)
+
+    Field1006.text=strData		'Display your db data
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1006",1006,12,60,28,136,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1008",1008,4,24,12,33,#TRUE#,0,"Record:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1011",1011,36,24,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1013",1013,12,48,12,27,#TRUE#,0,"Value:",0,0,0
+""
+"end"

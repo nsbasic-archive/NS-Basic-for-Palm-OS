@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Tech Note 04b: Creating an Images Database</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="MSHTML 6.00.2800.1226" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#800080 link=#0000ff bgColor=#ffffff>
+<TABLE cellSpacing=0 width=478 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="22%">
+      <P><IMG height=103 src="TN04b.images/BigIcon.GIF" width=86></P></TD>
+    <TD vAlign=top width="78%"><B><FONT face=Helvetica size=5>
+      <P>Tech Note 04b: Creating an Images Database</P>
+      <P>February 05, 2004</P></FONT><FONT face=Helvetica size=4>
+      <P>&nbsp;</P></FONT><FONT face=Helvetica size=2>
+      <P>© 2009 NS BASIC Corporation. All rights reserved.</B></FONT></P></TD></TR></TBODY></TABLE>
+<HR>
+<i>Contributed by Oscar De Leon <A HREF="mailto:odeleon&copy; finework.cl">odeleon&copy; finework.cl</A></i>
+<BR><BR>This Tech Note shows a simple way to implement an Images Database separate database
+from your application. 
+<P>The process has 3 steps:</P>
+<OL>
+  <LI>Prepare the images. 
+  <LI>Create the images database. 
+  <LI>Use the images database in your program. </LI></OL>
+<P><B>Before you start:</B></P>
+<P>What you need:</P>
+<UL>
+  <LI>An image processing tool for preparing the images. 
+  <LI>Pilot Resource Compiler, <B>PilRC</B>, that can be downloaded from <A 
+  href="http://www.ardiri.com/palm/download.php?file=pilrc_w32.zip">
+http://www.ardiri.com/</A>, for creating the 
+  images database. 
+  <LI><B>Palm OS Emulator</B> (POSE) or actual device. I have tested with POSE 
+  and Palm M505 Color ROM (Palm OS 4).
+  <LI>Of course, NSBasic/Palm. </LI></UL>
+<H3>1.&nbsp;&nbsp;&nbsp;&nbsp; Prepare the images.</H3>
+<P>The basic preparation of the images is:</P>
+<UL>
+  <LI>Size them the appropriate height and width for your application. 
+  <LI>Save them as BMP. The bitmap format is the only one supported by PilRC at this time. </LI></UL>
+<H3>2.&nbsp;&nbsp;&nbsp; Create the images database.</H3>
+<P>The images database is created using <B>PilRC</B>. This command line utility 
+uses a <B>.rcp</B> file with information about the resources to 
+compile.&nbsp;<BR>The complete syntax of the <B>.rcp</B> file is not described 
+here for simplicity, and because PilRC is well documented in Aaron's 
+website.</P>
+<P>Create two text files with notepad or your favorite editor, 
+<B>resources.rcp</B> and <B>createdb.bat</B>:</P>
+<P><U><B>resources.rcp</B></U></P>
+<P>My sample has 55 images, called Cat00001.bmp to Cat00055.bmp, so the .rcp 
+file looks like this:</P>
+<P>BITMAPCOLOR ID <FONT color=#ff0000><B>2001</B></FONT> <FONT 
+color=#ff0000><B>"Cat00001.bmp"</B></FONT><BR>BITMAPCOLOR ID<FONT 
+color=#ff0000><B> 2002 "Cat00002.bmp"</B></FONT><BR>BITMAPCOLOR ID <FONT 
+color=#ff0000><B>2003 "Cat00003.bmp"</B></FONT><BR>...<BR>BITMAPCOLOR ID 
+<B><FONT color=#ff0000>2004 "Cat00054.bmp"</FONT></B><BR>BITMAPCOLOR ID <FONT 
+color=#ff0000><B>2005 "Cat00055.bmp"</B></FONT><BR></P>
+<P><B><U>createdb.bat</U></B></P>
+<P>This one line script file was created just to simplify PilRC command line 
+syntax, and to be able to run it from the Windows Explorer or from a 
+shortcut.<BR>You can write this at the DOS command prompt if you prefer.</P>
+<BLOCKQUOTE>
+  <P><B>PilRC -ro -type <FONT color=#ff0000>data</FONT> -creator <FONT 
+  color=#ff0000>FW10</FONT> -o <FONT color=#ff0000>ItemsGRDB.prc</FONT> <FONT 
+  color=#ff0000>re</FONT><FONT 
+color=#ff0000>sources.rcp</FONT></B>&nbsp;<BR></P></BLOCKQUOTE>
+<P>The syntax above will create the images database with the following 
+characteristics:</P>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="15%">-ro</TD>
+    <TD width="85%">tell PilRC to create a prc database</TD></TR>
+  <TR>
+    <TD width="15%">-type data</TD>
+    <TD width="85%">database <B>Type</B> "data".</TD></TR>
+  <TR>
+    <TD width="15%">-creator aaaa</TD>
+    <TD width="85%">database <B>Creator Id</B>. Use the same creator id as 
+      your application so the images database is removed with your 
+    application.</TD></TR>
+  <TR>
+    <TD width="15%">-o filename</TD>
+    <TD width="85%">database name. The name the database will have in your 
+      device. Include ".prc".</TD></TR>
+  <TR>
+    <TD width="15%">resources.rcp</TD>
+    <TD width="85%">the resource information file created 
+above.</TD></TR></TBODY></TABLE>
+<P>Run the script <B>createdb.bat</B> and voila!, your image database is 
+created (in the example, ItemsGRDB.prc).</P>
+<H3>3.&nbsp;&nbsp;&nbsp; Use the images database in your program</H3>
+<P>Now that you have your images database, upload it to your POSE by installing 
+it or dragging and dropping the PRC file over the POSE app.</P>
+<P>Now, you need to know how to find the right image and how to display it.</P>
+<P>I will explain this with an example.</P>
+<P>My application allows to create Purchase Orders, picking items from a Sports 
+Items Database, the Price List.</P>
+<P>It has 3 databases: <B>OrdersDB.PDB</B>, to store the purchase orders; 
+<B>ItemsDB.PDB</B>, the items' price list; and <B>ItemsGRDB.PRC</B>, the items' 
+images.</P>
+<P>The user can access the Price List directly, showing the screen below:</P>
+<P><IMG src="TN04b.images/itemslist.bmp" border=0></P>
+<P>If the user selects item 15 and press <B>[ i ]&nbsp;</B> to get more detail 
+about the item, the next screen is shown:</P>
+<P><IMG src="TN04b.images/itemdetail.bmp" border=0></P>
+<P>This image was shown using the code below in the form's <B>After Code</B>. 
+Only the relevant code is shown.</P>
+<TABLE width=681 border=1>
+  <TBODY>
+  <TR>
+    <TD width=671><FONT face=Courier>Sub Form1060_After()</FONT> 
+      <P><FONT face=Courier>'Local Variables.<BR>Dim dbItemsGRDB as 
+      Database&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'Database 
+      Handle.<BR>Dim nItemsGRDB&nbsp; as 
+      Integer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'dbOpen() 
+      Result.<BR>Dim nImageID&nbsp;&nbsp;&nbsp; as 
+      Integer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'Image 
+      Index.<BR>Dim bmpPtr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as 
+      Variant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      'SysTrapFunc() Result.<BR>Dim 
+      Tbmp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as 
+      Integer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'Resource 
+      Type.<BR>Dim bmpID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as 
+      Short&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      'Image Handle.<BR><BR></FONT><FONT face=Courier>...</FONT></P>
+      <P><FONT face=Courier>'Draw a Frame Around the Image.<BR>DrawRectangle 4, 
+      75, 152, 64, 0<BR><BR>'Display Image.<BR>nItemsGRDB = <FONT 
+      color=#800080>dbOpen(dbItemsGRDB, "ItemsGRDB.prc", 0)</FONT> 'Open 
+      Database.&nbsp;<BR>If nItemsGRDB = 0 
+      Then&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      'Database Opened.<BR>&nbsp;&nbsp;&nbsp; 'Check if Image 
+      Exists.<BR>&nbsp;&nbsp;&nbsp; <FONT color=#800080>Tbmp = 
+      1415736688</FONT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      'Resource Type (Tbmp)<BR>&nbsp;&nbsp;&nbsp; <FONT color=#800080>bmpID = 
+      2000 + Val(ItemDescInfo.ItemCode)</FONT> 'Resource 
+      Index.<BR>&nbsp;&nbsp;&nbsp; <FONT color=#800080>bmpPtr = SysTrapFunc(96, 
+      2, Tbmp, bmpID)</FONT>&nbsp; 'DmGet1Resource.<BR>&nbsp;&nbsp;&nbsp; If 
+      bmpPtr &lt;&gt; 0 Then<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT 
+      color=#800080>DrawBitmap bmpID, 5, 
+      76</FONT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      'Image Exists.<BR>&nbsp;&nbsp;&nbsp; EndIf&nbsp;<BR>&nbsp;&nbsp;&nbsp; 
+      <FONT 
+      color=#800080>dbClose(dbItemsGRDB)&nbsp;</FONT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      'Close Database.<BR>EndIf<BR></FONT><FONT 
+  face=Courier>...</FONT></P></TD></TR></TBODY></TABLE>
+<P>Note that the image index is calculated adding 2000 to the item index, 15 in 
+the example above, that is contained in the global structure element 
+<B>ItemDescInfo.ItemCode</B>, so this code will try to find the resource with 
+<B>ID = 2015</B>. This is related with the <B>ID</B> value used in the .rcp 
+file.</P>
+<P>You can use any number index for the images, from 0001 to 9999, since 
+<B>dmGet1Resource</B> looks for the resource <B><U>in the last opened 
+database</U></B>, in this case, the images database, so there is no risk of retrieving the wrong resource from other databases.<BR>That's why the images 
+database is opened just before displaying the image, and closed immediately.</P>
+<P>Finally, if you plan that your application looks professional, it should 
+behave like one.</P>
+<P><B>Drawbitmap</B> crashes the application if the resource (image) is not 
+found, so:</P>
+<UL>
+  <LI>Check to see if the images database exists (dbOpen() = 0). 
+  <LI>Check if the resource (image) exists in the database. If not, just display 
+  a "Preview Not Available" or similar text. <BR>I just used a label in the form 
+  at design time. If the image exists at run time, it is drawn over the 
+  text.<BR>If not, the screen below is shown: </LI></UL>
+<P><IMG src="TN04b.images/ItemNotFound.bmp" border=0></P>
+<H3>&nbsp;</H3>
+<H3>Last words,</H3>
+<P>This tech note would not have been possible without valuable help from <B>Douglas Handy</B>. 
+His infinite patience and excellent guidelines resulted in what you see now.<BR>I 
+hope you enjoy it. More sophisticated graphics (hi res) and bitmap families are 
+also topics not covered by this tech note. Perhaps someone else with deep knowledge of these issues could write a tech note!</P></BODY></HTML>

@@ -1,0 +1,39 @@
+[General]
+
+ExtensionName=DevInfoLib
+PrcName=DevInfoLib.prc
+Version=1.0
+Manufacturer=Douglas Handy
+InfVers=2.0
+
+=HelpStart=
+""
+"DevInfoLib Shared Library"
+""
+"This library provides various information about the current"
+"device, for use with NSB/Palm programs."
+""
+"Written by Douglas Handy, Feb 2005"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+CompanyID= 1, func, 0, "ID = CompanyID() as string"
+DeviceID= 2, func, 0, "ID = DeviceID() as string"
+HALid= 3, func, 0, "ID = HALid() as string"
+HwrMiscFlags= 4, func, 0, "Flags = HwrMiscFlags() as integer"
+ProcessorID= 5, func, 0, "ID = ProcessorID() as integer"
+GetSystemFeature= 6, func, 1, "value = GetSystemFeature(ftr as integer) as integer"
+GetFeature= 7, func, 2, "value = GetFeature(creator as string, ftr as integer) as integer"
+SetFeature= 8, sub, 3, "SetFeature( creator as string, ftr as integer, value as integer )"
+GetBitValue= 9, func, 2, "result = GetBitValue(intValue as integer, bitNumber as integer) as integer"
+SetBitValue= 10, func, 3, "result = SetBitValue(intValue as integer, bitNumber as integer, bitValue as integer) as integer"
+GetSerialNumber= 11, func, 1, "SerialID = GetSerialNumber(AddCheckDigit as integer) as string"
+HotSyncUserName= 12, func, 0, "HSUserName = HotSyncUserName() as string"
+HotSyncUserID= 13, func, 0, "HSUserID = HotSyncUserID() as integer"
+BatteryKind= 14, func, 0, "Kind = BatteryKind() as integer"
+BatteryPct= 15, func, 0, "Pct = BatteryPct() as integer"
+BatteryVolts= 16, func, 0, "Volts = BatteryVolts() as integer"
+IsPluggedIn= 17, func, 0, "State = IsPluggedIn() as integer"
+IsDocked= 18, func, 0, "State = IsDocked() as integer"

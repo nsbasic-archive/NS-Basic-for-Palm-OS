@@ -1,0 +1,79 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Sound </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Sound                                                                                                    Statement</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>SOUND <i>freq</i> as integer, <i>duration</i> as integer, <i>amplitude</i> as integer[, <i>wait</i>]</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Description</b></p>
+
+<p class=ManualBody>Plays a sound through the Palm OS device speaker. <i>Freq</i> is the frequency in Hertz. <i>Duration</i> is the duration in
+milliseconds. <i>Amplitude</i> is the sound
+amplitude. Allowed values depend on the device. Values you can use are 0,2,4,8,
+32 and 64. <i>Wait</i> sets the wait mode.
+If <i>Wait</i> is nsbWait, program execution
+is halted until the sound is completed. If Wait is nsbNoWait program execution
+proceeds while the sound is played. nsbNoWait is the default if neither is
+specified. As of Palm OS 3.5, <i>wait</i> is
+not implemented.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=Code>Sound 1200, 1000, 2, nsbWait</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

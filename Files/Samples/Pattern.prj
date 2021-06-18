@@ -1,0 +1,68 @@
+"mdl"
+8
+"Pattern","appl","Test",1008,505,0
+""
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E10000FD"
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Pattern"
+"Pattern"
+""
+0
+""
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1005",1005,24,134,20,111,#TRUE#,7,"Change Fill Pattern",0,0,0
+"Sub object1005()
+Dim PatternStr as String
+Dim x as Short
+Dim Corner as Short
+Dim PatternStrArray(22) as String
+PatternStrArray(1)  = &h3E9CC9E3C793397C 'Cord
+PatternStrArray(2)  = &hAAAAAAAA11111111
+PatternStrArray(3)  = &hCCCCCCCCCCCCCCCC
+PatternStrArray(4)  = &hEDEDEDEDEDEDEDED 
+PatternStrArray(5)  = &h010101010F0F0F0F
+PatternStrArray(6)  = &h5555555555555555
+PatternStrArray(7)  = &h1824428142241818 'Garden Fence
+PatternStrArray(8)  = &hFFAAFFAAFFAAFFAA
+PatternStrArray(9)  = &hFF111111FF444444
+PatternStrArray(10) = &hFF80808080FF0101
+PatternStrArray(11) = &hFF808080FF080808 'Brick
+PatternStrArray(12) = &h4488112244881122 '45 degrees
+PatternStrArray(13) = &h2040800182442810 'Brick 45 degrees right
+PatternStrArray(14) = &h1422418040201008 'Brick 45 degrees left
+PatternStrArray(15) = &h3C5291E187894A3C
+PatternStrArray(16) = &h0606020F93E27555
+PatternStrArray(17) = &h20E0E13E3E226600
+PatternStrArray(18) = &hC0AAC4AA00190E0A
+PatternStrArray(19) = &h0C0E0B090878F870
+PatternStrArray(20) = &h0060E0F0180F0706
+PatternStrArray(21) = &h20E0FE7F7F7F3E14
+PatternStrArray(22) = &h107CFE1010502000
+
+For x = 1 to 22
+    Delay 0.1
+      PatternStr = PatternStrArray(x)
+      SysTrapSub 548,1,PatternStr  'WinSetPattern
+      FillRectangle 24,20,110,110,55,nsbCustom
+      DrawRectangle 24,20,110,110,54,nsbNormal    
+Next
+
+MsgBox ~By Adrian Nicolaiev - Jun, 2002~
+
+End Sub"
+"end"

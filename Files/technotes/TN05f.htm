@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://www.nsbasic.com/palm/info/technotes/TN05a.htm -->
+<HTML><HEAD><TITLE>Tech Note 05f: A PP Compiler Shared Library Example</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><LINK 
+href="http://www.nsbasic.comstyle2.css" rel=stylesheet>
+<META content="Microsoft FrontPage 5.0" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#800080 link=#0000ff bgColor=#ffffff>
+<TABLE cellSpacing=0 width=640 border=0 style="border-collapse: collapse" bordercolor="#111111" cellpadding="0">
+  <TBODY>
+  <TR>
+    <TD vAlign=top width="97">
+      <P><IMG SRC="images/BigIcon.GIF" height=103 width=86></P></TD>
+    <TD vAlign=top width="598">
+      <H2>Tech Note 05f: A PalmOS Pascal Compiler Shared Library Example for 
+      NSBasic</H2>
+      <H3>November 26, 2003</H3>
+      <H5>© 2009 NS BASIC Corporation. All rights reserved.</H5></TD></TR></TBODY></TABLE>
+<HR color="#111111" width="640" align="left">
+<table border="0" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="640" id="AutoNumber2">
+  <tr>
+    <td width="100%" align="justify">Contributed by <a href="http://www.niconnect.com">Adrian Nicolaiev</a>.<br>
+    <P>This very small and simple tech note is meant to be a template for creating other Shared Libraries 
+    using free <a href="http://ppcompiler.free.fr/PP.php?lng=en">PalmOS Pascal 
+    Compiler</a>. 
+    This project really doesn't do much of anything useful but it should serve as a good 
+starting point. You will see that it is *very* easy to create a SL for NSBasic 
+    using PP Compiler.<br>
+    <br>
+    First, you should download the needed files:<br>
+    <br>
+    1) PPNSBasicLib.pas - It's our PP source code in Palm DOC format (PDB).<br>
+    2) PPNSBLibTest.prj - It's our NSBasic project to test our new SL.<br>
+    3) PPNSBLib.inf - It's our &quot;inf&quot; file, describing each function as an 
+    interface between SL and NSBasic.<br>
+    4) PP Compiler Enviroment - It's a merged enviroment in a SSF file.<br>
+    <br>
+    You can download all of them
+    <a href="http://www.nsbasic.com/pub/palm/samples/TechNote5f.zip">clicking here</a> (252 Kb).<br>
+    You can see a brief description of them <a href="#Description">here</a>.<br>
+    <br>
+    I adapted this example from the Shared Library example that comes with PP 
+Compiler.<br>
+If you wish to take a look at PP source code before continue reading,
+    <a onClick="window.open('TN05f.images/sl.htm','PPSL','width=640,height=450,scrollbars,screenX=50,screenY=50,left=50,top=50');return false" href="http://www.nsbasic.com/palm/info/technotes/sl.htm">click here</a>.<P>
+    As I said, it is meant to be a
+    <a onClick="window.open('TN05f.images/PPNSBLib.pdf','PPSL','width=640,height=480,resizable,scrollbars,screenX=50,screenY=50,left=50,top=50');return false" href="http://www.nsbasic.com/palm/info/technotes/PPNSBLib.pdf">template</a> for 
+    other SL and you will verify that is quite simple to insert your own 
+    functions using this template.<br>
+    <br>
+    The two functions in the shared library example demonstrate just 
+an addition and a multiplication. I tried to make this example both simple and comprehensive enough to be 
+useful.<br>
+    <br>
+    Important: Anything starting with &quot;THIS&quot; means that it belongs to &quot;this&quot; 
+    library. Since this example is only meant for use with NSBasic programs, you can safely 
+leave the "THIS" in your own libraries because NSBasic uses the information in 
+the .inf file and not any identifiers in the code itself.<br>
+    <br>
+    In order to make things straight forward our objectives, I created a special 
+    PP Compiler enviroment using a SSF file that you can open with your PalmOS 
+    Simulator. Last version should be installed with NSBasic 4.0. If you don't 
+    have Simulator 5.3, please, download it
+    <a href="http://www.palmos.com/dev/tools/simulator/Palm_OS_53_Simulator.zip">
+    here</a>.<br>
+    <br>
+    As soon as you have it running, you would see these three icons in &quot;Unfiled&quot; 
+    category: Piaf, PP Shell and PPNSBLibtTest.<br>
+    <br>
+    Following these <a href="#Screenshot">screenshots</a>, you will be able to 
+    compile your first Shared Library. After, using some Pascal knowlegde, you 
+    will be able to, sooner than you can imagine, try some modifications or even 
+    a total new Shared Library. Hope you share it with us :)<br>
+    <br>
+    Later, if you wish to create your own PP enviroment, using your own Palm 
+    device, for example, just follow this
+    <a href="http://ppcompiler.free.fr/download.php?lng=en">link</a>. Or, if you 
+    wish to edit your SL in a Windows IDE, you may use <a href="#Fozzy">Fozzy</a>.<br>
+    <br>
+    There are some <a href="#Curiosity">curiosities</a>, just in case you would 
+    like to know. You don't need.<br>
+    <br>
+    Well, that is enough to get started. Don't forget to study our template. 
+    Print it as a quick reference.</td>
+  </tr>
+</table>
+<h3><br>
+<b><a name="Description"></a>Descriptions</b></h3>
+<table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="637" id="AutoNumber1" height="167">
+  <tr>
+    <td width="633" height="24" bgcolor="#CCCCCC"><b>PPNSBasicLib PAS File - 
+    PalmOS Pascal Compiler Library source code</b></td>
+  </tr>
+  <tr>
+    <td width="633" height="140"><font face="Courier New" size="2">function 
+    This_LibAdd(refnum:UInt16;a,b:integer;result:resultP):Err;<br>
+    begin<br>
+    result^:=a+b;<br>
+    This_LibAdd:=0;<br>
+    end;<br>
+    <br>
+    function This_LibMul(refnum:UInt16;a,b:integer;result:resultP):Err;<br>
+    begin<br>
+    result^:=a*b;<br>
+    This_LibMul:=0;<br>
+    end;</font></td>
+  </tr>
+</table>
+<br>
+<table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="637" id="AutoNumber1" height="167">
+  <tr>
+    <td width="633" height="24" bgcolor="#CCCCCC"><b>PPNSBasicLib INF File - 
+    NSBasic INF source code</b></td>
+  </tr>
+  <tr>
+    <td width="633" height="140"><font face="Courier New" size="2">[General]<br>
+    ExtensionName=PPNSB<br>
+    PrcName=PPNSBasicLib.prc<br>
+    Version=1.0<br>
+    Manufacturer=Adrian Nicolaiev - http://www.niconnect.com<br>
+    InfVers=2.0<br>
+    <br>
+    [GlobalMethods]<br>
+    PPNSB_ADD=1, func, 2, &quot;PPNSB_ADD(in a as integer, in b as integer) as 
+    integer&quot;<br>
+    PPNSB_MUL=2, func, 2, &quot;PPNSB_MUL(in a as integer, in b as integer) as 
+    integer&quot;</font></td>
+  </tr>
+</table>
+<br>
+<table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="637" id="AutoNumber1" height="167">
+  <tr>
+    <td width="633" height="24" bgcolor="#CCCCCC"><b>PPNSBLibTest PRJ File - 
+    NSBasic Project source code</b></td>
+  </tr>
+  <tr>
+    <td width="633" height="140"><font face="Courier New" size="2"><b>Startup()</b><br>
+    LoadLibrary PPNSBasicLib.inf<br>
+    <br>
+    <b>Object()</b><br>
+    result = PPNSBasicLib.PPNSB_ADD(aa,bb)<br>
+    MsgBox Str(result)<br>
+    result = PPNSBasicLib.PPNSB_MUL(aa,bb)<br>
+    MsgBox Str(result)</font></td>
+  </tr>
+</table>
+<h3><br>
+<br>
+<b><a name="Screenshot"></a>Some ScreenShots that may help</b></h3>
+<table border="1" cellpadding="3" cellspacing="4" style="border-collapse: collapse" width="640" id="AutoNumber3">
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0000.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0001.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 01<br>
+    <br>
+    After starting Piaf, click on &quot;O&quot; and choose PNSBasicLib.pas. Click OK.<br>
+&nbsp;</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 02<br>
+    <br>
+    You should see this source code.</td>
+  </tr>
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0002.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0003.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 03<br>
+    <br>
+    These lines show the two simple functions Add and Mul. Here you can see the 
+    Shared Library name too.<br>
+&nbsp;</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 04<br>
+    <br>
+    Here, you see the last lines of our Shared Library. Add and Mul are the last 
+    ones, after Open, Close, Sleep and Wake (internal functions - don't worry 
+    about them - just KISS)<br>
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0005.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0006.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 05<br>
+    <br>
+    To compile, just click on &quot;B&quot;. It took
+    0.32 seconds to compile 568 lines in my computer.<br>
+&nbsp;</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 06<br>
+    <br>
+    Next step: Go to Launcher Applications menu and choose &quot;Copy...&quot;.<br>
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0004.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0007.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 07<br>
+    <br>
+    Choose PPNSBasicLib. Verify that &quot;Copy To:&quot; is set to POSESlot1, your 
+    simulated Expansion Card. So, look at \Card1\PALM\Launcher\ folder in your 
+    Simulator folder. PPNSBasicLib.prc should be there after &quot;Copy&quot;.<br>
+&nbsp;</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 08<br>
+    <br>
+    Are you read to test?<br>
+    Start our PPNSBLibTest program. That one you compiled in NSBasic.</td>
+  </tr>
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0009.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0010.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 09<br>
+    <br>
+    Choose your numbers and get a MUL result<br>
+&nbsp;</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Screenshot 10<br>
+    <br>
+    Choose your numbers and get an ADD result</td>
+  </tr>
+  </table>
+<h3><br>
+<br>
+<a name="Curiosity"></a>Some curiosities</h3>
+<table border="1" cellpadding="3" cellspacing="4" style="border-collapse: collapse" width="640" id="AutoNumber5">
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0011.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0012.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Curiosity 1<br>
+    <br>
+    Q.: But, how is PPNSBasicLib inside?<br>
+    A.: It just has our famous &quot;libr&quot; resource</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Curiosity 2<br>
+    <br>
+    Q.: And PPNSBasicLib.pas?<br>
+    A.: It is just a Palm DOC file, with a header and our Pascal source code in 
+    the second record. If you wish, you may open this file in any Palm DOC reader.<br>
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0013.gif" width="240" height="240"></td>
+    <td width="50%">
+    <img border="0" src="TN05f.images/screenshot0014.gif" width="240" height="240"></td>
+  </tr>
+  <tr>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Curiosity 3<br>
+    <br>
+    As I said, here it is our Pascal source code...<br>
+&nbsp;</td>
+    <td width="50%" bgcolor="#CCCCCC" valign="top">
+    <br>
+    Curiosity 4<br>
+    <br>
+    Here, we have an inside view of our PPNSBLibTest program created with 
+    NSBasic.<br>
+&nbsp;</td>
+  </tr>
+  </table>
+<P><br><table border="0" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="640" id="AutoNumber4">
+  <tr>
+    <td width="100%">
+    <a name="Fozzy">
+    <img border="0" src="TN05f.images/Fozzy.gif" width="519" height="326"></a></td>
+  </tr>
+  <tr>
+    <td width="100%" bgcolor="#CCCCCC">
+    <br>
+    Fozzy is a free IDE for PP Compiler. You may download the latest version
+    <a href="http://palmpascal.free.fr/fozzy.htm">here</a>.<br>
+&nbsp;</td>
+  </tr>
+</table>
+<P>After that, you will be able to start creating your own 
+libraries.<P>Good luck ! (You won't need :)<br>
+<br>
+Adrian Nicolaiev<br>
+<a href="http://www.niconnect.com">http://www.niconnect.com</a><br></BODY></HTML>

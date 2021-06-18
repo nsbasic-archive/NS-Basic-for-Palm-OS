@@ -1,0 +1,372 @@
+<HTML>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tutorial 02: Multiple Forms</TITLE>
+<link rel="stylesheet" href="/style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+  <TR>
+    <TD WIDTH="17%" VALIGN="TOP"><P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="83%" VALIGN="TOP">
+      <h2>Tutorial 02: Multiple Forms</h2>
+      <h3>February 12, 2007</h3>
+      <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+    </TD>
+  </TR>
+</TABLE>
+<HR>
+
+<h2>Purpose </h2>
+<p>The purpose of this tutorial is to help learn a few more 
+  NS Basic/Palm programming techniques. You should complete Tutorial #1 before 
+  beginning this tutorial. In this tutorial, the techniques of using multiple 
+  forms will be covered. </p>
+<h2>Description of the Program </h2>
+<p>The program to be developed has two forms. Form #1 allows 
+  the user to enter a birthdate and name. Form #2 shows the values of the previously 
+  entered birthdate and name plus it tells on what day of the week the birthdate 
+  occurred. </p>
+<h2>Program Development </h2>
+<h4>1. Startup</h4>
+<ul>
+  <li>Start NS 
+    Basic/Palm from the Start menu.</li>
+  <li>At the initial 
+    screen select New Project </li>
+</ul>
+<h4>2. Modify Project Properties </h4>
+<ul>
+  <li>Change the 
+    (Name) to &quot;MyProject&quot;. </li>
+  <li>Change the 
+    creator ID to &quot;MyPr&quot; </li>
+</ul>
+<h4>3. Modify the First Form's Parameters </h4>
+<ul>
+  <li>You should 
+    now see a blank form with the title &quot;Form1&quot; </li>
+  <li>Select the 
+    form in the Project Explorer by clicking on it. </li>
+  <li>In the Properties 
+    Window, change the Name to&nbsp; &quot;My Form 1&quot; </li>
+  <li>Change the 
+    Title to &quot;Form to Enter Data&quot; (This will print at the top of the 
+    form) </li>
+  <li>Set Default 
+    Form to True</li>
+</ul>
+<p align="center"><img border="0" src="images/TT02.20.gif" width="291" height="204"> 
+</p>
+<h4>4. Build Form 1 Objects: Add a date selector for the birthdate </h4>
+<ul>
+  <li>Click on 
+    the Selector object in the Toolbox . It's a small box with the letter trig 
+    in it. </li>
+  <li>Move the 
+    cursor to the form where you want the object to appear and click the left 
+    mouse button. </li>
+  <li>Click on 
+    the object to select it. </li>
+  <li>In the Properties 
+    Window, type &quot;99/01/01&quot; as the Label </li>
+  <li>Set the Name 
+    to &quot;selDate&quot; </li>
+</ul>
+<p>Add a field to enter the user's name: </p>
+<ul>
+  <li>Click on 
+    the field object in the Toolbox (looks like &quot;T&quot;) </li>
+  <li>Click the 
+    left mouse button to place the field object on the form </li>
+  <li>Click on 
+    the object to select it. </li>
+  <li>In the Properties 
+    Window, change the Name to &quot;fldName&quot; </li>
+</ul>
+<p>Add a button to transfer to form #2 </p>
+<ul>
+  <li>Select the 
+    button object (&quot;OK&quot;) in the Toolbox. </li>
+  <li>Place it 
+    on the form and click on it to select it. </li>
+  <li>In the Properties 
+    Window. enter &quot;Show the Day of the Week&quot; as the Label.</li>
+</ul>
+<p align="center"><img border="0" src="images/TT02.21.gif" width="341" height="480"> 
+</p>
+<h4>5. Create the Second Form </h4>
+<ul>
+  <li>Select &quot;Project&quot; 
+    from the top main menu </li>
+  <li>Select &quot;Add 
+    Form&quot; from the menu </li>
+  <li>In the Properties 
+    Window, set the Name to &quot;My Form 2&quot; </li>
+  <li>Set&nbsp; 
+    the Title to &quot;Day of Week Display&quot; </li>
+</ul>
+<h4>6. Create objects for Form 2 </h4>
+<p>Add a text prompt before the birthday: </p>
+<ul>
+  <li>Select the 
+    Label (&quot;T:&quot;) object from the Toolbox </li>
+  <li>Place on 
+    the form and click on it to select.. </li>
+  <li>In the Properties 
+    Window, enter &quot;Birthday=&quot; as the label. </li>
+</ul>
+<p>Add a field where the birthday will be shown: </p>
+<ul>
+  <li>Select the 
+    field object from the Toolbox </li>
+  <li>Place on 
+    the form and select it </li>
+  <li>In the Properties 
+    Window, change the Name to &quot;fldDate2&quot; </li>
+</ul>
+<p>Add a text prompt before the name : </p>
+<ul>
+  <li>Select the 
+    label object from the Toolbox </li>
+  <li>Place on 
+    the form and select it </li>
+  <li>In the Properties 
+    Window, enter &quot;Name=&quot; as the label </li>
+</ul>
+<p>Add a field where the name will be shown: </p>
+<ul>
+  <li>Select the 
+    field object from the Toolbox </li>
+  <li>Place on 
+    the form and select it </li>
+  <li>In the Properties 
+    Window, change the name to &quot;fldName2&quot; </li>
+</ul>
+<p>Add a text prompt before the day-of-the-week: </p>
+<ul>
+  <li>Select the 
+    label object from the Toolbox </li>
+  <li>Place on 
+    the form and select it </li>
+  <li>In the Properties 
+    Windows, enter &quot;Day-of-the-week=&quot; as the Label </li>
+</ul>
+<p>Add a field where the day-of-the-week will be shown: </p>
+<ul>
+  <li>Select the 
+    field object from the Toolbox </li>
+  <li>Place on 
+    the form and select it </li>
+  <li>In the Properties 
+    Window, change the name to &quot;fldDayNumber&quot; </li>
+</ul>
+<p>Add a button to allow transfer back to form # 1: </p>
+<ul>
+  <li>Select the 
+    button object from the Toolbox </li>
+  <li>Place it 
+    on the form and select it </li>
+  <li>In the Properties 
+    Window, enter &quot;Go Back&quot; as the Label</li>
+</ul>
+<p align="center"><img border="0" src="images/TT02.22.gif" width="341" height="480"> 
+</p>
+<h4>7. Enter Code for Program Startup </h4>
+<ul>
+  <li>Under the 
+    Project Menu, select &quot; Startup Code&quot; </li>
+  <li>Enter these 
+    lines of code after the Project_Startup() line </li>
+</ul>
+<pre>
+	Global MyName as String
+	Global MyDate as date
+	MyDate=ToDate(&quot;1999/01/01&quot;) </pre>
+<p>The purpose of this code is to supply global variables for MyName and MyDate 
+  so these values can be used throughout the program in multiple code sections 
+</p>
+<p>
+  Give MyDate a valid date value because it is used in a date popup&nbsp; command 
+  which requires that the date be valid. The user will actually select their own 
+  birthday in the date popup routine and overwrite this date. </p>
+<p>No further action is required. NS Basic/Palm automatically displays the program's 
+  first form at the start of program execution. </p>
+<ul>
+  <li>Close the 
+    code window and return to a display of the form. </li>
+</ul>
+<p>The Project Explorer now shows &quot;(Startup)&quot; next to the project name 
+  to indicate that there has been program code supplied there. </p>
+<h4>8. Provide Code for Form 1 Objects </h4>
+<p>
+  Set Form 1 as the current form displayed by right clicking on it in the Project 
+  Explorer and selecting &quot;View Object&quot; </p>
+<p>Code to cause the popup date entry form to appear: </p>
+<p>When the user taps the birthday selector on Form 1, we want 
+  the standard Palm device date selector popup to appear. We must supply code 
+  to the selector object on Form 1 to cause this to happen. </p>
+<ul>
+  <li>Double click 
+    on the birthday selector object to bring up the Code Window/ </li>
+  <li>Enter these 
+    lines of code after the SUB line </li>
+</ul>
+<pre>
+	Dim result as integer
+	result=PopupDate(MyDate,&quot;What is your birthday?&quot;)
+	selDate.text=str(MyDate) </pre>
+<ul>
+  <li>Close the 
+    Code Window </li>
+</ul>
+<p>This code does the following: </p>
+<ul>
+  <li>Defines a 
+    &quot;result&quot; variable. The PopupDate function that is used in line 2 
+    gives back a result to indicate if the user changed the date or not ( result=1 
+    if yes or 0 if not). This variable has to be of type integer. This program 
+    doesn't use the result for anything but the use of the PopupDate function 
+    requires it. </li>
+  <li>Calls the 
+    PopupDate function to get the birthday entered by the user. This will revise 
+    the date stored in MyDate. </li>
+  <li>Puts the 
+    value of the new date into the form object birthday selector field.If this 
+    was not done, the old date value would remain visible. The str function converts 
+    the internal date format of the birthday in MyDate to text string of the form 
+    &quot;yy/mm/dd&quot; </li>
+</ul>
+<p>9. Code to transfer to Form 2 </p>
+<p>When the user taps on the &quot;Show the Day of the Week&quot; 
+  button, we want Form 2 to appear. </p>
+<ul>
+  <li>Double click 
+    on the button to bring up the Code Window </li>
+  <li>Enter these 
+    lines of code after the SUB line: </li>
+</ul>
+<pre>
+	MyName= fldName.text
+	NextForm &quot;My Form 2&quot; </pre>
+<ul>
+  <li>Close the 
+    code window. </li>
+</ul>
+<p>This code does the following: </p>
+<ul>
+  <li>When Form 
+    1 disappears, any info on it that the user entered will no longer be available 
+    unless saved in some global variable. Since the value entered as the user's 
+    name has not been previously saved, it is saved before exiting. The FldName.text 
+    expression pulls the name value off of the form and puts it in the global 
+    variable MyName so that it can be used in the code later in Form 2. </li>
+  <li>The NextForm 
+    command transfers control to Form 2 </li>
+</ul>
+<h4>10. Provide Code for Form 2 Objects </h4>
+<ul>
+  <li>Right click 
+    on Form 2 in the Project Explorer and select View Object. </li>
+</ul>
+<p>Supply code to be executed after the form is drawn </p>
+<ul>
+  <li>Right click 
+    on Form 2 in the Project Explorer and select View After Code </li>
+  <li>Enter these 
+    lines of code after the SUB line </li>
+</ul>
+<pre>
+	fldName2.text=MyName
+	fldDate2.text=dateMMDDYY(MyDate)
+	fldDayNumber.text=str(DayOfWeek(MyDate)) </pre>
+<ul>
+  <li>Close the 
+    Code Window. </li>
+</ul>
+<p>This code fills in form fields with values before the Palm 
+  device displays the form to the user. </p>
+<ul>
+  <li>It sets the 
+    field on the form that contains the user's name to the value from the global 
+    variable MyName. This value is what the user entered on Form 1. </li>
+  <li>It sets the 
+    field on the form which contains the birthday to the value from the global 
+    variable MyDate. This is the value entered on Form 1 by the user using the 
+    date popup routine. </li>
+  <li>It sets the 
+    field on the form that contains the Day-of-the-week which is a number from 
+    1 to 7. It does this by using the function DayOfWeek and supplying it as input 
+    the birthday in MyDate. Since the function returns a number as a result, this 
+    must be translated to a text string using the str function before it can be 
+    assigned to the text field, which must be a string. </li>
+</ul>
+<h4>11. Supply code for the Go Back button to go back to Form 1 </h4>
+<ul>
+  <li>Double click 
+    on the button to bring up the Code Window </li>
+  <li>Enter this 
+    code after the SUB line </li>
+</ul>
+<pre>
+	NextForm &quot;My Form 1&quot; </pre>
+<ul>
+  <li>Close the 
+    Code Window. </li>
+</ul>
+<p>When this button is selected, the program will just cause 
+  Form 1 to re-appear and the user can try another date.] </p>
+<ul>
+  <li>Save the 
+    Project </li>
+</ul>
+<p>This will save your project as c:\NSBasic\ MyProject.prj&nbsp; 
+  All form definitions, form objects, all code, and other project info are saved 
+  into the one project file. </p>
+<h4>12. Generate the downloadable Palm Device Files </h4>
+<ul>
+  <li>Select Compile 
+    from the Run menu. </li>
+</ul>
+<p>If you have any errors, an error message will appear and 
+  the code window will appear with the section of code where the error occurred 
+  highlighted. Errors must be corrected and Compile repeated until there are no 
+  more errors. If you do not have errors, a message box will appear showing the 
+  size of the compiled application. </p>
+<p>&nbsp;If you corrected any errors, you should re-save the project. This action 
+  creates a downloadable file in the c:\NSBasic\Download directory. </p>
+<pre>
+	c:\NSBasic\Download\myProject.prc </pre>
+<p>The file must be downloaded to the Palm device or to the 
+  POSE to execute your project. </p>
+<p>Congratulations !! You have now written your second NS Basic/Palm 
+  program. </p>
+<h2>Testing The Project </h2>
+<h3 align="center"><img border="0" src="images/TT02.23.gif" width="219" height="333">&nbsp; 
+  <img border="0" src="images/TT02.24.gif" width="219" height="333"></h3>
+<h3>Test Using the POSE </h3>
+<p>Make sure you have POSE installed and working before trying 
+  this. Instructions for installing POSE are in the ReadMe file. </p>
+<p>
+  In the Tools menu, select Options, then the Compile/Download tab. Select Send 
+  to Palm OS Emulator and Run Immediately in the After Compile section.</p>
+<p>
+  Start POSE from the Run menu</p>
+<p>
+  Load the PRC file by clicking the right mouse button and select Load </p>
+<h3>Test Using Your Palm Device </h3>
+<p>
+  In the Tools menu, select Options, then the Compile/Download tab. Select Hotsync 
+  to Device in the After Compile section</p>
+<p>
+  From the Run menu, select Download (project name).</p>
+<p>
+  Hotsync as you normally would do with your device.</p>
+<p>
+  After the Hotsync completes, tap the application menu button.</p>
+Select the HelloPgm icon and your program should begin execution. 
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+"mdl"
+8
+"signature1","appl","Sig1",1009,505,0
+"Sub main()
+  Global theSignature as String
+End Sub"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000115"
+""
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Screen1004"
+"Screen1004"
+""
+0
+""
+""
+0,0,0,0
+"gad"
+1
+"obj"
+3
+"gad","Sig",1005,12,108,28,116,#TRUE#,0,"Sig",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1006",1006,20,28,12,84,#TRUE#,0,"Erase Signature",0,0,0
+"Sub object1006()
+  sig.EraseSignature
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1007",1007,20,44,12,84,#TRUE#,0,"Start Capture",0,0,0
+"Sub object1007()
+  sig.startSignatureCapture
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1008",1008,20,60,12,84,#TRUE#,0,"End capture",0,0,0
+"Sub object1008()
+   theSignature=sig.endSignatureCapture( )
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1009",1009,20,76,12,84,#TRUE#,0,"Display Signature",0,0,0
+"Sub object1009()
+  sig.eraseSignature
+  If len(theSignature)>1 Then
+    sig.displaySignature theSignature
+  End If
+End Sub"
+"end"

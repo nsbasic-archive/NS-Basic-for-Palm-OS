@@ -1,0 +1,29 @@
+[General]
+ExtensionName=NSB-LifeDrive-Manager
+PrcName=NSBLifeDriveLib.prc
+Version=1.0
+InfVers=2.0
+Manufacturer=NSBasic.com
+[GlobalMethods]
+BrowserPresent=1, func, 0, "BrowserPresent() as UInt16"
+BrowserOpenDialog=2, func, 4, "BrowserOpenDialog(inout volume as  UInt16 , inout path as  char , inout extensions as  char , inout title as  char ) as UInt16"
+BrowserSaveDialog=3, func, 4, "BrowserSaveDialog(inout volume as  UInt16 , inout path as  char , inout extensions as  char , inout title as  char ) as UInt16"
+PhotoPresent=4, func, 0, "PhotoPresent() as UInt16"
+PhotoAlbumCount=5, func, 1, "PhotoAlbumCount(in vRefNum as  UInt16 ) as UInt16"
+PhotoAlbumID=6, func, 2, "PhotoAlbumID(in vRefNum as  UInt16 , in index as  UInt16 ) as UInt16"
+PhotoAlbumName=7, func, 1, "PhotoAlbumName(in albumID as  UInt16 ) as string"
+PhotoNewAlbum=8, func, 2, "PhotoNewAlbum(in vRefNum as  UInt16 , inout name as  char ) as UInt16"
+PhotoRenameAlbum=9, func, 2, "PhotoRenameAlbum(in albumID as  UInt16 , inout name as  char ) as UInt16"
+PhotoDeleteAlbum=10, func, 1, "PhotoDeleteAlbum(in albumID as  UInt16 ) as UInt16"
+PhotoDeleteAlbumAndContents=11, func, 1, "PhotoDeleteAlbumAndContents(in albumID as  UInt16 ) as UInt16"
+PhotoImageCount=12, func, 1, "PhotoImageCount(in albumID as  UInt16 ) as UInt16"
+PhotoSelectFromAlbum=13, proc, 3, "PhotoSelectFromAlbum(in albumID as  UInt16 , in start as  UInt16 , in number as  UInt16 )"
+PhotoSelectImage=14, proc, 0, "PhotoSelectImage()"
+PhotoSelectImages=15, proc, 0, "PhotoSelectImages()"
+PhotoSelectVideo=16, proc, 0, "PhotoSelectVideo()"
+PhotoSelectVideos=17, proc, 0, "PhotoSelectVideos()"
+PhotoSelectNone=18, proc, 0, "PhotoSelectNone()"
+PhotoSelectionCount=19, func, 0, "PhotoSelectionCount() as UInt16"
+PhotoSelectedImage=20, func, 1, "PhotoSelectedImage(in which as  UInt16 ) as UInt32"
+PhotoDisplayImage=21, proc, 5, "PhotoDisplayImage(in imageH as  UInt32 , in left as  UInt16 , in top as  UInt16 , in width as  UInt16 , in height as  UInt16 )"
+PhotoImageName=22, func, 1, "PhotoImageName(in imageH as  UInt32 ) as string"

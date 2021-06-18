@@ -1,0 +1,537 @@
+"mdl"
+7
+"LifeDriveTest","appl","Test",1064,420,0
+"Sub Project_Startup()
+    Dim r as Integer
+    LoadLibrary ~NSBLifeDriveLib~, ~LD~
+    LoadLibrary ~NSBVFSLib~, ~VFS~
+    r = VFS.Init()
+End Sub
+
+Global gVolume as Integer
+
+gVolume = 0
+
+Sub CalcPhotoAlbums()
+    Dim n as Integer
+    Dim s as String
+    Dim k as Integer
+    Dim albumID as Integer
+    
+    n = LD.PhotoAlbumCount(0)
+    s = str(n) + ~ album~
+    If n <> 1 Then
+        s = s + ~s~
+    End If
+    Field1020.text = s
+    List1018.clear
+    
+    If (n > 0) Then
+        For k = 1 to n
+            albumID = LD.PhotoAlbumID(gVolume, k)
+            s = LD.PhotoAlbumName(albumID) + ~ (ID=~ + str(albumID) + ~)~
+            List1018.add s
+        Next
+    End If
+End Sub
+
+
+"
+0
+0
+""
+""
+""
+"vew"
+3,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"LifeDrive-Browser"
+"Form1003"
+"Sub Form1003_Before()
+    Dim r as Integer
+    r = LD.BrowserPresent
+    If 0 = r Then
+        field1012.text = ~Browser not present~
+    Else
+        field1012.text = ~Browser present~
+    End If
+
+End Sub"
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1004",1004,4,36,12,72,#TRUE#,0,"Open Text"
+"Sub object1004()
+    Dim path as String
+    Dim extend as String
+    Dim title as String
+    Dim r as Integer
+    Dim volume as Integer
+    Dim s as String
+    Dim file as Integer
+    
+    title = ~Choose a file~
+    extend = ~txt~
+    path = ~~
+    
+    volume = gVolume
+    r = LD.BrowserOpenDialog(volume, path, extend, title)
+    
+    If (r <> 0) Then
+        field1047.text = path
+        gVolume = volume
+        VFS.SetCurVolume(volume)
+        file = VFS.Open(path, 7)
+        If file <> 0 Then
+            s = VFS.ReadString(file)
+            If r <> 0 Then
+                field1049.text = s
+            Else
+                MsgBox ~Error reading from file~
+            End If
+            VFS.Close(file)
+       Else
+            MsgBox ~Failed to open file~
+        End If
+    End If
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1012",1012,4,20,12,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1041",1041,4,128,12,72,#TRUE#,0,"Select Image"
+"Sub object1041()
+    LD.PhotoSelectImage
+    NextScreen ~Form1029~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1042",1042,80,128,12,72,#TRUE#,0,"Select Images"
+"Sub object1042()
+    LD.PhotoSelectImages
+    NextScreen ~Form1029~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1043",1043,4,144,12,44,#TRUE#,0,"Volumes"
+"Sub object1043()
+    NextScreen ~Form1053~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1044",1044,80,36,12,72,#TRUE#,0,"Save Text"
+"Sub object1044()
+    Dim path as String
+    Dim extend as String
+    Dim default as String
+    Dim title as String
+    Dim r as Integer
+    Dim volume as Integer
+    Dim file as Integer
+    
+    title = ~Save as~
+    extend = ~txt~
+    path = ~~
+    
+    volume = gVolume
+    
+    r = LD.BrowserSaveDialog(volume, path, extend, title)
+    
+    VFS.SetCurVolume(volume)
+    
+    If r <> 0 Then
+        VFS.FileCreate(path)
+        If r <> 0 Then
+            field1047.text = path
+            gVolume = volume
+            
+            file = VFS.Open(path, 7)
+            If file <> 0 Then
+                VFS.WriteString(file, field1049.text)
+                If r <> 0 Then
+                Else
+                    MsgBox ~Failed to write string~
+                End If
+                VFS.Close(file)
+            Else
+                MsgBox ~Failed to open file~
+            End If
+        Else
+            MsgBox ~Failed to create file~
+        End If
+    End If
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1047",1047,4,52,12,148,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,4000,#TRUE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1049",1049,4,68,56,148,#TRUE#,0,""
+""
+"shf"
+1
+"obj"
+2
+"shf","GSI1051",1051,144,144,8,8,#TRUE#,0,""
+""
+"vew"
+3,1010,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"LifeDrive-Albums"
+"Form1010"
+"Sub Form1010_Before()
+    Dim r as Integer
+    r = LD.PhotoPresent
+    If 0 = r Then
+        field1014.text = ~Photo not present~
+    Else
+        field1014.text = ~Photo present~
+        CalcPhotoAlbums
+    End If
+
+End Sub"
+0
+""
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1014",1014,4,20,12,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1016",1016,4,144,12,40,#TRUE#,0,"Browser"
+"Sub object1016()
+    NextScreen ~Form1003~
+End Sub"
+"lst"
+2
+4
+""
+"obj"
+2
+"lst","List1018",1018,4,52,44,152,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1020",1020,4,36,12,152,#TRUE#,0,""
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1022",1022,4,100,12,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1024",1024,4,116,12,28,#TRUE#,0,"New"
+"Sub object1024()
+    Dim name as String
+    Dim ret as Short
+    
+    name = Field1022.text
+    ret = LD.PhotoNewAlbum(0, name)
+    CalcPhotoAlbums
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1025",1025,72,116,12,44,#TRUE#,0,"Rename"
+"Sub object1025()
+    Dim albumID as Integer
+    Dim name as String
+    Dim success as Integer
+
+    If List1018.selected > 0 Then
+        albumID = LD.PhotoAlbumID(0, List1018.selected - 1)
+        name = Field1022.text
+        success = LD.PhotoRenameAlbum(albumID, name)
+        CalcPhotoAlbums
+    Else
+        MsgBox ~Select an album before renaming~
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1026",1026,120,116,12,40,#TRUE#,0,"Delete"
+"Sub object1026()
+    Dim albumID as Integer
+    Dim success as Integer
+
+    If List1018.selected > 0 Then
+        albumID = LD.PhotoAlbumID(0, List1018.selected - 1)
+        success = LD.PhotoDeleteAlbum(albumID)
+        CalcPhotoAlbums
+    Else
+        MsgBox ~Select an album before deleting~
+    End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1027",1027,36,116,12,32,#TRUE#,0,"Open"
+"Sub object1027()
+    Dim albumID as Integer
+    Dim n as Integer
+    
+    If List1018.selected > 0 Then
+        albumID = LD.PhotoAlbumID(gVolume, List1018.selected)
+        
+        n = LD.PhotoImageCount(albumID)
+        LD.PhotoSelectFromAlbum(albumID, 1, n)
+
+        NextScreen ~Form1029~
+    Else
+        MsgBox ~Select an album before opening~
+    End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1054",1054,48,144,12,44,#TRUE#,0,"Volumes"
+"Sub object1054()
+    NextScreen ~Form1053~
+End Sub"
+"vew"
+3,1029,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"LifeDrive-Images"
+"Form1029"
+"Sub Form1029_Before()
+    Dim n as Integer
+    Dim s as String
+    Dim k as Integer
+    Dim nSel as Integer
+    Dim name as String
+    Dim image as Integer
+        
+    nSel = LD.PhotoSelectionCount
+  
+    n = nSel
+    s = str(n) + ~ image~
+    If n <> 1 Then
+        s = s + ~s~
+    End If
+    Field1032.text = s
+   
+    
+    List1034.clear
+    For k = 1 to nSel
+        image = LD.PhotoSelectedImage(k)
+        name = LD.PhotoImageName(image)
+        List1034.add name
+    Next
+End Sub"
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1031",1031,4,144,12,40,#TRUE#,0,"Browser"
+"Sub object1031()
+    NextScreen ~Form1003~
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1032",1032,4,20,12,152,#TRUE#,0,""
+""
+"lst"
+2
+4
+""
+"obj"
+2
+"lst","List1034",1034,4,36,44,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1035",1035,4,88,12,36,#TRUE#,0,"Display"
+"Sub object1035()
+    Dim sel as Integer
+    Dim img as Integer
+    
+    sel = List1034.selected
+    
+    If sel < 1 Then
+        MsgBox ~Select an image before displaying~
+    Else
+        img = LD.PhotoSelectedImage(sel)
+        LD.PhotoDisplayImage(img, 96 84 60 60)
+    End If
+End Sub"
+"gad"
+1
+"obj"
+2
+"gad","Gadget1040",1040,96,84,60,60,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1055",1055,48,144,12,44,#TRUE#,0,"Volumes"
+"Sub object1055()
+    NextScreen ~Form1053~
+End Sub"
+"vew"
+3,1053,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"LifeDrive-Volumes"
+"Form1053"
+"Sub Form1053_Before()
+    Dim r as Integer
+    Dim n as Integer
+    Dim s as String
+    Dim k as Integer
+    Dim volumeID as Integer
+    Dim err as Integer
+    Dim con as Integer
+ 
+    n = 0
+    
+    VFS.BeginVolumeEnumerate()
+    
+    Do 
+     r = VFS.GetNextVolume()
+     con = VFS.GetLastError()
+     If con = 0 Then
+        n = n + 1
+      Else
+        Exit Do
+     EndIf
+    Loop
+ 
+    s = str(n) + ~ volume~
+    If n <> 1 Then
+        s = s + ~s~
+    End If
+    Field1062.text = s
+    List1064.clear
+    
+    If (n > 0) Then
+        VFS.BeginVolumeEnumerate()
+        For k = 1 to n
+            volumeID = VFS.GetNextVolume()
+            VFS.SetCurVolume(volumeID)
+            s = ~Device~
+            s = VFS.GetVolumeLabel()
+            s = s + ~ (ID=~ + str(volumeID) + ~)~
+            List1064.add s
+        Next
+    End If
+
+End Sub"
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1057",1057,4,144,12,40,#TRUE#,0,"Browser"
+"Sub object1057()
+    NextScreen ~Form1003~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","Button1058",1058,48,144,12,36,#TRUE#,0,"Albums"
+"Sub object1058()
+    Dim k as Integer
+    Dim volumeID as Integer
+    If List1064.selected > 0 Then
+       VFS.BeginVolumeEnumerate()
+       For k = 1 to List1064.Selected
+         volumeID = VFS.GetNextVolume()
+       Next
+       gVolume = volumeID
+   
+        NextScreen ~Form1010~
+    Else
+        MsgBox ~Select a volume before opening albums~
+    End If
+ End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1060",1060,4,20,12,152,#TRUE#,0,""
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","Field1062",1062,4,36,12,152,#TRUE#,0,""
+""
+"lst"
+2
+4
+""
+"obj"
+2
+"lst","List1064",1064,4,52,44,152,#TRUE#,0,""
+""
+"end"

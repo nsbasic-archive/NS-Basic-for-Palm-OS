@@ -1,0 +1,28 @@
+; This file is created by HELLLP! and is overwritten each time
+[Options]
+ROOT=E:\NSBP 3\Help\Chinese
+TITLE=NS Basic for Palm Online Help
+WARNING=1
+ERRORLOG=E:\NSBP 3\Help\Chinese\CHINESE.ERR
+COMPRESS=FALSE
+REPORT=ON
+BUILD=~helllpwork
+CONTENTS=CHINESE.TITLE
+COPYRIGHT=This file © George Henne 11/7/2003
+[FILES]
+~TITLE.RTF
+CHINESE.RTF
+[CONFIG]
+PositionWindow(460, 51, 560, 922, 1, "main")
+ChangeButtonBinding("btn_contents","JI(`CHINESE.HLP>WindowT',`CHINESE.TOC000')")
+CreateButton("About_btn","&About","About()")
+DB(`btn_print')
+[MAP]
+[WINDOWS]
+windowT="Contents",( 204, 51, 257, 922),0,,
+main=,(460, 51, 560, 922),,,
+[ALIAS]
+[BAGGAGE]
+[BITMAPS]
+[BUILDTAGS]
+helllpwork

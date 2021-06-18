@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbFind </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>DbFind                                                                                                     Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBFIND(<i>dbName</i> as Database, <i>dbKey</i> as anyVarType)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Ermittelt, ob ein Datensatz mit dem angegebenen Schlüssel
+in der übergebenen Datenbank existiert. Die Datenbank muss bereits mittels <i>dbOpen</i> geöffnet sein. <i>DbKey</i> muss eine Variable sein, kein
+Ausdruck. Der Fehlercode wird bei <i>dbOpen</i>
+detailliert beschrieben.</p>
+
+<p class=ManualBody><b>&nbsp;</b></p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>Dim err as Integer</p>
+
+<p class=Code>Err=DbFind(CustomerDb, “362”)</p>
+
+<p class=Code>If err&gt;0 then</p>
+
+<p class=Code>  Msgbox “Konnte Kundendatensatz 362 nicht
+finden !”</p>
+
+<p class=Code>end if</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

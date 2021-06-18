@@ -1,0 +1,159 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>Field </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4>Field                                                                                                               Object</h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><img width=193 height=79
+src="./outline_86_files/image003.gif" align=left hspace=12>A
+FIELD object is an area on the form where the user can key text. A value
+can also be set by the program. If you want to force a line feed in the text,
+use the &amp;h0A character (chr(10)). </p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>The code for a Field is executed when the user exits the field by tapping on some other
+object or menu item. The code may then perform editing for validity or other
+computations dependent on the new field value. This code will be triggered even
+if the user does not change the field value (e.g. taps on the field but then
+makes no changes) and positions on a different field. NS Basic/Palm does not
+keep track of the before and after field values; it only knows that the field
+was selected for editing and then the user moved off the field to another  object.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>A common program need is to read a database record and
+display the contents of fields to the user, let the user make changes, and then
+restore the new values to the database record. This would normally mean that in
+the form startup code, you would read the database record and place database
+values into each field.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Properties Supported</b>
+(Set at design time)</p>
+
+<p class=ManualBody>Label, Font ID, Text, Max Characters, Left Justified,
+Underline, Single Line, AutoShift, HasScrollbar, Dynamic Size, Editable,
+Numeric, Visible</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Methods Supported</b>
+(See &quot;Methods&quot;)</p>
+
+<p class=ManualBody>Left, Top, Width, Height, Hide, Show, Redraw, Text,
+SetFocus, ID, Index, Type</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Example</b></p>
+
+<p class=ManualBody>Read in  database
+record and display it. Let the user make changes and write it out.</p>
+
+<p class=Code>Dim Name as string</p>
+
+<p class=Code>Dim Age as integer</p>
+
+<p class=Code>Dim Married as integer '0=not or 1=married </p>
+
+<p class=Code>Dim err as integer</p>
+
+<p class=Code>Err=DbRead(MyDb, Name, Age, Married) 'using Name as key</p>
+
+<p class=Code>FldName.text=Name </p>
+
+<p class=Code>FldAge.text=str(Age)</p>
+
+<p class=Code>ChkMarried.status=Married</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Then, on the &quot;Done&quot; button that the user presses
+after changing the values on the form, you might have the code:</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=Code>Dim Name as string</p>
+
+<p class=Code>Dim Age as integer</p>
+
+<p class=Code>Dim Married as integer</p>
+
+<p class=Code>Dim err as Integer</p>
+
+<p class=Code>If not testNum(fldAge.Age, &quot; &quot;,3,0)=0 then</p>
+
+<p class=Code>  Beep</p>
+
+<p class=Code>  Msgbox &quot;Age field
+is not valid.&quot;</p>
+
+<p class=Code>  Exit sub </p>
+
+<p class=Code>end if </p>
+
+<p class=Code>Name=fldname.text</p>
+
+<p class=Code>Age=val(fldAge.text)</p>
+
+<p class=Code>Married=chkMarried.status</p>
+
+<p class=Code>Err=DbUpdate(MyDb, Name, Age,Married) </p>
+
+<span style='font-size:12.0pt;font-family:"Times New Roman";'><br clear=all style='
+page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

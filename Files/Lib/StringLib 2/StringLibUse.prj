@@ -1,0 +1,375 @@
+"mdl"
+6
+"StringLibUse","Test","Test",1032,109,0
+"Sub main()
+LoadLibrary ~NSBStringLib~,~STR~
+End Sub"
+""
+""
+""
+""
+""
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"StringLibUse"
+"Form1004"
+""
+0
+""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1005",1005,0,28,12,40,#TRUE#,0,"Version"
+"Sub object1005()
+Dim a as Integer
+a = STR.version()
+FldA.text = str(a)
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","FldA",1006,4,16,12,152,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1009",1009,76,28,12,40,#TRUE#,0,"Replace"
+"Sub object1009()
+Dim expr as String
+Dim find as String
+Dim rep as String
+Dim result as String
+Dim count as Short
+expr = fin.text
+find = fldnd.text
+rep = ~(R)~
+count = 10
+result=STR.Replace(expr,find,rep,count)
+FldA.text = result
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1010",1010,0,40,12,56,#TRUE#,0,"StrReverse"
+"Sub object1010()
+Dim s as String
+Dim r as String
+'MsgBox msg as String
+ s = fin.text
+ r = STR.StrReverse(s)
+Flda.text= r
+MsgBox ~result = ~ + r
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1011",1011,76,40,12,40,#TRUE#,0,"Space"
+"Sub object1011()
+Dim n as Short
+Dim r as String
+n = 10
+r = STR.Space(n)
+flda.text = r
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1012",1012,116,40,12,40,#TRUE#,0,"String"
+"Sub object1012()
+Dim r as String
+Dim s as String
+Dim n as Short
+n = 5
+s=~12~
+r = STR.CreateString(n,s)
+flda.text = r
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1013",1013,0,52,12,60,#TRUE#,0,"MonthName"
+"Sub object1013()
+Dim result as String
+Dim num as Short
+Dim trn as Short
+If tr.status = nsbChecked Then
+trn = 1
+Else
+trn = 0
+End If
+num = val(fin.text)
+result = STR.MonthName(num,trn)
+fldA.text = result
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1014",1014,80,52,12,76,#TRUE#,0,"WeekdayName"
+"Sub object1014()
+Dim result as String
+Dim num as Short
+Dim trn as Short
+Dim fdow as Short
+fdow = 0 ' use preference settings
+If tr.status = nsbChecked Then
+trn = 1
+Else
+trn = 0
+End If
+num = val(fin.text)
+result = STR.WeekdayName(num,trn,fdow)
+fldA.text = result
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1015",1015,0,64,12,56,#TRUE#,0,"InstrRev"
+"Sub object1015()
+Dim expr as String
+Dim find as String
+Dim start as Short
+Dim result as Short
+expr = fin.text
+find = fldnd.text
+start = -1 ' replace all
+result= STR.InstrRev(expr, find, start)
+flda.text = str(result)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1016",1016,76,64,12,40,#TRUE#,0,"LSet"
+"Sub object1016()
+Dim e as String
+Dim r as String
+e= ~0123456789~
+r= ~<-Left~
+STR.LSet(e,r)
+flda.text = e
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1017",1017,76,76,12,40,#TRUE#,0,"RSet"
+"Sub object1017()
+Dim e as String
+Dim r as String
+e = ~0123456789~
+r= ~Right->~
+STR.RSet(e,r)
+flda.text = e
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1018",1018,0,76,12,72,#TRUE#,0,"FormatNumber"
+"Sub object1018()
+Dim expression as Float
+Dim result as String
+Dim numDig as Short
+Dim frmt as Short
+frmt = 0 ' default
+If ILD.status = nsbChecked Then 
+frmt = frmt + 2 
+Else 
+ frmt = frmt + 1
+End If
+ 
+If parenth.status = nsbChecked Then 
+frmt = frmt + 8 
+Else 
+frmt = frmt + 4
+End If
+
+If gd.status = nsbChecked Then 
+frmt = frmt + 32 
+Else 
+frmt = frmt + 16
+End If
+
+numDig = val(fldnd.text)
+expression  = val(fin.text)
+result = STR.FormatNumber(expression ,numDig, frmt )
+flda.text = result
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1019",1019,76,88,12,68,#TRUE#,0,"FormatDate"
+"Sub object1019()
+Dim _date as Float
+Dim result as String
+Dim _format as Short
+_format=65
+_date=today()
+result = STR.FormatDate(_date,_format)
+flda.text = result
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1020",1020,76,100,12,68,#TRUE#,0,"FormatTime"
+"Sub object1020()
+Dim _time as Float
+Dim result as String
+Dim _format as Short
+_format=64
+_time =Now()
+result = STR.FormatTime(_time ,_format)
+flda.text = result
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1021",1021,0,88,12,76,#TRUE#,0,"FormatPercent"
+"Sub object1021()
+Dim expression as Float
+Dim result as String
+Dim numDig as Short
+Dim frmt as Short
+frmt = 0 ' default
+If ILD.status = nsbChecked Then 
+frmt = frmt + 2 
+Else 
+ frmt = frmt + 1
+End If
+ 
+If parenth.status = nsbChecked Then 
+frmt = frmt + 8 
+Else 
+frmt = frmt + 4
+End If
+
+If gd.status = nsbChecked Then 
+frmt = frmt + 32 
+Else 
+frmt = frmt + 16
+End If
+
+numDig = val(fldnd.text)
+expression  = val(fin.text)
+result = STR.FormatPercent(expression ,numDig, frmt )
+flda.text = result
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fin",1022,4,128,12,68,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","But1024",1024,0,100,12,76,#TRUE#,0,"FormatCurrency"
+"Sub object1024()
+Dim expression as Float
+Dim result as String
+Dim numDig as Short
+Dim frmt as Short
+frmt = 0 ' default
+If ILD.status = nsbChecked Then 
+frmt = frmt + 2 
+Else 
+ frmt = frmt + 1
+End If
+ 
+If parenth.status = nsbChecked Then 
+frmt = frmt + 8 
+Else 
+frmt = frmt + 4
+End If
+
+If gd.status = nsbChecked Then 
+frmt = frmt + 32 
+Else 
+frmt = frmt + 16
+End If
+
+numDig = val(fldnd.text)
+expression  = val(fin.text)
+result = STR.FormatCurrency(expression ,numDig, frmt )
+flda.text = result
+End Sub"
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1025",1025,4,116,12,32,#TRUE#,0,"Input"
+""
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","ild",1026,76,112,12,68,#TRUE#,0,"IncLidDig"
+""
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","parenth",1027,76,124,12,68,#TRUE#,0,"Parenth"
+""
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","gd",1028,76,136,12,68,#TRUE#,0,"GroupDig"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","fldnd",1029,72,148,12,76,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1031",1031,4,144,12,72,#TRUE#,0,"NumDig/find"
+""
+"chk"
+1
+#FALSE#,0,#TRUE#
+"obj"
+2
+"chk","tr",1032,64,52,12,16,#TRUE#,0,""
+""
+"end"

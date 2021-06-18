@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>DbCreateDatabaseFromResource</title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>DbCreateDatabaseFromResource                                                   Funktion</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>DBCREATEDATABASEFROMRESOURCE(<i>ResourceType</i> as String, <i>ResourceID</i> as Integer)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Beschreibung</p>
+
+<p class=ManualBody>Diese Funktion erlaubt es Ihnen, Datenbanken und Shared
+Libraries, die in Ihrer prc Datei stehen, auf Ihrem PDA zu extrahieren und
+installieren, so als wären sie per HotSync transferiert worden.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Zum Hinzufügen einer Ressource zu Ihrem Projekt benutzen
+Sie die „Add Ressource“ Option des Projekt Menüs oder klicken Sie die rechte
+Maustaste im Projekt Explorer. Wählen Sie die Datei auf Ihrem PC aus, die Sie
+als Ressource hinzufügen wollen. Das können pdb oder prc Dateien sein. Die <i>ResourceID</i>
+wird vom System generiert. Der <i>ResourceType</i> ist standardmäßig auf DBIM
+eingestellt, kann aber auf jeden anderen Wert geändert werden. Die maximale
+Größe einer Ressource ist auf 64k festgelegt. Ihre prc oder pdb Datei darf also
+nicht größer sein.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>Zur Laufzeit können Sie DbCreateDatabaseFromResource zu
+jeder Zeit aufrufen, um eine Shared Library oder Datenbank zu extrahieren. Die
+Funktion gibt einen Fehlercode zurück. Die Bedeutung der Fehlercodes können Sie
+der Tabelle zu DbOpen entnehmen.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel:</b></p>
+
+<p class=Code>Dim res as integer</p>
+
+<p class=Code>res=dmCreateDatabaseFromResource(&quot;DBIM&quot;,1015)</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

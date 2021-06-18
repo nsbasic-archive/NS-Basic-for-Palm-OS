@@ -1,0 +1,244 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 16a: More on Serial IR Communications</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 16a: More on Serial IR Communications</h2>
+	  <h3>Jan 22, 2002</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+
+Contributed by <A HREF="mailto:pelican2&copy; silcom.com">R. Simmons</A>. See this <A HREF="http://www.silcom.com/~pelican2">website</A> as well.
+
+<p>This TechNote describes a low speed serial IR interface using NSBasic, with 
+references to further reading. The data link described here provides a 
+one-way IR link,  (transmitted to the Palm IR recieve port) at 2400 baud, 
+using a Palm M100 for the PDA. The transmitter was created with a PIC 
+microcomputer, and example code is provided, along with a schematic of the 
+interface. 
+
+ 
+<H4>The IrDA Specification</H4>
+
+<p>The Palm IR port appears to comply with the IrDA specification, which is 
+very complex and comprehensive. Most of the spec deals with software 
+protocols and "layers", which I did not employ. The exact spec (in pdf 
+format, "zipped") can be downloaded here:
+<pre>
+<A HREF="http://www.irda.org/standards/specifications.asp">http://www.irda.org/standards/specifications.asp</A>
+</pre>
+<p>For my purposes, I only needed to learn about the physical "layer" of the 
+specification. 
+
+<p>To see it, select the document titled "IrDA SIR Data Specification" and 
+download it. Unzip the download, and select the pdf file titled 
+"IrPHY_1p4.PDF". Pages 14 - 16 contain most of the information I used. 
+
+<p>(NOTE: The page numbers printed in the document do NOT agree with the 
+"pdf viewer" page numbers, since several of the preliminary pages in 
+the document are not numbered. The page numbers identified above are 
+"pdf viewer" page numbers)
+
+
+<H4>General Profile</H4>
+
+<p>Essentially, (on the transmit side of the link) it is not as simple as 
+taking RS232 data and feeding it to an IR diode, but it is not too bad. 
+Each bit is encoded as an IR "pulse". The (maximum) duration of each 
+pulse equals 3/16 of the time for one bit of data. The time between two 
+successive pulses equals the time for the selected baud rate. 
+(= 1 / baud rate) I am running 2400 baud, so the (maximum) "on" 
+time = 78 microseconds, and time between bits = 417 microseconds.
+
+<p>The specification indicates pulses of much smaller duration are acceptable, 
+down to less than 2 microseconds in my case. I have tested it with pulses 
+as low as 5.5 microseconds, and it runs fine. The idea for using very 
+narrow pulses is to allow very high intensity pulses (= longer range for 
+the link) that would quickly "kill" a battery, (and the IR  diode) if 
+the pulse duration were not reduced to a small value.
+
+<p>Logic "1" bits are encoded as "dark", (LED = off) and logic "0" bits 
+are encoded as "bright" (LED = on). Data consists of a single start 
+bit (always logic "0" = LED "on") followed by 8 data bits, then a stop 
+bit. (stop bit = always logic "1" = LED "off")
+
+<p>I am actually using 2 stop bits, and there should be no limit to the 
+duration between characters, since this is an asynchronous link.
+
+<p>Each character consists of ASCII data, transmitted LSB first. In my case, 
+I am transmitting 7-bit ASCII, and the 8th data bit is parity. I am not 
+using parity, so I set this bit = logic "0". (LED = "on")
+
+
+<H4>The NSBasic Receiver Code</H4>
+
+<p>My NSBasic code included the following lines:
+
+<pre>
+	' Open the serial port
+	' This clears out the OpSys receive buffer
+	' And guarantees the received data is "fresh"
+
+		receive_error = serialopen(0,2400)
+
+	' Switch to the infrared comm port
+
+		receive_error = serialset("IR",1)
+</pre>
+<p>I did not have to change anything else, after switching to the IR port. 
+The rest of the recieve software was originally created to use the Palm 
+RS232 port, and it did not require any changes. When writing your code, 
+it might be best to get your software running properly with RS232 first, 
+then switch it to IR using the code above.
+
+
+<H4>The Hardware</H4>
+
+<p>This is a schematic of the hardware I employed to generate the IR pulses:
+
+		<IMG SRC="images/TN16a.gif" ALT="PIC IR" ALIGN=LEFT>
+
+<p>The chip is a PIC 16C773 micro, running with a 3.58 MHz crystal. The output 
+is a general-purpose TTL compatible I/O pin. The transistor allows me to 
+"hit" the diode with much more (pulse) current than would be available 
+from an ordinary TTL output. It also inverts the signal polarity... logic "0" 
+on the output pin turns the IR LED "on", so I donít have to invert the bits 
+in software. I didnít measure the diode current, but I suspect it is 
+somewhere around 100 - 150 milliamps. (average current is much lower, due 
+to the low duty cycle) 
+
+
+<H4>Maxim Chips</H4>
+
+<p>After mentioning the IR link to a friend of mine, he mentioned that Maxim 
+manufactures chips to convert from RS232 to IrDA. This might be a more 
+suitable approach for folks who arenít as "agile" with hardware or assembly 
+code:
+
+ 				http://www.maxim-ic.com/
+
+<p>Do a search on the website using keyword "IrDA", several devices 
+will pop up.
+
+
+<H4>The Software</H4>
+
+<p>I can provide the PIC source code for the ASCII character output routine, 
+on request. The routine is written for a PIC 16C773 micro, running with a 
+3.58 MHz crystal. It employs software timing loops for the pulse time and 
+baud rate, so it will be "crystal sensitive". You can request it from me 
+with an e-mail: pelican2&copy; silcom.com
+ 
+<p>It may be possible to achieve this software in a high-level language, but 
+since software timing loops are employed (here) for pulse durations and 
+baud rate generation, it is a gamble. For high speed data links, it will 
+be almost hopeless without an assembly routine, or high-level software 
+that is specifically designed for high data rates. 
+
+<p>Most folks probably donít know PIC assembly code and donít want to learn 
+it, so the following "descriptive" (assembly) code is provided, to serve 
+as a model. The CPU "calls" this routine, and the ASCII character to be 
+transmitted is stored in the variable named "ASCII_char": 
+
+
+<pre>'ASCII character ouput routine
+
+sub_char_out:
+
+	char_buffer = ASCII_char
+	for bit = 0 to 7
+		LED = off 
+		char_buffer = char_buffer / 2
+			if char_buff - fix(char_buffer) < 0.4 then LED = on 
+		gosub bit_out
+		char_buffer = fix(char_buffer)	
+	next bit 
+	return
+
+'ASCII bit output routine
+
+sub_bit_out:
+
+	LED_output_pin = LED
+		(wait for interval = LED_pulse_time)
+	LED_output_pin = off 
+		(wait for interval = (1/baud rate) - LED_pulse_time) 
+	return
+</pre>	
+	
+	
+<H4>Link Test Results</H4>
+
+<p>Link range is related to LED pulse power, and LED beamwidth. I employed an 
+LED with a (specified) beamwidth of 35 degrees, running at maybe 300 
+milliwatts (peak) and achieved a maximum (reliable) range of about 
+5 feet. I am not employing parity in my transmitted data, so the link I 
+am using should be quite vulnerable to data "dropouts" and "garbling". 
+  
+<p>In fact, the link did not "false" or "garble" the data, except for a very 
+small portion of this range, near the extreme limit of the link, and I had 
+to deliberately "hunt" to find this "grey" zone. This implies that the 
+internal hardware of the Palm IR reciever is pretty "conservative", which 
+should relieve the software of some (error checking) burden. 
+
+
+<H4>TechNote 16</H4>
+
+<p>Regarding <A HREF="TN16.htm">TechNote 16</A>, it does not mention that another (utility) program 
+is required to use the sample NSBasic program for the serial IR port. It is 
+called HackMaster, I found it with a Yahoo search. To use the NSBasic sample 
+program, (IRTest.prj) it appears you also need HackMaster as well as the 
+ComLink program from mr. Ringwald, identified in the TechNote. It appears 
+that HackMaster "enables" ComLink, which (in turn) enables IRTest.
+
+<p>Using these 3 programs, (and the transmit data format described above) I 
+was able to recieve and display text data transmitted from my device using 
+the IRTest program. Once I confirmed that the transmit data was of the proper 
+format, I removed the three programs mentioned here, and the link ran fine...
+
+
+<H4>General Topics</H4>
+
+<p>The beamwidth of the LED will have a significant affect on the maximum 
+range of the link... much greater than the power level of the LED. From 
+basic optics, cutting the beamwidth in half has the same effect as 
+increasing the LED power by a factor of 4.
+
+<p>Based on my observations, it should be possible to achive links with 
+distances in many tens of feet, using very narrow beamwidth LEDs. (but 
+they would be very difficult to "aim")
+
+<p>IR LEDs are available with a wide vareity of beamwidths, but all seem to 
+be limited (more or less) to about 500 milliwatts (peak) power. Ordinary 
+LEDs do not generate coherent light, so it should be possible to use several 
+IR LEDs (driven with the same data) if one will not suffice. (Possibly 
+one wide beam, one narrow beam)
+
+<p>For that matter, it would be very interesting to try a laser pointer as a 
+transmitter....hmmm... I wonder how fast a laser diode can be switched on 
+and off?
+
+ <p>Another "oddball" application might be possible if the IR port can be used 
+"full duplex" (transmit and recieve simultaneously) The IR port could be 
+used as a simple "proximity detector", for reflective objects placed near 
+the IR port. 
+
+<p>Possibly an optical tachometer... 
+
+<p>Yeah... go ahead... shove that $500 PDA down there, right next to that 
+turbocharged fan blade, running at 3000 RPM...
+</html>
+
+
+

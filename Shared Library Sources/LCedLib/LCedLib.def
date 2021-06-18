@@ -1,0 +1,1 @@
+syslib { "LCedLib" NSBi }export {  nothing nothing nothing nothing  LCedLibVersion InetOpen InetClose InetRead InetWrite InetFlush}

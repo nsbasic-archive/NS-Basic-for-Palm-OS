@@ -1,0 +1,507 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note XX: Using the DevInfoLib Shared Library</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+<B><FONT FACE="Helvetica" SIZE=5>
+      <P>Tech Note XX: Using the DevInfoLib Shared Library</P>
+      <P>Feb 7, 2005</P>
+</FONT><FONT FACE="Helvetica" SIZE=4><P>&nbsp;</P>
+</FONT><FONT FACE="Helvetica" SIZE=2><P>Copyright 2005 Douglas Handy</font></B></TD>
+</TR>
+</TABLE>
+<HR>
+
+<h2>Contents:</h2>
+<pre>
+    <a href="#intro">Introduction</a>
+    <a href="#quickRef">Function Index and Quick Reference</a>
+    <a href="#fullRef">Function Reference</a>
+</pre>
+
+<a name="intro"><h2>Introduction:</h2>
+<P> This library provides some basic information on the device on which 
+it is running.  It is provided as freeware, though donations are accepted 
+via PayPal when sent to dhandy1@bellsouth.net
+
+<P>In order to use the DevInfoLib Shared Library, the library must be 
+loaded using the NSBasic LoadLibrary statement.  This statement should
+be located in the program's Startup code so that the functions
+will be available throughout the program.  The LoadLibrary statement
+has an optional second parameter to allow you to specify an abbreviated
+reference name for the library's functions.  The examples in this
+document use "Dev" for this reference name.  Example:<br><br>
+
+<PRE>
+Program's Startup code:
+
+	Sub main()
+	    LoadLibrary "DevInfoLib", "Dev"
+	End Sub
+</PRE>
+
+<P>Also, in order to use the DevInfoLib Shared Library, the 
+Dev.INF file must be present in your "nsbasic\lib" directory 
+and the Dev.prc file must be added to your project as a resource with 
+a type of "libr".
+
+<P>All the parameter and return data types are either "Integer" or "String".  
+<a name="quickRef"><h2>Function Index and Quick Reference:</h2><pre>
+
+<a href="#Device Information">Device Information</a>
+    <a href="#CompanyID">CompanyID</a>          ID = CompanyID()
+    <a href="#DeviceID">DeviceID</a>           ID = DeviceID()
+    <a href="#HALid">HALid</a>              ID = HALid()
+    <a href="#HwrMiscFlags">HwrMiscFlags</a>       Flags = HwrMiscFlags()
+    <a href="#ProcessorID">ProcessorID</a>        ID = ProcessorID()
+    <a href="#GetSystemFeature">GetSystemFeature</a>   value = GetSystemFeature(ftr)
+    <a href="#GetFeature">GetFeature</a>         value = GetFeature(creator, ftr)
+    <a href="#SetFeature">SetFeature</a>         SetFeature creator, ftr, value
+    <a href="#GetBitValue">GetBitValue</a>        result = GetBitValue(intValue, bitNumber)
+    <a href="#SetBitValue">SetBitValue</a>        result = SetBitValue(intValue, bitNumber, bitValue)
+    <a href="#GetSerialNumber">GetSerialNumber</a>    SerialID = GetSerialNumber(AddCheckDigit)
+    <a href="#HotSyncUserName">HotSyncUserName</a>    HSUserName = HotSyncUserName()
+    <a href="#HotSyncUserID">HotSyncUserID</a>      HSUserID = HotSyncUserID()
+    <a href="#BatteryKind">BatteryKind</a>        Kind = BatteryKind()
+    <a href="#BatteryPct">BatteryPct</a>         Pct = BatteryPct()
+    <a href="#BatteryVolts">BatteryVolts</a>       Volts = BatteryVolts()
+    <a href="#IsPluggedIn">IsPluggedIn</a>        State = IsPluggedIn()
+    <a href="#IsDocked">IsDocked</a>           State = IsDocked()
+</pre>
+<a name="fullRef"><h2>DevInfoLib Function Reference:</h2>
+<a name="Device Information"><h3 align="center"><i>Device Information</i></h3>
+<blockquote>
+The device information functions provide information about
+the current device.
+</blockquote>
+<a name="CompanyID"><h4>CompanyID</h4>
+
+<pre>	ID = Dev.CompanyID()</pre>
+
+<blockquote>
+	Returns the company ID of the device manufacturer.  This is
+	a 4-byte code, as opposed to the name of the vendor.  Common
+	examples are "palm", "sony", "hspr", "grmn", or "Tpwv".
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	ID as String<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim ID as String
+
+	ID = Dev.CompanyID()
+</pre>
+<blockquote>
+If the code does not begin with a readable ASII character,
+an 8-byte string will be returned instead with the hexadecimal
+equivalent of the ID.
+</blockquote>
+<a name="DeviceID"><h4>DeviceID</h4>
+
+<pre>	ID = Dev.DeviceID()</pre>
+
+<blockquote>
+	Returns the device ID assigned by the device manufacturer.  This is
+	a 4-byte code, as opposed to the actual model name.  Tables of
+	common models can be found by searching the internet.  One such
+	list may be available at the following address:
+	   http://www.mobilegeographics.com/dev/devices.php
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	ID as String<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim ID as String
+
+	ID = Dev.DeviceID()
+</pre>
+<blockquote>
+If the code does not begin with a readable ASII character,
+an 8-byte string will be returned instead with the hexadecimal
+equivalent of the ID.
+</blockquote>
+<a name="HALid"><h4>HALid</h4>
+
+<pre>	ID = Dev.HALid()</pre>
+
+<blockquote>
+	Returns the "HAL" ID assigned by the device manufacturer.  HAL
+	stands for Hardware Abstraction Layer.  It is returned as a 4-byte
+	string value, when it contains a readable mneumonic value.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	ID as String<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim ID as String
+
+	ID = Dev.HALid()
+</pre>
+<blockquote>
+If the code does not begin with a readable ASII character,
+an 8-byte string will be returned instead with the hexadecimal
+equivalent of the ID.
+</blockquote>
+<a name="HwrMiscFlags"><h4>HwrMiscFlags</h4>
+
+<pre>	Flags = Dev.HwrMiscFlags()</pre>
+
+<blockquote>
+	Returns an integer with hardware flags defined by the vendor.  It
+	may be useful to help distinguish between various models within
+	some product lines.  See aso DeviceID().
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	Flags as Integer<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim Flags as Integer
+
+	Flags = Dev.HwrMiscFlags()
+</pre>
+<blockquote>
+Unlike CompanyID() and DeviceID(), this is returned as an
+integer value instead of a string.  This makes it useful to
+pass to BitValue() to check the status of individual bits.
+</blockquote>
+<a name="ProcessorID"><h4>ProcessorID</h4>
+
+<pre>	ID = Dev.ProcessorID()</pre>
+
+<blockquote>
+	Returns an integer representing what type of processor is used
+	in the device.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	ID as Integer<i>
+	       Processor types include:</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim ID as Integer
+
+	ID = Dev.ProcessorID()
+</pre>
+<a name="GetSystemFeature"><h4>GetSystemFeature</h4>
+
+<pre>	value = Dev.GetSystemFeature(ftr)</pre>
+
+<blockquote>
+	Returns an integer with the contents of a specific system
+	"feature" code.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	ftr as Integer<i>
+	       System feature number requested.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer<i>
+	       System feature value, or 0 if the feature does not exist.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+	Dim ftr as Integer
+
+	value = Dev.GetSystemFeature(ftr)
+</pre>
+<blockquote>
+System feature numbers are documented in SystemMgr.h within
+the Palm OS SDK.  The returned value may be passed to BitValue()
+to obtain the status of an individual bit.
+</blockquote>
+<a name="GetFeature"><h4>GetFeature</h4>
+
+<pre>	value = Dev.GetFeature(creator, ftr)</pre>
+
+<blockquote>
+	Returns an integer with the contents of any feature code set
+	by any application.  When used with creator ID "psys", it is
+	the equivalent of calling GetSystemFeature() above.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	creator as String<i>
+	       Creator ID of the feature number requested.</i>
+	ftr as Integer<i>
+	       Feature number requested (0-32767)</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	value as Integer<i>
+	       Feature value, or 0 if the feature does not exist.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim value as Integer
+	Dim creator as String
+	Dim ftr as Integer
+
+	value = Dev.GetFeature(creator, ftr)
+</pre>
+<blockquote>
+Feature values are used by some ROM based applications, and
+may be set by user applications as well.  See SetFeature().
+</blockquote>
+<a name="SetFeature"><h4>SetFeature</h4>
+
+<pre>	Dev.SetFeature creator, ftr, value</pre>
+
+<blockquote>
+	Stores an integer value as a "feature" code under Palm OS.
+	Features are a fast way to store integers which survive across
+	invocations of a program.  That is, they are like a global
+	variable which can be recalled the next time the program is
+	run.  However, they do NOT survive a soft reset.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	creator as String<i>
+	       Creator ID associated with the feature.  It is recommended
+
+	       to use your own application's creator ID for this.
+</i>
+	ftr as Integer<i>
+	       Feature number (0-32767)
+</i>
+	value as Integer<i></i>
+</pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim creator as String
+	Dim ftr as Integer
+	Dim value as Integer
+
+	Dev.SetFeature creator, ftr, value
+</pre>
+<blockquote>
+See also SetBitValue() to control individual bits of value.
+</blockquote>
+<a name="GetBitValue"><h4>GetBitValue</h4>
+
+<pre>	result = Dev.GetBitValue(intValue, bitNumber)</pre>
+
+<blockquote>
+	Returns 1 if the specified bit number is 1, otherwise it
+	returns 0.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	intValue as Integer<i>
+	       Bit to test; bits are numbered from right to left from 0 to 31.</i>
+	bitNumber as Integer<i></i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim intValue as Integer
+	Dim bitNumber as Integer
+
+	result = Dev.GetBitValue(intValue, bitNumber)
+</pre>
+<blockquote>
+BitValue() can be useful for analyzing values returned by such
+calls as HwrMiscFlags(), GetSystemFeature(), etc.
+</blockquote>
+<a name="SetBitValue"><h4>SetBitValue</h4>
+
+<pre>	result = Dev.SetBitValue(intValue, bitNumber, bitValue)</pre>
+
+<blockquote>
+	Sets the bit specified by bitNumber to the specified
+	bit value.
+</blockquote>
+<blockquote>Parameters:</blockquote>
+<pre>	intValue as Integer<i>
+	       Original integer value, before bit is changed.</i>
+	bitNumber as Integer<i>
+	       Bit to set; bits are numbered from right to left from 0 to 31.</i>
+	bitValue as Integer<i>
+	       New bit value (0 = off, 1 = on)</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	result as Integer<i>
+	       New integer value after changing the requested bit.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim result as Integer
+	Dim intValue as Integer
+	Dim bitNumber as Integer
+	Dim bitValue as Integer
+
+	result = Dev.SetBitValue(intValue, bitNumber, bitValue)
+</pre>
+<blockquote>
+This call may be useful with SetFeature().
+</blockquote>
+<a name="GetSerialNumber"><h4>GetSerialNumber</h4>
+
+<pre>	SerialID = Dev.GetSerialNumber(AddCheckDigit)</pre>
+
+<blockquote>
+	Returns the device ROM serial number, if any, and optionally
+	the check digit suffix.  This value corresponds to the value
+	display using the default app launcher Info menu on the Version
+	tab, and appears just below the OS version.
+	bit value.
+</blockquote>
+<blockquote>Parameter:</blockquote>
+<pre>	AddCheckDigit as Integer<i>
+	       Specify 0 to exclude the check digit; 1 to include the check digit.</i>
+</pre><blockquote>Returns:</blockquote>
+<pre>	SerialID as String<i>
+	       Serial number of device, when available.</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim SerialID as String
+	Dim AddCheckDigit as Integer
+
+	SerialID = Dev.GetSerialNumber(AddCheckDigit)
+</pre>
+<blockquote>
+Many common devices do not have a ROM serial number, and no
+amount of wishing will make it so.  Serial numbers will be a
+12 byte string without the check digit, and a 14 byte string
+if the suffix is included (where byte 13 is a hyphen as shown
+by the app launcher Info menu item).
+</blockquote>
+<a name="HotSyncUserName"><h4>HotSyncUserName</h4>
+
+<pre>	HSUserName = Dev.HotSyncUserName()</pre>
+
+<blockquote>
+	Returns the HotSync user name.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	HSUserName as String<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim HSUserName as String
+
+	HSUserName = Dev.HotSyncUserName()
+</pre>
+<blockquote>
+If Hot Sync has never been run, or after a hard reset, this
+returns an empty string.
+</blockquote>
+<a name="HotSyncUserID"><h4>HotSyncUserID</h4>
+
+<pre>	HSUserID = Dev.HotSyncUserID()</pre>
+
+<blockquote>
+	Returns the HotSync user ID number.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	HSUserID as Integer<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim HSUserID as Integer
+
+	HSUserID = Dev.HotSyncUserID()
+</pre>
+<blockquote>
+The user ID number is a pseudo-random number assigned by
+Hot Sync to help warn against using two devices with the
+same user name on a given PC.  Such can result in co-mingling
+or loss of data, so to help avoid it an ID number is assigned
+and compared with the desktop.
+</blockquote>
+<a name="BatteryKind"><h4>BatteryKind</h4>
+
+<pre>	Kind = Dev.BatteryKind()</pre>
+
+<blockquote>
+	Returns the type of battery installed on the device.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	Kind as Integer<i>
+	       One of the following values:
+	         0 = Alkaline
+	         1 = NiCad
+	         2 = LiIon
+	         3 = Rechargeable Alkaline
+	         4 = NiMH
+	         5 = LiIon, 1400mah</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim Kind as Integer
+
+	Kind = Dev.BatteryKind()
+</pre>
+<a name="BatteryPct"><h4>BatteryPct</h4>
+
+<pre>	Pct = Dev.BatteryPct()</pre>
+
+<blockquote>
+	Returns the approximate percentage of battery life remaining.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	Pct as Integer<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim Pct as Integer
+
+	Pct = Dev.BatteryPct()
+</pre>
+<blockquote>
+This figure is an approximation.  Palm OS will issue warnings
+when the percentage drops to a certain level, and entirely
+force the unit off when critically low in order to attempt to
+preserve memory contents until the batteries are replaced.
+</blockquote>
+<a name="BatteryVolts"><h4>BatteryVolts</h4>
+
+<pre>	Volts = Dev.BatteryVolts()</pre>
+
+<blockquote>
+	Returns the current battery voltage multipled by 100.  For
+	example, 3.02 volts is returned as 302.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	Volts as Integer<i></i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim Volts as Integer
+
+	Volts = Dev.BatteryVolts()
+</pre>
+<a name="IsPluggedIn"><h4>IsPluggedIn</h4>
+
+<pre>	State = Dev.IsPluggedIn()</pre>
+
+<blockquote>
+	For rechargeable units, indicates if it is currently plugged in.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	State as Integer<i>
+	       0 = not plugged in; 1 = plugged in</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim State as Integer
+
+	State = Dev.IsPluggedIn()
+</pre>
+<blockquote>
+The device may or may not also be in a cradle, or even if in a
+cradle it may not have power supplied.  See also IsDocked().
+</blockquote>
+<a name="IsDocked"><h4>IsDocked</h4>
+
+<pre>	State = Dev.IsDocked()</pre>
+
+<blockquote>
+	Indicates if device is currently docked to a desktop.
+</blockquote>
+</pre><blockquote>Returns:</blockquote>
+<pre>	State as Integer<i>
+	       0 = not docked; 1 = docked via cradle or cable</i></pre>
+
+<blockquote>Example:</blockquote><pre>
+	Dim State as Integer
+
+	State = Dev.IsDocked()
+</pre>
+<blockquote>
+The device may or may not also be recharging.  See also
+IsPluggedIn() above.  Some units do not support detecting
+whether or not they are currently docked.
+</blockquote>
+</html>
+

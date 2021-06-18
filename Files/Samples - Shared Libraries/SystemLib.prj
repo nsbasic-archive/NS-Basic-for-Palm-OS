@@ -1,0 +1,4325 @@
+"mdl"
+8
+"SysLibTest","appl","NSt0",1753,505,0
+"Global gblCardNo as Integer
+Global gblLocalID as Integer
+Global gblLocalIDs(1000) as Integer
+Global gblCardNos(1000) as Integer
+Global gblClear as Integer
+
+Global gblStartX as Integer
+Global gblStartY as Integer
+Global gblEndX as Integer
+Global gblEndY as Integer
+Global gblTitleLine as Integer
+Global gblEventType as Integer
+Global gblUpDn as Integer
+
+Sub Project_Startup()
+    gblClear = 1
+    LoadLibrary ~NSBSystemLib~, ~NSL~
+End Sub
+
+"
+0
+0
+"SysLibTest"
+"1.2.3a"
+""
+"Installat."
+""
+"E1000157"
+""
+"resfile"
+1
+"NSBSystemLib"
+1753
+"DBIM"
+"..\..\Lib\NSBSystemLib.prc"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"SysLibTest"
+"frmMain"
+""
+0
+""
+"Sub Form1003_Event()
+    Dim eventType as Integer
+    
+    eventType = GetEventType()
+    If eventType = 30000 Then
+        MsgBox Str(eventType)
+        SetEventHandled
+    End If
+End Sub"
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,86,50,12,68,#TRUE#,0,"System Time",0,0,0
+"Sub object1004()
+    NextScreen ~frmDateTime1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1053",1053,4,50,12,68,#TRUE#,0,"Database",0,0,0
+"Sub object1053()
+    NextScreen ~frmDatabase1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1132",1132,4,98,12,70,#TRUE#,0,"Form&Fields 1",0,0,0
+"Sub object1132()
+    NextScreen ~frmFormFields1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1198",1198,4,66,12,70,#TRUE#,0,"Events1",0,0,0
+"Sub object1198()
+    NextScreen ~frmEvents1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1201",1201,4,82,12,70,#TRUE#,0,"Events2",0,0,0
+"Sub object1201()
+    NextScreen ~frmEvents2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1272",1272,4,114,12,70,#TRUE#,0,"Misc",0,0,0
+"Sub object1272()
+    NextScreen ~frmMisc1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1315",1315,4,18,12,68,#TRUE#,0,"Alarms1",0,0,0
+"Sub object1315()
+    NextScreen ~frmAlarm1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1327",1327,4,34,12,68,#TRUE#,0,"Alarms2",0,0,0
+"Sub object1327()
+    NextScreen ~frmAlarms2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1341",1341,86,18,12,68,#TRUE#,0,"Prefs",0,0,0
+"Sub object1341()
+    NextScreen ~frmPrefs1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1484",1484,86,34,12,68,#TRUE#,0,"Progress Mgr",0,0,0
+"Sub object1484()
+    NextScreen ~frmProgress1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1507",1507,86,66,12,68,#TRUE#,0,"Version Info",0,0,0
+"Sub object1507()
+    NextScreen ~frmVersionInfo~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1568",1568,86,82,12,68,#TRUE#,0,"Strings",0,0,0
+"Sub object1568()
+    NextScreen ~frmStrings~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1586",1586,86,98,12,68,#TRUE#,0,"Form&Fields 2",0,0,0
+"Sub object1586()
+    NextScreen ~frmFields2~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1627",1627,4,130,12,70,#TRUE#,0,"Fonts",0,0,0
+"Sub object1627()
+    NextScreen ~frmFonts1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1660",1660,86,114,12,68,#TRUE#,0,"Form&Fields 3",0,0,0
+"Sub object1660()
+    NextScreen ~frmFields3~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1685",1685,86,130,12,68,#TRUE#,0,"ListBoxes",0,0,0
+"Sub object1685()
+    NextScreen ~frmListBox1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1720",1720,4,146,12,70,#TRUE#,0,"RandomNumber",0,0,0
+"Sub object1720()
+    NextForm ~frmRandom~
+
+End Sub"
+"vew"
+4,1006,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Date&Time"
+"frmDateTime1"
+""
+0
+""
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1015",1015,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1015()
+    NextScreen ~frmMain~
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDate",1016,34,20,12,120,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1018",1018,4,20,11,22,#TRUE#,0,"Date:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1019",1019,4,48,11,23,#TRUE#,0,"Time:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1020",1020,4,62,11,33,#TRUE#,0,"ToDate:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldToDate",1024,40,62,12,16,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTime",1027,32,48,12,122,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1029",1029,62,62,11,34,#TRUE#,0,"ToTime:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldToTime",1030,98,62,12,18,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1032",1032,120,62,11,15,#TRUE#,0,"PM:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAMPM",1033,140,62,12,16,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1035",1035,4,92,12,58,#TRUE#,0,"SystemTime",0,0,0
+"Sub object1035()
+    Dim strDate as String
+    Dim strTime as String
+    Dim ToDateFormat as Integer
+    Dim Seconds as Integer
+    Dim sysTime as Integer
+    
+    strDate = fldDate.text
+    strTime = fldTime.text
+    ToDateFormat = Val(fldToDate.text)
+    Seconds = Val(fldSeconds.text)
+    
+    sysTime = NSL.SystemTime(strDate, strTime, Seconds, ToDateFormat)
+    
+    fldSystemTime.text = Str(sysTime)
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1036",1036,4,76,11,55,#TRUE#,0,"SystemTime:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSystemTime",1037,62,76,12,96,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1039",1039,110,34,11,20,#TRUE#,0,"Secs:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSeconds",1040,132,34,12,22,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1042",1042,4,34,11,26,#TRUE#,0,"Hours:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldHours",1043,34,34,12,22,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1045",1045,60,34,11,21,#TRUE#,0,"Mins:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldMinutes",1046,84,34,12,22,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1049",1049,68,92,12,88,#TRUE#,0,"IncrementSysTime",0,0,0
+"Sub object1049()
+    Dim Hours as Integer
+    Dim Minutes as Integer
+    Dim Seconds as Integer
+    Dim sysTime as Integer
+    
+    Hours = Val(fldHours.text)
+    Minutes = Val(fldMinutes.text)
+    Seconds = Val(fldSeconds.text)
+    sysTime = Val(fldSystemTime.text)
+    
+    sysTime = NSL.IncrementSystemTime(sysTime, Hours, Minutes, Seconds)
+    
+    fldSystemTime.text = Str(sysTime)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1050",1050,4,108,12,62,#TRUE#,0,"StrDateTime",0,0,0
+"Sub object1050()
+    Dim strDate as String
+    Dim ToDateFormat as Integer
+    Dim ToTimeFormat as Integer
+    Dim AMPMFormat as Integer
+    Dim sysTime as Integer
+    
+    ToDateFormat = Val(fldToDate.text)
+    ToTimeFormat = Val(fldToTime.text)
+    AMPMFormat = Val(fldAMPM.text)
+    sysTime = Val(fldSystemTime.text)
+    
+    strDate = NSL.StringDateTime(sysTime, ToDateFormat, ToTimeFormat, AMPMFormat)
+    
+    fldDate.text = strDate
+    fldTime.text = ~~
+  
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1051",1051,70,108,12,40,#TRUE#,0,"StrDate",0,0,0
+"Sub object1051()
+    Dim strDate as String
+    Dim ToDateFormat as Integer
+    Dim sysTime as Integer
+    
+    ToDateFormat = Val(fldToDate.text)
+    sysTime = Val(fldSystemTime.text)
+    
+    strDate = NSL.StringDate(sysTime, ToDateFormat)
+    
+    fldDate.text = strDate
+    fldTime.text = ~~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1052",1052,114,108,12,42,#TRUE#,0,"StrTime",0,0,0
+"Sub object1052()
+    Dim strTime as String
+    Dim ToDateFormat as Integer
+    Dim ToTimeFormat as Integer
+    Dim AMPMFormat as Integer
+    Dim sysTime as Integer
+    
+    ToTimeFormat = Val(fldToTime.text)
+    AMPMFormat = Val(fldAMPM.text)
+    sysTime = Val(fldSystemTime.text)
+    
+    strTime = NSL.StringTime(sysTime, ToTimeFormat, AMPMFormat)
+    
+    fldTime.text = strTime
+    fldDate.text = ~~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1369",1369,6,138,11,61,#TRUE#,0,"Localized Date:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldLocalDate",1370,70,138,12,86,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1372",1372,92,124,12,64,#TRUE#,0,"Localize Date",0,0,0
+"Sub object1372()
+    Dim stdDateStr as String
+    Dim localDateStr as String
+    Dim ToDateFormat as Integer
+    Dim LongDateFormat as Integer
+    
+    stdDateStr = fldDate.text
+    ToDateFormat = Val(fldToDate.text)
+    LongDateFormat = Val(fldLongDateFormat.text)
+    localDateStr = NSL.LocalizeDate(stdDateStr, ToDateFormat, LongDateFormat)
+    fldLocalDate.text = localDateStr
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1373",1373,6,148,11,44,#TRUE#,0,"Long Date:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldLongDateFormat",1374,52,148,12,14,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1384",1384,4,124,12,56,#TRUE#,0,"Select1Time",0,0,0
+"Sub object1384()
+    Dim defHour as Integer
+    Dim defMinute as Integer
+    Dim newTimeSelected as Integer
+    
+    defHour = Val(fldHours.text)
+    defMinute = Val(fldMinutes.text)
+    newTimeSelected = NSL.SelectOneTime(defHour, defMinute, ~Some Title~)
+    
+    fldNewTimeSelected.text = Str(newTimeSelected)
+    defHour = NSL.GlobalHour()
+    defMinute = NSL.GlobalMinute()
+    fldHours.text = Str(defHour)
+    fldMinutes.text = Str(defMinute)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNewTimeSelected",1385,66,124,12,16,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1055,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Database"
+"frmDatabase1"
+""
+0
+"Sub Form1055_After()
+    If gblClear = 1 Then
+        lstDbList.clear
+    End If
+    gblClear = 0
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1056",1056,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1056()
+    gblClear = 1
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1057",1057,6,20,11,32,#TRUE#,0,"CardNo:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCardNo",1058,42,20,12,14,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1063",1063,6,34,11,24,#TRUE#,0,"Type:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDbType",1064,34,34,12,36,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1066",1066,76,34,11,42,#TRUE#,0,"CreatorID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDbCreatorID",1067,122,34,12,34,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1069",1069,4,50,12,34,#TRUE#,0,"GetDB",0,0,0
+"Sub object1069()
+    Dim nbr as Integer
+    Dim cardNo as Integer
+    Dim dbID as Integer
+    Dim dbIndex as Integer
+    Dim dbLocalID as Integer
+    Dim dbName as String
+    
+    cardNo = Val(fldCardNo.text)
+    nbr = NSL.NumDatabases(cardNo)
+    fldNumDatabases.text = Str(nbr)
+    
+    lstDbList.clear
+    dbIndex = 0
+    Do While dbIndex < nbr
+        dbLocalID = NSL.GetDatabase(cardNo, dbIndex)
+        If dbLocalID <> 0 Then
+            dbName = NSL.DatabaseInfo(cardNo, dbLocalID)
+            lstDbList.add dbName, NODISPLAY
+        End If
+        dbIndex = dbIndex + 1
+        gblLocalIDs(dbIndex) = dbLocalID
+        gblCardNos(dbIndex) = cardNo
+    Loop
+    lstDbList.redraw
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1070",1070,42,50,12,116,#TRUE#,0,"GetNextDBByTypeCreator",0,0,0
+"Sub object1070()
+    Dim cardNo as Integer
+    Dim dbID as Integer
+    Dim dbIndex as Integer
+    Dim dbLocalID as Integer
+    Dim dbName as String
+    Dim dbType as Integer
+    Dim dbCreatorID as Integer
+    Dim txtString as String
+    Dim newSearch as Integer
+    Dim onlyLatestVersion as Integer
+    
+    txtString = fldDbType.text
+    If (txtString <> ~~) Then
+        dbType = NSL.String4ToInt(txtString)
+    Else
+        dbType = 0
+    End If
+    
+    txtString = fldDbCreatorID.text
+    If (txtString <> ~~) Then
+        dbCreatorID = NSL.String4ToInt(txtString)
+    Else
+        dbCreatorID = 0
+    End If
+    
+    onlyLatestVersion = Val(fldOnlyLatestVersion.text)
+    newSearch = 1
+    
+    lstDbList.clear
+    dbIndex = 0
+    dbLocalID = 1
+    Do While dbLocalID <> 0
+        dbLocalID = NSL.GetNextDatabaseByTypeCreator(newSearch, _
+                              dbType, dbCreatorID, onlyLatestVersion)
+        If dbLocalID <> 0 Then
+            cardNo = NSL.DatabaseCardNo()
+            dbName = NSL.DatabaseInfo(cardNo, dbLocalID)
+            lstDbList.add dbName, NODISPLAY
+        End If
+        dbIndex = dbIndex + 1
+        gblLocalIDs(dbIndex) = dbLocalID
+        gblCardNos(dbIndex) = cardNo
+        newSearch = 0
+    Loop
+    lstDbList.redraw
+    fldNumDatabases.text = Str(dbIndex - 1)
+End Sub"
+"lst"
+2
+7
+""
+"obj"
+3
+"lst","lstDbList",1071,4,66,78,142,#TRUE#,0,"",0,0,0
+"Sub object1071()
+    gblLocalID = gblLocalIDs(lstDbList.selected)
+    gblCardNo = gblCardNos(lstDbList.selected)
+    NextScreen ~frmDatabaseInfo~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1072",1072,4,146,11,64,#TRUE#,0,"NumDatabases:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNumDatabases",1073,73,147,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1115",1115,60,20,11,80,#TRUE#,0,"OnlyLatestVersion:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldOnlyLatestVersion",1116,142,20,12,14,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1076,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"DatabaseInfo"
+"frmDatabaseInfo"
+""
+0
+"Sub Form1076_After()
+    Dim dbName as String
+    Dim dbAttributes as Integer
+    Dim dbVersion as Integer
+    Dim dbCreationDate as Integer
+    Dim dbModificationDate as Integer
+    Dim dbBackupDate as Integer
+    Dim dbModificationNumber as Integer
+    Dim dbAppInfoId as Integer
+    Dim dbSortInfoId as Integer
+    Dim dbType as Integer
+    Dim dbCreatorID as Integer
+    Dim txtDate as String
+    Dim txtString as String
+    Dim numRecs as Integer
+    Dim totSize as Integer
+    Dim dataSize as Integer
+    
+    fldDbID.text = Str(gblLocalID)
+    
+    dbName = NSL.DatabaseInfo(gblCardNo, gblLocalId)
+    fldDbName.text = dbName
+    
+    dbAttributes = NSL.DatabaseAttributes()
+    fldAttributes.text = Str(dbAttributes)
+    
+    dbVersion = NSL.DatabaseVersion()
+    fldVersion.text = Str(dbVersion)
+    
+    dbCreationDate = NSL.DatabaseCreationDate()
+    txtDate = NSL.StringDateTime(dbCreationDate, 1, 1, 0)
+    fldCreationDate.text = txtDate
+
+    dbModificationDate = NSL.DatabaseModificationDate()
+    txtDate = NSL.StringDateTime(dbModificationDate, 1, 1, 0)
+    fldModDate.text = txtDate
+
+    dbBackupDate = NSL.DatabaseBackupDate()
+    txtDate = NSL.StringDateTime(dbBackupDate, 1, 1, 0)
+    fldBackupDate.text = txtDate
+
+    dbModificationNumber = NSL.DatabaseModificationNumber()
+    fldModNumber.text = Str(dbModificationNumber)
+    
+    dbAppInfoID = NSL.DatabaseAppInfoID()
+    fldAppInfoID.text = Str(dbAppInfoID)
+
+    dbSortInfoID = NSL.DatabaseSortInfoID()
+    fldSortInfoID.text = Str(dbSortInfoID)
+
+    dbType = NSL.DatabaseType()
+    txtString = NSL.IntToString4(dbType)
+    fldType.text = txtString
+    
+    dbCreatorID = NSL.DatabaseCreatorID()
+    txtString = NSL.IntToString4(dbCreatorID)
+    fldCreatorID.text = txtString
+
+    totSize = NSL.DatabaseTotalSize(gblCardNo, gblLocalID)
+    fldTotSize.text = Str(totSize)
+
+    dataSize = NSL.DatabaseDataSize()
+    fldDataSize.text = Str(dataSize)
+    
+    numRecs = NSL.DatabaseNumRecords()
+    fldNumRecs.text = Str(numRecs)
+
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1077",1077,122,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1077()
+    Dim result as Integer
+    Dim status as Integer
+    Dim txtString as String
+    Dim nbr as Integer
+    Dim dirty as Integer
+    
+    dirty = NSL.FieldAnyDirty()
+    If dirty = 1 Then
+        result = Alert(~SetDatabase...~, ~Apply changes?~, 1, ~Yes~, ~No~)
+        If result <> 0 Then
+            NextScreen ~frmDatabase1~
+            Exit Sub
+        End If
+        dirty = NSL.FieldDirty(1082)
+        If dirty = 1 Then
+            txtString = fldDbName.text
+            status = NSL.SetDatabaseName(gblCardNo, gblLocalId, txtString)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseName status = ~ + Str(status)
+            End If
+            gblClear = 1
+        End If
+        dirty = NSL.FieldDirty(1085)
+        If dirty = 1 Then
+            nbr = Val(fldAttributes.text)
+            status = NSL.SetDatabaseAttributes(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseAttributes status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1088)
+        If dirty = 1 Then
+            nbr = Val(fldVersion.text)
+            status = NSL.SetDatabaseVersion(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseVersion status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1091)
+        If dirty = 1 Then
+            txtString = fldCreationDate.text
+            nbr = NSL.SystemTime(txtString, ~~, 0, 1)
+            status = NSL.SetDatabaseCreationDate(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseCreationDate status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1094)
+        If dirty = 1 Then
+            txtString = fldModDate.text
+            nbr = NSL.SystemTime(txtString, ~~, 0, 1)
+            status = NSL.SetDatabaseModificationDate(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseModificationDate status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1097)
+        If dirty = 1 Then
+            txtString = fldBackupDate.text
+            nbr = NSL.SystemTime(txtString, ~~, 0, 1)
+            status = NSL.SetDatabaseBackupDate(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseBackupDate status = ~ + Str(status)
+            End If
+         End If
+        dirty = NSL.FieldDirty(1100)
+        If dirty = 1 Then
+            nbr = Val(fldModNumber.text)
+            status = NSL.SetDatabaseModificationNumber(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseModificationNumber status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1107)
+        If dirty = 1 Then
+            nbr = Val(fldAppInfoID.text)
+            status = NSL.SetDatabaseAppInfoID(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseAppInfoID status = ~ + Str(status)
+            End If
+        End If      
+        dirty = NSL.FieldDirty(1110)
+        If dirty = 1 Then
+            nbr = Val(fldSortInfoID.text)
+            status = NSL.SetDatabaseSortInfoID(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseSortInfoID status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1104)
+        If dirty = 0 Then
+            txtString = fldType.text
+            nbr = NSL.String4ToInt(txtString)
+            status = NSL.SetDatabaseType(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseType status = ~ + Str(status)
+            End If
+        End If
+        dirty = NSL.FieldDirty(1113)
+        If dirty = 0 Then
+            txtString = fldCreatorID.text
+            nbr = NSL.String4ToInt(txtString)
+            status = NSL.SetDatabaseCreatorID(gblCardNo, gblLocalId, nbr)
+            If status <> 0 Then
+                MsgBox ~SetDatabaseCreatorID status = ~ + Str(status)
+            End If
+        End If
+        Redraw
+    Else
+        NextScreen ~frmDatabase1~
+    End If
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1078",1078,4,32,11,21,#TRUE#,0,"DbID:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDbID",1079,26,32,12,62,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1081",1081,4,18,11,26,#TRUE#,0,"Name:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDbName",1082,32,18,12,126,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1084",1084,92,32,11,23,#TRUE#,0,"Attrs:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAttributes",1085,120,32,14,28,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1087",1087,90,60,11,33,#TRUE#,0,"Version:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldVersion",1088,126,60,14,30,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1090",1090,4,76,11,36,#TRUE#,0,"CreDate:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCreationDate",1091,42,76,12,116,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1093",1093,4,90,11,40,#TRUE#,0,"ModDate:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldModDate",1094,48,90,12,110,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1096",1096,4,104,11,43,#TRUE#,0,"BkUpDate:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldBackupDate",1097,48,104,12,110,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1099",1099,4,116,11,37,#TRUE#,0,"Mod Nbr:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldModNumber",1100,48,117,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1102",1102,102,116,11,24,#TRUE#,0,"Type:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldType",1104,128,116,12,30,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1106",1106,4,130,11,25,#TRUE#,0,"AppID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAppInfoID",1107,34,130,12,66,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1109",1109,4,143,11,28,#TRUE#,0,"SortID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSortInfoID",1110,34,142,12,66,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1112",1112,114,134,11,42,#TRUE#,0,"CreatorID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCreatorID",1113,114,146,12,38,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1118",1118,4,46,11,16,#TRUE#,0,"Size",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1119",1119,24,46,11,17,#TRUE#,0,"Tot:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTotSize",1120,46,46,12,40,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1122",1122,90,46,11,22,#TRUE#,0,"Data:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDataSize",1123,114,46,12,40,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1125",1125,4,60,11,41,#TRUE#,0,"Num Recs:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNumRecs",1126,48,60,12,38,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1128",1128,78,2,10,36,#TRUE#,0,"Delete",0,0,0
+"Sub object1128()
+    Dim status as Integer
+    
+    status = NSL.DeleteDatabase(gblCardNo, gblLocalID)
+    If (status <> 0)
+        MsgBox ~DeleteDatabase status = ~ + Str(status)
+    End If
+    gblClear = 1
+    NextScreen ~frmDatabase1~
+End Sub"
+"vew"
+4,1134,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form&Fields"
+"frmFormFields1"
+""
+0
+"Sub Form1134_After()
+    Dim nbrObjects as Integer
+    
+    nbrObjects = NSL.FormGetNumberOfObjects()
+    fldNbrObjects.text = Str(nbrObjects)
+    fldTestField1.text = ~This is a test~
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1135",1135,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1135()
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1136",1136,4,18,11,65,#TRUE#,0,"testField(1137):",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTestField1",1137,74,18,12,82,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1139",1139,60,46,11,23,#TRUE#,0,"objID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldObjID",1140,86,46,12,20,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1142",1142,110,46,11,27,#TRUE#,0,"Dirty?",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDirty",1143,140,46,12,16,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1145",1145,4,32,11,65,#TRUE#,0,"testField(1146):",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTestField2",1146,74,32,12,82,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1148",1148,4,46,10,26,#TRUE#,0,"Copy",0,0,0
+"Sub object1148()
+    Dim objID as Integer
+    
+    objID = Val(fldObjID.text)
+    NSL.FieldCopy(objID)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1149",1149,36,46,10,20,#TRUE#,0,"Cut",0,0,0
+"Sub object1149()
+    Dim objID as Integer
+    
+    objID = Val(fldObjID.text)
+    NSL.FieldCut(objID)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1150",1150,4,60,12,30,#TRUE#,0,"Paste",0,0,0
+"Sub object1150()
+    Dim objID as Integer
+    
+    objID = Val(fldObjID.text)
+    NSL.FieldPaste(objID)
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1151",1151,66,2,11,27,#TRUE#,0,"#objs:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNbrObjects",1152,94,2,12,22,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1154",1154,94,60,12,46,#TRUE#,0,"ObjType?",0,0,0
+"Sub object1154()
+    Dim objID as Integer
+    Dim objType as Integer
+    
+    objID = Val(fldObjID.text)
+    objType = NSL.FormGetObjectType(objID)
+    fldObjType.text = Str(objType)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldObjType",1155,142,60,12,14,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1157",1157,82,76,11,24,#TRUE#,0,"Start:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1158",1158,124,76,11,16,#TRUE#,0,"End:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldStartPos",1159,108,76,12,14,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldEndPos",1161,142,76,12,14,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1163",1163,2,76,12,56,#TRUE#,0,"GetSelection",0,0,0
+"Sub object1163()
+    Dim objID as Integer
+    Dim startPos as Integer
+    Dim endPos as Integer
+    
+    objID = Val(fldObjID.text)
+    startPos = NSL.FieldGetSelection(objID)
+    endPos = NSL.GlobalEndPos()
+    
+    fldStartPos.text = Str(startPos)
+    fldEndPos.text = Str(endPos)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1164",1164,62,76,12,18,#TRUE#,0,"Set",0,0,0
+"Sub object1164()
+    Dim objID as Integer
+    Dim startPos as Integer
+    Dim endPos as Integer
+    
+    objID = Val(fldObjID.text)
+    startPos = Val(fldStartPos.text)
+    endPos = Val(fldEndPos.text)
+
+    NSL.FieldSetSelection(objID, startPos, endPos)    
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1165",1165,2,92,12,54,#TRUE#,0,"SetInsPtPos",0,0,0
+"Sub object1165()
+    Dim objID as Integer
+    Dim pos as Integer
+    
+    objID = Val(fldObjID.text)
+    pos = Val(fldInsPos.text)
+
+    NSL.FieldSetInsPtPosition(objID, pos)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1166",1166,60,92,12,50,#TRUE#,0,"SetInsPoint",0,0,0
+"Sub object1166()
+    Dim objID as Integer
+    Dim pos as Integer
+    
+    objID = Val(fldObjID.text)
+    pos = Val(fldInsPos.text)
+
+    NSL.FieldSetInsertionPoint(objID, pos)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1167",1167,114,92,12,22,#TRUE#,0,"Get",0,0,0
+"Sub object1167()
+    Dim objID as Integer
+    Dim pos as Integer
+    
+    objID = Val(fldObjID.text)
+    pos = NSL.FieldGetInsPtPosition(objID)
+
+    fldInsPos.text = Str(pos)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldInsPos",1168,142,92,12,14,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1170",1170,2,108,12,32,#TRUE#,0,"Dirty?",0,0,0
+"Sub object1170()
+    Dim objID as Integer
+    Dim dirty as Integer
+    
+    objID = Val(fldObjID.text)
+    dirty = NSL.FieldDirty(objID)
+
+    fldDirty.text = Str(dirty)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1171",1171,38,108,12,50,#TRUE#,0,"AnyDirty?",0,0,0
+"Sub object1171()
+    Dim dirty as Integer
+    
+    dirty = NSL.FieldAnyDirty()
+
+    fldDirty.text = Str(dirty)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1172",1172,92,108,12,20,#TRUE#,0,"Set",0,0,0
+"Sub object1172()
+    Dim objID as Integer
+    Dim dirty as Integer
+    
+    objID = Val(fldObjID.text)
+    dirty = Val(fldDirty.text)
+    NSL.FieldSetDirty objID, dirty
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1173",1173,116,108,12,40,#TRUE#,0,"AllDirty",0,0,0
+"Sub object1173()
+    Dim dirty as Integer
+    
+    dirty = Val(fldDirty.text)
+    NSL.FieldSetAllDirty dirty
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1174",1174,3,125,11,8,#TRUE#,0,"X:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1175",1175,30,124,11,8,#TRUE#,0,"Y:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1176",1176,60,124,11,26,#TRUE#,0,"Width:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1177",1177,110,124,11,29,#TRUE#,0,"Height:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","fldStartX",1178,14,124,12,14,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldStartY",1180,40,124,12,18,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldWidth",1182,88,124,12,18,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldHeight",1184,142,124,12,14,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1186",1186,2,138,12,48,#TRUE#,0,"ObjBounds",0,0,0
+"Sub object1186()
+    Dim objID as Integer
+    Dim startX as Integer
+    Dim startY as Integer
+    Dim width as Integer
+    Dim height as Integer
+    
+    objID = Val(fldObjId.text)
+    startX = NSL.FormGetObjectBounds(objID)
+    startY = NSL.GlobalY()
+    width = NSL.GlobalWidth()
+    height = NSL.GlobalHeight()
+    
+    fldStartX.text = Str(startX)
+    fldStartY.text = Str(startY)
+    fldWidth.text = Str(width)
+    fldHeight.text = Str(height)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1187",1187,54,138,12,52,#TRUE#,0,"ObjPosition",0,0,0
+"Sub object1187()
+    Dim objID as Integer
+    Dim x as Integer
+    Dim y as Integer
+    
+    objID = Val(fldObjId.text)
+    x = NSL.FormGetObjectPosition(objID)
+    y = NSL.GlobalY()
+    
+    fldStartX.text = Str(x)
+    fldStartY.text = Str(y)
+    fldWidth.text = ~~
+    fldHeight.text = ~~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1188",1188,110,138,12,48,#TRUE#,0,"SetObjPos",0,0,0
+"Sub object1188()
+    Dim objID as Integer
+    Dim x as Integer
+    Dim y as Integer
+    
+    objID = Val(fldObjId.text)
+    x = Val(fldStartX.text)
+    y = Val(fldStartY.text)
+    NSL.FormSetObjectPosition(objID, x, y)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1190",1190,38,60,12,28,#TRUE#,0,"Undo",0,0,0
+"Sub object1190()
+    Dim objID as Integer
+    
+    objID = Val(fldObjID.text)
+    NSL.FieldUndo(objID)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1191",1191,72,60,12,18,#TRUE#,0,"Ins",0,0,0
+"Sub object1191()
+    Dim objID as Integer
+    Dim insString as String
+    
+    objID = Val(fldObjID.text)
+    insString = ~INSERTED~
+    NSL.FieldInsert(objID, insString)
+
+End Sub"
+"vew"
+4,1193,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Events1"
+"frmEvents1"
+""
+0
+"Sub Form1193_After()
+    Dim eventStr as String
+    
+    'Globals are used here to try to 
+    'reduce startup time as much as
+    'possible.
+    
+    gblStartX = 0
+    gblStartY = 0
+    gblEndX = 0
+    gblEndY = 0
+    gblTitleLine = 14
+    gblEventType = 0
+    gblUpDn = 0
+    DrawChars ~Start drawing with your stylus...~, 15, 85
+    gblClear = 1
+
+    'The following code is used to cause
+    'the drawing routine to initialize
+    'so that the first pen movements will
+    'not be lost.  It does this by
+    '~calling~ the drawing routine by
+    'posting a button push event,
+    'followed by posting a ~custom 
+    '(30000)~ event that will cause the
+    'drawing routine to exit immediately.
+    
+    NSL.ControlHitControl 1194  'Draw button
+
+    eventStr = ~u0ptxxyyd1d2d3d4d5d6d7d8~
+    'EvtAddEventToQueue
+    SysTrapSub 283, 1, eventStr
+            
+End Sub"
+"Sub Form1193_Event()
+
+    'Globals are used here to try to 
+    'reduce startup time as much as
+    'possible.
+    
+    gblEventType = GetEventType()
+    If gblEventType = nsbPenDown Then
+        GetPen gblStartX, gblStartY, gblUpDn
+        If gblUpDn = nsbPenDown And gblStartY > GblTitleLine Then
+            'SetEventHandled
+            If gblClear = 1 Then
+                 FillRectangle 15, 85, 145, 15, 0, nsbInverted
+                 gblClear = 0
+            End If
+            NSL.ControlHitControl 1194  'Draw button
+
+        End If
+    End If
+End Sub"
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1194",1194,46,2,10,32,#FALSE#,0,"Draw",0,0,0
+"Sub object1194()
+
+    'Globals are used here to try to 
+    'reduce startup time as much as
+    'possible.
+
+    gblEventType = -1
+    Do While gblEventType <= 3
+        gblEventType = NSL.GetEvent(5, 1, 0)
+        If gblEventType = 3 Then     'Pen Move
+            gblEndX = NSL.GlobalX()
+            gblEndY = NSL.GlobalY()
+            If gblEndY <= gblTitleLine Then gblEndY = GblTitleLine
+            DrawLine gblStartX, gblStartY, gblEndX, gblEndY
+            gblStartX = gblEndX
+            gblStartY = gblEndY
+        End If
+        If gblEventType = 2 Then     'Pen Up
+            Exit Do
+        End If
+    Loop
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1195",1195,84,2,10,39,#TRUE#,0,"Clear",0,0,0
+"Sub object1195()
+    FillRectangle 0, gblTitleLine + 1, 160, 160 - GblTitleLine, 0, nsbInverted
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1197",1197,128,2,10,28,#TRUE#,0,"Done",0,0,0
+"Sub object1197()
+    NextScreen ~frmMain~
+End Sub"
+"vew"
+4,1203,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Events2"
+"frmEvents2"
+""
+0
+""
+"Sub Form1203_Event()
+    Dim eventType as Integer
+    
+    eventType = GetEventType()
+    If eventType > 24575 Then
+        MsgBox ~Event = ~ + Str(eventType)
+    End If
+End Sub"
+2,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCount",1204,52,56,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1207",1207,22,84,11,49,#TRUE#,0,"Event Type:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1208",1208,40,100,11,32,#TRUE#,0,"keyChr:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1209",1209,34,116,11,38,#TRUE#,0,"keyCode:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1210",1210,32,132,11,41,#TRUE#,0,"modifiers:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1211",1211,28,28,12,36,#TRUE#,0,"Start",0,0,0
+"Sub object1211()
+     Dim eventAvail as Integer
+     Dim keyChr as Integer
+     Dim keyCode as Integer
+     Dim modifiers as Integer
+     Dim count as Integer
+     
+     count = 0
+     NSL.FlushEvents()
+     eventAvail = 0
+     Do While eventAvail <= 0
+         eventAvail = NSL.GetEvent(0, 0, 0)
+         fldEventType.text = Str(eventAvail)
+         If eventAvail = 4 Then
+             keyChr = NSL.KeyEventChr()
+             keyCode = NSL.KeyEventKeyCode()
+             modifiers = NSL.KeyEventModifiers()
+             fldKeyChr.text = Str(keyChr)
+             fldKeyCode.text = Str(keyCode)
+             fldModifiers.text = Str(modifiers)
+         End If
+         count = count + 1
+         fldCount.text = Str(count)
+     Loop
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldEventType",1212,76,84,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldKeyChr",1214,76,100,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldKeyCode",1216,76,116,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldModifiers",1218,76,132,12,50,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1220",1220,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1220()
+    NextScreen ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1712",1712,88,28,12,56,#TRUE#,0,"Post Event",0,0,0
+"Sub object1712()
+    Dim event as Integer
+    
+    event = Val(fldCount.text)
+    
+    NSL.PostEvent(event)
+End Sub"
+"vew"
+4,1262,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Misc"
+"frmMisc1"
+""
+0
+"Sub Form1262_After()
+    Dim userName as String
+    Dim successfulSyncDate as Integer
+    Dim lastSyncDate as Integer
+    Dim dateString as String
+    
+    userName = NSL.SyncUserName()
+    fldUserName.text = userName
+
+    successfulSyncDate = NSL.SuccessfulSync()
+    dateString = NSL.StringDateTime(successfulSyncDate, 1, 1, 0)
+    fldSuccessfulSync.text = dateString
+
+    lastSyncDate = NSL.LastSync()
+    dateString = NSL.StringDateTime(lastSyncDate, 1, 1, 0)
+    fldLastSync.text = dateString
+
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1263",1263,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1263()
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1264",1264,5,21,11,27,#TRUE#,0,"String:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldStr",1265,37,21,12,36,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1267",1267,81,21,11,13,#TRUE#,0,"Int:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldInt",1268,97,21,12,60,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1270",1270,5,37,12,68,#TRUE#,0,"IntToString4",0,0,0
+"Sub object1270()
+    Dim intVal as Integer
+    Dim strVal as String
+    
+    intVal = Val(fldInt.text)
+    strVal = NSL.IntToString4(intVal)
+    fldStr.text = strVal
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1271",1271,89,37,12,68,#TRUE#,0,"String4ToInt",0,0,0
+"Sub object1271()
+    Dim intVal as Integer
+    Dim strVal as String
+    
+    strVal = fldStr.text
+    intVal = NSL.String4ToInt(strVal)
+    fldInt.text = Str(intVal)
+
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldUserName",1275,56,98,12,102,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1277",1277,4,98,11,45,#TRUE#,0,"UserName:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1278",1278,4,110,11,108,#TRUE#,0,"Last Successful Sync Date:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSuccessfulSync",1279,18,122,12,140,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1281",1281,4,134,11,64,#TRUE#,0,"Last Sync Date:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldLastSync",1282,20,144,12,138,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1376",1376,4,54,11,84,#TRUE#,0,"Standard Nbr String:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldStdNbr",1377,92,54,12,64,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1379",1379,4,66,11,83,#TRUE#,0,"Localized Nbr String:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldLocNbr",1380,90,66,12,66,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1382",1382,4,82,12,58,#TRUE#,0,"Localize Nbr",0,0,0
+"Sub object1382()
+    Dim stdNbrStr as String
+    Dim locNbrStr as String
+    
+    stdNbrStr = fldStdNbr.text
+    locNbrStr = NSL.LocalizeNumber(stdNbrStr)
+    fldLocNbr.text = locNbrStr
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1383",1383,74,82,12,68,#TRUE#,0,"Delocalize Nbr",0,0,0
+"Sub object1383()
+    Dim stdNbrStr as String
+    Dim locNbrStr as String
+    
+    locNbrStr = fldLocNbr.text
+    stdNbrStr = NSL.DelocalizeNumber(locNbrStr)
+    fldstdNbr.text = stdNbrStr
+
+End Sub"
+"vew"
+4,1291,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Alarms"
+"frmAlarm1"
+""
+0
+"Sub frmAlarm1_after()
+    popProxy.Clear
+    popProxy.Add ~NSBAlarmProxy1~, NoDisplay
+    popProxy.Add ~NSBAlarmProxy2~, NoDisplay
+    popProxy.Add ~NSBAlarmProxy3~, NoDisplay
+    popProxy.Add ~NSBAlarmProxy4~, NoDisplay
+    popProxy.Add ~NSBAlarmProxy5~, NoDisplay
+    popProxy.Add ~Buzz1~, NoDisplay
+    popProxy.Add ~Buzz2~, NoDisplay
+    popProxy.Add ~Buzz3~, NoDisplay
+    popProxy.Add ~Buzz4~, NoDisplay
+    popProxy.Add ~Buzz5~, NoDisplay
+    popProxy.Selected = 1
+    popProxy.Redraw
+
+    popCommand.Clear
+    popCommand.Add ~0 - Just wake up~, NoDisplay
+    popCommand.Add ~1 - Just sound alarm~, NoDisplay
+    popCommand.Add ~2 - Display alert~, NoDisplay
+    popCommand.Add ~3 - Run pgm specified in msg~, NoDisplay
+    popCommand.Add ~200 - Generate Key Asc(200)~, NoDisplay
+    popCommand.Add ~201 - Generate Key Asc(201)~, NoDisplay
+    popCommand.Add ~25000 - Generate Event 25000~, NoDisplay
+    popCommand.Add ~-30020 - Evt 30020 every 20 secs~, NoDisplay
+    popCommand.Selected = 3
+    popCommand.Redraw
+End Sub"
+"Sub frmAlarm1_events()
+    Dim EventType as Integer
+    Dim LastKeyPressed as String 
+   
+    EventType = GetEventType() 
+    If EventType = nsbKeyOrButton Then
+        LastKeyPressed = getKey()
+        If Asc(LastKeyPressed) = 200 Then                                  
+           MsgBox ~AlarmProxy triggered me with key Asc(200)~
+           SetEventHandled
+        End If
+        If Asc(LastKeyPressed) = 201 Then                                  
+           MsgBox ~AlarmProxy triggered me with key Asc(201)~
+           SetEventHandled
+        End If
+    End If
+    If EventType = 25000 Then
+        MsgBox ~AlarmProxy triggered me with event 25000~
+        SetEventHandled
+    End If
+    If EventType = 30020 Then
+        MsgBox ~AlarmProxy triggered me with event 30020~
+        SetEventHandled
+    End If
+End Sub"
+2,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Label1292",1292,4,16,11,49,#TRUE#,0,"Alarm Time:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAlarmTime",1293,56,16,12,104,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1295",1295,4,32,12,24,#TRUE#,0,"Now",0,0,0
+"Sub object1295()
+    Dim strDateTime as String
+    Dim sysTime as Integer
+    Dim toDateFormat as Integer
+    Dim toTimeFormat as Integer
+    Dim amPMFormat as Integer
+    'strDateTime = StringDateTime(AlarmSeconds, ToDateFormat, ToTimeFormat, AMPMFormat)
+    '    Pass 0 as AlarmSeconds to use the current time
+    '    Pass 1 as ToDateFormat for ~yyyy/mm/dd~ format
+    '    Pass 1 as ToTimeFormat for ~hh:mm:ss~ format
+    '    Pass 0 as AMPMFormat to not convert to ~hh:mm AM/PM~ format
+    sysTime = 0
+    toDateFormat = 1
+    toTimeFormat = 1
+    amPMFormat = 0
+    strDateTime = NSL.StringDateTime(sysTime, toDateFormat, toTimeFormat, amPMFormat)
+    fldAlarmTime.text = strDateTime
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1296",1296,80,32,12,36,#TRUE#,0,"+1 Min",0,0,0
+"Sub object1296()
+    Dim alarmTime as Integer
+    Dim strDateTime as String
+    
+    alarmTime = NSL.SystemTime(fldAlarmTime.text, ~~, 0, 1)
+    alarmTime = NSL.IncrementSystemTime(alarmTime, 0, 1, 0)
+    strDateTime = NSL.StringDateTime(alarmTime, 1, 1, 0)
+    fldAlarmTime.text = strDateTime
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1297",1297,108,120,12,48,#TRUE#,0,"Set Alarm",0,0,0
+"Sub object1297()
+    Dim AlarmPgm as String
+    Dim AlarmTime as Integer
+    Dim AlarmCmd as Integer
+    Dim Err as Integer
+    Dim ResetTime as Integer
+    Dim ResetLimit as Integer
+    
+    AlarmTime = NSL.SystemTime(fldAlarmTime.text, ~~, 0, 1)
+
+    AlarmPgm = popProxy.ItemText(popProxy.Selected)
+
+    Select Case popCommand.Selected
+        Case 1 
+            AlarmCmd = 0     'Just wake up, if necessary
+            MsgBox ~After this, you should probably press the 'Off' button to see that this really works!~
+        Case 2
+            AlarmCmd = 1     'Wake up, if necessary, and play alarm sound
+        Case 3
+            AlarmCmd = 2     'Wake up, if necessary, play alarm, and display alert
+        Case 4
+            AlarmCmd = 3     'Wake up, if necessary, and run a program
+        Case 5
+            AlarmCmd = 200   'Wake up, if necessary, and enqueue key Asc(200)
+        Case 6
+            AlarmCmd = 201   'Wake up, if necessary, and enqueu key Asc (201)
+        Case 7
+            AlarmCmd = 25000 'Wake up, if necessare, and enqueue event 25000
+        Case 8
+            AlarmCmd = -30020 'Wake up, if necessare, and enqueue event 30020 every 20 seconds
+            MsgBox ~This alarm automatically resets every 20 seconds.  Be sure to cancel it.~
+    End Select
+
+    ResetTime = Val(fldResetTime.text)
+    If ResetTime > 0 Then
+        ResetLimit = Val(fldResetLimit.text)
+        NSL.SetAlarmReset ResetTime, ResetLimit
+    End If
+    Err = NSL.SetAlarm(AlarmPgm, AlarmTime, AlarmCmd, fldMessage.text)
+
+    If Err <> 0 Then
+        If Err = -1 Then
+            MsgBox ~SetAlarm() Error = (-1) Unknown Alarm Proxy program~
+        Else
+            If Err = -2 Then
+                MsgBox ~SetAlarm() Error = (-2) Alarm Proxy program not installed~
+            Else
+                MsgBox ~SetAlarm() Error = (~ + Str(Err) + ~)~
+            End If
+        End If
+    End If
+End Sub"
+"pop"
+2
+#TRUE#,0,10
+""
+"obj"
+3
+"pop","popCommand",1298,4,62,12,152,#TRUE#,0,"command",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1301",1301,4,76,11,38,#TRUE#,0,"Message:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldMessage",1302,44,76,12,112,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1304",1304,32,32,12,42,#TRUE#,0,"+30 Secs",0,0,0
+"Sub object1304()
+    Dim alarmTime as Integer
+    Dim strDateTime as String
+    
+    alarmTime = NSL.SystemTime(fldAlarmTime.text, ~~, 0, 1)
+    alarmTime = NSL.IncrementSystemTime(alarmTime, 0, 0, 30)
+    strDateTime = NSL.StringDateTime(alarmTime, 1, 1, 0)
+    fldAlarmTime.text = strDateTime
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1305",1305,4,120,12,40,#TRUE#,0,"Show Log",0,0,0
+"Sub object1305()
+    Dim AlarmPgm as String
+    Dim AlarmTime as Integer
+    Dim AlarmCmd as Integer
+    Dim AlarmMsg as String
+    Dim strDateTime as String
+    Dim ResetTime as Integer
+    Dim ResetCount as Integer
+    Dim ResetLimit as Integer
+  
+    AlarmPgm = popProxy.ItemText(popProxy.Selected)
+
+    AlarmTime = NSL.AlarmLogAlarmTime(AlarmPgm)
+    If AlarmTime <> 0 Then
+        AlarmCmd = NSL.AlarmLogCommand(AlarmPgm)
+        AlarmMsg = NSL.AlarmLogMessage(AlarmPgm)
+        ResetTime = NSL.AlarmLogResetTime(AlarmPgm)
+        ResetCount = NSL.AlarmLogResetCount(AlarmPgm)
+        ResetLimit = NSL.AlarmLogResetLimit(AlarmPgm)
+        
+        strDateTime = NSL.StringDateTime(AlarmTime, 1, 1, 0)
+        fldAlarmLog.text = strDateTime + ~ * ~ + Str(AlarmCmd) + ~ * ~ + AlarmMsg _
+            + ~ * ~ + Str(ResetTime) + ~ * ~ + Str(ResetLimit)+ ~ * ~ + Str(ResetCount)
+    Else
+        fldAlarmLog.text = ~Log not found~
+    End If
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#FALSE#,#FALSE#,#TRUE#,100,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAlarmLog",1306,4,136,24,124,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1308",1308,132,140,12,24,#TRUE#,0,"Off",0,0,0
+"Sub object1308()
+    Dim UntilReset as Short
+    Dim Emergency as Short
+    
+    MsgBox ~Turning off... Press the On/Off button (even in POSE) to turn back on.~
+    UntilReset = 0
+    Emergency = 0
+    
+    'SysSleep
+    SysTrapSub 178, 2, UntilReset, Emergency
+End Sub"
+"pop"
+2
+#TRUE#,0,6
+""
+"obj"
+3
+"pop","popProxy",1309,38,48,12,118,#TRUE#,0,"proxy",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1311",1311,4,48,11,28,#TRUE#,0,"Proxy:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1312",1312,48,120,12,56,#TRUE#,0,"Cancel Alarm",0,0,0
+"Sub object1312()
+    Dim AlarmPgm as String
+    Dim Err as Integer
+
+    AlarmPgm = popProxy.ItemText(popProxy.Selected)
+
+    Err = NSL.CancelAlarm(AlarmPgm)
+
+    If Err <> 0 Then
+        If Err = -1 Then
+            MsgBox ~CancelAlarm() Error = (-1) Unknown Alarm Proxy program~
+        Else
+            If Err = -2 Then
+                MsgBox ~CancelAlarm() Error = (-2) Alarm Proxy program not installed~
+            Else
+                MsgBox ~CancelAlarm() Error = (~ + Str(Err) + ~)~
+            End If
+        End If
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1313",1313,120,32,12,38,#TRUE#,0,"+5 Mins",0,0,0
+"Sub object1313()
+    Dim alarmTime as Integer
+    Dim strDateTime as String
+    
+    alarmTime = NSL.SystemTime(fldAlarmTime.text, ~~, 0, 1)
+    alarmTime = NSL.IncrementSystemTime(alarmTime, 0, 5, 0)
+    strDateTime = NSL.StringDateTime(alarmTime, 1, 1, 0)
+    fldAlarmTime.text = strDateTime
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1314",1314,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1314()
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1317",1317,4,90,11,48,#TRUE#,0,"Reset Time:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1318",1318,94,90,11,23,#TRUE#,0,"Limit:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldResetTime",1319,54,90,12,36,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldResetLimit",1321,120,90,12,18,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1329,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Alarm Timer"
+"frmAlarms2"
+""
+0
+"Sub Form1329_After()
+    fldTimerSeconds.text = ~2~
+End Sub"
+"Sub Form1329_Event()
+    Dim EventType as Integer
+    Dim TimerVal as Integer
+    Dim EventNumber as Integer
+    
+    EventNumber = Val(fldTimerSeconds.text) + 30000
+
+    EventType = GetEventType()
+    If EventType = EventNumber Then
+        TimerVal = Val(fldTimerVal.text) + Val(fldTimerSeconds.text)
+        fldTimerVal.text = Str(TimerVal)
+    End If
+End Sub"
+2,0,0,0
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTimerVal",1330,68,114,12,50,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1332",1332,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1332()
+    Dim AlarmPgm as String
+    Dim Err as Integer
+
+    AlarmPgm = ~NSBAlarmProxy1~
+
+    Err = NSL.CancelAlarm(AlarmPgm)
+
+    If Err <> 0 Then
+        If Err = -1 Then
+            MsgBox ~CancelAlarm() Error = (-1) Unknown Alarm Proxy program~
+        Else
+            If Err = -2 Then
+                MsgBox ~CancelAlarm() Error = (-2) Alarm Proxy program not installed~
+            Else
+                MsgBox ~CancelAlarm() Error = (~ + Str(Err) + ~)~
+            End If
+        End If
+    End If
+    NextScreen ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1333",1333,18,24,12,110,#TRUE#,0,"Start Using Events Code",0,0,0
+"Sub object1333()
+    Dim AlarmPgm as String
+    Dim AlarmTime as Integer
+    Dim AlarmCmd as Integer
+    Dim Err as Integer
+    
+    AlarmTime = Val(fldTimerSeconds.text)
+    AlarmPgm = ~NSBAlarmProxy1~
+    AlarmCmd = 0 - (30000 + AlarmTime)
+
+    Err = NSL.SetAlarm(AlarmPgm, AlarmTime, AlarmCmd, ~~)
+
+    If Err <> 0 Then
+        If Err = -1 Then
+            MsgBox ~SetAlarm() Error = (-1) Unknown Alarm Proxy program~
+        Else
+            If Err = -2 Then
+                MsgBox ~SetAlarm() Error = (-2) Alarm Proxy program not installed~
+            Else
+                MsgBox ~SetAlarm() Error = (~ + Str(Err) + ~)~
+            End If
+        End If
+    End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1334",1334,18,42,12,110,#TRUE#,0,"Start Using Event Loop",0,0,0
+"Sub object1334()
+    Dim AlarmPgm as String
+    Dim AlarmTime as Integer
+    Dim AlarmCmd as Integer
+    Dim Err as Integer
+    Dim EventType as Integer
+    Dim EventNumber as Integer
+    Dim TimerVal as Integer
+
+    EventNumber = Val(fldTimerSeconds.text) + 30000
+    EventType = 0
+    NSL.FlushEvents()
+    
+    AlarmTime = Val(fldTimerSeconds.text)
+    AlarmPgm = ~NSBAlarmProxy1~
+    AlarmCmd = 0 - (30000 + AlarmTime)
+
+    Err = NSL.SetAlarm(AlarmPgm, AlarmTime, AlarmCmd, ~~)
+
+    If Err <> 0 Then
+        If Err = -1 Then
+            MsgBox ~SetAlarm() Error = (-1) Unknown Alarm Proxy program~
+        Else
+            If Err = -2 Then
+                MsgBox ~SetAlarm() Error = (-2) Alarm Proxy program not installed~
+            Else
+                MsgBox ~SetAlarm() Error = (~ + Str(Err) + ~)~
+            End If
+        End If
+        Exit Sub
+    End If
+    
+    Do While EventType <= 0
+        EventType = NSL.GetEvent(50, 0, 0)
+        If EventType = EventNumber Then
+            NSL.SysHandleEvent()
+            TimerVal = Val(fldTimerVal.text) + Val(fldTimerSeconds.text)
+            fldTimerVal.text = Str(TimerVal)
+            EventType = 0
+        End If
+    Loop
+    Err = NSL.CancelAlarm(AlarmPgm)
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1335",1335,14,90,11,62,#TRUE#,0,"Timer Seconds:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTimerSeconds",1336,82,90,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1338",1338,28,114,11,35,#TRUE#,0,"Seconds:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1339",1339,15,62,11,114,#TRUE#,0,"Warning:  Timer seconds < 2",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1340",1340,15,74,11,118,#TRUE#,0,"may result in an infinite loop.",0,0,0
+""
+"vew"
+4,1343,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Prefs"
+"frmPrefs1"
+""
+0
+""
+""
+2,0,0,0
+"lbl"
+1
+"obj"
+3
+"lbl","Label1344",1344,3,21,11,38,#TRUE#,0,"Program:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldProgramName",1345,44,22,12,112,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,250,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldPrefText",1347,4,48,48,146,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1349",1349,2,98,12,56,#TRUE#,0,"GetAppPref",0,0,0
+"Sub object1349()
+    Dim pgmName as String
+    Dim prefID as Integer
+    Dim prefSaved as Integer
+    Dim prefText as String
+    
+    pgmName = fldProgramName.text
+    prefID = Val(fldPrefID.text)
+    prefSaved = Val(fldPrefSaved.text)
+    
+    prefText = NSL.GetAppPreferences(pgmName, prefID, prefSaved)
+    fldPrefText.text = prefText
+    fldPrefStatus.text = ~~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1350",1350,62,98,12,54,#TRUE#,0,"SetAppPref",0,0,0
+"Sub object1350()
+    Dim pgmName as String
+    Dim prefID as Integer
+    Dim prefSaved as Integer
+    Dim prefText as String
+    Dim status as Integer
+    
+    pgmName = fldProgramName.text
+    prefID = Val(fldPrefID.text)
+    prefSaved = Val(fldPrefSaved.text)
+    prefText = fldPrefText.text
+    
+    status = NSL.SetAppPreferences(pgmName, prefID, prefText, prefSaved)
+    fldPrefStatus.text = Str(status)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1351",1351,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1351()
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1352",1352,4,34,11,10,#TRUE#,0,"ID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPrefID",1353,16,34,12,26,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1355",1355,46,34,11,27,#TRUE#,0,"Saved:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPrefSaved",1356,76,34,12,16,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1358",1358,98,34,11,29,#TRUE#,0,"Status:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPrefStatus",1359,130,34,12,22,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1361",1361,4,120,11,47,#TRUE#,0,"Sys Pref ID:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSysPrefID",1362,54,120,12,30,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1364",1364,88,120,11,25,#TRUE#,0,"Value:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSysPrefValue",1365,116,120,12,40,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1367",1367,6,138,12,54,#TRUE#,0,"GetSysPref",0,0,0
+"Sub object1367()
+    Dim prefID as Integer
+    Dim prefValue as Integer
+    
+    prefID = Val(fldSysPrefID.text)
+    prefValue = NSL.GetSysPreference(prefID)
+    fldSysPrefValue.text = Str(prefValue)
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1368",1368,70,138,12,56,#TRUE#,0,"SetSysPref",0,0,0
+"Sub object1368()
+    Dim prefID as Integer
+    Dim prefValue as Integer
+    
+    prefID = Val(fldSysPrefID.text)
+    prefValue = Val(fldSysPrefValue.text)
+    NSL.SetSysPreference prefID, prefValue
+
+End Sub"
+"vew"
+4,1486,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"ProgressMgr"
+"frmProgress1"
+""
+0
+"Sub Form1486_After()
+    fldResolution.text = ~5~
+    fldCompleteChar.text = ~|~
+    fldIncompleteChar.text = ~.~
+    fldTotalCount.text = ~100~
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1487",1487,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1487()
+    NextScreen ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1488",1488,58,136,12,36,#TRUE#,0,"Start",0,0,0
+"Sub object1488()
+    Dim title as String
+    Dim message as String
+    Dim stage as Integer
+    Dim error as Integer
+    Dim force as Integer
+    Dim canceled as Integer
+    Dim strValue as String
+    Dim resolution as Integer
+    Dim completeChar as String
+    Dim incompleteChar as String
+    Dim percent as Integer
+    Dim count as Integer
+    Dim errorAt as Integer
+    
+    completeChar = fldCompleteChar.text
+    incompleteChar = fldIncompleteChar.text   
+    resolution = Val(fldResolution.text)
+    count = Val(fldTotalCount.text)
+    errorAt = Val(fldErrorAt.text)
+    
+    title = ~Progress Test...~
+    NSL.ProgressStartDialog title
+    Delay 1
+    
+    error = 0
+    stage = 1
+    Do While stage <= count
+        canceled = NSL.ProgressUserCancel()
+        If canceled = 1 Then
+            Exit Do
+        End If
+        If stage = errorAt Then
+            error = 1
+            Message = ~Error at stage ~ + Str(Stage)
+            NSL.ProgressUpdateDialog error, message
+            Exit Do
+        Else
+            percent = NSL.ProgressPercent(stage, count)
+            strValue = NSL.ProgressPercentString(percent, resolution, completeChar, incompleteChar)
+            Message = strValue + Chr(10) + Str(percent) + ~% complete~ + Chr(10) + ~stage = ~ + Str(stage)
+            NSL.ProgressUpdateDialog error, message
+        End If
+        stage = stage + 1
+        Delay 0.25
+    Loop
+    
+    force = Val(fldForceExit.text)
+    Delay 1
+    NSL.ProgressStopDialog(force)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldResolution",1489,90,28,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1491",1491,6,28,11,78,#TRUE#,0,"Percent Resolution:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1492",1492,6,44,11,62,#TRUE#,0,"Complete Char:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCompleteChar",1493,90,44,12,12,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1495",1495,6,60,11,68,#TRUE#,0,"Incomplete Char:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldIncompleteChar",1496,90,60,12,14,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1498",1498,6,76,11,50,#TRUE#,0,"Total Count:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTotalCount",1499,90,76,12,32,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1501",1501,6,92,11,75,#TRUE#,0,"Introduce Error at:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldErrorAt",1502,90,92,12,24,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1504",1504,6,108,11,42,#TRUE#,0,"Force Exit:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldForceExit",1505,90,108,12,24,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1509,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Version Info"
+"frmVersionInfo"
+""
+0
+"Sub Form1509_After()
+    Dim libVersion as Double
+    Dim sysVersion as Double
+    Dim compileInfo as String
+    Dim major as Integer
+    Dim minor as Integer
+    Dim NSBVersion as Double
+    
+    libVersion = NSL.Version()
+    fldSysLibVersion.text = Str(libVersion)
+    sysVersion = NSL.SystemVersion()
+    fldPalmOSVersion.text = Str(sysVersion)
+    
+    compileInfo = NSL.CompileInfo()
+    fldCompileInfo.text = compileInfo
+    
+    major = NSL.GlobalVersionMajor()
+    fldMajor.text = Str(major)
+    
+    minor = NSL.GlobalVersionMinor()
+    fldMinor.text = Str(minor)
+    
+    NSBVersion = SysInfo(0)
+    fldNsbVer.text = Str(NSBVersion)
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1510",1510,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1510()
+    NextScreen ~frmMain~
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSysLibVersion",1511,102,28,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCompileInfo",1513,14,58,12,118,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1515",1515,4,28,11,95,#TRUE#,0,"NSBSystemLib Version:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1516",1516,5,44,11,114,#TRUE#,0,"NSBSystemLib Compile Info:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1517",1517,6,77,11,67,#TRUE#,0,"PalmOS Version:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPalmOSVersion",1518,78,76,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1520",1520,6,90,11,27,#TRUE#,0,"Major:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1521",1521,82,90,11,26,#TRUE#,0,"Minor:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldMajor",1522,38,90,12,32,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldMinor",1524,112,90,12,34,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1708",1708,6,104,11,85,#TRUE#,0,"NSBRuntime Version:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNSBVer",1710,96,104,12,50,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1747",1747,6,140,12,74,#TRUE#,0,"GetVersionString",0,0,0
+"Sub object1747()
+    Dim pgmName as String
+    Dim verStr as String
+    
+    pgmName = fldPgmName.text
+    verStr = NSL.ProgramVersionString(0, pgmName)
+    fldVerStr.text = verStr
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1748",1748,6,124,11,46,#TRUE#,0,"Pgm Name:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPgmName",1749,56,124,12,102,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldVerStr",1751,84,140,12,74,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1528,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#TRUE#,#TRUE#
+"Strings"
+"frmStrings"
+""
+0
+"Sub frmStrings_after()
+    Dim column1 as String
+    Dim column2 as String
+    Dim column3 as String
+    Dim column4 as String
+    
+    lstColumns.clear
+    
+    column1 = NSL.FixedWidthString(~1~, 16, 1)
+    column2 = NSL.FixedWidthString(~one~, 40, 0)
+    column3 = NSL.FixedWidthString(~eins~, 40, 0)
+    column4 = NSL.FixedWidthString(~ichi~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~2~, 16, 1)
+    column2 = NSL.FixedWidthString(~two~, 40, 0)
+    column3 = NSL.FixedWidthString(~zwei~, 40, 0)
+    column4 = NSL.FixedWidthString(~ni~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~3~, 16, 1)
+    column2 = NSL.FixedWidthString(~three~, 40, 0)
+    column3 = NSL.FixedWidthString(~drei~, 40, 0)
+    column4 = NSL.FixedWidthString(~san~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~4~, 16, 1)
+    column2 = NSL.FixedWidthString(~four~, 40, 0)
+    column3 = NSL.FixedWidthString(~vier~, 40, 0)
+    column4 = NSL.FixedWidthString(~shi~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~5~, 16, 1)
+    column2 = NSL.FixedWidthString(~five~, 40, 0)
+    column3 = NSL.FixedWidthString(~funf~, 40, 0)
+    column4 = NSL.FixedWidthString(~go~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~6~, 16, 1)
+    column2 = NSL.FixedWidthString(~six~, 40, 0)
+    column3 = NSL.FixedWidthString(~sechs~, 40, 0)
+    column4 = NSL.FixedWidthString(~roku~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~7~, 16, 1)
+    column2 = NSL.FixedWidthString(~seven~, 40, 0)
+    column3 = NSL.FixedWidthString(~sieben~, 40, 0)
+    column4 = NSL.FixedWidthString(~shichi~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~8~, 16, 1)
+    column2 = NSL.FixedWidthString(~eight~, 40, 0)
+    column3 = NSL.FixedWidthString(~acht~, 40, 0)
+    column4 = NSL.FixedWidthString(~hachi~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~9~, 16, 1)
+    column2 = NSL.FixedWidthString(~nine~, 40, 0)
+    column3 = NSL.FixedWidthString(~neun~, 40, 0)
+    column4 = NSL.FixedWidthString(~kyu~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~10~, 16, 1)
+    column2 = NSL.FixedWidthString(~ten~, 40, 0)
+    column3 = NSL.FixedWidthString(~zehn~, 40, 0)
+    column4 = NSL.FixedWidthString(~ju~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~11~, 16, 1)
+    column2 = NSL.FixedWidthString(~eleven~, 40, 0)
+    column3 = NSL.FixedWidthString(~elf~, 40, 0)
+    column4 = NSL.FixedWidthString(~ju ichi~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~999~, 16, 1)
+    column2 = NSL.FixedWidthString(~englishenglishenglishenglish~, 40, 0)
+    column3 = NSL.FixedWidthString(~germangermangermangermangerman~, 40, 0)
+    column4 = NSL.FixedWidthString(~japanesejapanesejapanesejapanese~, 40, 1)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    lstColumns.redraw
+    
+    fldDelimitedStr.text = ~1*2*3*4*5*6*7*8*9*10*11*12**~
+    fldDelimiter.text = ~*~
+    fldNbr.text = ~1~
+End Sub"
+""
+2,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDelimitedStr",1545,4,98,12,152,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#FALSE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+3
+"fld","fldNbr",1549,134,128,12,20,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1551",1551,96,114,11,40,#TRUE#,0,"Delimiter:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1552",1552,116,128,11,17,#TRUE#,0,"Nbr:",0,0,0
+"Sub object1552()
+    fldNbr.text = ~1~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1553",1553,4,124,12,84,#TRUE#,0,"DelimitedItem",0,0,0
+"Sub object1553()
+    Dim StartTicks as Integer
+    Dim EndTicks as Integer
+    Dim Item as String
+    Dim Data as String
+    Dim Delimiter as String
+    Dim Nbr as Integer
+    
+    Data = fldDelimitedStr.text
+    Delimiter = fldDelimiter.text
+    Nbr = Val(fldNbr.text)
+    
+    Item = NSL.DelimitedItem(Data, Delimiter, Nbr)
+    fldItemStr.text = Item
+    
+    Nbr = Nbr + 1
+    fldNbr.text = Str(Nbr)
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldItemStr",1555,4,144,12,152,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldDelimiter",1565,140,114,12,14,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1567",1567,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1567()
+    NextScreen ~frmMain~
+End Sub"
+"lst"
+2
+4
+""
+"obj"
+3
+"lst","lstColumns",1583,4,20,58,152,#TRUE#,0,"",0,0,0
+"Sub object1583()
+    Dim normalSpaced as String
+    Dim fixedWidth as String
+    
+    fixedWidth = lstColumns.text(lstColumns.selected)
+    normalSpaced = NSL.NormalSpacedString(fixedWidth)
+    
+    fldNormalSpaced.text = normalSpaced
+    
+End Sub"
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldNormalSpaced",1584,4,82,12,152,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1707",1707,46,2,10,36,#TRUE#,0,"Use ...",0,0,0
+"Sub object1707()
+    Dim column1 as String
+    Dim column2 as String
+    Dim column3 as String
+    Dim column4 as String
+    
+    lstColumns.clear
+    
+    column1 = NSL.FixedWidthString(~1~, 16, 3)
+    column2 = NSL.FixedWidthString(~one~, 40, 2)
+    column3 = NSL.FixedWidthString(~eins~, 40, 2)
+    column4 = NSL.FixedWidthString(~ichi~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~2~, 16, 3)
+    column2 = NSL.FixedWidthString(~two~, 40, 2)
+    column3 = NSL.FixedWidthString(~zwei~, 40, 2)
+    column4 = NSL.FixedWidthString(~ni~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~3~, 16, 3)
+    column2 = NSL.FixedWidthString(~three~, 40, 2)
+    column3 = NSL.FixedWidthString(~drei~, 40, 2)
+    column4 = NSL.FixedWidthString(~san~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~4~, 16, 3)
+    column2 = NSL.FixedWidthString(~four~, 40, 2)
+    column3 = NSL.FixedWidthString(~vier~, 40, 2)
+    column4 = NSL.FixedWidthString(~shi~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~5~, 16, 3)
+    column2 = NSL.FixedWidthString(~five~, 40, 2)
+    column3 = NSL.FixedWidthString(~funf~, 40, 2)
+    column4 = NSL.FixedWidthString(~go~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~6~, 16, 3)
+    column2 = NSL.FixedWidthString(~six~, 40, 2)
+    column3 = NSL.FixedWidthString(~sechs~, 40, 2)
+    column4 = NSL.FixedWidthString(~roku~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~7~, 16, 3)
+    column2 = NSL.FixedWidthString(~seven~, 40, 2)
+    column3 = NSL.FixedWidthString(~sieben~, 40, 2)
+    column4 = NSL.FixedWidthString(~shichi~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+    
+    column1 = NSL.FixedWidthString(~8~, 16, 3)
+    column2 = NSL.FixedWidthString(~eight~, 40, 2)
+    column3 = NSL.FixedWidthString(~acht~, 40, 2)
+    column4 = NSL.FixedWidthString(~hachi~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~9~, 16, 3)
+    column2 = NSL.FixedWidthString(~nine~, 40, 2)
+    column3 = NSL.FixedWidthString(~neun~, 40, 2)
+    column4 = NSL.FixedWidthString(~kyu~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~10~, 16, 3)
+    column2 = NSL.FixedWidthString(~ten~, 40, 2)
+    column3 = NSL.FixedWidthString(~zehn~, 40, 2)
+    column4 = NSL.FixedWidthString(~ju~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~11~, 16, 3)
+    column2 = NSL.FixedWidthString(~eleven~, 40, 2)
+    column3 = NSL.FixedWidthString(~elf~, 40, 2)
+    column4 = NSL.FixedWidthString(~ju ichi~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    column1 = NSL.FixedWidthString(~999~, 16, 3)
+    column2 = NSL.FixedWidthString(~englishenglishenglishenglish~, 40, 2)
+    column3 = NSL.FixedWidthString(~germangermangermangermangerman~, 40, 2)
+    column4 = NSL.FixedWidthString(~japanesejapanesejapanesejapanese~, 40, 3)
+    lstColumns.add column1 + ~  ~ + column2 + column3 + column4, nodisplay
+
+    lstColumns.redraw
+    
+End Sub"
+"vew"
+4,1588,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Fields 2"
+"frmFields2"
+""
+0
+"Sub Form1588_After()
+    fldMultiLine.text = ~Now is the time for all good men to come to the aid of their country.~
+    fldMultiLine.text = fldMultiLine.text + Chr(10)
+    fldMultiLine.text = fldMultiLine.text + ~The quick brown fox jumps over the lazy dog.~
+    fldMultiLine.text = FldMultiLine.text + Chr(10) + Chr(10) + Chr(10)
+End Sub"
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1589",1589,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1589()
+    NextScreen ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1590",1590,2,18,11,41,#TRUE#,0,"Test Field:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTestField",1591,46,18,12,108,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1593",1593,4,34,12,44,#TRUE#,0,"Get Attrs",0,0,0
+"Sub object1593()
+    Dim attrs as Integer
+    
+    attrs = NSL.FieldGetAttributes(1591)
+    fldAttrs.text = Str(attrs)
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1594",1594,110,34,12,46,#TRUE#,0,"Set Attrs",0,0,0
+"Sub object1594()
+    Dim attrs as Integer
+    
+    attrs = Val(fldAttrs.text)
+    NSL.FieldSetAttributes(1591, attrs)
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldAttrs",1595,54,34,12,50,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1597",1597,4,50,12,54,#TRUE#,0,"Fld Get Font",0,0,0
+"Sub object1597()
+    Dim fontID as Integer
+    
+    fontID = NSL.FieldGetFont(1591)
+    fldFieldFontID.text = Str(fontID)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldFontID",1598,64,50,12,28,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1600",1600,102,50,12,54,#TRUE#,0,"Fld Set Font",0,0,0
+"Sub object1600()
+    Dim fontID as Integer
+    
+    fontID = Val(fldFieldFontID.text)
+    NSL.FieldSetFont(1591, fontID)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1601",1601,60,2,10,36,#TRUE#,0,"Redraw",0,0,0
+"Sub object1601()
+    Redraw
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,512,#FALSE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldMultiLine",1602,4,68,54,46,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldScrollPos",1605,126,74,12,30,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1607",1607,68,66,12,52,#TRUE#,0,"Get Scrl Pos",0,0,0
+"Sub object1607()
+    Dim pos as Integer
+    
+    pos = NSL.FieldGetScrollPosition(1602)
+    fldScrollPos.text = Str(pos)
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1608",1608,68,82,12,52,#TRUE#,0,"Set Scrl Pos",0,0,0
+"Sub object1608()
+    Dim pos as Integer
+    
+    pos = Val(fldScrollPos.text)
+    NSL.FieldSetScrollPosition(1602, pos)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldTotLines",1609,128,112,12,30,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1611",1611,86,112,11,40,#TRUE#,0,"Tot Lines:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1612",1612,96,124,11,29,#TRUE#,0,"Height:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldHeight",1613,128,124,12,32,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1616",1616,68,98,12,54,#TRUE#,0,"Get Sclr Vals",0,0,0
+"Sub object1616()
+    Dim pos as Integer
+    Dim totLines as Integer
+    Dim height as Integer
+    
+    totLines = NSL.FieldGetScrollValues(1602)
+    pos = NSL.GlobalStartPos()
+    height = NSL.GlobalHeight()
+    
+    fldFieldTotLines.text = Str(totLines)
+    fldFieldScrollLine.text = Str(pos)
+    fldFieldHeight.text = Str(height)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldScrollLine",1617,126,100,12,32,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1619",1619,2,124,12,54,#TRUE#,0,"Visible Lines",0,0,0
+"Sub object1619()
+    Dim visibleLines as Integer
+    
+    visibleLines = NSL.FieldGetVisibleLines(1602)
+    fldFieldVisibleLines.text = Str(visibleLines)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldVisibleLines",1620,60,124,12,22,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1622",1622,2,140,12,54,#TRUE#,0,"Blank Lines",0,0,0
+"Sub object1622()
+    Dim blankLines as Integer
+    
+    blankLines = NSL.FieldGetNumberOfBlankLines(1602)
+    fldFieldBlankLines.text = Str(blankLines)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldBlankLines",1623,60,140,12,22,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1625",1625,86,140,12,40,#TRUE#,0,"Scroll Up",0,0,0
+"Sub object1625()
+    Dim scrollable as Integer
+    
+    scrollable = NSL.FieldScrollable(1602, 0)
+    Do While scrollable = 1
+        NSL.FieldScrollField 1602, 1, 0
+        Delay 1
+        scrollable = NSL.FieldScrollable(1602, 0)
+    Loop
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1626",1626,130,140,12,28,#TRUE#,0,"Down",0,0,0
+"Sub object1626()
+    Dim scrollable as Integer
+    
+    scrollable = NSL.FieldScrollable(1602, 1)
+    If scrollable = 1 Then
+        NSL.FieldScrollField 1602, 1, 1
+        Delay 1
+        NSL.ControlHitControl 1626
+    End If
+ 
+End Sub"
+"vew"
+4,1629,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Fonts"
+"frmFonts1"
+""
+0
+""
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1630",1630,120,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1630()
+    NextScreen ~frmMain~
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFontString",1631,14,54,12,136,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1633",1633,8,128,12,68,#TRUE#,0,"CharsInWidth",0,0,0
+"Sub object1633()
+    Dim length as Integer
+    Dim charString as String
+    Dim optionalLen as Integer
+    Dim width as Integer
+    
+    optionalLen = 0
+    charString = fldFontString.text
+    width = Val(fldFontStrWidth.text)
+    length = NSL.FontCharsInWidth(charString, optionalLen, width)
+    width = NSL.GlobalWidth()
+    
+    fldFontStrWidth.text = Str(width)
+    fldFontStrLength.text = Str(length)
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1634",1634,94,76,11,26,#TRUE#,0,"Width:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFontStrWidth",1635,126,76,12,28,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1637",1637,90,88,11,31,#TRUE#,0,"Length:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFontStrLength",1638,126,88,12,30,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1643",1643,54,2,10,36,#TRUE#,0,"Redraw",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1644",1644,2,18,12,36,#TRUE#,0,"GetFont",0,0,0
+"Sub object1644()
+    Dim fontID as Integer
+    
+    fontID = NSL.FontGetFont()
+    fldCurrentFont.text = Str(fontID)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldCurrentFont",1645,42,18,12,16,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1647",1647,64,18,12,36,#TRUE#,0,"SetFont",0,0,0
+"Sub object1647()
+    Dim fontID as Integer
+    Dim oldFontID as Integer
+    
+    fontID = Val(fldCurrentFont.text)
+    oldFontID = NSL.FontSetFont(fontID)
+    MsgBox ~Old Font ID = ~ + Str(oldFontID)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1648",1648,106,18,12,50,#TRUE#,0,"SelectFont",0,0,0
+"Sub object1648()
+    Dim fontID as Integer
+    
+    fontID = NSL.FontSelect()
+    fldCurrentFont.text = Str(fontID)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1649",1649,2,34,12,52,#TRUE#,0,"DrawTest",0,0,0
+"Sub object1649()
+    FillRectangle 66, 32, 90, 14, 0, nsbInverted
+    DrawChars ~test~, 66, 32
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1650",1650,8,78,12,56,#TRUE#,0,"CharWidth",0,0,0
+"Sub object1650()
+    Dim charString as String
+    Dim width as Integer
+    
+    charString = fldFontString.text
+    width = NSL.FontCharWidth(charString)
+    fldFontStrWidth.text = Str(width)
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1651",1651,8,94,12,56,#TRUE#,0,"CharsWidth",0,0,0
+"Sub object1651()
+    Dim charString as String
+    Dim width as Integer
+    Dim optionalLen as Integer
+    
+    charString = fldFontString.text
+    optionalLen = Val(fldFontStrLength.text)
+    width = NSL.FontCharsWidth(charString, optionalLen)
+    fldFontStrWidth.text = Str(width)
+
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1652",1652,90,100,11,30,#TRUE#,0,"Offset:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1653",1653,82,112,11,38,#TRUE#,0,"StartPos:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFontOffset",1654,126,100,12,30,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFontStartPos",1656,124,112,12,32,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1658",1658,8,112,12,68,#TRUE#,0,"WidthToOffset",0,0,0
+"Sub object1658()
+    Dim offset as Integer
+    Dim charString as String
+    Dim optionalLen as Integer
+    Dim startPos as Integer
+    Dim width as Integer
+    
+    optionalLen = 0
+    charString = fldFontString.text
+    width = Val(fldFontStrWidth.text)
+    offset = NSL.FontWidthToOffset(charString, optionalLen, width)
+    startPos = NSL.GlobalStartPos()
+    width = NSL.GlobalWidth()
+    
+    fldFontStrWidth.text = Str(width)
+    fldFontStartPos.text = Str(startPos)
+    fldFontOffset.text = Str(offset)
+   
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1659",1659,8,144,12,68,#TRUE#,0,"WordWrap",0,0,0
+"Sub object1659()
+    Dim charString as String
+    Dim width as Integer
+    Dim length as Integer
+    
+    charString = fldFontString.text
+    width = Val(fldFontStrWidth.text)
+    length = NSL.FontWordWrap(charString, width)
+    fldFontStrLength.text = Str(length)
+
+End Sub"
+"vew"
+4,1662,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Fields 3"
+"frmFields3"
+""
+0
+""
+""
+2,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldResizeField",1663,16,28,12,122,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldObjTopX",1665,106,108,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldObjTopY",1667,108,120,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldObjWidth",1669,106,132,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldObjHeight",1671,106,144,12,50,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1673",1673,4,66,12,68,#TRUE#,0,"FieldSetBounds",0,0,0
+"Sub object1673()
+    Dim x as Integer
+    Dim y as Integer
+    Dim width as Integer
+    Dim height as Integer
+    
+    x = Val(fldObjTopX.text)
+    y = Val(fldObjTopY.text)
+    width = Val(fldObjWidth.text)
+    height = Val(fldObjHeight.text)
+
+    NSL.FieldSetBounds 1663, x, y, width, height
+    
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1674",1674,4,46,12,98,#TRUE#,0,"FormGetObjectBounds",0,0,0
+"Sub object1674()
+    Dim x as Integer
+    Dim y as Integer
+    Dim width as Integer
+    Dim height as Integer
+    
+    x = NSL.FormGetObjectBounds(1663)
+    y = NSL.GlobalY()
+    width = NSL.GlobalWidth()
+    Height = NSL.GlobalHeight()
+    
+    fldObjTopX.text = Str(x)
+    fldObjTopY.text = Str(y)
+    fldObjWidth.text = Str(width)
+    fldObjHeight.text = Str(height)
+    
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1675",1675,78,108,11,24,#TRUE#,0,"TopX:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1676",1676,78,120,11,24,#TRUE#,0,"TopY:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1677",1677,76,132,11,26,#TRUE#,0,"Width:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1678",1678,72,144,11,29,#TRUE#,0,"Height:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1679",1679,76,66,12,80,#TRUE#,0,"FrmSetObjBounds",0,0,0
+"Sub object1679()
+    Dim x as Integer
+    Dim y as Integer
+    Dim width as Integer
+    Dim height as Integer
+    
+    x = Val(fldObjTopX.text)
+    y = Val(fldObjTopY.text)
+    width = Val(fldObjWidth.text)
+    height = Val(fldObjHeight.text)
+
+    NSL.FormSetObjectBounds 1680, x, y, width, height
+ 
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1680",1680,118,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1680()
+    NextScreen ~frmMain~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1681",1681,66,2,10,36,#TRUE#,0,"Redraw",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1682",1682,108,46,12,46,#TRUE#,0,"DoneBtn",0,0,0
+"Sub object1682()
+    Dim x as Integer
+    Dim y as Integer
+    Dim width as Integer
+    Dim height as Integer
+    
+    x = NSL.FormGetObjectBounds(1680)
+    y = NSL.GlobalY()
+    width = NSL.GlobalWidth()
+    Height = NSL.GlobalHeight()
+    
+    fldObjTopX.text = Str(x)
+    fldObjTopY.text = Str(y)
+    fldObjWidth.text = Str(width)
+    fldObjHeight.text = Str(height)
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1683",1683,8,110,12,60,#TRUE#,0,"FormGetTitle",0,0,0
+"Sub object1683()
+    Dim title as String
+    Dim forcelength as Integer
+    
+    title = NSL.FormGetTitle()
+    fldResizeField.text = title
+    forceLength = Len(title)
+    fldObjWidth.text = Str(forceLength)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1684",1684,8,132,12,60,#TRUE#,0,"ReplaceTitle",0,0,0
+"Sub object1684()
+    Dim title as String
+    Dim forceLength as Integer
+    
+    forceLength = Val(fldObjWidth.text)
+    title = fldResizeField.text
+    NSL.FormReplaceTitle title, forceLength
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1714",1714,4,86,12,36,#TRUE#,0,"Focus?",0,0,0
+"Sub object1714()
+    Dim objID as Integer
+    
+    objID = NSL.FormGetFocus()
+    fldFocusID.text = Str(objID)
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFocusID",1715,46,86,12,28,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1717",1717,80,86,12,48,#TRUE#,0,"FldTxtLen",0,0,0
+"Sub object1717()
+    Dim objID as Integer
+    Dim txtLen as Integer
+    
+    objID = Val(fldFocusID.text)
+    txtLen = NSL.FieldGetTextLength(objID)
+    fldFieldTxtLen.text = Str(txtLen)
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFieldTxtLen",1718,132,86,12,24,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1688,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"ListBox"
+"frmListBox1"
+""
+0
+"Sub Form1688_After()
+    Dim visibleItems as Integer
+    
+    visibleItems = NSL.ListGetVisibleItems(1690)
+    fldVisibleItems.text = Str(visibleItems)
+    
+End Sub"
+"Sub Form1688_Event()
+    Dim topItem as Integer
+    Dim eventType as Integer
+    
+    eventType = GetEventType()
+    If eventType = nsbPenUp Then
+        topItem = NSL.ListGetTopItem(1690)
+        NSL.ListSetTopItem(1706, topItem)
+    End If
+End Sub"
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1689",1689,122,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1689()
+    NextScreen ~frmMain~
+End Sub"
+"lst"
+2
+4
+"0 - zero	1 - one	2- two	3- three	4- four	5- five	6- six	7- seven	8- eight	9- nine	10- ten	11- eleven	12- twelve	13- thirteen	14- fourteen	15- fifteen	16- sixteen	17- seventeen	18- eightteen	19- nineteen	20- twenty	21- twenty one	22- twenty two	23- twenty three	24- twenty four	25- twenty five	26- twenty six	27- twenty seven	28- twenty eight	29- twenty nine	30- thirty"
+"obj"
+3
+"lst","lstTest",1690,10,18,66,82,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldTopItem",1691,104,88,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1693",1693,64,88,11,37,#TRUE#,0,"TopItem:",0,0,0
+""
+"fld"
+1
+#FALSE#,#FALSE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldVisibleItems",1694,104,100,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1696",1696,50,100,11,51,#TRUE#,0,"VisibleItems:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1697",1697,8,130,12,56,#TRUE#,0,"GetTopItem",0,0,0
+"Sub object1697()
+    Dim topItem as Integer
+    
+    topItem = NSL.ListGetTopItem(1690)
+    fldTopItem.text = Str(topItem)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1698",1698,76,130,12,62,#TRUE#,0,"Set Top Item",0,0,0
+"Sub object1698()
+    Dim topItem as Integer
+    
+    topItem = Val(fldTopItem.text)
+    NSL.ListSetTopItem 1690, topItem
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1699",1699,12,146,12,44,#TRUE#,0,"Scroll Up",0,0,0
+"Sub object1699()
+    Dim result as Integer
+    
+    result = NSL.ListScrollList(1690, 0, 1)
+    fldScrollResult.text = Str(result)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1700",1700,82,146,12,52,#TRUE#,0,"Scroll Down",0,0,0
+"Sub object1700()
+    Dim result as Integer
+    
+    result = NSL.ListScrollList(1690, 1, 1)
+    fldScrollResult.text = Str(result)
+
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldScrollResult",1701,104,112,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1703",1703,52,112,11,49,#TRUE#,0,"ScrollResult:",0,0,0
+""
+"lst"
+2
+4
+"0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30"
+"obj"
+3
+"lst","lstMirror",1706,98,18,66,40,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1722,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Random Numbers"
+"frmRandom"
+""
+0
+""
+""
+2,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1723",1723,122,2,10,36,#TRUE#,0,"Done",0,0,0
+"Sub object1723()
+    NextForm ~frmMain~
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Label1724",1724,6,29,11,22,#TRUE#,0,"Seed:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldSeed",1725,30,28,12,50,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1727",1727,92,18,11,17,#TRUE#,0,"Min:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1728",1728,92,32,11,21,#TRUE#,0,"Max:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldRandMin",1729,116,18,12,40,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldRandMax",1731,116,32,12,42,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1733",1733,18,50,12,72,#TRUE#,0,"RandomNumber",0,0,0
+"Sub object1733()
+    Dim seed as Integer
+    Dim min as Integer
+    Dim max as Integer
+    Dim nbr as Integer
+    
+    seed = Val(fldSeed.text)
+    min = Val(fldRandMin.text)
+    max = Val(fldRandMax.text)
+    
+    nbr = NSL.RandomNumber(seed, min, max)
+    fldRandNumber.text = Str(nbr)
+    
+    If (seed <> 0)
+        fldSeed.text = ~0~
+    End If
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldRandNumber",1734,100,50,12,50,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1736",1736,18,68,12,74,#TRUE#,0,"Repeat Check",0,0,0
+"Sub object1736()
+    Dim seed as Integer
+    Dim min as Integer
+    Dim max as Integer
+    Dim nbr as Integer
+    Dim i as Integer
+    Dim iterations as Integer
+    Dim counts(20) as Integer
+    Dim results as String
+    
+    For I = 1 to 20
+        counts(i) = 0
+    Next
+    
+    seed = Val(fldSeed.text)
+    min = Val(fldRandMin.text)
+    max = Val(fldRandMax.text)
+    iterations = Val(fldIteration.text)
+    
+    For I = 1 to iterations
+        nbr = NSL.RandomNumber(seed, min, max)
+        counts(nbr) = counts(nbr) + 1
+        fldRandNumber.text = Str(nbr)
+        seed = 0
+        If nbr < min Or nbr > max Then
+            MsgBox ~Out of range~
+            Exit For
+        End If
+        fldIteration.text = Str(i)
+    Next
+
+    fldSeed.text = ~0~
+
+    results = ~~
+    For I = 1 to 20
+        results = results + ~ ~ + Str(counts(i))
+    Next
+    MsgBox results
+    
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldIteration",1737,100,68,12,50,#TRUE#,0,"",0,0,0
+""
+"end"

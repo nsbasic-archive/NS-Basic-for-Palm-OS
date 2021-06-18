@@ -1,0 +1,252 @@
+DocReaderLib Guide
+
+© 2004 Douglas Handy
+
+Contents
+ - Introduction
+ - Features
+ - How To
+ - Parameters
+ - Options
+ - Auto Scanning
+ - Auto Extraction
+ - Restrictions
+ - Registration
+ - Professional
+ - More Info
+ - History
+
+• Introduction
+
+DocReaderLib is a shared library for enabling Palm OS based applications to easily permit reading of DOC compatible databases of text.  With literally only a couple of lines of code, an application may provide a sophisticated reader to enhance the user experience without ever leaving the application.
+
+There are many scenarios in which an integrated reader can be helpful to the user.  Among them are:
+
+ * Help text
+ * Company contact info
+ * Product literature
+ * Policy manuals
+ * Sales memos
+ * Industry reference books
+ * Any other text based data
+
+With DocReaderLib, your application can now offer intelligent access to text based documents without needing to exit your application and return again to where you left off.  You can control not only what document to display, but where to position it for the user.  When they are done reading, your application resumes right where it left off without losing any context or the values in any form objects.
+
+• Features
+
+ * Trivial to add to project
+ * No need for any forms
+ * Read with one line of code
+ * Does not exit application
+ * Retains state of your app
+ * Handles all database I/O
+ * Supports compressed DOCs
+ * User selectable fonts
+ * Remembers font preference
+ * Clipboard support
+ * Jump to top/bottom or by %
+ * Jump to named bookmark
+ * Use form title as bookmark
+ * Auto-scan for bookmarks
+ * Saves bookmarks in doc
+ * Any feature can be disabled
+ * Remembers exit position
+ * Can open to last position
+ * Can open to any % of doc
+ * Can open to any byte pos
+ * Can open to a bookmark
+ * Auto extraction of docs
+ * Intelligent version control
+ * Adds only 14K to project
+
+See also the description of the professional version of the library near the end of this document.  It has all of the above features, plus more.
+
+• How To
+
+DocReaderLib can be added to NSB/Palm version 4 based projects VERY easily.	 Version 4 is required because of additional features added by NSB for shared library support.  At the bird's eye view level, all you need to do is load the library in your project's _startup() code block then add a single call to the library at any point in your program where you wish to display a given document.
+
+NSB/Palm v4 also has the ability to include shared libraries as a part of your compiled PRC itself, simplifying installation for the user.  Although optional, making use of this NSB/Palm feature is highly recommended.
+
+DocReadLib also has the capability to similarly let you embed copies of DOC pdbs which are under 64K in size directly within your application.  The library will transparently extract the document for you with no intervention, and even handles intelligent version control of updates.  More on that later.
+
+Specifically, to implement DocReaderLib within your project follow these steps:
+
+ 1)	Place the DocReaderLib.prc and DocReaderLib.INF files in your Lib directory.  In a default installation, that is C:\NSBasic\Lib.
+
+ 2)	In your project _startup() block, add the line:
+
+ LoadLibrary "DocReaderLib", "Doc"
+
+ 3)	Whereever desired in your program, add calls to display a document, using arguments to specify how it should behave.  A few sample calls for illustration:
+
+  Doc.ReadDoc( "MyDoc", "MyBookmark", -1, -1, 63 )
+
+  Doc.ReadDoc( "MyHelp", "*FormTitle", -1, -1, 63 )
+
+  Doc.ReadDoc( "FooBar", "", 0, 2, 1 )
+
+The first value is the name of the document to be read.  The second value is the name of a specific bookmark, or "" to not open to a bookmark.  The final three numbers control how the reader behaves.  We'll examine these more fully below.
+
+ 4) (Optional) Bundle DocReaderLib into your project.  Use menu option Project -> Add Resource, then select DocReaderLib and click OK.  Next, in the IDE project tree, highlight the newly added resource.  In the property window, change the resource type from DBIM to libr.  You must use all lowercase for this value.
+
+ 5) (Optional) If you want to include any DOC pdb's with your project, they can be bundled as well provided they are under 64K each (compressed).  This is very beneficial for things like application help text or any other docs you want available at all times.  For each such document, again use menu option Project -> Add Resource.  Change folders if necessary and select the document to be added.  You do not need to alter the resource type.  Just leave it as DBIM.  Repeat for each document you want to add.
+
+ 6) (Optional) See the section on registration to eliminate evaluation mode messages.
+
+That's it!  You will now have a richly featured document reader, fully integrated into your own application. 
+
+• Parameters
+
+The ReadDoc() call requires five parameters as described below.  A sample call using variable names for each parameter is:
+
+ Doc.ReadDoc( doc, bookmark, position, font, options )
+
+The first two are strings while the last three are integers.  Any of them may be supplied as either a constant or a variable with the desired value.
+
+ 1) Document name.  This document must either already exist on the device, or be included as a resource in the application if under 64K in size.  See also the section on auto-extraction.
+
+ 2) Bookmark name.  To open to a specific bookmark, name it here and the next parameter (position) will be ignored.  Specify an empty string, "", to open using the position parameter instead of a named bookmark.  Bookmark names are limited to 15 characters by the DOC specifications.  In DocReaderLib, if you specify a bookmark and it is not found, the document will be opened at the top.  Bookmark names are not case sensitive in DocReaderLib, but otherwise must match EXACTLY, including any punctuation or whitespace, the first 15 characters of the document text beyond the bookmark unless a line feed is found first.  If you supply a string over 15 characters, only the first 15 characters are used.
+
+A special value of "*FormTitle" may also be used, in which case the application's current form title is used as the bookmark.  This allows for easy integration with a program help file using a menu item or button which executes:
+
+  Doc.ReadDoc( "MyHelpDoc", "*FormTitle", -1, -1, 63 )
+
+This causes the help document to open at a bookmark matching the form title, or if not found, at the top of the document.  Integrated help was never so easy!
+
+ 3) Position.  Ignored when a bookmark name is given.  When no bookmark name is given, the following values may be used to indicate where to open the document:
+
+   -1 = Previous exit location
+    0 = Top of document
+ 1-99 = Percentage of length
+  100 = Bottom of document
+ 101+ = Byte location desired
+
+In general, the value -1 is typical as it allows the user to resume where they last left off.  DocReaderLib honors the position set by other external readers, and sets the position to allow external readers to resume at the same location as well.
+
+ 4) Font.  Specify one of the following values as the starting font:
+
+  -1 = Previously selected font
+    0 = Standard font
+    1 = Bold font
+    2 = Large font
+    7 = Large, bold font
+
+You may optionally allow the user to change fonts at will.  See the next section on Options.  A previously selected font preference is retained until the device is reset, at which time it will revert to the standard font.
+
+ 5) Options.  See the next section.
+
+• Options
+
+The final parameter to Doc.ReadDoc() lets you tailor how the reader should behave.  Combine the values for each of the desired trait and specify the sum as the figure for the Options value.  Select from among the following options:
+
+   1 = Strip carriage returns.  Some doc database builders leave CR's within the document text, and Palm OS displays them as an open rectangle.  Include this value to strip these, making the display more asthetic.
+   
+   2 = Allow jump by percentage.  When included, the current position is shown as a percentage of the total document size.  The user is allowed to tap this value and jump to another location within the document.
+   
+   4 = Allow font change.  When included, the user is allowed to change fonts at will.  The font active when they exit the document will be remembered, and can be restored if you specify -1 for the font parameter on ReadDoc().
+   
+   8 = Allow clipboard.  When included, if the user highlights a block of text, a small icon appears on the bottom.  Tapping the icon will copy the selected text to the clipboard.
+
+  16 = Show bookmarks.  When included AND the document contains bookmarks, a popup list is provided for selecting a bookmark.  This option is NOT required for opening a document to a named bookmark.  It is for allowing (or not) the user to move to a named bookmark location.
+
+  32 = Auto scan for bookmarks.  When included AND the document does not already have any named bookmarks stored, the document is scanned for bookmark notations.  If found, they get saved with the document.  These bookmarks are then available for either opening to one of the bookmarks, or for the user to select when the options parameter so allows (see above option).
+
+  64 = Force scan for bookmarks.  When included AND the document ends with an auto-scan notation <string>, any existing bookmarks are removed and replaced with bookmarks derived from scanning the document.  See also the section of auto scan of bookmarks.  When the document does not end with the <string> notation, any existing bookmarks are left intact.
+
+ 128 = Show long bookmark names.  The DOC specification permits a maximum of 15 characters for a named bookmark.  This can be fairly limiting.  When using auto-scan of bookmarks, the name is derived from the first 15 characters following the bookmark identifier string.  In such cases, unless the document is carefully crafted, it is easy to have truncated words or phrases as the bookmark name.  Use this option to have the actual text at the bookmark location extracted and displayed as the name without a 15 character limitation.  The downside is performance, particularly with compressed documents running on pre-OS5 devices.
+
+ 256 = No border.  Normally, the text is displayed with the customary border of a modal form under Palm OS, which reduces the avaiable screen width by 4 pixels.  If you don't want this border, 
+
+ 512 = No title.  Normally the DOC's title (ie database name) is centered on the line in a title bar.  To eliminate the title to gain additional space for text, include this value in the Options sum.
+
+The above options may be combined in any permutation.  A typical value would be 63, which is the sum of all options through auto scan for bookmarks.  This means a typical call to read a document, opening to the previous exit location, using the previous font, and permitting typical options would appear as:
+
+ Doc.ReadDoc( "MyDoc", "", -1, -1, 63 )
+
+That is just a sample of what you can achieve. DocReaderLib permits you to tailor the behavior to suit your scenario.  Additional options may be provided in future editions of the library, based on user feedback.
+
+• Auto Scanning
+
+The DOC specification provides two methods of specifying bookmark locations.  In both cases, the end result is a series of records added to the DOC pdb which consist of bookmark name vs. position pairs.  These records are used by DocReaderLib to present the popup list of available bookmark names.
+
+The original method required the DOC pdb creation utility to also create the bookmark records, using specific values for the byte position of a bookmark within the document.  This became tedious at best for documents with ongoing revisions, however it has the advantage of not requiring any visible artifacts in the document to establish a bookmark position.
+
+The second method came about to help ease the creation of bookmarks.  Instead of explicitly naming a bookmark and providing its exact location within the document, a string of one or more characters is designated as a bookmark identifier.  At each location a bookmark is desired, this identifier is inserted in the document.  When a document is first opened AND auto scan is enabled AND a bookmark identifier string is provided, then the entire document is scanned for occurences of the identifier string.  Once found, up to the subsequent 15 bytes of text are used to name the bookmark.  The bookmark can be less than 15 characters if a line feed is encountered first.
+
+The DOC specification dictates this bookmark identifier string, when present, must be the last characters in the document and be enclosed in angle brackets.  Any character or string of characters may be used, but remember that the sequence chosen will actually appear in the document.  You thus want to pick something which is both unique enough to not otherwise appear and create undesired bookmarks, yet asthetic enough to not be distracting when scrolling through the document.
+
+Typical values are <(bm)> or <::> or <Chapter >, etc.  The value used by this particular document is a single bullet.  This can be seen by examining the tail end of the document, where auto scan bookmarks are defined.  This bullet can be created on a keyboard by pressing AND HOLDING either Alt key, then while Alt is held, tap out 0149 on the numeric keypad, then releasing Alt.  You MUST use the numeric keypad, and not the top row of digits on the keyboard.
+
+• Auto Extraction
+
+In order to read a document, the document must exist in the internal memory of the device.  However, as a convienence to the developer, DocReaderLib permits documents of under 64K compressed size each to be included within the compiled application.  This simplifies user installation, and is particularly helpful for scenarios such as application help documents which are always used in tandem with a given program.
+
+To enable auto extraction, simply add the database(s) to the project and assign them a type of DBIM (database image) and any resource ID value.  In NSB/Palm, you do that by using menu item Project->Add Resource, then locating the desired database and clicking OK.
+
+That's it.  The document will now be available whenever you issue a ReadDoc() call naming the document.
+
+If necessary, you may still supply an updated document and install it on the device, where it will take precendence over the internal version.  Furthermore, you may supply an updated document as part of a new program build, and the automatic version control handling of DocReaderLib will detect the new edition and replace the device copy.
+
+The actual logic used by DocReaderLib when opening a document is as follows:
+
+ 1) Determine if document exists as a DBIM resource within the program.  If so, extract its creation date and timestamp.
+ 
+ 2) Determine if the document exists on the device internal memory.  If so, retrieve its creation date and timestamp.
+ 
+ 3) If the document does not exist on the device yet, extract it from the DBIM resource and change its creation timestamp from the current time to the original timestamp stored within the DBIM resource.  That is, the real timestamp when the PDB was created on a desktop.
+ 
+ 4) If the document exists in both places, open the device copy UNLESS the DBIM resource copy has a newer creation timestamp.  In this case, first the device copy of the document is deleted and then the newer DBIM copy is extracted.
+ 
+The above sequence permits a document to be extracted just once, allowing its exit position and auto-scanned bookmarks to remain until a new edition is provided by either a direct install to the device or an updated copy is distributed as part of a new program build.
+
+The important point here is simply that the version control is automagic, and the only thing you need to do as a developer is create a database and add it to your project as a type DBIM resource.  The library does the rest for you.
+
+• Restrictions
+
+DocReaderLib supports typical DOC format compatible documents using either uncompressed or compressed text known as version 1 and version 2, respectively.
+
+It does not support alternative compression schemes other than the standard version 2 compression algorithm.  Nor does it support encrypted documents.
+
+In some cases, the document "header" may be corrupted or non-standard.  The library attempts to detect certain varieties and compensate, but no claim is made for compatiblity with non-conforming headers.
+
+Furthermore, though the DOC specification does not strictly require it, the de facto standard is for each "text block" within the document to be a consistent size, excluding the final block.  This size is typically 4096 bytes prior to compression.
+
+DocReaderLib can handle blocks of text other than 4096, either larger or smaller, but makes the assumption each block but the last will be a consistent size matching the header value.  In theory, this means it could be incompatible with some technically permitted DOC databases.  In practice, such documents should be rarely if ever encountered.
+
+No guarantee is made that DocReaderLib can correctly decode and display any given document.
+
+A document must be updatable to auto-scan for bookmarks, or to retain the last exit position.  Documents stored in ROM (eg using JackFlash) may be read and existing bookmarks displayed however.
+
+• Registration
+
+By default, DocReaderLib operates in evaluation mode.  Evaluation mode is not time sensitive, but does display an evaluation mode message for a few seconds upon first use during each program execution.
+
+To eliminate the evaluation message, register the library with the author and follow the instructions provided in a return email.  As of this writing, the current email address for registering with the author is:
+
+  dhandy1@bellsouth.net
+
+Please include DocReaderLib as part of the subject, so that spam filters exclude it and the email is directed to the proper mailbox.  Registration is $25 USD, and includes permission to use the library in multiple projects created by the same developer.  The preferred payment method is PayPal but other arrangements can be made.  Contact the author, Douglas Handy, at the email address given above for more details.
+
+• Professional
+
+DocReaderLib is a subset of DocLib, available from the same author.  DocLib adds the ability to programatically interrogate the contents of a document.  This can be useful if your application needs large amounts of text available to it, as you can use the compression algorithm of DOC to obtain significant space savings.  It also allows you to easily edit that text on the desktop from outside the development IDE.  Additionally, it can help circumvent size restrictions on the amount of string constant text in a project.
+
+It also adds the ability to encode and decode your own blocks of text using the DOC compression algorithm or a faster subset of it.	 This can be useful if you provide services like Notes or Memo fields without your application.
+
+More features may be added to the professional version as well, if demand warrants it.  Possibilities include support for larger display sizes such as 320x480 (portrait) or 480x320 (landscape), additional fonts, VFS based documents, etc.
+
+• More Info
+
+Specifications for the DOC format may be found by searching the web.  In addition, numerous utilities for creating DOC compatible databases may likewise be found by searching the web.
+
+A good starting point is the Pyrite Publisher project, which as of this writing was located at http://www.pyrite.org or more specifically at http://www.pyrite.org/publisher/index.html for the doc creation aspect of it.  This DOC was created using its task "Convert to DOC without reformatting" instead of "Automatic conversion", in order to preserve explicit line endings in the original *.txt file.
+
+• History
+
+V 1.00  Preliminary release
+
+V 1.10  Added bookmark support
+
+V 1.20  No Title, Border options
+
+<•>

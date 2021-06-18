@@ -1,0 +1,168 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "SampleViewerRes.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include <afxres.h>
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "SampleViewerRes.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include <afxres.h>\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_VIEWER_TINT DIALOGEX 0, 0, 274, 200
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_VIEWER_TINT_DUMP,7,149,260,44,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | 
+                    WS_VSCROLL,WS_EX_CLIENTEDGE
+    LTEXT           "Decimal: ",IDC_STATIC,7,7,30,8
+    LTEXT           "Hexadecimal:",IDC_STATIC,7,22,44,8
+    LTEXT           "Binary:",IDC_STATIC,7,36,22,8
+    EDITTEXT        IDC_VIEWER_TINT_DEC,56,7,40,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_VIEWER_TINT_HEXA,55,22,40,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_VIEWER_TINT_BIN,56,36,160,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    LTEXT           "ASCII:",IDC_STATIC,7,51,21,8
+    EDITTEXT        IDC_VIEWER_TINT_ASCII,56,51,160,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_VIEWER_TINT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 267
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_SIZABLE
+//
+
+IDC_VIEWER_TINT_DUMP RT_SIZABLE 
+BEGIN
+    0x7874, 0x303d, 0x742c, 0x3d79, 0x3031, 0x2c30, 0x7863, 0x313d, 0x3030, 
+    0x632c, 0x3d79, "\060" 
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,19,1
+ PRODUCTVERSION 1,0,19,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "Palm Application Explorer Sample Extension Plugin"
+            VALUE "FileVersion", "1, 0, 19, 1"
+            VALUE "InternalName", "SampleViewer"
+            VALUE "LegalCopyright", "Copyright (C) 2000-2004 Regis Nicolas"
+            VALUE "OriginalFilename", "SampleViewer.dll"
+            VALUE "ProductName", "Palm Application Explorer"
+            VALUE "ProductVersion", "1, 0, 19, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    10000                   "tint,Viewer_tint_New"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

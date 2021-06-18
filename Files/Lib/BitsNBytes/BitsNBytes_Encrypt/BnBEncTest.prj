@@ -1,0 +1,267 @@
+"mdl"
+7
+"BnBEncTest","appl","RdG6",1033,200,0
+"Global SaveDecrypted as String
+Global SaveEncrypted as String
+Global SaveEncryptedLen as Integer
+Global InitString as String
+Global InitStrLen as String
+
+Sub main()
+    Dim I as Integer
+    Dim FiftyBytes as String
+        
+    FiftyBytes = ~12345678901234567890123456789012345678901234567890~   '50 bytes
+    For I = 1 to 5
+        InitString = InitString + FiftyBytes
+    Next
+    InitStrLen = Chr(1) + Chr(1)  '257
+    
+    LoadLibrary ~BitsNbyteslib~, ~EDL~
+End Sub"
+0
+0
+"BnBEncTest"
+"1.0"
+""
+"vew"
+3,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"BnBEncTest"
+"frmMain"
+""
+0
+"Sub Form1004_after()
+    Dim TicksPerSec as Integer
+    
+    TicksPerSec = SysInfo(2)
+    txtTicksPerSec.text = Str(TicksPerSec)
+    
+    lblStringType.text = ~Decrypted:~
+    
+    txtString.text = ~~
+    txtLen.text = ~0~
+    txtKey.text = ~~
+    
+    EDL.SetDESKey txtKey.text
+End Sub"
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnEncrypt",1005,4,80,12,40,#TRUE#,0,"Encrypt"
+"Sub object1005()
+    Dim Data as String   
+    Dim DataLen as String
+    Dim Error as Integer
+    Dim StartTicks as Integer
+    Dim EndTicks as Integer
+    Dim Ticks as Integer
+
+    If lblStringType.text <> ~Decrypted:~ Then
+        MsgBox ~Last command was not Decrypt~
+        Exit Sub
+    End If
+    
+    '********************  Encrypting *********************************
+    txtTicks.text = ~~
+    SaveDecrypted = txtString.text
+    
+    lblStringType.text = ~Encrypted:~
+
+    StartTicks = SysInfo(1)
+    Data = EDL.EncryptDESString(txtString.text)
+    EndTicks = SysInfo(1)
+    Ticks = EndTicks - StartTicks
+
+    txtTicks.text = Str(Ticks)
+
+    txtString.text = Data
+    SaveEncrypted = Data
+    txtLen.text = Str(Len(txtString.text))
+    SaveEncryptedLen = Len(txtString.text)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnDecrypt",1006,48,80,12,40,#TRUE#,0,"Decrypt"
+"Sub object1006()
+    Dim Command as String
+    Dim Data as String   
+    Dim DataLen as String
+    Dim Error as Integer
+    Dim StartTicks as Integer
+    Dim EndTicks as Integer
+    Dim Ticks as Integer
+    Dim NewLen as Integer
+    Dim Remainder as Integer
+
+    If lblStringType.text <> ~Encrypted:~ Then
+        MsgBox ~Last command was not Encrypt~
+        Exit Sub
+    End If
+    If txtString.text <> SaveEncrypted Then
+        MsgBox ~Data is not the same as last Encrypted~
+        Exit Sub
+    End If
+
+    NewLen = Val(txtLen.text)
+    If NewLen < SaveEncryptedLen Then
+        Remainder = Mod(NewLen, 8)
+        If Remainder <> 1 Then
+            MsgBox ~New length must be a multiple of 8 plus 1 (ie. 33)~
+            Exit Sub
+        End If
+        txtString.text = Mid(txtString.text, 1, NewLen)
+    End If
+    '********************  Decrypting *********************************
+    txtTicks.text = ~~
+    
+    lblStringType.text = ~Decrypted:~
+
+    StartTicks = SysInfo(1)
+    Data = EDL.DecryptDESString(txtString.text)
+    EndTicks = SysInfo(1)
+    Ticks = EndTicks - StartTicks
+    txtTicks.text = Str(Ticks)
+    
+    If Data <> SaveDecrypted Then
+        MsgBox ~Decrypted Data does not match original string~
+    End If
+    txtString.text = Data
+    txtLen.text = Str(Len(txtString.text))
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,250,#FALSE#,#TRUE#,#FALSE#
+"obj"
+2
+"fld","txtString",1007,4,28,48,148,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","lblStringType",1009,4,16,11,50,#TRUE#,0,"Decrypted:  "
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1013",1013,4,112,11,19,#TRUE#,0,"Key:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,24,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtKey",1014,32,112,12,124,#TRUE#,0,""
+"Sub object1014()
+    EDL.SetDESKey txtKey.text
+End Sub"
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtTicks",1016,32,144,12,48,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1018",1018,4,144,11,23,#TRUE#,0,"Ticks:"
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1019",1019,80,144,11,42,#TRUE#,0,"Ticks/Sec:"
+""
+"fld"
+1
+#FALSE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+2
+"fld","txtTicksPerSec",1020,128,144,12,28,#TRUE#,0,""
+""
+"lbl"
+1
+"obj"
+2
+"lbl","Lbl1022",1022,104,16,11,17,#TRUE#,0,"Len:"
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#FALSE#,80,#FALSE#,#FALSE#,#TRUE#
+"obj"
+2
+"fld","txtLen",1023,128,16,12,24,#TRUE#,0,""
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAdd8",1025,96,80,12,28,#TRUE#,0,"Add 8"
+"Sub object1025()
+    txtString.text = txtString.text + ~12345678~
+    txtLen.text = Str(Len(txtString.text))
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnErase",1026,108,96,12,32,#TRUE#,0,"Erase"
+"Sub object1026()
+    txtString.text = ~~
+    txtLen.text = Str(Len(txtString.text))
+    lblStringType.text = ~Decrypted:~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btn1Key",1027,28,128,12,40,#TRUE#,0,"1 Key"
+"Sub object1027()
+    txtKey.text = ~12345678~
+    EDL.SetDESKey txtKey.text
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btn2Keys",1028,72,128,12,40,#TRUE#,0,"2 Keys"
+"Sub object1028()
+    txtKey.text = ~12345678abcdefgh~
+    EDL.SetDESKey txtKey.text
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btn3Keys",1029,116,128,12,40,#TRUE#,0,"3 Keys"
+"Sub object1029()
+    txtKey.text = ~12345678abcdefghA1B2C3D4~
+    EDL.SetDESKey txtKey.text
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+2
+"but","btnAdd4",1031,128,80,12,28,#TRUE#,0,"Add 4"
+"Sub object1031()
+    txtString.text = txtString.text + ~1234~
+    txtLen.text = Str(Len(txtString.text))
+
+End Sub"
+"end"

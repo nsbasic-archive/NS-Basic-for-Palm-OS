@@ -1,0 +1,520 @@
+"mdl"
+8
+"Keyed DB Phone List","appl","Kphb",1072,505,0
+"Sub main()
+'*************************************************
+'* Phone book app using keyed database technique *
+'* by Michael Verive                             *
+'* 10-11-2000 using NSBasic 1.06    
+'* 12-28-2003 some fixes by George Henne         *
+'* Also includes TextToMemo to write to MemoPad  *
+'*************************************************
+Global PhoneBook as String
+Global CreatorID as String
+Global testdb as Database
+Global result as Integer 
+Global RecNo as Integer   
+Global RecNums as Integer
+Global dbKey as String  
+Global dbLastName as String  
+Global dbFirstName as String
+Global dbPhone as String
+Global dbFax as String
+Global dbPager as String
+Global dbNote as String  
+Global PrintType as String 
+Global MemoMessage as String
+Global lf as String
+lf=chr(10)  
+CreatorID=~Kphb~
+PhoneBook=~phonebook.pdb~ 
+End Sub"
+0
+0
+"Phone DB"
+"1,0,0"
+""
+"Installat."
+""
+"E100008E"
+""
+"mnu"
+2,"mnuMain"
+1061
+1
+"menu"
+1
+"Record","",1062
+4
+"menu"
+1
+"Read by Key","","",1063
+"sub menu1063_click()
+call object1034()
+end sub"
+"menu"
+1
+"Read Sequentially","","",1066
+"sub menu1066_click()
+call object1043()
+end sub"
+"menu"
+1
+"Write","","",1064
+"sub menu1064_click()
+call object1037()
+end sub"
+"menu"
+1
+"Remove","","",1065
+"sub menu1065_click()
+call object1038()
+end sub"
+"mod"
+" 2"
+0
+".\PalmPrint.cod"
+"PalmPrint.cod"
+"mod"
+" 2"
+0
+".\txt2memo.cod"
+"txt2memo.cod"
+"vew"
+4,1004,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Keyed DB Phonebook"
+"Screen1004"
+""
+0
+"sub Screen1004_after()
+'note that no code is placed here - the initialization is performed upon startup
+'and everything else occurs based on screen button actions
+end sub"
+"sub Screen1004_events()
+Dim theKey as string
+If getEventType()=nsbKeyOrButton then
+  theKey=GetKey()
+  If theKey=&h5 then
+    MenuDraw ~mnuMain~
+  elseif theKey=&hb then
+    'do Up button actions
+  elseif theKey=&hc
+    'do the Down button actions
+  else
+    'do other key actions
+  end if
+end if
+end sub"
+0,0,0,0
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,255,#TRUE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFirstName",1012,54,30,12,96,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnRead",1034,5,145,10,65,#TRUE#,0,"Read record",0,0,0
+"Sub object1034()
+'***********************************************************************
+'* Reading from keyed database:                                        *
+'* Determine the key to use                                            *
+'* Open database, and read the record.                                 *
+'* The number and order of data items (fields) much match              *
+'*    those originally written.                                        *
+'***********************************************************************
+dbLastName=fldLastName.text
+dbFirstName=fldFirstName.text
+dbKey=dbLastName+dbFirstName           ' we'll use the last and first names as key
+If dbKey=~~ Then 
+    MsgBox ~Can't read without key (last and first names together)...~
+    Exit Sub ' no sense continuing if no key
+Else
+    result=dbOpen(testdb,Phonebook,0)  ' open database
+    If result Not= 0 Then 
+        MsgBox ~Database not found~
+        Exit Sub                       ' can't continue without database!                  
+    End If
+    result=dbFind(testdb,dbKey)        ' otherwise, see if record exists with the key
+    If result=0 Then                   ' record found with that key, so let's get the data
+        result=dbRead(testdb,dbKey,dbLastName, dbFirstName,dbPhone, dbFax, dbPager, dbNote)
+        fldLastName.text=dbLastName    ' once we have the data, it's simple to fill in the fields
+        fldFirstName.text=dbFirstName 
+        fldPhone.text=dbPhone
+        fldFax.text=dbFax
+        fldPager.text=dbPager
+        fldNote.text=dbNote
+    Else
+        MsgBox ~No record found with key: ~+dbKey  
+    End If
+    result=dbClose(testdb)             ' close the database to release the pointers
+End If
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnWrite",1037,5,135,10,65,#TRUE#,0,"Write record",0,0,0
+"Sub object1037()
+'***********************************************************************
+'* Writing to a keyed database:                                        *
+'* Determine a unique key to use                                       *
+'* If the key is not unique, the record won't be written with dbInsert *
+'* However, using dbUpdate will replace the info                       *    
+'* In this routine we will see if the database exists.  If not, we'll  *
+'*    create one first, then write the first record.  This eliminates  *
+'*    the need to have a separate routine to create the database.      *
+'* Once the database is created, we can write to it with dbInsert, as  *
+'*    long as we have a valid key.  In this program the key is created *
+'*    by combining the last and first names.  A different key could be *
+'*    created by other means, as long as it is unique.  A different    *
+'*    technique would be to use numeric keys, and always use a new key *
+'*    that is one higher than the previous key.                        *
+'* The order of data items is not important, as long as the number of  *
+'*    elements read is the same as the number written.  Records may be *
+'*    of different lengths - these do not need to be specified ahead   *
+'*    of time.                                                         *
+'***********************************************************************
+dbLastName=fldLastName.text
+dbFirstName=fldFirstName.text
+dbKey=dbLastName+dbFirstName                           ' we'll use the last and first names as key
+If dbKey=~~ Then 
+    MsgBox ~Can't write without last or first name (used as key)...~
+    Exit Sub                                           ' no sense continuing if no key
+Else
+    dbPhone=fldPhone.text
+    dbFax=fldFax.text
+    dbPager=fldPager.text
+    dbNote=fldNote.text
+    result=dbOpen(testdb,Phonebook,0)                  ' open database
+    If result Not= 0 Then                              ' Phonebook not found, so we'll...
+        result=dbcreate(testdb,Phonebook,0,CreatorID)  ' ...create the database
+        If result Not= 0 Then
+            MsgBox ~Error ~+str(result)+ ~ creating phonebook database~
+            Exit Sub                                   ' can't continue without database
+        End If
+        result=dbOpen(testdb,Phonebook,0)
+    End If
+    result=dbFind(testdb,dbKey)                        ' see if record exists with the key
+    If result=0 Then
+        result=alert(~Record exists~, ~Record already exists.~,2,~Replace~,~Skip~) ' yep, something's there 
+        If result=0 Then
+            result=dbUpdate(testdb,dbKey,dbLastName, dbFirstName,dbPhone, dbFax, dbPager, dbNote) ' allow update with current data
+            MsgBox ~Record updated~
+        End If
+    Else
+        result=dbInsert(testdb,dbKey,dbLastName, dbFirstName,dbPhone, dbFax, dbPager, dbNote)   ' record available for key, so put the new data there
+        MsgBox ~Record written~
+    End If   
+    result=dbClose(testdb)                             ' close the database to release the pointers
+End If
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnRemove",1038,70,135,10,75,#TRUE#,0,"Remove record",0,0,0
+"Sub object1038()
+'***********************************************
+'* Removing a record from a keyed database     *
+'* Enter the proper key                        *
+'* Then call the routine.  It's easy, fast,    *
+'* and pretty foolproof.  Just make sure that  *
+'* you have a valid key, and that the user is  *
+'* able to abort the record removal if desired *
+'***********************************************
+dbLastName=fldLastName.text
+dbFirstName=fldFirstName.text
+dbKey=dbLastName+dbFirstName
+If dbKey=~~ Then 
+    MsgBox ~Can't delete without key...~
+    Exit Sub                                ' no sense continuing if no key
+Else
+    result=dbOpen(testdb,Phonebook,0)       ' open database
+    If result Not= 0 Then 
+        MsgBox ~Database not found~
+        Exit Sub                            ' can't continue without database!                  
+    End If
+    result=dbFind(testdb,dbKey)             ' see if record exists with the key
+    If result=0 Then
+        result=alert(~Delete Record?~, ~Found record with key: ~+dbKey,2,~Delete~,~Skip~) ' yep, something's there, give user a chance to abort
+        If result=0 Then 
+            result=dbDelete(testdb,dbKey)
+            MsgBox ~Record deleted~  
+            fldLastName.text=~~             ' just cleaning up to make the screen neater
+            fldFirstName.text=~~
+            fldPhone.text=~~
+            fldFax.text=~~
+            fldPager.text=~~
+            fldNote.text=~~
+        End If
+    Else
+        MsgBox ~Record for key: ~+dbKey+~ not found~
+    End If   
+    result=dbClose(testdb)                  ' close the database to release the pointers
+End If
+
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1039",1039,70,145,10,75,#TRUE#,0,"Destroy DB",0,0,0
+"Sub object1039()  
+'************************************************
+'* Erasing a database from the Palm memory      *
+'* NOT to be taken lightly!!!                   *
+'* This is probably best left out of the hands  *
+'* of the casual user, for obvious reasons.     *
+'* However, as a programmer you need to know    *
+'* how to do this safely.  Just make sure       *
+'* that the database exists before you try      *
+'* to erase it.  Sounds like a moot point,      *
+'* but the Palm OS can cause a Fatal Exception  *
+'* error if it tries to erase a nonexistent     *
+'* database.  Users hate resetting their        *
+'* Palms!!!                                     *
+'************************************************
+result=dbOpen(testdb,Phonebook,0)          ' open database to see if it even exists 
+                                           ' otherwise, fatal exception can occur if trying to use dbErase
+If result = 0 Then
+    result=dbClose(testdb)                 ' can't erase an open database
+    result=alert(~Are you sure?~,~Delete databases cannot be recovered - are you sure you want to delete this phonebook?~,2,~Yes~,~No~)
+    If result=1 Then Exit Sub              ' leave a way for the user to cancel the delete procedure...
+    result=dbErase(testdb)                 ' completely erase the database
+    If result = 0 Then
+        MsgBox ~Phonebook database erased (deleted from memory) successfully~ 
+        fldLastName.text=~~
+        fldFirstName.text=~~
+        fldPhone.text=~~
+        fldFax.text=~~
+        fldPager.text=~~
+        fldNote.text=~~
+    Else
+        MsgBox ~Error ~+str(result)+~ during erase.~
+    End If
+Else
+    MsgBox ~Phonebook database already erased (or not created).~
+End If
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,255,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPhone",1040,54,42,12,96,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnSequentialRead",1043,70,125,10,75,#TRUE#,0,"Sequential read",0,0,0
+"Sub object1043()
+'******************************************************************
+'* Sure, keyed databases can be read if you know                  *
+'* the keys.  but, what if you don't remember them?               *
+'* Surely there has to be a way to read the data sequentially.    *                                             *
+'*                                                                *
+'* There is, but using dbPosition and dbGet won't                 *
+'* work properly.  However, if we issue a dbReset                 *
+'* command, the dbReadNext will read records one at               *
+'* a time.  As an added bonus, the records are read               *
+'* in ~key~ order, as though they had been sorted by key.         *
+'* This may create some performance problems with huge databases, *
+'* but the access is almost instantaneous with smaller ones.      *
+'******************************************************************
+result=dbOpen(testdb,Phonebook,0)            ' open database
+If result=519 Then ' no database, so we'll create one
+    MsgBox ~Missing phonebook - creating empty phonebook~
+    result=dbCreate(testdb,Phonebook,0,CreatorID)
+ElseIf result Not= 0 Then 
+    MsgBox ~Error ~ +str(result)+ ~ during phonebook database open~  ' can't open database, so can't continue 
+    Exit Sub
+End If
+result=dbClose(testdb)                       ' close the database to release the pointers
+result=alert(~Print Phonebook Entries~,~Print to screen, MemoPad, or PalmPrint?~,1,~Screen~,~MemoPad~,~PalmPrint~)
+If result=0 Then
+    PrintType=~Screen~
+ElseIf result=1 Then
+    PrintType=~MemoPad~
+ElseIf result=2 Then
+    PrintType=~PalmPrint~
+End If
+result=dbOpen(testdb,Phonebook,0)           ' open database
+RecNums=dbGetNoRecs(testdb)                 ' how many records are there?
+result=dbreset(testdb)                      ' instead, dbReset allows the first record to be read
+For RecNo = 1 to RecNums
+    result=dbReadNext(testdb,dbKey,dbLastName, dbFirstName, dbPhone, dbFax, dbPager, dbNote)  ' this is the recommended way to sequentially read keyed fields
+    fldLastName.text=dbLastName    ' Display to let the user know what's going on.
+    fldFirstName.text=dbFirstName  '    This display is VERY important when printing large
+    fldPhone.text=dbPhone          '    lists to a device that doesn't give immediate feedback
+    fldFax.text=dbFax              '    since users will start pressing buttons if nothing appears
+    fldPager.text=dbPager          '    to be happening!
+    fldNote.text=dbNote       
+    If PrintType=~Screen~ Then
+        If RecNo=RecNums Then
+            result=alert(~Record Display~, ~Record: ~+str(RecNo)+~ of ~+str(RecNums),0,~Stop~)
+        Else 
+            result=alert(~Record Display~, ~Record: ~+str(RecNo)+~ of ~+str(RecNums),0,~Continue~,~Stop~)
+            If Result = 1 Then Exit For
+        End If
+    Else
+        MemoMessage=~Phonebook Entry for: ~+dbLastName+~, ~+dbFirstName+lf
+        MemoMessage=MemoMessage+~Phone: ~+dbPhone+lf
+        MemoMessage=MemoMessage+~Fax: ~+dbFax+lf
+        MemoMessage=MemoMessage+~Pager: ~+dbPager+lf
+        MemoMessage=MemoMessage+~Note: ~+dbNote+lf+lf
+        If PrintType=~MemoPad~ Then 
+            TextToMemo MemoMessage        ' it's easier to do this in a code module than writing the code each time
+        ElseIf PrintType=~PalmPrint~ Then
+            PalmPrint MemoMessage         ' by using similar syntax for memopad or palmprint output, keeps things simple and easy to debug
+        End If
+    End If    
+Next
+result=dbClose(testdb)                     ' close the database to release the pointers 
+If PrintType=~Screen~ Then 
+    Exit Sub
+Else
+    MsgBox ~Data written to ~+PrintType    ' a little confirmation message...
+End If
+End Sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1044",1044,6,18,12,44,#TRUE#,0,"Last Name",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1045",1045,6,30,12,45,#TRUE#,0,"First Name",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1046",1046,6,42,12,28,#TRUE#,0,"Phone",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,255,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldFax",1047,54,54,12,96,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1049",1049,6,54,12,16,#TRUE#,0,"Fax",0,0,0
+"sub object1049()
+
+end sub"
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1050",1050,6,66,12,25,#TRUE#,0,"Pager",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,255,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldPager",1051,54,66,12,96,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,255,#TRUE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","fldLastName",1053,54,18,12,96,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Lbl1055",1055,5,80,12,22,#TRUE#,0,"Note:",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,4096,#TRUE#,#TRUE#,#FALSE#
+"obj"
+3
+"fld","fldNote",1056,54,78,42,96,#TRUE#,0,"",0,0,0
+"sub object1056()
+
+end sub"
+"shf"
+1
+"obj"
+3
+"shf","Shf1058",1058,150,144,8,8,#TRUE#,0,"Shf1058",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","btnClearDisplay",1059,5,125,10,65,#TRUE#,0,"Clear display",0,0,0
+"sub object1059()
+fldLastName.text=~~
+fldFirstName.text=~~ 
+fldPhone.text=~~
+fldFax.text=~~
+fldPager.text=~~
+fldNote.text=~~
+end sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","But1068",1068,6,106,10,39,#TRUE#,0,"Print",0,0,0
+"Sub object1068()
+'**********************************************
+'* Print routine                              *
+'*                                            *
+'* Allows printing to the MemoPad             *
+'*    or to PalmPrint (if installed)          *
+'*                                            *
+'* Create the message, then allow the user to *
+'*    determine where it goes, or to abort    *
+'*    if desired (always a nice touch...)     *
+'**********************************************
+MemoMessage=~Phonebook Entry for: ~+fldLastName.text+~, ~+fldFirstName.text+lf
+MemoMessage=MemoMessage+~Phone: ~+fldPhone.text+lf
+MemoMessage=MemoMessage+~Fax: ~+fldFax.text+lf
+MemoMessage=MemoMessage+~Pager: ~+fldPager.text+lf
+MemoMessage=MemoMessage+~Note: ~+fldNote.text+lf+lf
+result=alert(~Select Print Option~,~Print to MemoPad or PalmPrint?~,0,~MemoPad~,~PalmPrint~,~None~)
+
+Select Case result
+
+    Case 0
+    TextToMemo MemoMessage
+    MsgBox ~Record printed to MemoPad~
+    
+    Case 1
+    PalmPrint MemoMessage
+    MsgBox ~Record printed to PalmPrint~
+
+    Case Else
+    MsgBox ~Print aborted by user~
+    Exit Sub
+
+End Select
+
+End Sub"
+"end"

@@ -1,0 +1,225 @@
+<html>
+
+<head>
+<meta name=Generator content="Microsoft Office HTML Filter 2.0">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content="Microsoft Word 9">
+<title>If /Then/ Else / End if / ElseIf </title>
+<style>
+<!--
+ 
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h4
+	{
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;}
+p.Code, li.Code, div.Code
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Courier New";}
+p.ManualBody, li.ManualBody, div.ManualBody
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:Arial;
+	color:black;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h4><span lang=DE>If /Then/ Else / End if / ElseIf                                                                    Befehl</span></h4>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody>IF <i>Bedingung</i> THEN</p>
+
+<p class=ManualBody>    Ausdrucks Gruppe
+1</p>
+
+<p class=ManualBody>END IF</p>
+
+<p class=ManualBody>oder </p>
+
+<p class=ManualBody>IF <i>Bedingung</i> THEN</p>
+
+<p class=ManualBody>    Ausdrucks Gruppe
+1</p>
+
+<p class=ManualBody>ELSE</p>
+
+<p class=ManualBody>    Ausdrucks Gruppe
+2</p>
+
+<p class=ManualBody>END IF </p>
+
+<p class=ManualBody>oder </p>
+
+<p class=ManualBody>IF <i>Bedingung</i> THEN
+Ausdruck1</p>
+
+<p class=ManualBody>oder</p>
+
+<p class=ManualBody>IF <i>Bedingung</i> THEN
+Ausdruck1 ELSE Ausdruck2</p>
+
+<p class=ManualBody>oder</p>
+
+<p class=ManualBody>IF <i>Bedingung 1</i>
+THEN</p>
+
+<p class=ManualBody>    Befehls Group 1</p>
+
+<p class=ManualBody>ELSEIF <i>Bedingung2 </i>THEN</p>
+
+<p class=ManualBody>    Befehls Group 2</p>
+
+<p class=ManualBody>END IF</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beschreibung</b></p>
+
+<p class=ManualBody>Prüft eine Bedingung und, basierend darauf ob diese
+Bedingung wahr oder falsch ist, werden konditional andere Ausdrücke und Befehle
+ausgeführt. Wenn die Bedingung wahr ist, so wird die Befehlsgruppe 1
+ausgeführt, ansonsten die Befehlsgruppe 2.</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><i>Bedingung</i> kann
+ein komplexer logischer Vergleich mit folgenden Ausdrücken sein:</p>
+
+<p class=ManualBody><span style='font-family:Monaco'>AND</span> Operator</p>
+
+<p class=ManualBody><span style='font-family:Monaco'>OR</span> Operator </p>
+
+<p class=ManualBody><span style='font-family:Monaco'>NOT</span> Operator</p>
+
+<p class=ManualBody>Klammerungen</p>
+
+<p class=ManualBody>&gt;(größer als Zeichen)</p>
+
+<p class=ManualBody>&lt;(kleiner als Zeichen)</p>
+
+<p class=ManualBody>=(Gleich Zeichen)</p>
+
+<p class=ManualBody>&lt;=(kleiner oder gleich Zeichen)</p>
+
+<p class=ManualBody>&gt;=(größer oder gleich Zeichen)</p>
+
+<p class=ManualBody>&lt;&gt;(ungleich Zeichen)</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=ManualBody><b>Beispiel</b></p>
+
+<p class=Code>If amt=1000 then</p>
+
+<p class=Code>  Goto allDone</p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If state=“IL” then</p>
+
+<p class=Code>  Gosub IllinoisCalcs</p>
+
+<p class=Code>Else</p>
+
+<p class=Code>  Gosub OtherSatesCalcs</p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If state=”IL” Or state=”CA” then</p>
+
+<p class=Code>  Goto noTaxes</p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If not salary &lt;=2000 then ‘Beispiel des NOT Operators</p>
+
+<p class=Code>  Taxes=salary * .32</p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If CountyCode=20 then ‘Verschachtelte
+If-Anweisungen</p>
+
+<p class=Code>  TaxRate=.043</p>
+
+<p class=Code>Else</p>
+
+<p class=Code>  If CountyCode=21 then</p>
+
+<p class=Code>    TaxRate=.041</p>
+
+<p class=Code>  Else</p>
+
+<p class=Code>    TaxRate=.039</p>
+
+<p class=Code>  End if</p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If(Sex=”Male” and Weight &gt; 200) or (Sex=”Female” and weight &gt; 180) then</p>
+
+<p class=Code>  Msgbox &quot;Lose
+Weight!&quot;</p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If Amount &gt;10000 Then</p>
+
+<p class=Code>  LoanProcess1</p>
+
+<p class=Code>Elseif Amount &gt; 5000 Then</p>
+
+<p class=Code>  LoanProcess2</p>
+
+<p class=Code>Elseif Amount &gt; 1000 Then</p>
+
+<p class=Code>  LoanProcess3 </p>
+
+<p class=Code>End if</p>
+
+<p class=Code>&nbsp;</p>
+
+<p class=Code>If Sex=&quot;Male&quot; Then AgeLimit=65 else AgeLimit=50</p>
+
+<p class=ManualBody>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

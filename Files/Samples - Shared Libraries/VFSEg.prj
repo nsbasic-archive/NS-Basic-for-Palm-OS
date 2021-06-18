@@ -1,0 +1,499 @@
+"mdl"
+8
+"VFS Example","appl","Test",1056,505,0
+"
+Sub Project_Startup()
+Type RecType
+RecNo as Integer
+FirstName as String
+LastName as String
+TelNo as String
+Age as Integer
+End Type
+Global AddBook as RecType
+Global path as String
+End Sub
+
+Sub VFSInit()
+Global version as Integer 'Extract VFSLib as resource
+Dim res as Integer
+Dim numvol as Integer
+Dim con as Integer
+Dim dbLib as Database
+Dim i as Integer
+Dim volRef(4) as Integer
+res = DbOpen(dbLib, ~NSBVFSLib.prc~, 0 )
+If res > 0 Then
+res = DbCreateDatabaseFromResource(~DBIM~, 1031) 
+   Else
+res = DbClose(dbLib)
+   End If
+LoadLibrary ~NSBVFSLib~, ~VFS~
+
+version = VFS.Version()                 'Version of the VFS library
+res = VFS.Init()                        'initialize
+VFS.SetCurVolume(0)                     'set the volume
+VFS.BeginVolumeEnumerate()              'begin to get # of memory sticks
+numVol = 0 
+Do 
+ i = VFS.GetNextVolume()                 'look for next memory stick
+ con = VFS.GetLastError()                'any errors?
+ If con = 0 Then                         'good - no errors
+    numVol = numVol + 1
+    volRef(numVol) = i
+ Else
+    Exit Do
+ EndIf
+Loop
+End Sub
+
+Function VFSGetNoRecords(filename as String) as Integer
+If version <> 1 Then 
+Call VFSInit
+EndIf
+Dim err as Integer
+Dim data16 as Short
+Dim fileref as Integer
+fileRef = VFS.Open(filename,7)' 1(Exclusive)+2(R)+4(W)
+err = VFS.GetLastError
+If err>0 Then MsgBox ~Error # ~+str(err)' error
+VFS.FileSeekBegin(fileref, 76) 'go to offset for number of records
+data16 = VFS.Read16(fileref)   'read the byte there
+VFSGetNoRecords=data16
+End Function
+
+
+Function VFSGetCreatorID(filename as String) as String
+If version <> 1 Then 
+Call VFSInit
+EndIf
+Dim err as Integer
+Dim datastr as String
+Dim fileref as Integer
+fileRef = VFS.Open(filename,7)' 1(Exclusive)+2(R)+4(W)
+err = VFS.GetLastError
+If err>0 Then MsgBox ~Error # ~+str(err)' error
+VFS.FileSeekBegin(fileref, 64) 'go to offset for Creator ID
+datastr = VFS.Readstring(fileref)   'read the string there
+MsgBox ~Creator ID:~+datastr
+VFSGetCreatorID=datastr
+End Function
+"
+0
+0
+""
+"1,0,0"
+""
+"Installat."
+""
+"E1000133"
+"Sub Project_Termination()
+End Sub
+
+"
+"resfile"
+1
+"Resource1031"
+1031
+"DBIM"
+"..\..\Lib\NSBVFSLib.prc"
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"VFS Directory Listing"
+"Form1003"
+"Sub Form1003_Before()
+End Sub"
+0
+"Sub Form1003_After()
+
+Call VFSInit()
+
+Dim err as Integer 
+Dim s as String
+Dim tmp as String
+Dim i as Integer
+Dim r as Integer
+Dim dir as String
+Dim name as String
+Dim coinside as Integer
+Dim fileRef as Integer
+Dim tmpH as String
+Dim tmpD as String
+Dim pdb as Database
+Dim numVol as Integer 
+Dim con as Integer
+Dim volRef(4) as Integer
+Dim selected as Integer
+
+l.clear                                 
+l.selected=1
+dir = ~/palm/launcher/~                 'directory we are going to read
+VFS.BeginDirEntryEnumerate(dir)         'begin to get file names
+err = VFS.GetLastError                  'any errors?
+If err>0 Then GoTo ex                   'yes - go to Exit
+name = ~                                 ~
+Do 
+ name = VFS.DirEntryEnumerate()         'filename
+ con = VFS.GetLastError()               '10509 end of loop
+ If con = 0 Then
+    tmp = dir+name                      'we must specify full filename
+    fileRef = VFS.Open(tmp,2)           
+    coinside = VFS.GetAttributes(fileRef, 2)'is it hidden?
+    If coinside = 1 Then tmpH = ~<H>~
+    coinside = VFS.GetAttributes(fileRef, 16)'is it dir?
+    tmpD = ~~
+    If coinside = 1 Then tmpD = ~<Dir>~
+    tmp = tmpH
+    tmp = tmp + tmpD
+    tmp = tmp + name
+    l.add tmp
+    VFS.Close(fileRef)
+  Else
+    Exit Do
+ EndIf
+Loop
+
+err = VFS.GetLastError
+ex:
+VFS.EndDirEntryEnumerate
+
+exx:
+VFS.Close(fileRef)
+End Sub
+
+
+Sub getVFSpdbRecord(dayno as Integer, filename as String)
+Dim fileRef as Integer
+Dim err as Integer
+Dim data16 as Short
+Dim data16a as Short
+Dim fs as Integer
+Dim i as Integer
+Dim offset as Integer
+fileRef = VFS.Open(filename,7)' 1(Exclusive)+2(R)+4(W)
+err = VFS.GetLastError
+If err>0 Then GoTo ex
+offset=70+(dayno)*8  'goto offset for record location ' the # 70 varies
+VFS.FileSeekBegin(fileRef, offset)
+data16a = VFS.Read16(fileRef)'0, 1, 2 or 3...indicates first digit in hex
+data16 = VFS.Read16(fileRef) 'indicates second digit in hex
+offset=data16+4+data16a*65536 ' the number 4 varies in this and the next line
+If data16<0 Then offset=data16+4+(data16a+1)*65536 'Convert to decimal
+VFS.FileSeekBegin(fileRef, offset) 'Go to Beginning of Record
+
+'Put your UDT Structure here.
+'You must specify each read variable individually, even if you don't need it
+'----------------------------------------------------------------------------
+Addbook.RecNo=VFS.Read32(fileRef)  'First variable in our UDT- Read32=integer
+Addbook.FirstName=VFS.ReadString(fileRef)  'FirstName
+Addbook.LastName =VFS.ReadString(fileRef)  'LastName
+Addbook.telNo =VFS.ReadString(fileRef)  'TelNo
+Addbook.age=VFS.Read32(fileRef)  'Age
+'----------------------------------------------------------------------------
+
+xx:
+fs = VFS.FileSize(fileRef)
+VFS.Close(fileRef)
+
+ex:'exit
+End Sub
+
+"
+""
+0,0,0,0
+"lst"
+2
+4
+""
+"obj"
+3
+"lst","l",1005,4,20,100,152,#TRUE#,0,"",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1006",1006,84,124,12,72,#TRUE#,0,"Copy to Palm",0,0,0
+"Sub object1006()
+Dim pathName as String
+Dim dbName as String
+Dim err as Integer
+Dim dialogTitle as String
+Dim actionStr as String
+Dim selectedname as String
+selectedName= l.text(l.selected)
+pathname=~/palm/launcher/~+selectedname
+
+'Copy to Main Memory Palm
+'-------------------------
+dialogTitle=~Copying file~
+actionStr=~Copying ~+selectedname+~ to main memory...~
+selectedname = VFS.ImportDialog(pathName, dialogTitle, actionStr)				
+err = VFS.GetLastError()
+
+Select Case err  'error checking
+Case 0
+    MsgBox ~No errors~
+Case 10758
+    MsgBox ~File already exists~
+Case 1282
+    MsgBox ~No file selected~
+Case 537
+    MsgBox ~File already exists~
+Case 519
+    MsgBox ~File not found in memory~
+Case Else
+    MsgBox ~Error #~+str(err)
+End Select
+
+'VFS.Delete(pathName)'delete file to move
+Call Form1003_After() 'refresh directory
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1014",1014,8,140,12,28,#TRUE#,0,"Read",0,0,0
+"Sub object1014()
+MsgBox ~Opening VFSTestDb~
+NextForm ~form1016~
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1030",1030,40,140,12,36,#TRUE#,0,"Create",0,0,0
+"Sub object1030()
+Dim j as Integer
+Dim i as Integer
+Dim res as Integer
+Dim pdb as Database
+
+MsgBox ~This button creates a database on the Palm and copies it to the Card~
+VFS.Delete(~/palm/launcher/VFSTestDb.pdb~)'delete file on Memory card
+res = dbOpen(pdb,~VFSTestDb~,0)
+If res=0 Then       'delete file on Palm 'cause it exists
+    res=dbclose(pdb)
+    res=dberase(pdb)
+EndIf
+
+'Database creation
+'see type defn in startup code
+
+res=dbcreate(pdb,~VFSTestDb~,0,~test~)
+If res=0 Then 'success
+res = dbOpen(pdb,~VFSTestDb~,0)
+For i = 1 to 25
+'res=DbPosition(pdb,i,0)
+''Our UDT Structure - we need to populate the information first
+''---------------------------------------------
+Addbook.RecNo=i
+Addbook.FirstName=~First~+str(i)
+Addbook.LastName =~Last~+str(i)
+Addbook.telNo =~(604)555-121~+str(i)
+Addbook.age=i+20
+''----------------------------------------------
+'res=dbput(pdb,i,Addbook)'add it to our database in Palm memory
+'or
+'res=dbput(pdb,i,Addbook.RecNo,Addbook.FirstName,Addbook.LastName,Addbook.TelNo,Addbook.Age)
+'or the easiest
+dbinsert(pdb,i,addbook)
+Next
+res=DbClose(pdb)
+End If
+
+'Copy to Card
+VFS.ExportDialog(~VFSTestDb~,~/palm/launcher/VFSTestDb.pdb~, ~Title~, ~Copying...~)'copy with dialog
+res = VFS.GetLastError()'did it copy?
+
+Select Case res  'error checking
+Case 0
+    MsgBox ~No errors~
+Case 519
+    MsgBox ~File not found in memory~
+Case Else
+    MsgBox ~Other Error~
+End Select
+Call Form1003_After()'refresh directory
+
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1039",1039,8,124,12,52,#TRUE#,0,"Version ",0,0,0
+"Sub object1039()
+MsgBox ~VFSLib Version ~+ str(version)
+End Sub"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1040",1040,84,140,12,76,#TRUE#,0,"Copy to Card ",0,0,0
+"Sub object1040()
+Dim pathName as String
+Dim dbName as String
+Dim err as Integer
+Dim dialogTitle as String
+Dim actionStr as String
+
+'Copy to Card
+'-------------------------
+dbName=~VFSTestDb~ 'name of db or prc in Main memory - no extension
+pathname=~/palm/launcher/VFSTestDb.pdb~  'full name of location including filename
+'VFS.Export(dbName, pathName) 'copy without display dialog
+dialogTitle=~Copying file~
+actionStr=~Copying to card...~
+VFS.ExportDialog(dbname, pathName, dialogTitle, actionStr)'copy with dialog
+err = VFS.GetLastError()'did it copy?
+
+Select Case err  'error checking
+Case 0
+    MsgBox ~No errors~
+Case 10758
+    MsgBox ~File already exists~
+Case 519
+    MsgBox ~File not found in memory~
+Case Else
+    MsgBox ~Other Error - see documentation for error codes~
+End Select
+
+Call Form1003_After()'refresh directory
+
+End Sub"
+"vew"
+4,1016,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Read VFS Pdb"
+"Form1016"
+""
+0
+"Sub Form1016_After()
+field1041.text=~1~
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1019",1019,8,128,12,36,#TRUE#,0,"# Recs",0,0,0
+"
+Sub object1019()
+Dim i as Integer
+Dim filename as String
+filename=~/palm/launcher/VFSTestDb.pdb~
+
+i=VFSGetNoRecords(filename)
+MsgBox str(I)+ ~ records~
+
+
+
+End Sub
+
+ 
+ 
+"
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1022",1022,4,144,12,60,#TRUE#,0,"Main Menu",0,0,0
+"Sub object1022()
+NextForm ~form1003~
+End Sub"
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1041",1041,8,36,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1043",1043,100,24,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1045",1045,100,40,12,50,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1047",1047,44,56,12,100,#TRUE#,0,"",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#TRUE#,#FALSE#,#TRUE#,80,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1049",1049,44,72,12,100,#TRUE#,0,"",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1051",1051,8,24,11,38,#TRUE#,0,"Record #",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1052",1052,72,24,11,27,#TRUE#,0,"Field 1:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1053",1053,72,40,11,27,#TRUE#,0,"Field 2:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1054",1054,12,56,11,27,#TRUE#,0,"Field 3:",0,0,0
+""
+"lbl"
+1
+"obj"
+3
+"lbl","Label1055",1055,12,72,11,27,#TRUE#,0,"Field 4:",0,0,0
+""
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1056",1056,116,144,12,36,#TRUE#,0,"OK",0,0,0
+"Sub object1056()
+Dim i as Integer
+Dim j as Integer
+Dim filename as String
+Dim datastring2 as String
+filename=~/palm/launcher/VFSTestdb.pdb~
+datastring2=VFSGetCreatorID(filename)'Get Creator ID
+j=VFSGetNoRecords(filename)
+i=val(field1041.text)
+If i>j Then i=j 'check to make sure we are calling the right record
+getVFSpdbRecord(i,filename)
+field1043.text=addbook.firstname
+field1045.text=addbook.lastname
+field1047.text=addbook.telno
+field1049.text=str(addbook.age)
+End Sub"
+"end"

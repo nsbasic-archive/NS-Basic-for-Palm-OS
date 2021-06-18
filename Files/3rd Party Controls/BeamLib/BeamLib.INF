@@ -1,0 +1,26 @@
+[General]
+
+ExtensionName=BeamLib
+PrcName=BeamLib.prc
+Version=1.0
+Manufacturer=Douglas Handy
+InfVers=2.0
+
+
+=HelpStart=
+""
+"BeamLib Shared Library"
+""
+"This library provides preliminary services for"
+" beaming databases from NSBasic."
+""
+"Written by Doug Handy, Aug 2003"
+""
+=HelpEnd=
+
+[GlobalMethods]
+
+Version= 1, func, 0, "Version() as double"
+CompileInfo= 2, func, 0, "CompileInfo() as string"
+Register= 3, sub, 2, "Register(in part1 as string, in part2 as string)"
+BeamDatabase= 4, func, 2, "BeamDatabase(in dbName as string, in dbDesc as string) as Integer"

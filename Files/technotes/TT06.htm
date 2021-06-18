@@ -1,0 +1,194 @@
+<HTML><HEAD><TITLE>Tutorial 06: Reading and Writing data</TITLE>
+<BODY text=#000000 vLink=#800080 link=#0000ff bgColor=#ffffff>
+<link rel="stylesheet" href="/style2.css">
+<TABLE cellSpacing=0 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD WIDTH="17%" VALIGN="TOP"><P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD vAlign=top width="83%">
+      <H2>Tutorial 06: Reading and Writing data</H2>
+      <H3>June 12, 2006</H3>
+      <H5>© 2009 NS BASIC Corporation. All rights reserved. </H5>
+      <P><EM>Contributed by Chris Kenworthy</EM></P></TD></TR></TBODY></TABLE>
+<HR>
+
+<H3>Contents:</H3>
+<OL>
+  <LI><A href="#intro">Introduction</A></LI>
+  <LI><A href="#getstart">Getting started</A> </LI>
+  <LI><A href="#createopen">Creating and opening a database</A> </LI>
+  <LI><A href="#reading">Reading string data</A> </LI>
+  <LI><A href="#writing">Writing string data</A> </LI>
+  <LI><A href="#numbers">Working with number data</A> </LI>
+  </OL>
+<H3><A name='intro'>1. Introduction</A></H3>
+<P>This tutorial will demonstrate how to use NSBasic for Palm to create a PalmOS
+program that will store data in a persistent database and retrieve it.</P>
+<P>For this exercise, the data that our program will store is the name of a 
+user. The first time the program runs, it will say that it doesn't remember any 
+name, but after the user has entered a name, it will greet them by name when they 
+come back.</P>
+<H3><A name='getstart'>2. Getting started</A></H3>
+<UL><LI>Start with a new project file.</LI>
+<LI>Call it Helloyou, by setting the (Name) property in the project properties window.</LI>
+<LI>Save your project at this point using CTRL+S or the File menu in the top left corner of the NS Basic IDE window.</LI>
+<LI>Go to the project Startup code by right-clicking on the project name (Helloyou) in the Project exporer window and selecting 
+"View Startup Code" or picking "Startup Code" from the Project menu.</LI></UL>
+<H3><A name='createopen'>3. Creating and opening a database</A></H3>
+<P>Now, enter the following code, right after "Sub Project_Startup()":</P>
+<PRE>
+    Global myDB as Database    
+    Dim iResult as Integer    
+    iResult = dbOpen (myDB, "whoisit", 0)    
+    If iResult = 519 Then ' DB not found    
+        iResult = dbCreate (myDB, "whoisit", 0, "Test") 
+        
+        If iresult <> 0 Then
+            MsgBox "dbcreate error " + str(iResult) + " in whoisit"            
+        Else
+            iResult = dbOpen (myDB, "whoisit", 0)            
+            If iResult <> 0 Then
+                MsgBox "dbopen error " + str(iResult) + " in whoisit"
+            End If
+        End If  
+        
+    ElseIf iResult <> 0 Then
+        MsgBox "dbopen error " + str(iResult) + " in whoisit"    
+    End If
+</PRE>
+<P>This code does a lot of important things that we'll need for reading and writing data. First, it declares a global 
+variable for our database operations, myDB. A database variable represents one database file on the Palm device, which is 
+all that we'll need for our program. (More complicated programs might involve many database files, and many variables.) 
+Then we attempt to open the database named 'whoisit' with our myDB database reference.</P>
+
+<P>If there's any problem with opening the database, then the error trapping code is triggered. First off, we need to pay 
+particular attention to the "DB not found" error code, which is a result of 519, because that suggests that this may be the 
+first time our program was run on this device. In that case, we attempt to make a fresh database with dbcreate. If there is any 
+unexpected error in creating the database, opening it after creating it, or any open error code that is not DB-not-found, 
+we output the error message using a msgbox command.</P>
+<H3><A name='reading'>4. Reading String data</A></H3>
+<P>We're almost ready to start reading from the database, but first we need to put a label onto our project's form. 
+Do this by switching back to the form in the project explorer, clicking on the Label icon in the toolbox, then up in the 
+top right corner of your form. Left click on the label and change its name to lblHello, and enter enough label text to make the 
+label stretch all the way across the palm form.</P>
+<IMG src='images/TT06.01.gif' width=625 height=556>
+<P>Right click on the form, and pick 'View Before Code'. Enter the following lines for the form_before sub:</P>
+<PRE>
+    Dim iResult as Integer, k as Integer, strName as String   
+    k = 1    
+    iResult = dbread (myDB, k, strName)    
+    If iResult = 2 Or iResult = 1 Then
+    	lblHello.text = "I'm sorry, I don't remember you."
+    	
+    ElseIf iResult <> 0 Then
+    	MsgBox "dbread error " + str(iResult) + " in whoisit"
+    	lblHello.Text = "dbread error " + str(iResult) + " in whoisit"
+    	
+    Else
+    	lblHello.Text = "Welcome back, " + strName
+
+    End If
+</PRE>
+
+<P>After declaring the variables we need, we use the dbread routine to search for a record in the database with a key of 1. 
+This will hold any name that has been written into the database. If the result code is 1 or 2, then we assume that the record was 
+not found. (2 is a 'record not found, skipped to next record after', however, if there are no records after record key 1, then 
+the return code will be 1, 'operation failed.' A brief description of these error codes are in the manual under dbopen, but 
+sometimes you need to experiment for yourself.)</P>
+<P>Then the proper message, for name found, name not found, and unexpected error are displayed.</P>
+<P>At this point, if you compile the program and run it in Emulator or on a Palm device, it should run correctly and show the 
+"I don't remember you" message. To actually read any true data, we will have to write it into the database.</P>
+<H3><A name='writing'>5. Writing string data</A></H3>
+<P>As with reading, to write a name into our database, we'll need to add some controls to the form. A field and a button control
+are necessary, along with another label to provide a cue to the user. Call the field txtName, and the button btnSave. 
+The form should look something like this once you've added them:</P>
+<IMG src='images/TT06.02.gif' width=625 height=556>
+
+<P>Now double click on btnSave. Enter the following lines for its sub:</P>
+<PRE>
+    Dim strName as String, iResult as Integer, k as Integer
+    k = 1
+    If txtName.Text = "" Then
+        MsgBox "You must enter a name to save!"
+        Exit Sub
+    End If
+			
+    iResult = dbread (myDB, k, strName)  
+    strName = txtName.Text
+    
+    If iResult = 2 Or iResult = 1 Then
+    	iResult = dbInsert (myDB, k, strName)    
+    	If iResult <> 0 Then    	
+    		MsgBox "dbinsert error " + str(iResult) + " in whoisit"   		
+    	End If    	
+    Else   
+    	iResult = dbUpdate (myDB, k, strName)   	
+    	If iResult <> 0 Then    	
+    		MsgBox "dbupdate error " + str(iResult) + " in whoisit" 		
+    	End If
+    End If
+    
+    If iResult = 0 Then
+    	MsgBox "I will remember that name."
+    End If
+</PRE>
+<P>First, we validate the text field to make sure that the user has entered something. We could have validated that the name 
+wasn't too long, that it didn't just consist of numbers, etcetera at this point if we wanted to.</P>
+<P>Then, we attempt to read a name from the file, to determine if we need to use a dbinsert command, to write a new record, 
+or a dbupdate command to change an existing record. Finally, we make the change, and check for any database errors.</P>
+<P>At this point, you should be able to tell the program your name and have it greet you next time, kind of like this:</P>
+<IMG src="images/TT06.03.gif" height=679 width=485> 
+<H3><A name='numbers'>6. Working with number data</A></H3>
+<P>Now, our program will read and write data, but only of a string type. Let's try adding simple numeric data to the database - 
+a second field, with key value 2, that will hold the user's age.</P>
+<P>Again, we'll need to add some form controls for this - a textbox and button for saving ages, (txtAge and btnSaveAge,)
+a button for reading ages. (btnReadAge)</P>
+<IMG src='images/TT06.04.gif' width=614 height=576>
+<P>Now, add the following code for the new buttons, (by double-clicking on the buttons.) For btnSaveAge:</P>
+<PRE>
+	Dim age as Integer, iResult as Integer, k as Integer
+	k = 2
+    If txtAge.Text = "" Then
+        MsgBox "You must enter an age to save!"
+        Exit Sub
+    End If
+		
+    If testnum(txtAge.Text, "", 3, 0) <> 0 Then
+        MsgBox "You must use a numeric age to save!"
+        Exit Sub
+    End If
+
+    iResult = dbread (myDB, k, age)
+    age = val(txtAge.Text)    
+    If iResult = 2 Or iResult = 1 Then
+    	iResult = dbInsert (myDB, k, age)    
+    	If iResult <> 0 Then    	
+    		MsgBox "dbinsert error " + str(iResult) + " in whoisit"    		
+    	End If    	
+    Else    
+    	iResult = dbUpdate (myDB, k, age)    	
+    	If iResult <> 0 Then    	
+    		MsgBox "dbupdate error " + str(iResult) + " in whoisit"    		
+    	End If    
+    End If
+    
+    If iResult = 0 Then
+    	MsgBox "I will remember that."
+    End If
+</PRE>
+<P>And, for txtReadAge:</P>
+<PRE>
+    Dim iResult as Integer, k as Integer, age as Integer, strAge as String    
+    k = 2    
+    iResult = dbread (myDB, k, age)    
+    If iResult = 2 Or iResult = 1 Then
+    	MsgBox "I'm sorry, I don't remember your age."    	
+    ElseIf iResult <> 0 Then
+    	MsgBox "dbread error " + str(iResult) + " in whoisit"    	
+    Else
+    	strAge = str(age + 1)    	
+    	MsgBox "When's your " + strAge + "th birthday?"
+    End If
+</PRE>
+<P>Have fun with your data!
+</BODY></HTML>

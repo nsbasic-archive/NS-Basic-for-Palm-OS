@@ -1,0 +1,181 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 05a: Using Shared Libraries</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=478>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+<TD WIDTH="78%" VALIGN="TOP">
+	  <h2>Tech Note 05a: Using Shared Libraries</h2>
+	  <h3>June 19, 2005</h3>
+	  <h5>&copy; 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+<p>There are two steps involved in using a shared library from within an NSBasic program:</p>
+
+<ol><li>Load the library using <code>LoadLibrary</code>.</li>
+<li>Use the functions and subroutines within the library using object syntax with the name of the library.</li></ol>
+
+<h3>Loading the Library</h3>
+
+<p>Before an NSBasic program can use a shared library, it must first load it using the <code>LoadLibrary</code> statement.  The best place for this is the application's startup code.</p>
+
+<PRE>
+   Syntax:
+      LoadLibrary filename[, refname]
+   Description:
+      Filename is a file ending with a .inf extension that can be found in the
+      Lib subdirectory, with the .inf extension being optional.  Refname is an
+      optional variable name that will be used to refer to the library in
+      subsequent calls to external procedures.  Calling LoadLibrary from the
+      Project Startup Code ensures that a library will be accessible globally
+      in your project.
+   Examples: (NS Basic/Palm IDE)
+      LoadLibrary "Mathlib"           'Uses Mathlib.inf, refname = mathlib
+      LoadLibrary "Shortlib.inf"      'Uses Shortlib.inf, refname = shortlib
+      LoadLibrary "newlib", "nl"      'Uses Newlib.inf, refname = nl
+</PRE>
+
+<p>You can use the <code>GetVersion(</code><i>libName</i><code>)</code> function to return the version
+string in the TVER resource of any <code>.prc</code> file, including shared libraries.  Not all shared libraries have TVER resources, but for those that do, you can use this to determine version information.</p>
+
+<h3>Using the Functions and Subroutines</h3>
+
+<p>Once the library has been loaded, you can access the functions and subroutines within the library by
+using the short name, if you provided one, or the long name (without the <code>.inf</code>), as follows:</p>
+
+<p><i>libName<b>.</b>subName</i> [<i>parameter</i> {, <i>parameter</i>}]<br>
+<i>variable</i> = <i>libName<b>.</b>funcName</i> ( [<i>parameter</i> {, <i>parameter</i>}] )</p>
+
+<p>This is just like using an intrinsic subroutine or function, except that it uses a compound name made 
+of the library name separated from the subroutine or function name with a period.</p>
+
+<p>You can pass scalars of all types to shared libraries.  You can also pass arrays of Short, Integer, 
+Float, Double, and Byte to shared libraries, which may modify the values in the arrays.  The best place to find out how to use a specific library is the documentation and examples 
+that come with the library.  If this documentation is missing or incomplete, you may need to figure it
+out.</p>
+
+<p>If you pass a string to a shared library function or subroutine, and the function or subroutine can modify the contents of the string, you should first initialize the string to be as long as the largest
+possible return string.  NSBasic will automatically expand strings to 300 bytes if they are shorter.</p>
+
+<p>There are two versions of NSBasic shared libraries.  Version 2 provides automatic type conversion and 
+automatic passing by reference and is much safer to use.  Version 1 does not.  To determine the version of
+a shared library, locate its information file.  The name of this file will end in <code>.inf</code>, and 
+it should be in the Lib directory of the install folder (e.g. <code>C:\NSBasic\Lib</code>).  Version 2 files contain a line <code>InfVers=2.0</code></p>
+
+<p>Due to the improvements in Version 2 shared libraries, using one is easy.  Using subroutines and functions within a shared library just as you would use intrinsic or defined subroutines and functions should work.  It is an error, however, to use a shared library function as a subroutine or a subroutine as a function.  With Version 1 shared libraries, on the other hand, you must be extremely careful about what types you pass to shared libraries.  The remainder of this section describes how to use Version 1 shared 
+libraries, but it is good practice for using Version 2 shared libraries as well.</p>
+
+<p>If you use literals, NS Basic/Palm will
+
+assume you mean certain data types. These are as follows: </p>
+
+
+<table border="1">
+
+<TBODY>    <tr>
+
+        <td>Numbers without a decimal point</td>
+
+        <td>63</td>
+
+        <td>Int32</td>
+
+    </tr>
+
+    <tr>
+
+        <td>Numbers with a decimal point</td>
+
+        <td>1.5</td>
+
+        <td>double</td>
+
+    </tr>
+
+    <tr>
+
+        <td>Strings</td>
+
+        <td>&quot;Hello&quot;</td>
+
+        <td>Char *</td>
+
+    </tr>
+
+    <tr>
+
+        <td>Calculations</td>
+
+        <td>(1/2)</td>
+
+        <td>float (except when the result is 0)</td>
+
+    </tr>
+
+</TBODY></table>
+
+<p>It is much safer, however, only to use variables defined by Dim statements when
+passing parameters to shared library functions and subroutines.  For scalar values, the following 
+data types will be used:</p> 
+
+<table border="1">
+
+<TBODY>    <tr>
+
+        <td>Short</td>
+
+        <td>Int16</td>
+
+    </tr>
+
+    <tr>
+	<td>Integer</td>
+	<td>Int32</td>
+    </tr>
+    <tr>
+	<td>Float</td>
+	<td>float (4-byte IEEE floating point)</td>
+    </tr>
+    <tr>
+	<td>Double</td>
+	<td>double (8-byte IEEE floating point)</td>
+    </tr>
+    <tr>
+	<td>String</td>
+	<td>Char * (null-terminated)</td>
+    </tr>
+    <tr>
+	<td>Byte</td>
+	<td>unsigned char * (single-byte)</td>
+    </tr>
+    <tr>
+	<td>Variant</td>
+	<td>void *</td>
+    </tr>
+	
+</TBODY></table>
+
+<p>If a shared library function requires a char or Char parameter, you can pass it as a single
+Short.</p>
+
+<p>Scalar types are normally passed by value, with the exception of strings and bytes,
+which are always passed by reference/pointer.  You can also pass entire arrays of Byte,
+Short, Integer, Float, or Double.</p>
+
+<p>The array mechanism also allows you to pass single parameters by reference/pointer.  Declare
+an array using the Dim statement containing two or more elements of the desired data type.  Use the first
+element as the value.  (It is necessary to declare two or more elements because, at runtime, a
+single-element array is indistinguishable from a scalar.)</p>
+
+
+
+</body>
+</html>
+

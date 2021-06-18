@@ -1,0 +1,530 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Tech Note 02: More about PDB Files</TITLE>
+<link rel="stylesheet" href="style2.css">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=550>
+<TR>
+	<TD WIDTH="18%" VALIGN="TOP">
+<P><IMG SRC="images/BigIcon.GIF" WIDTH=86 HEIGHT=103></TD>
+    <TD WIDTH="82%" VALIGN="TOP">
+	  <h2>Tech Note 02: More about Palm OS Databases</h2>
+      <h3>September 02, 2008</h3>
+	  <h5>© 2009 NS BASIC Corporation. All rights reserved.</h5>
+	</TD>
+</TR>
+</TABLE>
+<HR>
+<h3><BR>
+  <BR>
+
+  Contents
+</h3>
+<pre>
+    <a href="#intro">Overview</a>
+    <a href="#nonkey">Reading and Writing to non-Keyed Databases</a>
+    <a href="#key">Reading and Writing to Keyed Databases</a>
+    <a href="#variable">A few words about the "database" variable</a>
+    <a href="#pdb">PDB and PRC files Working Together</a>
+    <a href="#large">Access to Large Databases</a>
+    <a href="#faq">Database Programming Frequently Asked Questions</a>
+    <a href="#technique">Database Programming Techniques</a>
+    <a href="#resource">Resources and Suggested Reading</a>
+    <a href="#conduits">Database Conversion Tools (Conduits)</a>
+</pre>
+
+
+<h3><a name="intro"></a>Overview of Palm Databases in NSBasic/Palm
+</h3>
+<P>All databases on a Palm device, including the ones you create using NS Basic/Palm, have the same format. Databases you create using NS Basic/Palm have the backup bit set by default, so they are copied to your "x:\palm\{username}\backup" on a Hotsync ('x' is the directory where you have your Hotsync software installed). Once there, it is possible to manipulate them.  Palm Programs are saved in a special format of .pdb file, called .prc files.
+
+<P>NS Basic/Palm only runs on the Palm device itself. Palm devices only know about one kind of database: .pdb. NS Basic/Palm can access all .pdb files. Databases created by NS Basic/Palm are automatically copied to the desktop on a Hotsync.  There is a wide variety of utilities that are available to convert between PDB, Access, CSV, Excel, and other formats. We have listed the ones we are aware of later in this document. Be sure to check out the <A HREF="http://groups.yahoo.com/group/nsbasic-palm/">NSBasic/Palm Web Board</A> and ask around.  You'll find lots of useful information on this topic there.
+
+<P>The Palm OS doesn't much care what you put in a database record. As far as the OS is concerned, a database record is just a series of bytes. Your app has to interpret those bytes in whatever way you want it to. </p>
+
+<p>You can download the samples for this technote <A HREF="http://www.nsbasic.com/pub/palm/samples/DatabaseDemos.zip">here</A>. <P>&nbsp;</p> 
+<h3><a name="nonkey"></a>Reading and Writing to non-Keyed Databases </h3>
+<p>This method of database access is probably the most simple in concept, but can often cause the most confusion. Think of a database in NSBasic/Palm as a sort of 'grid'. Each 'cell' in the holds one byte of data. The description of the DIM statement in the NSBasic/Palm handbook has a list of the NSBasic/Palm data types and their storage requirements. Strings are an exception. They require one byte per character plus an additional byte for their terminator. So writing to a database the word 'Cat' from the begining of a record in the database would look something like this (the '\0' symbol denotes the end of the string):</p>
+<table border="1" width="45%" align="center">
+  <tr>
+    <td>C</td>
+    <td>a</td>
+    <td>t</td>
+    <td>\0</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>Writing to a non-keyed database is simple. You just need to be mindful of where you plcace your data. Dates and Numbers, for example, are easy enough, as they'll translate to 8-byte values (for dates and times) and 4-byte values (for Integers and single-precision floating point values). When you put Strings in the mix you need to force them to the length that you want your data to be in, otherwise you'll fire off DmWriteCheck exceptions.&nbsp;&nbsp;So if your field that contains the word Cat could be up to 15 characters in length what you store would look something like this in the Palm memory:</p> 
+<table width="45%" border="1" align="center">
+  <tr>
+    <td>C</td>
+    <td>a</td>
+    <td>t</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>\0</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>To write to a non-keyed database you need to use two different functions: dbPosition() and dbPut(). The dbPosition function will set your record pointer to the specific record number and 'offset' (or 'cell' as discussed above). When data is written using dbPut() the pointer into the record will be set to the end of the last piece of data written. In this example a name exists in a field object called fldName. This code will write the contents of fldName to the beginning of the first record of the database.</p> 
+
+<pre>
+'assume name is DIMed as String and db as Database
+name = rightpad(fldName.text,15) 'set the string to be 15 characters long.
+
+res = dbposition(db, 1, 0)
+res = dbput (db,name)
+if res not = 0 then
+    msgbox "Write error: "+str (res)
+end if
+</pre>
+<p>To write more data to the same record is simple. Just use more dbPut
+  statements. </p>
+<pre>
+'assume that dDate is DIMed as a Date type
+res = dbput (db,dDate)
+if res not = 0 then
+    msgbox "Write error: "+str (res)
+end if
+
+'assume fmyFloat is DIMed as a Float
+res = dbput (db,fmyFloat)
+if res not = 0 then
+    msgbox "Write error: "+str (res)
+end if
+</pre>
+<p>To read these back is just about as simple. Just use dbPosition() along with
+  dbGet(). Each call to dbGet will move the pointer in the record, so there's
+  no need to use repeated calls to dbPosition (although you can if you only want
+  particular fields from a record in the database).</p>
+<pre>
+res = dbposition(db, 1, 0)
+res = dbget (db,name)
+if res not = 0 then
+    msgbox "Read error: "+str (res)
+end if
+fldName.text = rtrim(name) ' removes the spaces padded on by the rightpad() function.
+
+dDate=-1
+res = dbget (db,dDate)
+if res not = 0 then
+    msgbox "Read error: "+str (res)
+end if <br>
+fldDate.text = datemmddyy(dDate) 'convert the date into a displayable format
+
+res = dbget (db,fmyFloat)
+if res not = 0 then
+    msgbox "Read error: "+str (res)
+end if
+fldCost.text = str(fmyFloat)
+</pre>
+
+<p>Most desktop utilities that produce .pdb files create them without keys. Be
+  sure to use the "Operations by Position" functions to access them, not "Position
+  by Key." See Section 10.D in the NSBasic/Palm Handbook. </p>
+<h3><a name="key"></a>Reading and Writing to Keyed Databases</h3>
+<p>Writing to a keyed database is a matter of having a unique ID for each record
+  (called a 'key'). The NSBasic database header maintains the key information
+  along with the offsets into the database where the information is stored.
+  The two biggest advantages to this are ease of access and ease of storage. To
+  find a record in a keyed database you need only search by the key value (in
+  a non-keyed database you need to search one record at a time). With keyed databases
+  you can also store your information using a User Defined Type or UDT (created
+  with the NSBasic/Palm TYPE statement). This way instead of writing say, 50 elements,
+  into a database one element at time (as with dbPut) you have a single dbInsert()
+  statement with 3 arguments:</p>
+
+<pre>dbInsert (database,keyvalue,UDT)</pre>
+
+<p>Here's an example. Like the non-keyed database example above, this code will
+  write one string, one date and one floating point number into a Palm PDB file.
+  Assume the following UDT:</p>
+
+<pre>type myData
+    name as string
+    dDate as Date
+    fmyFloat as float
+End type</pre>
+
+<p>Next, assume the following variables are defined in your Project Startup code:</p>
+
+<pre>Global db as Database
+Global msgdata as string
+Global recordData as myData</pre>
+
+<p>Writing to the database with the dbInsert command is as simple as this (this
+  assumes the database has been created and is currently open):</p>
+
+<pre>recordData.name=&quot;John Doe&quot;
+recordData.dDate = mmddyytodate(&quot;09/29/99&quot;)
+recordData.fmyFloat = val(&quot;123.45&quot;)
+
+Dim res as Integer
+Dim keyval as Integer
+
+keyval=1
+res=dbinsert (db,keyval,recordData)
+</pre>
+<p>This writes a new record to the database with a key of 1 and now holds the
+  data shown above. Reading the data back out is almost exactly the same, just
+  in reverse:</p>
+
+<pre>keyval=1 ' must be set to the key of the record you want to retrieve
+
+res=dbread(db,keyval,recordData)
+if (res = 0) then
+    msgbox recorddata.name
+    msgbox datemmddyy(recorddata.dDate)
+    msgbox str(recorddata.fmyfloat)
+else
+    alert (&quot;Oops!&quot;,&quot;An error occured :&nbsp;&quot;+str(res),3,&quot;OK&quot;)
+end if</pre>
+
+<P>Please note that if you get a return value of 2 in 'res', this means that the
+record you tried to read wasn't found and the next closest record to it was returned
+instead.</P>
+<p>For more information on using keyed databases read section 10.D.b - &quot;Operations
+  by Record Key&quot; in the NSBasic/Palm Handbook. There is also an example of
+  creating a sequential key value that is described in Section 10.D.c - &quot;Using
+  a sequentially numbered key&quot; in the NSBasic/Palm Handbook.</p>
+
+
+<h3><a name="variable"></a>A few words about the "database" variable</h3>
+By now you have probably noticed that all database-access statements use a "database" variable to refer to the database being opened, closed, erased, or otherwise manipulated.  Understanding the use of this variable will help keep you from making a common mistake which can be hard to debug (and fix) later.
+
+<p>When a database is created or opened by a Palm OS application, it is assigned a unique number ("handle") by the operating system to refer to that database, and this unique handle is assigned to the NSBasic database variable:
+
+<PRE>Dim db1 as database ' our variable to hold the Palm OS database handle
+Dim res as integer ' our result variable
+res=dbCreate(db1,"MyDB",0,"Test")
+res=dbOpen(db1,"MyDB",0)
+</Pre>
+
+<p>Every subsequent database operation refers to the database by this handle rather than by the database name:
+
+<pre>
+'examples...
+res=dbFind(db1,"Doe, John")
+res=dbInsert(db1,dbKey,dbData)
+</pre>
+
+Although your applications receive this handle from the OS, they should <b>never</b> attempt to modify it, as this would cause the OS to lose track of the database being used.  Not only shouldn't your applications modify the handle, they must not attempt to open another database using the same database variable:
+
+<pre>
+res=dbOpen(db1,"MyDB",0)
+res=dbOpen(db1,"NextDB",0) ' db1 no longer refers to "MyDB"
+res=dbOpen(db1,"NextDB",0) ' db1 now refers to the "NextDB", but this time opened in read-only mode
+</pre>
+
+<p>The appropriate way to refer to multiple databases is to use a separate "database" variables for the different handles:
+
+<pre>
+Dim dbInventory as database
+Dim dbPrices as database
+res=dbOpen(dbInventory,"MyDB",0)
+res=dbOpen(dbPrices,"NextDB,0)
+'now both databases are opened, and each handle is saved in a separate "database" variable
+'...database operations and other code...
+res=dbClose(dbPrices)
+res=dbClose(dbInventory)
+'now both databases are closed, and can be safely opened again later if needed
+</pre>
+
+<p>Some programmers open all databases at the beginning of an application, then close them all at the end, while some programmers open databases only when they're needed, closing them immediately as soon as possible after any data manipulation.  Which method you use is up to you, but be sure to evaluate the return code of every database operation, to catch any errors that may creep in.
+
+
+<h3><a name="pdb"></a>PDB and PRC files Working Together</h3>
+<p>Databases (PDB) are not stored "within" the application (PRC). They are still
+  separate. There are three attributes to a database: the Creator ID, the type,
+  and the name. The Creator ID and type are both four-byte values, such as 'appl',
+  'REAd', ''Font', 'Data', 'zrCT' ... basically anything. Note that in code these
+  characters are surrounded by single quotes as if they were char constants and
+  not the double quotes typically used for strings. An ID or type could also be
+  represented as a long integer (generally in hex) for instance 'appl' could also
+  be represented as 0x6170706C, although this is less common. </p>
+<p>There can only be one db with the type of 'appl' with any given ID on the device
+  at any time. This typically would be the PRC file that represents the executable
+  code of your program. This uniqueness attribute does not apply to other types.
+  For instance, if you use a Palm &quot;Doc&quot; reader and have several Doc
+  files on your Palm there will be many databases with a creator/type pair of
+  'REAd'/'TEXt' on your device. The only truly unique aspect for any database
+  is the name -- which must be unique with respect to all other databases on the
+  device regardless of their type/creater. For instance if you have a Doc w/ the
+  name "videos", you can not also have a NSBasic database w/ the same name. </p>
+<p>The Palm launcher treats multiple databases sharing the same ID in a special manner.
+  When you delete the database with type 'appl' of any given ID ('fBAR') then
+  all other databases with the same ID will also be removed from the device. This
+  prevents unusable data from cluttering up your valuable memory when you ditch
+  an old app. </p>
+<p>Since the palm launcher groups databases together by ID, you can make use of
+  a special tool (such as ZarfCatalog, which you can find on PalmGear) to assure
+  yourself that they are indeed still separate databases. Each will appear in
+  the backup directory individually ... assuming of course that their backup bit
+  has been set. No "unknown operation" to extract them would be required. </p>
+<p>The only reason to -not- use the same ID for the app and its data is if for
+  some reason you want the data to remain on the PDA when the application that
+  uses it is deleted.</p>
+<h3><a name="large"></a>Access to Large Databases</h3>
+<P>It used to be the case that it was impossible to have databases larger than
+  about 8000 records. This is because of a limitation of an area of memory known
+  as the Heap. The Heap holds information such as the database header. This header
+  is basically a big array that holds the handles of each record. In Palm OS versions
+  up to 3.3 the Heap is 64k. The rule of thumb is that each record takes up 8
+  bytes of the heap. This means that databases can't be larger than 8000 records.
+  Anything more would be impossible.
+
+<P>That changed in OS 3.5.&nbsp; Here's a document from the PalmOS website on
+  an overview of PalmOS 3.5 and what's new:<br>
+  <br>
+  <a href="http://www.palmos.com/dev/tech/docs/palmos35/" eudora="autourl">http://www.palmos.com/dev/tech/docs/palmos35/</a><br>
+  <br>
+  Here's the part that's really interesting as far as this discussion is concerned:<br>
+  <br>
+  <a href="http://www.palmos.com/dev/tech/docs/palmos35/#The%20Dynamic%20Heap" eudora="autourl">http://www.palmos.com/dev/tech/docs/palmos35/#The
+  Dynamic Heap </a> <br>
+  <br>
+  Specifically what it says is:<br>
+  <br>
+  The Dynamic heap is now sized based on the amount of memory available to the
+  system. The size which will be used is as follows: <br>
+<table border=0 align="center">
+  <tr><b>
+    <th width=130>Device RAM size </th>
+    <th width=70>Heap size </th>
+    </b></tr>
+  <tr>
+    <td width=130>&lt; 2 mb of ram </td>
+    <td width=70>64 k </td>
+  </tr>
+  <tr>
+    <td width=130>&gt;= 2 mb </td>
+    <td width=70>128 k </td>
+  </tr>
+  <tr>
+    <td width=130>&gt;= 4 mb </td>
+    <td width=70>256 k </td>
+  </tr>
+</table>
+<p><br>
+  What this translates to is that you can now have a PalmOS API supported database
+  of as many as 24000 records.&nbsp; Access to databases of this size will be
+  slow, but it can be done.</p>
+<p>It bears to keep in mind that many of the database products currently for the
+  palm have been implementing their *own* memory management functions to allow
+  for large data structures, etc. This means that while it might <b>say</b> it's
+  a PDB, it's really a custom structure internally. This could then allow for
+  say - a 24000 record database to take only 10k-40k of heap instead of 230k.
+</p>
+<p>Also remember that databases of this size are going have a profound impact on
+  how long a Hotsync will take to run.<br>
+</p>
+
+
+<h3><a name="faq"></a>Database Programming Frequently Asked Questions</h3>
+<p><b>Q: What's the difference between using dbInsert (for keyed databases) and
+  dbPut (for non-keyed databases)?</b></p>
+<p>A: Michael Verive put the description best:</p>
+<p>The dbInsert function will write a record to a keyed database, and requires
+  the use of a unique key. The record information is then stored along with the
+  key. When read, the records are read in key sequence alphabetically, saving
+  the hassle of sorting the records. The dbPut command will write the record in
+  a specific location, designated by dbPosition. No unique key is needed, since
+  the records are read either sequentially or by positioning the file pointer
+  to the specific record number and offset. </p>
+<p>Each form of database access has its own advantages and disadvantages. Keyed
+  databases require the use of a unique key for each record, and only use a single
+  key. They are very useful when information needs to be searched for by a unique
+  key, and when having the data "sorted" is needed. Non-keyed databases neither
+  use nor require a unique key, but are either accessed by direct record/offset
+  access, or sequentially. Since there is no key, searching for a specific record
+  may be more time consuming, although the data can be sorted, and a fast binary
+  search algorithm used. When all the records are the same length, direct access
+  by record number is very fast with non-keyed databases. If you need the fastest
+  access, and space isn't a limitation (storing strings of different lengths in
+  non-keyed databases by padding with spaces is very inefficient), the non-keyed
+  database may be your answer. You may need to develop your own sorting and binary
+  search routines, however. I have a demo of sort routines for arrays, but the
+  same concept can easily be applied to non-keyed databases. </p>
+<p><b>Q:What format do you store Palm dates in?</b> </p>
+<p>A: In NS Basic/Palm, dates are stored internally as (year-1900)*10000+month*100+day.
+</p>
+<p><b>Q: What format do you store Palm timestamps in? </b></p>
+<p>A: It's h*10000+m*100+s. </p>
+<p><b>Q: Why would someone get a 'Bus Error' running an NSBasic/Palm program?
+  </b></p>
+<p>A: A "Bus Error" in POSE may be caused by attempting to dbread using a key
+  field of a type other than the one used to dbinsert the record.</p>
+<p><b>Q: How do I access NSBasic Databases with Borland Delphi? </b></p>
+<p>A: If you're looking to do it via a conduit, you can use Tabdee Ltd's TurboSync
+  components. They have been updating their product to use the date and time formats
+  that NSBasic dates are stored in. You can find out more at <a href="http://www.tabdee.ltd.uk">http://www.tabdee.ltd.uk</a>
+  . </p>
+<p><b>Q: How many records can I store in my Database?</b></p>
+<p>A: See the section of the Database Technote titled &quot;Access to Large Databases&quot;</p>
+<p><b>Q: Using a keyed database, can we know the position when we use dbreadnext
+  or dbreadprev? </b></p>
+<p>A: (Thanks to Mike Verive [mverive&copy; peoplepc.com]) </p>
+<p>It all depends on how you get to your record. If you are using dbReadNext after
+  a dbReset, you can keep a pointer active that coincides with the record number
+  (ditto with dbReadPrev, since you can increment or decrement the pointer). This
+  technique is used (along with getting the number of records) in the Keyed Phone
+  DB. </p>
+<p>However, if you delete or insert records, you will have to reinitialize your
+  pointer. </p>
+<p>If you want the power of using keyed databases, and need to know where you
+  are, there are a few other ways. One way is to use an array to keep track of
+  the keys and their position (this can also be done with a second database). Use
+  dbreset to start at the beginning of the database you want to track the keys
+  of, then build the array of keys (or database of keys) one at a time. The array
+  index (or new database position) can then be used to determine the record number.
+  Again, the delete/insert problem ith pointers remains, but that can be solved
+  in code as well.</p>
+<p><b>Q: How can I delete records from a non-keyed database?</b></p>
+<p>A: There is no NSBasic/Palm call to manage record deletion in non-keyed databases.
+  Your best approach would be to have a delete 'flag' field in your record of
+  your database. Then write a 'compress database' database management routine
+  that would re-write your database file, minus the records that have a the delete
+  flag set on them.</p>
+<p><b>Q: How can I delete records from a keyed database?</b></p>
+<p>A: Use the dbDelete() function call. See the dbOpen() function call for a list
+  of possible error codes.</p>
+<p><b>Q: When I call dbDelete() to delete a record and then call dbGetNoRecs(),
+  NSBasic still says I have the same number of records as before. Why?</b></p>
+<p>A: The call to dbDelete() only flags the record as being 'ready to delete'.
+  When the database is closed with dbClose() these records are automatically compressed
+  out. </p>
+<p><b>Q: How do memory cards work? (Springboard, Compact Flash, SD, Memory Stick)</b></p>
+<p>A: Depending on the device, you can sometimes use these from NS Basic. By compiling your program with the Fat App switch on, you can avoid issues that arise from your program being on a different storage location than the Runtime. It's important to understand that current memory cards use the Virtual File System (VFS), which does not allow the use (directly) of the db statements. You can use them using NSBasic's VFS shared library, described in <A HREF="TN23.htm">Tech Note 23.</A>
+<p>Here are some excellent articles by Larry Garfield of InfoSync that explain what VFS cards can and cannot be used for:
+<UL>
+	<LI>Part 1: <A HREF="http://www.infosync.no/show.php?id=1768">http://www.infosync.no/show.php?id=1768</A>
+	<LI>Part 2: <A HREF="http://www.infosync.no/show.php?id=1772">http://www.infosync.no/show.php?id=1772</A>
+	
+  <LI>Part 3: <A HREF="http://www.infosync.no/show.php?id=1787">http://www.infosync.no/show.php?id=1787</A>
+	<h3></h3>
+</UL>
+<h3><a name="technique"></a>Database Programming Techniques</h3>
+<H4>How to write to the Memo Pad Safely</H4>
+
+<P>Jeff Debrosse has contributed some code that shows how to "safely" write to the memopad in a keyed manner as well as non-keyed.  It have added some date/time formatting code as well.
+<P>Check it out here: <A HREF="http://www.nsbasic.com/pub/palm/samples/Take-A-Memo.zip">
+  http://www.nsbasic.com/pub/palm/samples/Take-A-Memo.zip</A>
+  
+<h3><a name="resource"></a>Resources and Suggested Reading</h3>
+<p>
+
+<p>Here are some documents that explain the format of .pdb and .prc files:
+<ul compact>
+  <li>Unofficial Documentation: <a href="http://www.mactech.com/articles/mactech/Vol.21/21.08/PDBFile/index.html">http://www.mactech.com/articles/mactech/Vol.21/21.08/PDBFile/index.html</a>
+  <li>Format of .prc files: <a href="http://web.mit.edu/tytso/www/pilot/prc-format.html">http://web.mit.edu/tytso/www/pilot/prc-format.html</a>
+  <li>Mizuno-ami's great explanation (for VB users): <A HREF="TN02a.htm">TechNote 02a</A>
+</ul>
+<a name="conduits"></a>
+<h3>Database Conversion Tools (Conduits)</h3>
+<TABLE border=1 width=800>
+	
+  <TR>
+		
+	<TD><a href="http://www.nsbasic.com/desktop">NS Basic/Desktop</a></TD>
+	<TD>NS Basic/Desktop creates applications that run on Windows XP and Windows 2000. It's an easy to use, VB like environment. NS Basic/Desktop has special features for manipulating pdb files on the desktop.</TD>
+  </TR>
+		
+  <TR>
+		
+	<TD><a href="http://www.envicon.de/conduitdb/">ConduitDB SDK</a></TD>
+	<TD>Convert BDE and ODBC data bases to PDB. </TD>
+  </TR>
+	
+	
+  <TR>
+		
+	<TD><a href="http://www.heartware.dk/PalmPilot/">CSV2PDB, PDB2CSV</a></TD>
+	<TD>Comma separated file to PDB, PDB to comma separated file.</TD>
+  </TR>
+	
+	
+  <TR>
+		
+	<TD><a href="http://www.djw.org/product/palm/par/">Par</a></TD>
+	<TD>Create and manipulate .pdb and .prc files</TD>
+  </TR>
+	
+  <TR>
+		
+	<TD><A HREF="http://www.pda-tec.com">PDA-tec</A></TD>
+	<TD>This company make a variety of interesting tools that can access NS Basic files. Does MDB and PDF files. 
+</TD>
+  </TR>
+	
+	
+  <TR>
+		
+	<TD><a href="http://www.mverive.com/pdbconverter.htm">PDB Converter</a></TD>
+	<TD>Converts Excel, tab delimited and CSV files. Includes full source in VB6. By Michael Verive</TD>
+  </TR>
+	
+	
+  <TR>
+		
+	<TD><a href="http://www.palmspot.com/software/detail/ps3969a_9851.html">PDB Reader</a></TD>
+	<TD>PDB Reader lets you view pdb files on the desktop</TD>
+  </TR>
+	
+ 
+  <TR>
+	<TD><a href="http://xprsg.tripod.com/programing/toolz.htm">PDBingo!</a></TD>
+	<TD>Allows the analysis of PDB file Header as well as tweaking of the PDB file Header.</TD>
+  </TR>
+		
+  <TR>
+		
+	<TD><a href="http://search.cpan.org/author/JOHANVDB/XML-Generator-Pdb-0.1/scripts/pdbtoxml">pdb2xml</a></TD>
+	<TD>Generates an XML description from a pdb file.</TD>
+  </TR>
+					
+  <TR>
+
+		
+	<TD><a href="http://tech.groups.yahoo.com/group/nsbasic-palm/files/">Web Board</a></TD>
+	<TD>Some more tools and samples</TD>
+  </TR>
+	
+  <TR>
+		
+	<TD><a href="http://home.c2i.net/erlendthune/palm#xmlmax">xmlMax</a></TD>
+	<TD>A generic conduit and GUI for Palm which uploads/downloads and presents any database on the palm by just specifiying the database format in a simple xml format.</TD>
+  </TR>
+</TABLE>
+<p>
+<H4>More?</H4>
+
+<P>If anyone hears of more useful resources on this topic or has useful experiences, please let us know at <A HREF="mailto:support&copy; nsbasic.com">support&copy; nsbasic.com</A> so we can improve this document. Code samples will be greatly appreciated by all!
+
+<P>Note that Palm reserves the right to change the format.
+
+
+

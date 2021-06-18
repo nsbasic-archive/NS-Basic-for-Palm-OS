@@ -1,0 +1,114 @@
+"mdl"
+7
+"BenchForm68K","appl","Ben3",1017,505,0
+"Sub Project_Startup()
+Global count as Integer
+Global starttime as Time
+count=0
+starttime=now()
+End Sub"
+0
+0
+""
+""
+""
+"vew"
+4,1003,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form1"
+"Form1003"
+""
+0
+"Sub Form1003_After()
+Dim i as Integer
+field1005.text=~~
+For i=1 to 20
+    field1005.text=str(i) + chr(10) + field1005.text
+Next
+
+count=count+1
+If count<50 Then
+    NextForm ~form1011~
+Else
+    MsgBox str(timediff(starttime, now()))
+End If
+
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1004",1004,8,20,12,36,#TRUE#,0,"OK",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1005",1005,8,36,120,44,#TRUE#,0,"",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+"one	two	three	four	five"
+"obj"
+3
+"pop","Popup1007",1007,84,32,12,45,#TRUE#,0,"Popup",0,0,0
+""
+"lst"
+2
+4
+"monday	tuesday	wednesday	thursday	friday	saturday	sunday"
+"obj"
+3
+"lst","List1009",1009,80,80,68,68,#TRUE#,0,"",0,0,0
+""
+"vew"
+4,1011,#FALSE#,#TRUE#,#TRUE#,0,0,0,160,160,0,#FALSE#,#TRUE#
+"Form2"
+"Form1011"
+""
+0
+"Sub Form1011_After()
+Dim i as Integer
+field1013.text=~~
+For i=20 to 1 STEP -1   
+    field1013.text=str(i) + chr(10) + field1013.text
+Next
+NextForm ~form1003~
+End Sub"
+""
+0,0,0,0
+"but"
+1
+#TRUE#,#TRUE#,#TRUE#
+"obj"
+3
+"but","Button1012",1012,108,20,12,36,#TRUE#,0,"OK",0,0,0
+""
+"fld"
+1
+#TRUE#,#TRUE#,#FALSE#,#FALSE#,#TRUE#,1000,#FALSE#,#FALSE#,#FALSE#
+"obj"
+3
+"fld","Field1013",1013,96,36,120,44,#TRUE#,0,"",0,0,0
+""
+"pop"
+2
+#TRUE#,0,4
+"one	two	three	four	five"
+"obj"
+3
+"pop","Popup1015",1015,12,20,12,45,#TRUE#,0,"Popup",0,0,0
+""
+"lst"
+2
+4
+"monday	tuesday	wednesday	thursday	friday	saturday	sunday"
+"obj"
+3
+"lst","List1017",1017,4,80,68,68,#TRUE#,0,"",0,0,0
+""
+"end"

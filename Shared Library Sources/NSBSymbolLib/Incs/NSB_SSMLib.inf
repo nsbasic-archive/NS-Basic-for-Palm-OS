@@ -1,0 +1,19 @@
+[General]
+ExtensionName=NSB-Symbol-Scan-Manager
+PrcName=NSB_SSMLib.prc
+Version=2.0 Beta
+Manufacturer=NSBasic.com
+[GlobalMethods]
+IsPalmSymbolUnit=1, func, 0, "Return 1 if this is a symbol unit, 0 otherwise"
+CmdScanEnable=2, proc, 0, "Enable the scanner"
+CmdScanDisable=3, proc, 0, "Disable the scanner"
+CmdScanSetTriggeringModes=4, proc, 1, "Set the triggering modes.  For more information, consult Symbol documentation."
+CmdScanSetBarcodeEnabled=5, proc, 2, "Enable a specific bar code"
+CmdSendParams=6, proc, 1, "Send the parameters set so far.  Call after SetTriggeringModes or and SetBarcodeEnabled"
+CmdStartDecode=7, proc, 0, "Start a decode, same as pushing the yellow button"
+CmdStopDecode=8, proc, 0, "Stop a decode.  Normally not used."
+GetDecodedData=9, func, 0, "Return the decoded data into a string buffer.  Normally not used"
+GetLastScanData=10, func, 0, "Get the last scanned bar code into a string"
+GetBarType=11, func, 0, "Return the barcode type as an integer"
+CmdScanLedOn=12, proc, 0, "Turn the LED on"
+CmdScanLedOff=13, proc, 0, "Turn the LED off"
