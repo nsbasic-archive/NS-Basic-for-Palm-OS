@@ -17,4 +17,6 @@ NS BASIC for Palm was released in 2000 and was developed until 2009.
 
 The [website](https://www.nsbasic.com/palm/) is still around.
 
+The code to unzip the installer archive is `fatchoy`. For a serial number, use `D20-315-50o`.
+
 George Henne
